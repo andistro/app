@@ -80,6 +80,7 @@ update_progress() {
     filled_bar=$(printf "%${filled_length}s" | tr " " "=")
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
+    printf "AnDistro - Distribuições Linux no Android"
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
 #total_steps=2  # Número total de etapas que você quer monitorar
@@ -145,13 +146,12 @@ show_progress_dialog() {
             ;;
 
         steps)
-            local label="$1"
-            local steps="$2"
-            shift 2
+            # Ex: show_progress_dialog steps 2 \
+            #     "${label_step1}" 'comando1' \
+            #     "${label_step2}" 'comando2'
 
-            # Corrige o valor de steps com base no número real de comandos
-            steps=$(( $# / 2 ))
-
+            local steps="$1"
+            shift
             {
                 local percent step=0
                 while [ "$#" -gt 1 ]; do
@@ -170,8 +170,9 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done:-Concluído}"
                 echo "XXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
+            } | dialog --title "$title_progress" --gauge "$title_progress" 10 70 0
             ;;
+
         pid)
             # Ex: show_progress_dialog pid "${label_configure_locale}" "dpkg-reconfigure locales"
             local label="$1"
