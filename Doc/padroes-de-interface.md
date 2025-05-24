@@ -94,7 +94,7 @@ show_progress_dialog tipo <NÚMERO_DE_ETAPAS> "<label>" 'comando'
 Usado quando você tem múltiplos comandos executados sequencialmente com rótulos.
 
 ```bash
-show_progress_dialog steps "${label_progress}" 5 \
+show_progress_dialog steps 5 \
 "<label 1>" "sudo apt update" \
 "<label 1>" "sudo apt full-upgrade -y" \
 "<label 2>" "sudo apt autoremove -y" \
