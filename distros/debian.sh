@@ -24,9 +24,9 @@ if [ "$first" != 1 ];then
 	esac
 	error_code="DW001deb"
 	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/debian-${codinome}-${archurl}.tar.xz"
-	sleep 2
+	sleep 10
 	show_progress_dialog extract "${label_debian_download_extract}" "$HOME/$folder.tar.xz" 
-	sleep 2
+	sleep 10
 fi
 
 echo "${label_start_script}"
@@ -81,13 +81,13 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	mkdir -p $folder/root/.vnc/
 	echo "pasta criada"
 fi
-dialog --infobox "Etapa 1 \nbaixar os papeis de parede e arquivo de configuração principal..." 5 50
 
 show_progress_dialog wget-labeled "${label_progress}" 3 \
   "${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
+sleep 10
 chmod +x "$folder/root/system-config.sh"
 
 # Idioma
@@ -109,8 +109,7 @@ case $CHOICE in
 		#sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
 		error_code="LG001br"
 		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/locale/locale_pt-BR.sh"
-		sleep 5
-		exit_erro
+		sleep 10
 		chmod +x $folder/root/locale_pt-BR.sh
 		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/fixed_variables.sh"
 		source "$PREFIX/bin/andistro_files/fixed_variables.sh"
@@ -119,8 +118,7 @@ case $CHOICE in
 		echo ""
 	;;
 esac
-dialog --infobox "Etapa 8 \nBaixar arquivos do VNC..." 5 50
-sleep 4
+
 error_code="VNC001x"
 show_progress_dialog "wget" "${label_progress}" 5 \
   -P "$folder/usr/local/bin" \
@@ -130,7 +128,7 @@ show_progress_dialog "wget" "${label_progress}" 5 \
   "${extralink}/config/tigervnc/stopvnc" \
   "${extralink}/config/tigervnc/startvncserver"
 
-exit_erro
+sleep 10
 
 chmod +x $folder/usr/local/bin/vnc
 chmod +x $folder/usr/local/bin/vncpasswd
@@ -162,55 +160,57 @@ source "/usr/local/bin/fixed_variables.sh"
 #deb http://ftp.debian.org/debian buster main
 #deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
-dialog --infobox 'Etapa 10 \nbaixar pacotes necessários...' 5 50
-sleep 4
 echo '${label_alert_autoupdate_for_u}'
-apt update -y > /dev/null 2>&1
 total_steps=7
 {
-    #1 Verifica se o sudo está instalado
+	#1 Verifica se o sudo está instalado
+    apt update -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #2 Verifica se o sudo está instalado
     if ! dpkg -l | grep -qw sudo; then
         apt install sudo -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-	#2 Verifica se o wget está instalado
+	#3 Verifica se o wget está instalado
     if ! dpkg -l | grep -qw wget; then
         apt install wget -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-	#3 Verifica se o dialog está instalado
+	#4 Verifica se o dialog está instalado
     if ! dpkg -l | grep -qw dialog; then
         apt install dialog -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-	#4 Verifica se o xz-utils está instalado
+	#5 Verifica se o xz-utils está instalado
     if ! dpkg -l | grep -qw xz-utils; then
         apt install xz-utils -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-	#5 Verifica se o unzip está instalado
+	#6 Verifica se o unzip está instalado
     if ! dpkg -l | grep -qw unzip; then
         apt install unzip -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-	#6 Verifica se o tar está instalado
+	#7 Verifica se o tar está instalado
     if ! dpkg -l | grep -qw tar; then
         apt install tar -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #7 Verifica se o curl está instalado
+    #8 Verifica se o curl está instalado
     if ! dpkg -l | grep -qw curl; then
         apt install curl -y
     fi
@@ -220,7 +220,6 @@ total_steps=7
 	echo
 }
 clear
-dialog --infobox 'Etapa 11 \nConfigurar o idioma...' 5 50
 sleep 4
 bash ~/locale*.sh
 
@@ -253,15 +252,17 @@ case $CHOICE in
 	1)	
 		echo "LXDE UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/lxde/config.sh"
-	;;
+		sleep 10
+		;;
 	2)	
 		echo "XFCE UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xcfe4/config.sh"
-	;;
+		sleep 10
+		;;
 	3)
 		echo "Gnome UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/gnome/config.sh"
-
+		sleep 10
 		# Parte da resolução do problema do gnome e do systemd
 		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
 			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
@@ -303,6 +304,7 @@ show_progress_dialog apt-labeled 3 \
     "${label_find_update}" "sudo DEBIAN_FRONTEND=noninteractive apt update" \
     "${label_keyboard_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration -y" \
     "${label_tzdata_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y"
+sleep 10
 
 show_progress_dialog apt-labeled 7 \
     "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install exo-utils --no-install-recommends -y" \
@@ -312,7 +314,7 @@ show_progress_dialog apt-labeled 7 \
     "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install dbus-x11 --no-install-recommends -y" \
     "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install python3-gi -y" \
     "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install python3 -y"
-
+sleep 10
 
 chmod +x /usr/local/bin/vnc
 chmod +x /usr/local/bin/vncpasswd
