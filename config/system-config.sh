@@ -2,7 +2,7 @@
 source "/usr/local/bin/fixed_variables.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 66 \
+show_progress_dialog steps-multi-label 64 \
     "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
     "${label_progress}" 'sudo apt purge snapd -y' \
     "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -30,8 +30,6 @@ show_progress_dialog steps-multi-label 66 \
     "${label_install_script_download}" 'sudo apt-get install nautilus --no-install-recommends -y' \
     "${label_install_script_download}" 'sudo apt-get install gpg -y' \
     "${label_install_script_download}" 'sudo apt-get install curl -y' \
-    "${label_install_script_download}" 'sudo apt-get install keyboard-configuration -y' \
-    "${label_install_script_download}" 'sudo apt-get install tzdata -y' \
     "${label_install_script_download}" 'sudo apt-get install git -y' \
     "${label_install_script_download}" 'sudo apt-get install unrar -y' \
     "${label_install_script_download}" 'sudo apt-get install zip -y' \

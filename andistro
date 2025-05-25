@@ -13,9 +13,10 @@ if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
 fi
 # Log de erros
-if [ ! -d "$HOME/storage/shared/termux/andistro_logs" ];then
+if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir "$HOME/storage/shared/termux/"
-    mkdir "$HOME/storage/shared/termux/andistro_logs"
+    mkdir "$HOME/storage/shared/termux/andistro"
+    mkdir "$HOME/storage/shared/termux/andistro/logs"
 fi
 
 clear

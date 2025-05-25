@@ -13,7 +13,17 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 17 \
      'sudo apt-get install dbus-x11 --no-install-recommends -y' \
      'sudo apt install python3-gi -y' \
      'sudo apt install python3 -y' \
-     "echo -e '#!/bin/bash\n[ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources\nexport PULSE_SERVER=127.0.0.1\nexport LANG\n[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup\n[ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources\necho \$\$ > /tmp/xsession.pid\ndbus-launch --exit-with-session startlxde' > ~/.vnc/xstartup" \
+     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
+#!/bin/bash
+[ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
+export PULSE_SERVER=127.0.0.1
+export LANG
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
+echo \$\$ > /tmp/xsession.pid
+dbus-launch --exit-with-session startlxde
+EOF
+"' \
      'chmod +x ~/.vnc/xstartup' \
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
      "wget --tries=20 '${extralink}/config/environment/lxde/start-environment.sh'" \

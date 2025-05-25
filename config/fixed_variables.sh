@@ -111,7 +111,7 @@ show_progress_dialog() {
     #   wget-labeled  - Multiple labeled downloads
     #   pid           - Background process (long-running)
     #   extract       - Extract .zip, .tar, .tar.gz, .xz
-
+    local timestamp=$(date +'%d%m%Y-%H%M%S')
     local mode="$1"
     shift
 
@@ -134,7 +134,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$label"
                     echo "XXX"
-                    bash -c "$cmd" &>/dev/null
+                    bash -c "$cmd" >> "/sdcard/termux/andistro/logs/apt-labeled_${timestamp}.txt" 2>&1
                     step=$((step + 1))
                     shift 2
                 done
@@ -190,7 +190,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$lbl"
                     echo "XXX"
-                    bash -c "$cmd" &>/dev/null
+                    bash -c "$cmd"  >> "/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt" 2>&1
                     step=$((step + 1))
                     shift 2
                 done
