@@ -142,7 +142,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done:-Concluído}"
                 echo "XXX"
-            } | dialog --title "$title_progress" --gauge "$title_progress" 10 70 0
+            } | dialog --gauge "$title_progress" 10 70 0
             ;;
         
         steps-one-label)
@@ -170,7 +170,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done:-Concluído}"
                 echo "XXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
+            } | dialog --gauge "$label" 10 70 0
             ;;
 
         steps-multi-label)
@@ -198,7 +198,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done:-Concluído}"
                 echo "XXX"
-            } | dialog --title "$title_progress" --gauge "$title_progress" 10 70 0
+            } | dialog --gauge "$title_progress" 10 70 0
             ;;
 
         
@@ -225,7 +225,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done:-Concluído}"
                 echo "XXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
+            } | dialog --gauge "$label" 10 70 0
             ;;
 
         wget-labeled)
@@ -266,7 +266,7 @@ show_progress_dialog() {
                 done
 
                 echo -e "XXX\n100\n${label_done:-Concluído}\nXXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
+            } | dialog --gauge "$label" 10 70 0
             ;;
 
 
