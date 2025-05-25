@@ -144,8 +144,36 @@ show_progress_dialog() {
                 echo "XXX"
             } | dialog --title "$title_progress" --gauge "$title_progress" 10 70 0
             ;;
+        
+        steps-one-label)
+            # Ex: show_progress_dialog steps-one "${label_etapa}" total_comandos \
+            #     'comando1' 'comando2' 'comando3'
 
-        steps)
+            local label="$1"
+            local total="$2"
+            shift 2
+
+            {
+                local count=0
+                local percent=0
+                for cmd in "$@"; do
+                    echo "XXX"
+                    percent=$(( count * 100 / total ))
+                    echo "$percent"
+                    echo "$label"
+                    echo "XXX"
+                    bash -c "$cmd" &>/dev/null
+                    count=$((count + 1))
+                done
+
+                echo "XXX"
+                echo "100"
+                echo "${label_done:-Concluído}"
+                echo "XXX"
+            } | dialog --title "$label" --gauge "$label" 10 70 0
+            ;;
+
+        steps-multi-label)
             # Ex: show_progress_dialog steps 2 \
             #     "${label_step1}" 'comando1' \
             #     "${label_step2}" 'comando2'
@@ -171,54 +199,6 @@ show_progress_dialog() {
                 echo "${label_done:-Concluído}"
                 echo "XXX"
             } | dialog --title "$title_progress" --gauge "$title_progress" 10 70 0
-            ;;
-
-        pid)
-            # Ex: show_progress_dialog pid "${label_configure_locale}" "dpkg-reconfigure locales"
-            local label="$1"
-            shift
-            {
-                local percent=0
-                local pid="$!"
-                while kill -0 "$pid" 2>/dev/null; do
-                    echo "XXX"
-                    echo "$percent"
-                    echo "$label"
-                    echo "XXX"
-                    percent=$(( (percent + 1) % 100 ))
-                    sleep 0.2
-                done
-                echo "XXX"
-                echo "100"
-                echo "${label_done:-Concluído}"
-                echo "XXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
-            ;;
-
-        pid-silent)
-            # NOVO: Especial para debootstrap (sem mostrar download/output)
-            # Ex: show_progress_dialog pid-silent "${label_debian_download}" \
-            #     debootstrap --arch="$archurl" "$codinome" "$folder" http://ftp.debian.org/debian
-
-            local label="$1"
-            local command="$2"
-            {
-                bash -c "$command" &>/dev/null &
-                local pid=$!
-                local percent=0
-                while kill -0 "$pid" 2>/dev/null; do
-                    echo "XXX"
-                    echo "$percent"
-                    echo "$label"
-                    echo "XXX"
-                    percent=$(( percent < 95 ? percent + 1 : 95 ))
-                    sleep 0.3
-                done
-                echo "XXX"
-                echo "100"
-                echo "${label_done:-Concluído}"
-                echo "XXX"
-            } | dialog --title "$label" --gauge "$label" 10 70 0
             ;;
 
         
