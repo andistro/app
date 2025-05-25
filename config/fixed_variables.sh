@@ -148,7 +148,6 @@ show_progress_dialog() {
         steps-one-label)
             # Ex: show_progress_dialog steps-one "${label_etapa}" total_comandos \
             #     'comando1' 'comando2' 'comando3'
-
             local label="$1"
             local total="$2"
             shift 2
