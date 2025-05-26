@@ -160,13 +160,11 @@ source '/usr/local/bin/fixed_variables.sh'
 #deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
 echo '${label_alert_autoupdate_for_u}'
-total_steps=8
-{
-	#1 Verifica se o sudo está instalado
-    apt update -y > /dev/null 2>&1
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+apt update -y > /dev/null 2>&1
 
+total_steps=7
+current_step=0
+{
     #2 Verifica se o sudo está instalado
     if ! dpkg -l | grep -qw sudo; then
         apt install sudo -y
