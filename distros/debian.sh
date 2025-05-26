@@ -11,7 +11,7 @@ if [ -d "$folder" ]; then
 	echo "${label_skip_download}"
 fi
 
-sleep 4
+sleep 2
 # Baixa
 if [ "$first" != 1 ];then
 	case `dpkg --print-architecture` in
@@ -24,9 +24,9 @@ if [ "$first" != 1 ];then
 	esac
 	error_code="DW001deb"
 	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/debian-${codinome}-${archurl}.tar.xz"
-	sleep 10
+	sleep 2
 	show_progress_dialog extract "${label_debian_download_extract}" "$HOME/$folder.tar.xz" 
-	sleep 10
+	sleep 2
 fi
 
 echo "${label_start_script}"
@@ -87,7 +87,7 @@ show_progress_dialog wget-labeled "${label_progress}" 3 \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
-sleep 10
+sleep 2
 chmod +x "$folder/root/system-config.sh"
 
 # Idioma
@@ -109,7 +109,7 @@ case $CHOICE in
 		#sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
 		error_code="LG001br"
 		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/locale/locale_pt-BR.sh"
-		sleep 10
+		sleep 2
 		chmod +x $folder/root/locale_pt-BR.sh
 		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/fixed_variables.sh"
 		source "$PREFIX/bin/andistro_files/fixed_variables.sh"
@@ -128,7 +128,7 @@ show_progress_dialog "wget" "${label_progress}" 5 \
   "${extralink}/config/tigervnc/stopvnc" \
   "${extralink}/config/tigervnc/startvncserver"
 
-sleep 10
+sleep 2
 
 chmod +x $folder/usr/local/bin/vnc
 chmod +x $folder/usr/local/bin/vncpasswd
@@ -160,11 +160,28 @@ source '/usr/local/bin/fixed_variables.sh'
 #deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
 echo '${label_alert_autoupdate_for_u}'
-apt update -y > /dev/null 2>&1
+update_progress() {
+    current_step=$1
+    total_steps=$2
 
-total_steps=7
+    percent=$((current_step * 100 / total_steps))
+    bar_length=30
+    filled_length=$((percent * bar_length / 100))
+    empty_length=$((bar_length - filled_length))
+
+    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
+}
+total_steps=8
 current_step=0
 {
+	#1 Verifica se o sudo está instalado
+    apt update -y > /dev/null 2>&1
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
     #2 Verifica se o sudo está instalado
     if ! dpkg -l | grep -qw sudo; then
         apt install sudo -y
