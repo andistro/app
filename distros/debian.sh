@@ -232,10 +232,11 @@ current_step=0
 	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	echo
-}
+} > /dev/null 2>&1
 clear
 sleep 4
-bash ~/locale*.sh
+
+bash ~/locale_${system_icu_locale_code}.sh
 
 apt update -y > /dev/null 2>&1
 clear
