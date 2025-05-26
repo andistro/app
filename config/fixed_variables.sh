@@ -61,7 +61,6 @@ else
     echo "Arquivo de localização não encontrado para o código: $system_icu_locale_code"
 fi
 
-# Sistema de detecção de erros ==================================================================================
 
 # TERMINAL Progress  ==================================================================================
 # A barra de progresso aparece no terminal sem caixa de dialogo
@@ -85,6 +84,35 @@ update_progress() {
 }
 #total_steps=2  # Número total de etapas que você quer monitorar
 current_step=0
+
+
+# Sistema de identificação pacotes instalados ==================================================================================
+
+check_packages_installed() {
+    local missing=()
+    for pkg in "$@"; do
+        if dpkg -s "$pkg" &> /dev/null; then
+            echo "[✓] $pkg está instalado."
+        else
+            echo "[✗] $pkg NÃO está instalado."
+            missing+=("$pkg")
+        fi
+    done
+
+    # Retorno útil se quiser tomar decisões baseadas nos pacotes ausentes
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo "Pacotes ausentes: ${missing[*]}"
+        return 1
+    else
+        return 0
+    fi
+}
+# Use o check_packages_installed curl wget git
+# Exemplo de verificador e download
+#if ! check_packages_installed curl wget git; then
+#    echo "Instalando pacotes ausentes..."
+#    sudo apt install -y curl wget git
+#fi
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # ==================================================================================================
