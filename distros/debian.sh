@@ -151,15 +151,15 @@ chmod +x $bin
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
-echo "#!/bin/bash
-source '/usr/local/bin/fixed_variables.sh'
-#echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+echo '#!/bin/bash
+source "/usr/local/bin/fixed_variables.sh"
+#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
 #deb http://deb.debian.org/debian stable-updates main contrib non-free
 #deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
+#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
-echo '${label_alert_autoupdate_for_u}'
+echo "${label_alert_autoupdate_for_u}"
 update_progress() {
     current_step=$1
     total_steps=$2
@@ -176,6 +176,7 @@ update_progress() {
 }
 total_steps=8
 current_step=0
+
 {
 	#1 Verifica se o sudo está instalado
     apt update -y > /dev/null 2>&1
@@ -242,7 +243,7 @@ clear
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
-exit" > $folder/root/.bash_profile 
+exit' > $folder/root/.bash_profile 
 
 bash $bin
 
