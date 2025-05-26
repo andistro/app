@@ -170,17 +170,9 @@ show_progress_dialog apt-labeled 3 ${label_alert_autoupdate_for_u} \
 	"apt install wget -y" \
 	"apt install xz-utils -y" \
 	"apt install unzip -y" \
-	"apt install tar -y"
+	"apt install tar -y" \
+	"apt install curl -y"
 
-	#8 Verifica se o curl está instalado
-	if ! dpkg -l | grep -qw curl; then
-		apt install curl -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	echo
-} > /dev/null 2>&1
 clear
 sleep 4
 
