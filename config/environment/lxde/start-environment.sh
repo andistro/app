@@ -20,6 +20,6 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 19 \
   "echo 'user_pref("security.sandbox.content.level", 0);' >> ~/.mozilla/firefox/*.default-release/prefs.js" \
   "sudo apt-get clean" \
   "vncserver -kill :1" \
-	"rm -rf /tmp/.X$pt-lock" \
-	"rm -rf /tmp/.X11-unix/X$pt" \
+  "rm -rf /tmp/.X$pt-lock" \
+  "rm -rf /tmp/.X11-unix/X$pt" \
   "rm -rf ~/start-environment.sh"
