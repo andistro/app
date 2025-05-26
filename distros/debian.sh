@@ -182,54 +182,54 @@ total_steps=7  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
-    #2 Verifica se o sudo está instalado
-    if ! dpkg -l | grep -qw sudo; then
-        apt install sudo -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	#2 Verifica se o sudo está instalado
+	if ! dpkg -l | grep -qw sudo; then
+		apt install sudo -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	#3 Verifica se o wget está instalado
-    if ! dpkg -l | grep -qw wget; then
-        apt install wget -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	if ! dpkg -l | grep -qw wget; then
+		apt install wget -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	#4 Verifica se o dialog está instalado
-    if ! dpkg -l | grep -qw dialog; then
-        apt install dialog -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	if ! dpkg -l | grep -qw dialog; then
+		apt install dialog -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	#5 Verifica se o xz-utils está instalado
-    if ! dpkg -l | grep -qw xz-utils; then
-        apt install xz-utils -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	if ! dpkg -l | grep -qw xz-utils; then
+		apt install xz-utils -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	#6 Verifica se o unzip está instalado
-    if ! dpkg -l | grep -qw unzip; then
-        apt install unzip -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	if ! dpkg -l | grep -qw unzip; then
+		apt install unzip -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	#7 Verifica se o tar está instalado
-    if ! dpkg -l | grep -qw tar; then
-        apt install tar -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	if ! dpkg -l | grep -qw tar; then
+		apt install tar -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #8 Verifica se o curl está instalado
-    if ! dpkg -l | grep -qw curl; then
-        apt install curl -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+	#8 Verifica se o curl está instalado
+	if ! dpkg -l | grep -qw curl; then
+		apt install curl -y
+	fi
+	((current_step++))
+	update_progress "$current_step" "$total_steps"; sleep 0.1
 
 	echo
 }
