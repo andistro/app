@@ -23,3 +23,4 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 19 \
   "rm -rf /tmp/.X$pt-lock" \
   "rm -rf /tmp/.X11-unix/X$pt" \
   "rm -rf ~/start-environment.sh"
+sleep 10

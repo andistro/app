@@ -67,3 +67,4 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'sudo apt --fix-broken install -y' \
     "${label_install_script_download}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
     "${label_install_script_download}" "echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee $HOME/.gtkrc-2.0"
+sleep 10
