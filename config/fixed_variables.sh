@@ -139,7 +139,6 @@ show_progress_dialog() {
     #   wget-labeled  - Multiple labeled downloads
     #   pid           - Background process (long-running)
     #   extract       - Extract .zip, .tar, .tar.gz, .xz
-    local timestamp=$(date +'%d%m%Y-%H%M%S')
     local mode="$1"
     shift
 
@@ -151,6 +150,7 @@ show_progress_dialog() {
             #    "${label_clean}" 'apt clean'
 
             local steps="$1"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 local percent step=0
@@ -206,6 +206,7 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 local percent step=0
