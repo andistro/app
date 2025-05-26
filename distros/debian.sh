@@ -160,7 +160,7 @@ source '/usr/local/bin/fixed_variables.sh'
 #deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
 echo '${label_alert_autoupdate_for_u}'
-total_steps=7
+total_steps=8
 {
 	#1 Verifica se o sudo está instalado
     apt update -y > /dev/null 2>&1
