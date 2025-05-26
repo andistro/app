@@ -13,7 +13,7 @@ show_progress_dialog steps-one-label "${label_system_language}" 8 \
     "echo 'export LANG=pt_BR.UTF-8' >> ~/.bashrc" \
     "echo 'export LANGUAGE=pt_BR.UTF-8' >> ~/.bashrc"
 
-exit_erro
+sleep 10
 ## Exportar os comandos de configuração de idioma para ~/.bashrc
 ## Essa configuração necessita de reboot
 #sed -i '\|export LANG|a LANG=pt_BR.UTF-8|' ~/.vnc/xstartup

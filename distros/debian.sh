@@ -148,12 +148,11 @@ cp "$PREFIX/bin/andistro_files/fixed_variables.sh" $folder/usr/local/bin
 #echo "making $bin executable"
 chmod +x $bin
 
-dialog --infobox "Etapa 9 \nVamos entrar no sistema agora..." 5 50
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo "#!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source '/usr/local/bin/fixed_variables.sh'
 #echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
 #deb http://deb.debian.org/debian stable-updates main contrib non-free
@@ -164,7 +163,7 @@ echo '${label_alert_autoupdate_for_u}'
 total_steps=7
 {
 	#1 Verifica se o sudo está instalado
-    apt update -y
+    apt update -y > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
