@@ -82,8 +82,9 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	echo "pasta criada"
 fi
 
-show_progress_dialog wget-labeled "${label_progress}" 3 \
+show_progress_dialog wget-labeled "${label_progress}" 4 \
   "${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
+  "${label_progress}" -O "$folder/root/dialog.deb" "${extralink}/debian/sources/dialog_${archurl}.deb" \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
   "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
@@ -162,67 +163,14 @@ source "/usr/local/bin/fixed_variables.sh"
 echo "${label_alert_autoupdate_for_u}"
 
 apt update > /dev/null 2>&1
+apt install dialog -y > /dev/null 2>&1
 
-update_progress() {
-    current_step=$1
-    total_steps=$2
-
-    percent=$((current_step * 100 / total_steps))
-    bar_length=30
-    filled_length=$((percent * bar_length / 100))
-    empty_length=$((bar_length - filled_length))
-
-    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
-
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
-}
-
-total_steps=7  # Número total de etapas que você quer monitorar
-current_step=0
-
-{
-	#2 Verifica se o sudo está instalado
-	if ! dpkg -l | grep -qw sudo; then
-		apt install sudo -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	#3 Verifica se o wget está instalado
-	if ! dpkg -l | grep -qw wget; then
-		apt install wget -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	#4 Verifica se o dialog está instalado
-	if ! dpkg -l | grep -qw dialog; then
-		apt install dialog -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	#5 Verifica se o xz-utils está instalado
-	if ! dpkg -l | grep -qw xz-utils; then
-		apt install xz-utils -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	#6 Verifica se o unzip está instalado
-	if ! dpkg -l | grep -qw unzip; then
-		apt install unzip -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
-
-	#7 Verifica se o tar está instalado
-	if ! dpkg -l | grep -qw tar; then
-		apt install tar -y
-	fi
-	((current_step++))
-	update_progress "$current_step" "$total_steps"; sleep 0.1
+show_progress_dialog apt-labeled 3 ${label_alert_autoupdate_for_u} \
+    "apt install sudo -y" \
+	"apt install wget -y" \
+	"apt install xz-utils -y" \
+	"apt install unzip -y" \
+	"apt install tar -y"
 
 	#8 Verifica se o curl está instalado
 	if ! dpkg -l | grep -qw curl; then
