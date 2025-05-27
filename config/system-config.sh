@@ -70,8 +70,6 @@ show_progress_dialog steps-multi-label 65 \
     "${label_install_script_download}" "echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee $HOME/.gtkrc-2.0"
 sleep 10
 
-#!/bin/bash
-
 {
   for i in {1..50}; do
     sleep 0.1
