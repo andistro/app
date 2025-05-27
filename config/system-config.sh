@@ -21,29 +21,64 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'if [ ! -d "$HOME/.config/gtk-3.0" ]; then mkdir -p "$HOME/.config/gtk-3.0"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
     "${label_install_script_download}\n>apt-utils" 'sudo apt-get install apt-utils -y' \
-    "${label_install_script_download_check}\n>apt-utils" 'if ! dpkg -l | grep -qw apt-utils; then apt install apt-utils -y; fi' \
-    "${label_install_script_download_check}\n>apt-utils" 'if ! dpkg -l | grep -qw apt-utils; then apt install apt-utils -y; fi' \
+    "${label_install_script_download_check}\n>apt-utils" "if ! dpkg -l | grep -qw apt-utils; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>exo-utils" 'sudo apt-get install exo-utils --no-install-recommends -y' \
-
+    "${label_install_script_download_check}\n>exo-utils" "if ! dpkg -l | grep -qw exo-utils; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>exo-utils\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>tigervnc-standalone-server" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>tigervnc-standalone-server" "if ! dpkg -l | grep -qw tigervnc-standalone-server; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>tigervnc-standalone-server\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>tigervnc-common" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>tigervnc-common" "if ! dpkg -l | grep -qw tigervnc-common; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>tigervnc-common\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>tigervnc-tools" 'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>tigervnc-tools" "if ! dpkg -l | grep -qw tigervnc-common; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>tigervnc-tools\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>dbus-x11" 'sudo apt-get install dbus-x11 --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>dbus-x11" "if ! dpkg -l | grep -qw dbus-x11; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>dbus-x11\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>nano" 'sudo apt-get install nano -y' \
+    "${label_install_script_download_check}\n>nano" "if ! dpkg -l | grep -qw nano; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>nano\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>inetutils-tools" 'sudo apt-get install inetutils-tools -y' \
+    "${label_install_script_download_check}\n>inetutils-tools" "if ! dpkg -l | grep -qw inetutils-tools; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>inetutils-tools\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>nautilus" 'sudo apt-get install nautilus --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>nautilus" "if ! dpkg -l | grep -qw nautilus; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}n>nautilus\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>gpg" 'sudo apt-get install gpg -y' \
+    "${label_install_script_download_check}\n>gpg" "if ! dpkg -l | grep -qw gpg; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>gpg\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>curl" 'sudo apt-get install curl -y' \
+    "${label_install_script_download_check}\n>curl" "if ! dpkg -l | grep -qw curl; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>curl\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>git" 'sudo apt-get install git -y' \
+    "${label_install_script_download_check}\n>git" "if ! dpkg -l | grep -qw git; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>git\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>zip" 'sudo apt-get install zip -y' \
+    "${label_install_script_download_check}\n>zip" "if ! dpkg -l | grep -qw zip; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>zip\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>font-manager" 'sudo apt-get install font-manager --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>font-manager" "if ! dpkg -l | grep -qw font-manager; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>font-manager\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>evince" 'sudo apt-get install evince -y' \
+    "${label_install_script_download_check}\n>evince" "if ! dpkg -l | grep -qw evince; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>evince\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>synaptic" 'sudo apt-get install synaptic --no-install-recommends -y' \
     "${label_install_script_download}\n>synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
+    "${label_install_script_download_check}\n>synaptic" "if ! dpkg -l | grep -qw synaptic; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>synaptic\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>gvfs-backends" 'sudo apt-get install gvfs-backends --no-install-recommends -y' \
+    "${label_install_script_download_check}\n>gvfs-backends" "if ! dpkg -l | grep -qw gvfs-backends; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>gvfs-backends\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>at-spi1-core" 'sudo apt-get install at-spi2-core -y' \
+    "${label_install_script_download_check}\n>at-spi2-core" "if ! dpkg -l | grep -qw at-spi2-core; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>at-spi2-core\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>bleachbit" 'sudo apt-get install bleachbit -y' \
-    "${label_install_script_download}\n>" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
+    "${label_install_script_download_check}\n>bleachbit" "if ! dpkg -l | grep -qw bleachbit; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>bleachbit\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
     "${label_install_script_download}" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
     "${label_install_script_download}" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
     "${label_install_script_download}" 'rm -f packages.microsoft.gpg' \
@@ -62,10 +97,16 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
     "${label_install_script_download}" 'sudo apt-get update' \
     "${label_install_script_download}\n>firefox" 'sudo apt-get install firefox -y' \
-    "${label_install_script_download}\n>firefox" "sudo apt-get install firefox-l10n-$apt_system_icu_locale_code -y"\
+    "${label_install_script_download_check}\n>firefox" "if ! dpkg -l | grep -qw firefox; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>firefox\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}\n>firefox-l10n-$apt_system_icu_locale_code" "sudo apt-get install firefox-l10n-$apt_system_icu_locale_code -y"\
+    "${label_install_script_download_check}\n>firefox-l10n-$apt_system_icu_locale_code" "if ! dpkg -l | grep -qw firefox-l10n-$apt_system_icu_locale_code; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>firefox-l10n-$apt_system_icu_locale_code\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>code" 'sudo apt-get install code -y' \
     "${label_install_script_download}\n>code" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
-    "${label_install_script_download}" 'sudo apt-get clean -y ' \
+    "${label_install_script_download_check}\n>code" "if ! dpkg -l | grep -qw code; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>code\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}" 'sudo apt-get clean' \
     "${label_install_script_download}" 'sudo dpkg --configure -a ' \
     "${label_install_script_download}" 'sudo apt --fix-broken install -y' \
     "${label_install_script_download}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
