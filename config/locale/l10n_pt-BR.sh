@@ -87,6 +87,7 @@ label_vncserver_chose_resolution_custom_desc_port="Insira o número da porta. Ex
 
 # Sobre downloads
 label_install_script_download="Baixando script de instalação..."
+label_install_script_download_check="Confirmando a instalação..."
 label_skip_download="Pulando o download"
 label_decopressing_rootfs="Descompactando arquivos..."
 label_wallpaper_download="Baixando wallpaper..."
