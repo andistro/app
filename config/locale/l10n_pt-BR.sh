@@ -24,7 +24,9 @@ fi
 
 
 #=====================================================================================================
-distro_del="desinstalar" # o programa que irá desinstalar o sistema terá um nome a depender do idioma
+distro_del="desinstalar"
+distro_instaled="instalado"
+distro_notinstaled="não instalado"
 #=====================================================================================================
 
 label_distro_stable="Estável"

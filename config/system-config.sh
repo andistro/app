@@ -21,7 +21,10 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'if [ ! -d "$HOME/.config/gtk-3.0" ]; then mkdir -p "$HOME/.config/gtk-3.0"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
     "${label_install_script_download}\n>apt-utils" 'sudo apt-get install apt-utils -y' \
+    "${label_install_script_download_check}\n>apt-utils" 'if ! dpkg -l | grep -qw apt-utils; then apt install apt-utils -y; fi' \
+    "${label_install_script_download_check}\n>apt-utils" 'if ! dpkg -l | grep -qw apt-utils; then apt install apt-utils -y; fi' \
     "${label_install_script_download}\n>exo-utils" 'sudo apt-get install exo-utils --no-install-recommends -y' \
+
     "${label_install_script_download}\n>tigervnc-standalone-server" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
     "${label_install_script_download}\n>tigervnc-common" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
     "${label_install_script_download}\n>tigervnc-tools" 'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
