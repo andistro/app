@@ -2,7 +2,7 @@
 source "/usr/local/bin/fixed_variables.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 64 \
+show_progress_dialog steps-multi-label 65 \
     "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
     "${label_progress}" 'sudo apt purge snapd -y' \
     "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -13,12 +13,14 @@ show_progress_dialog steps-multi-label 64 \
     "${label_progress}" 'sudo apt-get clean' \
     "${label_find_update}" 'sudo apt-get update' \
     "${label_upgrade}" 'sudo apt-get full-upgrade -y' \
+    "${label_keyboard_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration -y" \
+    "${label_tzdata_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y" \
     "${label_install_script_download}" 'if [ ! -d "/root/Desktop" ]; then mkdir -p "/root/Desktop"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'if [ ! -d "/usr/share/backgrounds/" ]; then mkdir -p "/usr/share/backgrounds/"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'if [ ! -d "/usr/share/icons/" ]; then mkdir -p "/usr/share/icons/"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'if [ ! -d "$HOME/.config/gtk-3.0" ]; then mkdir -p "$HOME/.config/gtk-3.0"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
-    "${label_install_script_download}" 'sudo apt-get install apt-utils -y' \
+    "${label_install_script_download}\n>apt-utils" 'sudo apt-get install apt-utils -y' \
     "${label_install_script_download}" 'sudo apt-get install exo-utils --no-install-recommends -y' \
     "${label_install_script_download}" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
     "${label_install_script_download}" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
@@ -31,7 +33,6 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'sudo apt-get install gpg -y' \
     "${label_install_script_download}" 'sudo apt-get install curl -y' \
     "${label_install_script_download}" 'sudo apt-get install git -y' \
-    "${label_install_script_download}" 'sudo apt-get install unrar -y' \
     "${label_install_script_download}" 'sudo apt-get install zip -y' \
     "${label_install_script_download}" 'sudo apt-get install font-manager --no-install-recommends -y' \
     "${label_install_script_download}" 'sudo apt-get install evince -y' \
@@ -68,3 +69,21 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
     "${label_install_script_download}" "echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee $HOME/.gtkrc-2.0"
 sleep 10
+
+#!/bin/bash
+
+{
+  for i in {1..50}; do
+    sleep 0.1
+    echo $((i * 2))
+  done
+} | dialog --gauge "Iniciando as configurações do teclado, aguarde" 10 60 0
+sudo dpkg-reconfigure keyboard-configuration
+
+{
+  for i in {1..50}; do
+    sleep 0.1
+    echo $((i * 2))
+  done
+} | dialog --gauge "Iniciando as configurações de fuso horário e data, aguarde" 10 60 0
+sudo dpkg-reconfigure tzdata
