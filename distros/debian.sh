@@ -165,8 +165,8 @@ echo "${label_alert_autoupdate_for_u}"
 apt update > /dev/null 2>&1
 apt install dialog -y > /dev/null 2>&1
 
-show_progress_dialog apt-labeled 3 ${label_alert_autoupdate_for_u} \
-    "apt install sudo -y" \
+show_progress_dialog steps-one-label ${label_alert_autoupdate_for_u} 3\
+	"apt install sudo -y" \
 	"apt install wget -y" \
 	"apt install xz-utils -y" \
 	"apt install unzip -y" \
@@ -174,6 +174,7 @@ show_progress_dialog apt-labeled 3 ${label_alert_autoupdate_for_u} \
 	"apt install curl -y"
 
 clear
+
 sleep 4
 
 bash ~/locale_${system_icu_locale_code}.sh
