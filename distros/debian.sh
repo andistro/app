@@ -160,18 +160,18 @@ source '/usr/local/bin/fixed_variables.sh'
 #deb http://ftp.debian.org/debian buster main
 #deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
-echo '''${label_alert_autoupdate_for_u}''
+echo "${label_alert_autoupdate_for_u}"
 
 apt update > /dev/null 2>&1
 a t install dialog -y > /dev/null 2>&1
 
 show_progress_dialog apt-labeled 6\
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive apt install sudo -y' \
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive apt install wget -y' \
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive apt install xz-utils -y' \
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive  pt install unzip -y' \
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive  pt install tar -y' \
-	'${label_alert_autoupdate_for_u}' 'DEBIAN_FRONTEND=noninteractive apt install curl -y'
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install sudo -y' \
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install wget -y' \
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install xz-utils -y' \
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive  pt install unzip -y' \
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive  pt install tar -y' \
+	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install curl -y'
 
 clear
 sleep 4
