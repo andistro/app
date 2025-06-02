@@ -229,7 +229,6 @@ show_progress_dialog() {
             } | dialog --gauge "$title_progress" 10 70 0
             ;;
 
-        
         wget)
             # Ex: show_progress_dialog wget "${label}" -O arquivo URL
             # Ex: show_progress_dialog wget "${label_download}" \
@@ -297,8 +296,6 @@ show_progress_dialog() {
             } | dialog --gauge "$label" 10 70 0
             ;;
 
-
-
         extract)
             # Uso: show_progress_dialog extract "Extraindo arquivos..." /caminho/arquivo.ext [diretório_destino]
             local label="$1"
@@ -342,6 +339,42 @@ show_progress_dialog() {
             echo 100
             set -m
             } | dialog --gauge "$label" 10 70 0
+            ;;
+        
+        check-packages)
+            # Ex: show_progress_dialog check-packages "Conferindo" pkg1 pkg2 ...
+            local label="$1"
+            shift
+
+            local tmp_log="/tmp/check_packages_list_$$.txt"
+            : > "$tmp_log"
+            local total=$#
+            local count=0
+
+            (
+                for pkg in "$@"; do
+                    count=$((count + 1))
+                    printf -v index "[%02d/%02d]" "$count" "$total"
+
+                    if dpkg -s "$pkg" &>/dev/null; then
+                        echo "$index [✓] $pkg está instalado." >> "$tmp_log"
+                    else
+                        echo "$index [✗] $pkg NÃO está instalado." >> "$tmp_log"
+                    fi
+
+                    clear
+                    tput cup 0 0
+                    tac "$tmp_log"
+                    echo
+                    echo "Progresso: $(( count * 100 / total ))%"
+                    sleep 0.2
+                done
+
+                echo
+                echo "${label_done:-Concluído.}"
+            ) | dialog --title "$label" --programbox 25 90
+
+            rm -f "$tmp_log"
             ;;
 
         *)

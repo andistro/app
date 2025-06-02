@@ -32,6 +32,8 @@ show_progress_dialog steps-multi-label 69 \
   "${label_install_script_download}" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
   "${label_install_script_download}" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
   "${label_install_script_download}" 'sudo apt-get update' \
+  "${label_install_script_download}\n>tar" 'sudo apt-get install python3-gi -y' \
+  "${label_install_script_download}\n>tar" 'sudo apt-get install python3 -y' \
   "${label_install_script_download}\n>tar" 'sudo apt-get install tar -y' \
   "${label_install_script_download}\n>unzip" 'sudo apt-get install unzip -y' \
   "${label_install_script_download}\n>zip" 'sudo apt-get install zip -y' \

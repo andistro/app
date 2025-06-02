@@ -107,7 +107,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
 	1)
-		#sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
+		sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
 		error_code="LG001br"
 		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/locale/locale_pt-BR.sh"
 		sleep 2
@@ -168,8 +168,8 @@ clear
 sleep 4
 
 bash ~/locale_${system_icu_locale_code}.sh
-
 apt update -y > /dev/null 2>&1
+bash ~/system-config.sh
 clear
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
@@ -246,20 +246,6 @@ touch $folder/root/.hushlogin
 echo '#!/bin/bash
 source "/usr/local/bin/fixed_variables.sh"
 
-show_progress_dialog apt-labeled 3 \
-    "${label_find_update}" "sudo DEBIAN_FRONTEND=noninteractive apt update" \
-    "${label_keyboard_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration -y" \
-    "${label_tzdata_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y"
-sleep 10
-
-show_progress_dialog apt-labeled 7 \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install exo-utils --no-install-recommends -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install tigervnc-standalone-server --no-install-recommends -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install tigervnc-common --no-install-recommends -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install tigervnc-tools --no-install-recommends -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install dbus-x11 --no-install-recommends -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install python3-gi -y" \
-    "${label_system_setup}" "sudo DEBIAN_FRONTEND=noninteractive apt-get install python3 -y"
 sleep 10
 
 chmod +x /usr/local/bin/vnc
@@ -268,7 +254,7 @@ chmod +x /usr/local/bin/startvnc
 chmod +x /usr/local/bin/stopvnc
 chmod +x /usr/local/bin/startvncserver
 
-bash ~/system-config.sh
+
 bash ~/config-environment.sh
 
 if [ ! -e "~/start-environment.sh" ];then
