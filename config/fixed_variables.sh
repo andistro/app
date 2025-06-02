@@ -345,9 +345,6 @@ show_progress_dialog() {
             # Ex: show_progress_dialog check-packages "Conferindo" pkg1 pkg2 ...
             local label="$1"
             shift
-
-            local tmp_log="/tmp/check_packages_list_$$.txt"
-            : > "$tmp_log"
             local total=$#
             local count=0
 
@@ -357,9 +354,9 @@ show_progress_dialog() {
                     printf -v index "[%02d/%02d]" "$count" "$total"
 
                     if dpkg -s "$pkg" &>/dev/null; then
-                        echo "$index [✓] $pkg está instalado." >> "$tmp_log"
+                        echo "$index [✓] $pkg está instalado." >> "/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt" 2>&1
                     else
-                        echo "$index [✗] $pkg NÃO está instalado." >> "$tmp_log"
+                        echo "$index [✗] $pkg NÃO está instalado." >> "/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt" 2>&1
                     fi
 
                     clear
