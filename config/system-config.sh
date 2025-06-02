@@ -2,7 +2,7 @@
 source "/usr/local/bin/fixed_variables.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 64 \
+show_progress_dialog steps-multi-label 79 \
     "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
     "${label_progress}" 'sudo apt purge snapd -y' \
     "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -20,9 +20,24 @@ show_progress_dialog steps-multi-label 64 \
     "${label_install_script_download}" 'if [ ! -d "/usr/share/icons/" ]; then mkdir -p "/usr/share/icons/"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'if [ ! -d "$HOME/.config/gtk-3.0" ]; then mkdir -p "$HOME/.config/gtk-3.0"; echo "pasta criada"; fi' \
     "${label_install_script_download}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
+    "${label_install_script_download}\n>tar" 'sudo apt-get install tar -y' \
+    "${label_install_script_download_check}\n>tar" "if ! dpkg -l | grep -qw tar; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>tar\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}\n>unzip" 'sudo apt-get install unzip -y' \
+    "${label_install_script_download_check}\n>unzip" "if ! dpkg -l | grep -qw unzip; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>unzip\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}\n>xz-utils" 'sudo apt-get install xz-utils -y' \
+    "${label_install_script_download_check}\n>xz-utils" "if ! dpkg -l | grep -qw xz-utils; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>xz-utils\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}\n>wget" 'sudo apt-get install xz-utils -y' \
+    "${label_install_script_download_check}\n>wget" "if ! dpkg -l | grep -qw wget; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>wget\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download}\n>curl" 'sudo apt-get install curl -y' \
+    "${label_install_script_download_check}\n>curl" "if ! dpkg -l | grep -qw curl; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
+    "${label_install_script_download_check}\n>curl\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>apt-utils" 'sudo apt-get install apt-utils -y' \
     "${label_install_script_download_check}\n>apt-utils" "if ! dpkg -l | grep -qw apt-utils; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
-    "${label_install_script_download_check}\n>$pkg_status" 'sleep 4' \
+    "${label_install_script_download_check}\n>apt-utils\n>$pkg_status" 'sleep 4' \
     "${label_install_script_download}\n>exo-utils" 'sudo apt-get install exo-utils --no-install-recommends -y' \
     "${label_install_script_download_check}\n>exo-utils" "if ! dpkg -l | grep -qw exo-utils; then pkg_status=$distro_notinstaled; else pkg_status=$distro_instaled fi" \
     "${label_install_script_download_check}\n>exo-utils\n>$pkg_status" 'sleep 4' \

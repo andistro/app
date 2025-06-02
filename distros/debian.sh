@@ -163,16 +163,7 @@ source '/usr/local/bin/fixed_variables.sh'
 echo "${label_alert_autoupdate_for_u}"
 
 apt update > /dev/null 2>&1
-apt install dialog -y > /dev/null 2>&1
-
-show_progress_dialog apt-labeled 6\
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install sudo -y' \
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install wget -y' \
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install xz-utils -y' \
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive  pt install unzip -y' \
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive  pt install tar -y' \
-	"${label_alert_autoupdate_for_u}" 'DEBIAN_FRONTEND=noninteractive apt install curl -y'
-
+apt install sudo wget dialog -y > /dev/null 2>&1
 clear
 sleep 4
 
