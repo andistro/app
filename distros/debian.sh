@@ -152,26 +152,26 @@ chmod +x $bin
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
-echo '#!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
-#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+echo "#!/bin/bash
+source '/usr/local/bin/fixed_variables.sh'
+#echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
 #deb http://deb.debian.org/debian stable-updates main contrib non-free
 #deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
+#deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
 
-echo "${label_alert_autoupdate_for_u}"
+echo '${label_alert_autoupdate_for_u}'
 
 apt update > /dev/null 2>&1
 apt install dialog -y > /dev/null 2>&1
 
 show_progress_dialog steps-one-label ${label_alert_autoupdate_for_u} 6\
-    "apt install sudo -y" \
-	"apt install wget -y" \
-	"apt install xz-utils -y" \
-	"apt install unzip -y" \
-	"apt install tar -y" \
-	"apt install curl -y"
+    'apt install sudo -y' \
+	'apt install wget -y' \
+	'apt install xz-utils -y' \
+	'apt install unzip -y' \
+	'apt install tar -y' \
+	'apt install curl -y'
 
 clear
 sleep 4
@@ -183,7 +183,7 @@ clear
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
-exit' > $folder/root/.bash_profile 
+exit" > $folder/root/.bash_profile 
 
 bash $bin
 
