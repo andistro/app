@@ -149,36 +149,6 @@ cp "$PREFIX/bin/andistro_files/fixed_variables.sh" $folder/usr/local/bin
 #echo "making $bin executable"
 chmod +x $bin
 
-sleep 4
-echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
-touch $folder/root/.hushlogin
-echo "#!/bin/bash
-source '/usr/local/bin/fixed_variables.sh'
-#echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security stable-security main contrib non-free
-#deb http://deb.debian.org/debian stable-updates main contrib non-free
-#deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main' >> /etc/apt/sources.list
-
-echo "${label_alert_autoupdate_for_u}"
-
-apt update > /dev/null 2>&1
-apt install sudo wget dialog -y > /dev/null 2>&1
-clear
-sleep 4
-
-bash ~/locale_${system_icu_locale_code}.sh
-apt update -y > /dev/null 2>&1
-bash ~/system-config.sh
-clear
-rm -rf ~/locale*.sh
-rm -rf ~/.bash_profile
-rm -rf ~/.hushlogin
-exit" > $folder/root/.bash_profile 
-
-bash $bin
-
-# Interface de Download do
 
 export USER=$(whoami)
 export PORT=1
@@ -192,8 +162,6 @@ CHOICE=$(dialog --clear \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
-
-clear
 case $CHOICE in
 	1)	
 		echo "LXDE UI"
@@ -242,29 +210,43 @@ case $CHOICE in
 esac
 
 chmod +x $folder/root/config-environment.sh
+
+sleep 4
+echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source '/usr/local/bin/fixed_variables.sh'
+#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+#deb http://security.debian.org/debian-security stable-security main contrib non-free
+#deb http://deb.debian.org/debian stable-updates main contrib non-free
+#deb http://ftp.debian.org/debian buster main
+#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
-sleep 10
+echo "${label_alert_autoupdate_for_u}"
 
+apt update > /dev/null 2>&1
+apt install sudo wget dialog -y > /dev/null 2>&1
+clear
 chmod +x /usr/local/bin/vnc
 chmod +x /usr/local/bin/vncpasswd
 chmod +x /usr/local/bin/startvnc
 chmod +x /usr/local/bin/stopvnc
 chmod +x /usr/local/bin/startvncserver
 
+bash ~/locale_${system_icu_locale_code}.sh
+apt update -y > /dev/null 2>&1
+bash ~/system-config.sh
+clear
 
 bash ~/config-environment.sh
 
 if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
-
-rm -rf ~/system-config.sh
-rm -rf ~/config-environment.sh
+rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
-exit' > $folder/root/.bash_profile
+rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
+
 bash $bin
 
 # Cria uma gui de inicialização
