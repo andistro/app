@@ -15,7 +15,7 @@ show_progress_dialog steps-multi-label 69 \
   "${label_find_update}" 'sudo apt-get update' \
   "${label_upgrade}" 'sudo apt-get full-upgrade -y' \
   "${label_install_script_download}\n>xz-utils" 'sudo apt-get install xz-utils -y' \
-  "${label_install_script_download}\n>wget" 'sudo apt-get install xz-utils -y' \
+  "${label_install_script_download}\n>wget" 'sudo apt-get install wget -y' \
   "${label_install_script_download}\n>curl" 'sudo apt-get install curl -y' \
   "${label_install_script_download}\n>gpg" 'sudo apt-get install gpg -y' \
   "${label_install_script_download}\n>git" 'sudo apt-get install git -y' \
@@ -32,8 +32,8 @@ show_progress_dialog steps-multi-label 69 \
   "${label_install_script_download}" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
   "${label_install_script_download}" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
   "${label_install_script_download}" 'sudo apt-get update' \
-  "${label_install_script_download}\n>tar" 'sudo apt-get install python3-gi -y' \
-  "${label_install_script_download}\n>tar" 'sudo apt-get install python3 -y' \
+  "${label_install_script_download}\n>python3-gi" 'sudo apt-get install python3-gi -y' \
+  "${label_install_script_download}\n>python3" 'sudo apt-get install python3 -y' \
   "${label_install_script_download}\n>tar" 'sudo apt-get install tar -y' \
   "${label_install_script_download}\n>unzip" 'sudo apt-get install unzip -y' \
   "${label_install_script_download}\n>zip" 'sudo apt-get install zip -y' \
@@ -75,6 +75,8 @@ show_progress_dialog steps-multi-label 69 \
   "${label_system_setup}" 'sudo dpkg --configure -a ' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
 sleep 10
+
+show_progress_dialog check-packages "Verificando pacotes instalados..." xz-utils firefox code bleachbit at-spi1-core gvfs-backends synaptic evince font-manager nautilus inetutils-tools nano dbus-x11 tigervnc-tools tigervnc-common tigervnc-standalone-server exo-utils apt-utils python3-gi python3 tar zip unzip curl gpg git dialog wget
 
 {
   for i in {1..50}; do
