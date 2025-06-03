@@ -372,7 +372,7 @@ show_progress_dialog() {
             } | dialog --title "$title" --gauge "Verificando pacotes..." 10 60 0
 
             # Exibe resultado final com scroll, sem botão OK
-            dialog --title "Resultado da verificação" --tailbox "$log_file" 25 80
+            dialog --title "Resultado da verificação" --textbox "$log_file" 25 80
             ;;
 
         *)
