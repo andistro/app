@@ -25,7 +25,7 @@ case `dpkg --print-architecture` in
 		archurl="armhf" ;;
 	*)
 		echo "unknown architecture"; exit 1 ;;
-	esac
+esac
 
 
 #Formato GMT
