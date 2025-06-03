@@ -208,6 +208,7 @@ case $CHOICE in
 		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
 	;;
 esac
+clear
 
 chmod +x $folder/root/config-environment.sh
 
