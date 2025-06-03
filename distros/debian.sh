@@ -14,14 +14,6 @@ fi
 sleep 2
 # Baixa
 if [ "$first" != 1 ];then
-	case `dpkg --print-architecture` in
-	aarch64)
-		archurl="arm64" ;;
-	arm)
-		archurl="armhf" ;;
-	*)
-		echo "unknown architecture"; exit 1 ;;
-	esac
 	error_code="DW001deb"
 	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/debian-${codinome}-${archurl}.tar.xz"
 	sleep 2
@@ -166,17 +158,17 @@ case $CHOICE in
 	1)	
 		echo "LXDE UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/lxde/config.sh"
-		sleep 10
+		sleep 2
 		;;
 	2)	
 		echo "XFCE UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xcfe4/config.sh"
-		sleep 10
+		sleep 2
 		;;
 	3)
 		echo "Gnome UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/gnome/config.sh"
-		sleep 10
+		sleep 2
 		# Parte da resolução do problema do gnome e do systemd
 		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
 			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
