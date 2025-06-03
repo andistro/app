@@ -342,36 +342,37 @@ show_progress_dialog() {
             ;;
         
         check-packages)
-            # Ex: show_progress_dialog check-packages "Conferindo" pkg1 pkg2 ...
-            local label="$1"
-            shift
-            local total=$#
-            local count=0
+            # Exemplo de uso:
+            # show_progress_dialog check-packages "Verificando" pacote1 pacote2 ...
 
-            (
-                for pkg in "$@"; do
-                    count=$((count + 1))
-                    printf -v index "[%02d/%02d]" "$count" "$total"
+            local title="$1"
+            shift
+            local packages=("$@")
+            local total="${#packages[@]}"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
+            : > "$log_file"
+
+            {
+                for i in "${!packages[@]}"; do
+                    local pkg="${packages[$i]}"
+                    local index=$(printf "%02d" $((i + 1)))
 
                     if dpkg -s "$pkg" &>/dev/null; then
-                        echo "$index [✓] $pkg está instalado." >> "/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt" 2>&1
+                        echo "$index [✓] $pkg está instalado." >> "$log_file"
                     else
-                        echo "$index [✗] $pkg NÃO está instalado." >> "/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt" 2>&1
+                        echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
                     fi
 
-                    clear
-                    tput cup 0 0
-                    tac "$tmp_log"
-                    echo
-                    echo "Progresso: $(( count * 100 / total ))%"
+                    # Atualiza porcentagem de progresso
+                    percent=$(( (i + 1) * 100 / total ))
+                    echo "$percent"
                     sleep 0.2
                 done
+            } | dialog --title "$title" --gauge "Verificando pacotes..." 10 60 0
 
-                echo
-                echo "${label_done:-Concluído.}"
-            ) | dialog --title "$label" --programbox 25 90
-
-            rm -f "$tmp_log"
+            # Exibe resultado final com scroll, sem botão OK
+            dialog --title "Resultado da verificação" --tailbox "$log_file" 25 80
             ;;
 
         *)
