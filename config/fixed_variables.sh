@@ -18,15 +18,6 @@ check_dependencies() {
     done
 }
 
-case `dpkg --print-architecture` in
-	aarch64)
-		archurl="arm64" ;;
-	arm)
-		archurl="armhf" ;;
-	*)
-		echo "unknown architecture"; exit 1 ;;
-esac
-
 
 #Formato GMT
 GMT_date=$(date +"%Z":00)
