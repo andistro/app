@@ -187,6 +187,7 @@ chmod +x "$PREFIX/bin/andistro_files/fixed_variables.sh"
 chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
 source "$PREFIX/bin/andistro_files/fixed_variables.sh"
 source "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+clear
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
@@ -218,8 +219,6 @@ if [ -z "$1" ]; then
     echo -e "Opções:"
     echo -e "   debian"
     echo -e "   ubuntu"
-    echo " "
-    echo -e "Última atualização 22/05/2025 17:55"
 exit 0
 
 fi
