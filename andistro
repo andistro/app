@@ -363,8 +363,6 @@ case "$1" in
         system_country="Brasil"
         fi
 
-        # dialog --msgbox "${}" 0 0
-        if [ "$system_icu_locale_code" = "pt-BR" ]; then
         dialog --msgbox "${pt_BR_title} \n
         ${separator_infos} \n
         ${pt_BR_version_release}: ${android_version} \n
@@ -378,8 +376,8 @@ case "$1" in
         ${pt_BR_country_iso}: ${system_country_iso} \n
         ${pt_BR_locale_code}: ${system_icu_locale_code} \n
         ${pt_BR_timezone}: (GMT${GMT_date}:00) ${system_timezone} \n" 0 0
-        fi
         ;;
+
     *)
         echo "Comando não reconhecido: $1"
         echo ""
