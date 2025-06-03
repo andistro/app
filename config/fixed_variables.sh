@@ -18,12 +18,14 @@ check_dependencies() {
     done
 }
 
-
-#dialog
-dialog_total_time=2 ## Configurar o intervalo de atualização da barra de progresso
-dialog_intervalo=1 ## Número de etapas na barra de progresso
-steps=$((dialog_total_time / dialog_intervalo))
-percentage=0
+case `dpkg --print-architecture` in
+	aarch64)
+		archurl="arm64" ;;
+	arm)
+		archurl="armhf" ;;
+	*)
+		echo "unknown architecture"; exit 1 ;;
+	esac
 
 
 #Formato GMT

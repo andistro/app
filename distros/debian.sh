@@ -248,8 +248,6 @@ rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
 
-bash $bin
-
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 cp "$bin" "$PREFIX/bin/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
