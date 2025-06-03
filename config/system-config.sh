@@ -51,7 +51,7 @@ show_progress_dialog steps-multi-label 69 \
   "${label_install_script_download}\n>firefox-l10n-$apt_system_icu_locale_code" "sudo apt-get install firefox-l10n-$apt_system_icu_locale_code -y"\
   "${label_install_script_download}\n>code" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
   "${label_install_script_download}\n>code" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
-  "${label_install_script_download}\n>code" "echo 'deb [arch=$archurl signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
+  "${label_install_script_download}\n>code" "echo 'deb [arch=amr64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
   "${label_install_script_download}\n>code" 'rm -f packages.microsoft.gpg' \
   "${label_install_script_download}\n>code" 'sudo apt-get update' \
   "${label_install_script_download}\n>code" 'sudo apt-get install code -y' \
