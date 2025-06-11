@@ -35,5 +35,3 @@ sleep 10
 show_progress_dialog check-packages "Verificando pacotes instalados..." lxde-code lxterminal lxappearance exo-util tigervnc-standalone-server tigervcn-common tigervnc-tools dbus-x11 python3-gi python3
 
 vncpasswd
-
-
