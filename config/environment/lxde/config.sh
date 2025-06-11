@@ -30,7 +30,7 @@ EOF
      "[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh" \
      "sudo dpkg --configure -a" \
      "sudo apt --fix-broken install -y" 
-sleep 10
+sleep 2
 
 show_progress_dialog check-packages "Verificando pacotes instalados..." lxde-core lxterminal lxappearance exo-utils tigervnc-standalone-server tigervcn-common tigervnc-tools dbus-x11 python3-gi python3
 

@@ -2,49 +2,36 @@
 #XFCE4 config environment
 source "/usr/local/bin/fixed_variables.sh"
 
-#Get the necessary components
-(
-    echo 0  # Inicia em 0%
-    sudo apt-get update
-
-    echo 8
-    sudo apt-get install xfce4 --no-install-recommends -y > /dev/null 2>&1
-
-    echo 16
-    sudo apt-get install xfce4-goodies --no-install-recommends -y > /dev/null 2>&1
-
-    echo 24
-    sudo apt-get install xfce4-terminal --no-install-recommends -y > /dev/null 2>&1
-
-    echo 32  # Finaliza em 100%
-    sudo apt-get install xfce4-panel-profiles -y > /dev/null 2>&1
-
-    echo 40  # Finaliza em 100%
-    sudo apt-get install dbus-x11 --no-install-recommends -y > /dev/null 2>&1
-
-    echo 48  # Finaliza em 100%
-    sudo apt-get clean
-
-    mkdir -p ~/.vnc
-
-echo '#!/bin/bash
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
+     'sudo apt-get install xfce4 --no-install-recommends -y' \
+     'sudo apt-get install xfce4-goodies --no-install-recommends -y' \
+     'sudo apt-get install xfce4-terminal --no-install-recommends -y' \
+     'sudo apt-get install xfce4-panel-profiles --no-install-recommends -y' \
+     'sudo apt-get install exo-utils --no-install-recommends -y' \
+     'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
+     'sudo apt-get install tigervnc-common --no-install-recommends -y' \
+     'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
+     'sudo apt-get install dbus-x11 --no-install-recommends -y' \
+     'sudo apt install python3-gi -y' \
+     'sudo apt install python3 -y' \
+     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
+#!/bin/bash
 export PULSE_SERVER=127.0.0.1
 export LANG
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 echo $$ > /tmp/xsession.pid
-dbus-launch --exit-with-session /usr/bin/startxfce4' > ~/.vnc/xstartup
+dbus-launch --exit-with-session /usr/bin/startxfce4
+EOF
+"' \
+     'chmod +x ~/.vnc/xstartup' \
+     "echo 'export DISPLAY=":1"' >> /etc/profile" \
+     "wget --tries=20 '${extralink}/config/environment/xfce4/start-environment.sh'" \
+     "[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh" \
+     "sudo dpkg --configure -a" \
+     "sudo apt --fix-broken install -y" 
+sleep 2
 
-    chmod +x ~/.vnc/xstartup
-
-    echo 'export DISPLAY=":1"' >> /etc/profile
-
-    source /etc/profile
-
-    wget --tries=20 "${extralink}/config/environment/xfce4/start-environment.sh" > /dev/null 2>&1
-	chmod +x ~/start-environment.sh
-
- ) | dialog --gauge "${label_install_environment_gui}" 6 40 0
+show_progress_dialog check-packages "Verificando pacotes instalados..." xfce4 xfce4-terminal xfce4-goodies xfce4-panel-profiles exo-utils tigervnc-standalone-server tigervcn-common tigervnc-tools dbus-x11 python3-gi python3
 
 vncpasswd
-

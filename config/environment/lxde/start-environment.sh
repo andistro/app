@@ -3,16 +3,14 @@
 source "/usr/local/bin/fixed_variables.sh"
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   'vncserver -name remote-desktop -geometry 1920x1080 :1' \
   'sleep 10' \
   'if [ ! -d "$HOME/.config/lxsession" ];then mkdir -p "$HOME/.config/lxsession"; fi' \
   'if [ ! -d "$HOME/.config/lxsession/LXDE" ];then mkdir -p "$HOME/.config/lxsession/LXDE"; fi' \
-  'if [ ! -d "$HOME/.config/gtk-3.0/" ];then mkdir -p "$HOME/.config/gtk-3.0/"; fi' \
   "mkdir -p \$HOME/.config/lxpanel/LXDE" \
   "mkdir -p \$HOME/.config/lxpanel/LXDE/panels" \
   "mkdir -p \$HOME/.config/lxsession/LXDE" \
-  "mkdir -p \$HOME/.config/gtk-3.0" \
   "echo -e '[Command]\nLogout=stopvnc' > \$HOME/.config/lxpanel/LXDE/config" \
   "echo -e '# lxpanel <profile> config file. Manually editing is not recommended.\n# Use preference dialog in lxpanel to adjust config when you can.\nGlobal {\n  edge=bottom\n  align=left\n  margin=0\n  widthtype=percent\n  width=100\n  height=54\n  transparent=0\n  tintcolor=#000000\n  alpha=0\n  setdocktype=1\n  setpartialstrut=1\n  autohide=0\n  heightwhenhidden=0\n  usefontcolor=1\n  fontcolor=#ffffff\n  background=0\n  backgroundfile=/usr/share/lxpanel/images/background.png\n  iconsize=48\n  usefontsize=1\n  fontsize=12\n}\nPlugin {\n  type=space\n  Config {\n    Size=20\n  }\n}\nPlugin {\n  type=menu\n  Config {\n    system {\n    }\n    separator {\n    }\n    item {\n      command=run\n    }\n    separator {\n    }\n    item {\n      command=logout\n      image=gnome-logout\n    }\n    image=/usr/share/lxpanel/images/my-computer.png\n  }\n}\nPlugin {\n  type=space\n  Config {\n    Size=20\n  }\n}\nPlugin {\n  type=launchbar\n  Config {\n    Button {\n      id=firefox.desktop\n    }\n  }\n}\nPlugin {\n  type=space\n  Config {\n    Size=20\n  }\n}\nPlugin {\n  type=taskbar\n  Config {\n    IconsOnly=0\n    FlatButton=-1\n    ShowAllDesks=-1\n    UseMouseWheel=-1\n    GroupedTasks=0\n    DisableUpscale=0\n    SameMonitorOnly=0\n  }\n}\nPlugin {\n  type=space\n  Config {\n  }\n  expand=1\n}\nPlugin {\n  type=dclock\n  Config {\n    ClockFmt=%D %R\n    TooltipFmt=%A %x\n    BoldFont=0\n    IconOnly=0\n    CenterText=0\n  }\n}\nPlugin {\n  type=space\n  Config {\n    Size=20\n  }\n}' > \$HOME/.config/lxpanel/LXDE/panels/panel" \
   "echo -e '@lxpanel --profile LXDE\n@pcmanfm --desktop --profile LXDE\n@xscreensaver -no-splash' > \$HOME/.config/lxsession/LXDE/autostart" \
@@ -27,4 +25,4 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
   "rm -rf /tmp/.X*-lock" \
   "rm -rf /tmp/.X11-unix/X*" \
   "rm -rf ~/start-environment.sh"
-sleep 10
+sleep 2
