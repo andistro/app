@@ -3,7 +3,7 @@
 source "/usr/local/bin/fixed_variables.sh"
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 25 \
   'vncserver -name remote-desktop -geometry 1920x1080 :1' \
   'sleep 10' \
   'xfce4-session > /dev/null 2>&1 &' \
