@@ -83,10 +83,10 @@ if [ ! -d "$folder/root/.vnc/" ];then
 fi
 
 show_progress_dialog wget-labeled "${label_progress}" 4 \
-  "${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
-  "${label_progress}" -O "$folder/root/dialog.deb" "${extralink}/debian/sources/dialog_${archurl}.deb" \
-  "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
-  "${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
+	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
+	"${label_progress}" -O "$folder/root/dialog.deb" "${extralink}/debian/sources/dialog_${archurl}.deb" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
 sleep 2
 chmod +x "$folder/root/system-config.sh"
@@ -216,7 +216,7 @@ sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
-source '/usr/local/bin/fixed_variables.sh'
+source "/usr/local/bin/fixed_variables.sh"
 #echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
 #deb http://deb.debian.org/debian stable-updates main contrib non-free
@@ -235,8 +235,11 @@ chmod +x /usr/local/bin/stopvnc
 chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_${system_icu_locale_code}.sh
+
 apt update -y > /dev/null 2>&1
+
 bash ~/system-config.sh
+
 clear
 
 bash ~/config-environment.sh
@@ -244,6 +247,13 @@ bash ~/config-environment.sh
 if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
+
+show_progress_dialog check-packages "Verificando todos os pacotes globais instalados..." \
+	sudo xz-utils firefox code bleachbit at-spi2-core gvfs-backends synaptic evince font-manager \
+	nautilus inetutils-tools nano dbus-x11 tigervnc-tools tigervnc-common tigervnc-standalone-server \
+	exo-utils apt-utils python3-gi python3 tar zip unzip curl gpg git dialog wget locales language-pack-pt-base \
+	keyboard-configuration tzdata 
+
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
