@@ -32,6 +32,8 @@ EOF
      "sudo apt --fix-broken install -y" 
 sleep 2
 
-show_progress_dialog check-packages "Verificando pacotes instalados..." xfce4 xfce4-terminal xfce4-goodies xfce4-panel-profiles exo-utils tigervnc-standalone-server tigervcn-common tigervnc-tools dbus-x11 python3-gi python3
+show_progress_dialog check-packages "Verificando pacotes instalados..." \
+     xfce4 xfce4-terminal xfce4-goodies xfce4-panel-profiles exo-utils tigervnc-standalone-server \
+     tigervnc-common tigervnc-tools dbus-x11 python3-gi python3
 
 vncpasswd
