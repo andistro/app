@@ -223,6 +223,25 @@ source "/usr/local/bin/fixed_variables.sh"
 #deb http://ftp.debian.org/debian buster main
 #deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
+cat > /etc/dpkg/dpkg.cfg.d/multiarch <<- EOM
+foreign-architecture $system_architecture
+EOM
+
+cat > /etc/apt/preferences.d/limit-architectures <<- EOM
+Package: *
+Pin: architecture arm64
+Pin-Priority: 900
+
+Package: *
+Pin: architecture armhf
+Pin-Priority: 850
+
+Package: *
+Pin: *
+Pin-Priority: -1
+EOM
+
+
 echo "${label_alert_autoupdate_for_u}"
 
 apt update > /dev/null 2>&1
