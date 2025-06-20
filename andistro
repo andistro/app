@@ -253,6 +253,8 @@ case "$1" in
 
                 echo  # pular linha no fim
             }
+            
+            source "$PREFIX/bin/andistro_files/fixed_variables.sh"
 
             andistro
             echo -e "Pacotes atualizados"
