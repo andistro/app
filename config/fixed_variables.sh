@@ -47,9 +47,11 @@ fi
 # Irá carregar os pacotes de idiomas que tiver no sistema
 if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ]; then
     echo "Solicitando a fonte $PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+    chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
     source "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
 elif [ -f "/usr/local/bin/l10n_${system_icu_locale_code}.sh" ]; then
     echo "Solicitando a fonte /usr/local/bin/l10n_${system_icu_locale_code}.sh"
+    chmod +x "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
     source "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
 else
     echo "Arquivo de localização não encontrado para o código: $system_icu_locale_code"
@@ -76,7 +78,7 @@ update_progress() {
     printf "AnDistro - Distribuições Linux no Android"
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
-#total_steps=2  # Número total de etapas que você quer monitorar
+total_steps=2  # Número total de etapas que você quer monitorar
 current_step=0
 
 

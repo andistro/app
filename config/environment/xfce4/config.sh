@@ -14,16 +14,15 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
      'sudo apt-get install dbus-x11 --no-install-recommends -y' \
      'sudo apt install python3-gi -y' \
      'sudo apt install python3 -y' \
-     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
+"bash -c 'cat > \$HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
 export LANG
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
-[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
-echo $$ > /tmp/xsession.pid
+[ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
+echo \$\$ > /tmp/xsession.pid
 dbus-launch --exit-with-session /usr/bin/startxfce4
-EOF
-"' \
+EOF'" \
      'chmod +x ~/.vnc/xstartup' \
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
      "wget --tries=20 '${extralink}/config/environment/xfce4/start-environment.sh'" \
@@ -32,8 +31,9 @@ EOF
      "sudo apt --fix-broken install -y" 
 sleep 2
 
+vncpasswd
+
 show_progress_dialog check-packages "Verificando pacotes instalados..." \
      xfce4 xfce4-terminal xfce4-goodies xfce4-panel-profiles exo-utils tigervnc-standalone-server \
      tigervnc-common tigervnc-tools dbus-x11 python3-gi python3
 
-vncpasswd

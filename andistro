@@ -43,7 +43,7 @@ update_progress() {
 }
 
 
-total_steps=15  # Número total de etapas que você quer monitorar
+total_steps=13  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
@@ -92,18 +92,6 @@ current_step=0
     #7 Verifica e baixa fixed_variables.sh
     if [ ! -f "$PREFIX/bin/andistro_files/fixed_variables.sh" ]; then
         curl -s -o "$PREFIX/bin/andistro_files/fixed_variables.sh" "${extralink}/config/fixed_variables.sh"
-        else
-            curl -s -o "$PREFIX/bin/andistro_files/fixed_variables.check" "${extralink}/config/fixed_variables.sh"
-            if [ -f "$PREFIX/bin/andistro_files/fixed_variables.sh" ] && [ -f "$PREFIX/bin/andistro_files/fixed_variables.check" ]; then
-                if ! cmp -s "$PREFIX/bin/andistro_files/fixed_variables.sh" "$PREFIX/bin/andistro_files/fixed_variables.check"; then
-                    rm "$PREFIX/bin/andistro_files/fixed_variables.sh"
-                    mv "$PREFIX/bin/andistro_files/fixed_variables.check" "$PREFIX/bin/andistro_files/fixed_variables.sh"
-                    chmod +x "$PREFIX/bin/andistro_files/fixed_variables.sh"
-                    status_atualizacao_andistro_1="*Houve uma atualização dos modulos globais!"
-                else
-                    rm "$PREFIX/bin/andistro_files/fixed_variables.check"
-                fi
-            fi
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
@@ -111,18 +99,6 @@ current_step=0
     #8 Verifica e baixa l10n_${locale}.sh
     if [ ! -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ]; then
         curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-        else
-            curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-            if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
-                if ! cmp -s "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check"; then
-                    rm "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
-                    mv "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
-                    chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
-                    status_atualizacao_andistro_2="*Houve uma atualização do pacote de idioma!"
-                else
-                    rm "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check"
-                fi
-            fi
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
@@ -136,49 +112,28 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #10 Baixa uma versão para comparação
-    if [ ! -f "$HOME/andistro.check" ]; then
-        curl -s -o "$HOME/andistro.check" "${extralink}/andistro"
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    #11 Verifica e substitui se for necessário
-    if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
-        if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
-            rm "$PREFIX/bin/andistro"
-            mv "$HOME/andistro.check" "$PREFIX/bin/andistro"
-            chmod +x "$PREFIX/bin/andistro"
-            status_atualizacao_andistro="Houve uma atualização finalizada com sucesso!"
-        else
-            rm "$HOME/andistro.check"
-        fi
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    #12 Verifica se o unzip está instalado
+    #10 Verifica se o unzip está instalado
     if ! dpkg -l | grep -qw unzip; then
         apt install unzip -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #13 Verifica se o xz-utils está instalado
+    #11 Verifica se o xz-utils está instalado
     if ! dpkg -l | grep -qw xz-utils; then
         apt install xz-utils -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #14 Verifica se o debootstrap está instalado
+    #12 Verifica se o debootstrap está instalado
     if ! dpkg -l | grep -qw debootstrap; then
         apt install debootstrap -y
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #15 Verifica se o curl está instalado
+    #13 Verifica se o curl está instalado
     if ! dpkg -l | grep -qw dbus; then
         apt install dbus -y
     fi
@@ -191,9 +146,7 @@ current_step=0
 clear
 
 chmod +x "$PREFIX/bin/andistro_files/fixed_variables.sh"
-chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
 source "$PREFIX/bin/andistro_files/fixed_variables.sh"
-source "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
 clear
 #=============================================================================================
 # COMANDOS
@@ -202,11 +155,7 @@ clear
 # Verifica os argumentos passados ao script
 if [ -z "$1" ]; then
     # Caso nenhum argumento seja passado, exibe a mensagem de instrução
-    if [[ -n "$status_atualizacao_andistro" ]]; then
-        andistro
-        echo -e "Sistema atualizado"
-        echo " "
-    fi
+    andistro atualizar
     echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
     echo ""
     echo -e "Exemplo de comando que permite a instalação:"
@@ -231,6 +180,70 @@ exit 0
 fi
 
 case "$1" in
+    atualizar)
+        if [ -z "$2" ]; then
+            total_steps=3  # Número total de etapas que você quer monitorar
+            current_step=0
+
+            {
+                #1 
+                if [ ! -f "$HOME/andistro.check" ]; then
+                    curl -s -o "$HOME/andistro.check" "${extralink}/andistro"
+                fi
+
+                if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
+                    if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
+                        rm "$PREFIX/bin/andistro"
+                        mv "$HOME/andistro.check" "$PREFIX/bin/andistro"
+                        chmod +x "$PREFIX/bin/andistro"
+                    else
+                        rm "$HOME/andistro.check"
+                    fi
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                #2 
+                if [ -f "$PREFIX/bin/andistro_files/fixed_variables.check" ]; then
+                    curl -s -o "$PREFIX/bin/andistro_files/fixed_variables.check" "${extralink}/config/fixed_variables.sh"
+                fi
+
+                if [ -f "$PREFIX/bin/andistro_files/fixed_variables.sh" ] && [ -f "$PREFIX/bin/andistro_files/fixed_variables.check" ]; then
+                    if ! cmp -s "$PREFIX/bin/andistro_files/fixed_variables.sh" "$PREFIX/bin/andistro_files/fixed_variables.check"; then
+                        rm "$PREFIX/bin/andistro_files/fixed_variables.sh"
+                        mv "$PREFIX/bin/andistro_files/fixed_variables.check" "$PREFIX/bin/andistro_files/fixed_variables.sh"
+                        chmod +x "$PREFIX/bin/andistro_files/fixed_variables.sh"
+                    else
+                        rm "$PREFIX/bin/andistro_files/fixed_variables.check"
+                    fi
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                #3 
+                if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
+                    curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                fi
+
+                if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
+                    if ! cmp -s "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"; then
+                        rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                        mv "${extralink}/config/locale/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                        chmod +x "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                    else
+                        rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"
+                    fi
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                echo  # pular linha no fim
+            }
+
+            exit 1
+        fi
+        ;;
+
     instalar)
         if [ -z "$2" ]; then
             echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
@@ -250,11 +263,13 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo -e "Instalando o Debian...\nAguarde..."
+            andistro atualizar
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
             clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo -e "Instalando o Ubuntu...\nAguarde..."
+            andistro atualizar
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
             clear
 
@@ -285,6 +300,7 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo -e "Desinstalando o Debian...\nAguarde..."
+            andistro atualizar
             rm -rf $HOME/debian-stable
             rm -rf $HOME/debian-binds
             rm -rf $HOME/start-debian.sh
@@ -303,6 +319,7 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo -e "Desinstalando o Ubuntu...\nAguarde..."
+            andistro atualizar
             rm -rf $HOME/ubuntu-fs
             rm -rf $HOME/ubuntu-binds
             rm -rf $HOME/start-ubuntu.sh
