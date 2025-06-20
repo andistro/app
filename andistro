@@ -255,7 +255,6 @@ case "$1" in
             }
 
             source "$PREFIX/bin/andistro_files/fixed_variables.sh"
-
             andistro
             echo -e "Pacotes atualizados - 23:51"
             exit 1
