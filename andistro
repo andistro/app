@@ -182,6 +182,7 @@ fi
 case "$1" in
     atualizar)
         if [ -z "$2" ]; then
+            apt update > /dev/null 2>&1 && apt upgrade -y
             update_progress() {
                 current_step=$1
                 total_steps=$2
@@ -198,7 +199,6 @@ case "$1" in
             }
             total_steps=3  # Número total de etapas que você quer monitorar
             current_step=0
-            apt update > /dev/null 2>&1 && apt upgrade -y
             {
                 #1 
                 if [ ! -f "$HOME/andistro.check" ]; then
