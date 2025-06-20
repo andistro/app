@@ -155,7 +155,6 @@ clear
 # Verifica os argumentos passados ao script
 if [ -z "$1" ]; then
     # Caso nenhum argumento seja passado, exibe a mensagem de instrução
-    andistro atualizar
     echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
     echo ""
     echo -e "Exemplo de comando que permite a instalação:"
