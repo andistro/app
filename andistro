@@ -254,9 +254,9 @@ case "$1" in
                 echo  # pular linha no fim
             }
 
-            exit 1
             andistro
             echo -e "Pacotes atualizados"
+            exit 1
 
         fi
         ;;
