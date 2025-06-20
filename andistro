@@ -167,6 +167,7 @@ if [ -z "$1" ]; then
     echo -e "   andistro iniciar debian"
     echo " "
     echo -e "Comandos:"
+    echo -e "    atualizar    - atualiza todos os pacotes."
     echo -e "    instalar    - instala a opção escolhida."
     echo -e "    desinstalar - desinstala a opção escolhida."
     echo -e "    iniciar     - inicializa a versão escolhida."
