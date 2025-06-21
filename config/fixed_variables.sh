@@ -63,25 +63,6 @@ fi
 # Função para atualizar a barra de progresso
 # update_progress() precisa ser definido antes de ser usado
 
-update_progress() {
-    current_step=$1
-    total_steps=$2
-
-    percent=$((current_step * 100 / total_steps))
-    bar_length=30
-    filled_length=$((percent * bar_length / 100))
-    empty_length=$((bar_length - filled_length))
-
-    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
-
-    printf "AnDistro - Distribuições Linux no Android"
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
-}
-total_steps=2  # Número total de etapas que você quer monitorar
-current_step=0
-
-
 # Sistema de identificação pacotes instalados ==================================================================================
 
 check_packages_installed() {

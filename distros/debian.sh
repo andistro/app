@@ -257,6 +257,11 @@ fi
 update_progress "$current_step" "$total_steps" "Instalando sudo"
 sleep 0.5
 
+sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando dialog"
+sleep 0.5
+
 if ! dpkg -l | grep -qw wget; then
     apt-get install wget -y > /dev/null 2>&1
 fi
@@ -267,11 +272,6 @@ sleep 0.5
 if ! dpkg -l | grep -qw dialog; then
     apt-get install dialog -y > /dev/null 2>&1
 fi
-((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando dialog"
-sleep 0.5
-
-sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
