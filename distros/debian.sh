@@ -245,33 +245,33 @@ update_progress() {
 total_steps=5
 current_step=0
 
-apt update -qq
+apt update -qq -y
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 if ! dpkg -l | grep -qw sudo; then
-    apt-get install -y -qq sudo
+    apt-get install sudo -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando sudo"
 sleep 0.5
 
 if ! dpkg -l | grep -qw wget; then
-    apt-get install -y -qq wget
+    apt-get install wget -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando wget"
 sleep 0.5
 
 if ! dpkg -l | grep -qw dialog; then
-    apt-get install -y -qq dialog
+    apt-get install dialog -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
 
-sudo apt autoremove --purge whiptail -y
+sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
