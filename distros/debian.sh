@@ -242,7 +242,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=4
+total_steps=5
 current_step=0
 
 apt update -qq
@@ -267,6 +267,11 @@ sleep 0.5
 if ! dpkg -l | grep -qw dialog; then
     apt-get install -y -qq dialog
 fi
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando dialog"
+sleep 0.5
+
+sudo apt autoremove --purge whiptail -y
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
