@@ -194,6 +194,7 @@ curl -O https://raw.githubusercontent.com/andistro/app/main/andistro && chmod +x
 curl -O https://raw.githubusercontent.com/andistro/app/alpha/andistro && chmod +x andistro && bash andistro && clear && andistro
 ```
 </details>
+
 ---
 
 <br>
