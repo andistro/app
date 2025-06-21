@@ -170,7 +170,7 @@ case $CHOICE in
 		;;
 	2)	
 		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xcfe4/config.sh"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xfce4/config.sh"
 		sleep 2
 		;;
 	3)
