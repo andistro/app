@@ -226,19 +226,20 @@ source "/usr/local/bin/fixed_variables.sh"
 echo "${label_alert_autoupdate_for_u}"
 
 update_progress() {
-    current_step=$1
-    total_steps=$2
-    step_label=$3
+    local current_step=$1
+    local total_steps=$2
+    local percent=$((current_step * 100 / total_steps))
+    local bar_length=30
+    local filled_length=$((percent * bar_length / 100))
+    local empty_length=$((bar_length - filled_length))
 
-    percent=$((current_step * 100 / total_steps))
-    bar_length=30
-    filled_length=$((percent * bar_length / 100))
-    empty_length=$((bar_length - filled_length))
-
+    local filled_bar
+    local empty_bar
     filled_bar=$(printf "%${filled_length}s" | tr " " "=")
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-    printf "\r[%s%s] %3d%% - %s" "$filled_bar" "$empty_bar" "$percent" "$step_label"
+    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
 total_steps=4
