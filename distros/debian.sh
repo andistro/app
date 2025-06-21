@@ -225,8 +225,55 @@ source "/usr/local/bin/fixed_variables.sh"
 
 echo "${label_alert_autoupdate_for_u}"
 
-apt update > /dev/null 2>&1
-apt install sudo wget dialog -y > /dev/null 2>&1
+update_progress() {
+    current_step=$1
+    total_steps=$2
+    step_label=$3
+
+    percent=$((current_step * 100 / total_steps))
+    bar_length=30
+    filled_length=$((percent * bar_length / 100))
+    empty_length=$((bar_length - filled_length))
+
+    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+
+    printf "\r[%s%s] %3d%% - %s" "$filled_bar" "$empty_bar" "$percent" "$step_label"
+}
+
+total_steps=4
+current_step=0
+
+apt update -qq
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+if ! dpkg -l | grep -qw sudo; then
+    apt-get install -y -qq sudo
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando sudo"
+sleep 0.5
+
+if ! dpkg -l | grep -qw wget; then
+    apt-get install -y -qq wget
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando wget"
+sleep 0.5
+
+if ! dpkg -l | grep -qw dialog; then
+    apt-get install -y -qq dialog
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando dialog"
+sleep 0.5
+
+echo    # quebra de linha ao final para não sobrepor prompt
+
+
+
 clear
 chmod +x /usr/local/bin/vnc
 chmod +x /usr/local/bin/vncpasswd
