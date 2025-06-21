@@ -25,7 +25,7 @@ Para garantir a confiança e segurança, nenhum sistema é hospedado no reposit�
 ---
 <br>
 <br>
-
+<!--
 | **Comece selecionando alguma das opções abaixo.** |
 |--------------------|
 |[**Como funciona?**](#)|
