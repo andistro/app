@@ -171,7 +171,7 @@ Opções:
 ```
 </details>
 
-4. Digite ou copie e cole algum dos códigos abaixo no Termux para iniciar a instalação:
+5. Digite ou copie e cole algum dos códigos abaixo no Termux para iniciar a instalação:
 
 > Instalação direta <br>
 > No lugar de `<NOME_DA_DISTRIBUIÇÃO>` digite o nome do sistema que será instalado.
@@ -203,17 +203,17 @@ curl -O https://raw.githubusercontent.com/andistro/app/alpha/andistro && chmod +
 >[!WARNING]
 > Os sistemas baseados em Debian tem o mesmo processo de instalação.
 ---
-### Instalando direta 
-Para fazer a instalação direta de qualquer um dos sistemas operacionais suportados, será usado o comando `andistro <NOME_DA_DISTRIBUIÇÃO>` para iniciar a instalação. Após isso, Aparecerá uma barra de progresso referente aos pacotes que estão sendo baixados para o sistema funcionar e logo após irá perguntar qual versão irá usar. O instalador organiza com o mais recente primeiro.
+### Instalação direta 
+Para fazer a instalação direta de qualquer um dos sistemas operacionais suportados, será usado o comando `andistro instalar <NOME_DA_DISTRIBUIÇÃO>` para iniciar a instalação. Após isso, Aparecerá uma barra de progresso referente aos pacotes que estão sendo baixados para o sistema funcionar e logo após irá perguntar qual versão irá usar. O instalador organiza com o mais recente primeiro.
 
 1. Baixar o Debian
 ```bash
-andistro debian
+andistro instalar debian
 ```
 
 2. Baixar o Ubuntu
 ```bash
-andistro ubuntu
+andistro instalar ubuntu
 ```
 ---
 >[!WARNING]
