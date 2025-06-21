@@ -245,7 +245,7 @@ update_progress() {
 total_steps=5
 current_step=0
 
-apt update -qq -y
+apt update -qq -y > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Atualizando repositórios"
 sleep 0.5
