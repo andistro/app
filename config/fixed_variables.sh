@@ -275,51 +275,55 @@ show_progress_dialog() {
             } | dialog --gauge "$label" 10 70 0
             ;;
 
-        extract)
-            # Uso: show_progress_dialog extract "Extraindo arquivos..." /caminho/arquivo.ext [diretório_destino]
-            local label="$1"
-            local file="$2"
-            local dest="$3"
+            extract)
+                local label="$1"
+                local file="$2"
+                local dest="$3"
 
-            # Se destino não especificado, usar diretório atual
-            [ -z "$dest" ] && dest="."
+                [ -z "$dest" ] && dest="."
 
-            case "$file" in
-            *.tar.xz) cmd=(tar -xJf "$file" -C "$dest") ;;
-            *.tar.gz|*.tgz) cmd=(tar -xzf "$file" -C "$dest") ;;
-            *.tar.bz2) cmd=(tar -xjf "$file" -C "$dest") ;;
-            *.tar) cmd=(tar -xf "$file" -C "$dest") ;;
-            *.zip) cmd=(unzip -o "$file" -d "$dest") ;;
-            *.xz) cmd=(xz -d "$file") ;;
-            *.gz) cmd=(gunzip "$file") ;;
-            *) 
-                dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 50
-                return 1
+                # Verifica se o arquivo existe
+                if [ ! -f "$file" ]; then
+                    dialog --title "Erro" --msgbox "Arquivo não encontrado: $file" 10 50
+                    return 1
+                fi
+
+                # Garante que o diretório de destino existe
+                mkdir -p "$dest"
+
+                case "$file" in
+                    *.tar.xz) cmd=(tar -xJf "$file" -C "$dest") ;;
+                    *.tar.gz|*.tgz) cmd=(tar -xzf "$file" -C "$dest") ;;
+                    *.tar.bz2) cmd=(tar -xjf "$file" -C "$dest") ;;
+                    *.tar) cmd=(tar -xf "$file" -C "$dest") ;;
+                    *.zip) cmd=(unzip -o "$file" -d "$dest") ;;
+                    *.xz) cmd=(xz -d "$file") ;;
+                    *.gz) cmd=(gunzip "$file") ;;
+                    *)
+                        dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 50
+                        return 1
+                        ;;
+                esac
+
+                set +m
+                (
+                    "${cmd[@]}" >/dev/null 2>&1
+                ) & disown
+                pid=$!
+
+                {
+                    i=0
+                    while kill -0 "$pid" 2>/dev/null; do
+                        echo $i
+                        sleep 0.2
+                        i=$((i + 2))
+                        [ $i -ge 95 ] && i=95
+                    done
+                    echo 100
+                    set -m
+                } | dialog --gauge "$label" 10 70 0
                 ;;
-            esac
 
-            # Executa extração em background
-            set +m
-            (
-            "${cmd[@]}" >/dev/null 2>&1
-            ) & disown
-            pid=$!
-
-            # Barra de progresso fluida baseada em PID
-            {
-            i=0
-            while kill -0 "$pid" 2>/dev/null; do
-                echo $i
-                sleep 0.2
-                i=$((i + 2))
-                [ $i -ge 95 ] && i=95
-            done
-            #wait "$pid"
-            echo 100
-            set -m
-            } | dialog --gauge "$label" 10 70 0
-            ;;
-        
         check-packages)
             # Exemplo de uso:
             # show_progress_dialog check-packages "Verificando" pacote1 pacote2 ...
