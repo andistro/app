@@ -97,6 +97,8 @@ label_gnome_download_setup="Baixando as configurações necessárias para o Gnom
 
 #Download do sistema
 label_ubuntu_download="Baixando o Ubuntu..."
+label_ubuntu_download_extract="Extraindo o Ubuntu para o armazenamento..."
+
 label_debian_download="Baixando o Debian..."
 label_debian_download_extract="Extraindo o Debian para o armazenamento..."
 
