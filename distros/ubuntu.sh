@@ -221,6 +221,8 @@ fi
 EOM
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
+rm -f $folder/etc/resolv.conf
+echo -e 'nameserver 8.8.8.8\nnameserver 1.1.1.1' > $folder/etc/resolv.conf
 
 # Se não existir, será criado
 if [ ! -d "$folder/usr/share/backgrounds/" ];then
