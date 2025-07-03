@@ -26,7 +26,7 @@ if [ "$first" != 1 ];then
 	error_code="DW001deb"
 	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/dists/${archurl}/ubuntu/${codinome}/installer.tar.xz"
 	sleep 2
-	show_progress_dialog extract "${label_ubuntu_download_extract}" "$HOME/$folder/$folder.tar.xz"
+	show_progress_dialog extract "${label_ubuntu_download_extract}" "$HOME/$folder.tar.xz"
 	#rm -rf $folder/snap/
 	sleep 2
 fi
