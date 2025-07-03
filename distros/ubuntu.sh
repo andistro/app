@@ -372,9 +372,11 @@ echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Set
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
 source "/usr/local/bin/fixed_variables.sh"
-echo "deb https://ports.ubuntu.com/ubuntu-ports noble main universe multiverse
-deb https://ports.ubuntu.com/ubuntu-ports noble-updates main universe multiverse
-deb https://ports.ubuntu.com/ubuntu-ports noble-security main universe multiverse>> /etc/apt/sources.list
+source /etc/lsb-release
+rm -rf /etc/apt/sources.list
+echo "deb https://ports.ubuntu.com/ubuntu-ports ${DISTRIB_CODENAME} main universe multiverse
+deb https://ports.ubuntu.com/ubuntu-ports ${DISTRIB_CODENAME}-updates main universe multiverse
+deb https://ports.ubuntu.com/ubuntu-ports ${DISTRIB_CODENAME}-security main universe multiverse" >> /etc/apt/sources.list
 
 echo "${label_alert_autoupdate_for_u}"
 
