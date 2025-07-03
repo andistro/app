@@ -372,11 +372,9 @@ echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Set
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
 source "/usr/local/bin/fixed_variables.sh"
-#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security stable-security main contrib non-free
-#deb http://deb.debian.org/debian stable-updates main contrib non-free
-#deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
+echo "deb https://ports.ubuntu.com/ubuntu-ports noble main universe multiverse
+deb https://ports.ubuntu.com/ubuntu-ports noble-updates main universe multiverse
+deb https://ports.ubuntu.com/ubuntu-ports noble-security main universe multiverse>> /etc/apt/sources.list
 
 echo "${label_alert_autoupdate_for_u}"
 
