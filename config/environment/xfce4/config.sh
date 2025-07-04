@@ -2,7 +2,7 @@
 #XFCE4 config environment
 source "/usr/local/bin/fixed_variables.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 19 \
      'sudo apt-get install xfce4 --no-install-recommends -y' \
      'sudo apt-get install xfce4-goodies --no-install-recommends -y' \
      'sudo apt-get install xfce4-terminal --no-install-recommends -y' \
@@ -14,6 +14,7 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
      'sudo apt-get install dbus-x11 --no-install-recommends -y' \
      'sudo apt install python3-gi -y' \
      'sudo apt install python3 -y' \
+       'sudo apt-get install python3-psutil -y' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
