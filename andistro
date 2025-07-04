@@ -343,9 +343,12 @@ case "$1" in
         elif [ "$2" == "ubuntu" ]; then
             echo -e "Desinstalando o Ubuntu...\nAguarde..."
             andistro atualizar
+            rm -rf $HOME/ubuntu-noble
+            rm -rf $HOME/ubuntu-noble.tar.xz
             rm -rf $HOME/ubuntu-fs
             rm -rf $HOME/ubuntu-binds
             rm -rf $HOME/start-ubuntu.sh
+            rm -rf $PREFIX/bin/andistro_files/start-ubuntu
             rm -rf $HOME/start-distro.sh
             rm -rf $HOME/l10n*.sh
             rm -rf $HOME/fixed_variables.sh
