@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "v0.0.67.5.26"
+echo "v0.0.67.5.25"
 export extralink="https://raw.githubusercontent.com/andistro/app/alpha"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
