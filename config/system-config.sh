@@ -76,7 +76,7 @@ show_progress_dialog steps-multi-label 69 \
   "${label_system_setup}" 'sudo apt-get clean' \
   "${label_system_setup}" 'sudo dpkg --configure -a ' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
-sleep 10
+sleep 2
 
 {
   for i in {1..50}; do
