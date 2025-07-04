@@ -374,11 +374,11 @@ echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Set
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
 source "/usr/local/bin/fixed_variables.sh"
-sudo groupadd -g 3003 group3003
-sudo groupadd -g 9997 group9997
-sudo groupadd -g 20457 group20457
-sudo groupadd -g 50457 group50457
-sudo groupadd -g 1079 group1079
+groupadd -g 3003 group3003
+groupadd -g 9997 group9997
+groupadd -g 20457 group20457
+groupadd -g 50457 group50457
+groupadd -g 1079 group1079
 
 echo "${label_alert_autoupdate_for_u}"
 
