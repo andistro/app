@@ -43,6 +43,8 @@ else
     system_architecture=$(dpkg --print-architecture)
 fi
 
+wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}') # IP da rede 
+
 
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
