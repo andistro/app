@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 # GNOME Config
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 27 \
 	'sudo apt-get install gdm3 --no-install-recommends -y' \

@@ -1,6 +1,6 @@
 #!/bin/bash
 #XFCED4 start environment
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 source /etc/profile
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 25 \

@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/bin/andistro_files/fixed_variables.sh"
+source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 bin="start-debian.sh"
 codinome="bookworm"
 folder="debian-bookworm"
@@ -112,8 +112,8 @@ case $CHOICE in
 		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/locale/locale_pt-BR.sh"
 		sleep 2
 		chmod +x $folder/root/locale_pt-BR.sh
-		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/fixed_variables.sh"
-		source "$PREFIX/bin/andistro_files/fixed_variables.sh"
+		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/global_var_fun.sh"
+		source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 		;;
 	2)
 		echo ""
@@ -142,7 +142,7 @@ clear
 
 #move para o bin
 cp "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" $folder/usr/local/bin
-cp "$PREFIX/bin/andistro_files/fixed_variables.sh" $folder/usr/local/bin
+cp "$PREFIX/bin/andistro_files/global_var_fun.sh" $folder/usr/local/bin
 
 #echo "fixing shebang of $bin"
 #termux-fix-shebang $bin
@@ -216,7 +216,7 @@ sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 #echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
 #deb http://deb.debian.org/debian stable-updates main contrib non-free

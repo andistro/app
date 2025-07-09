@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
 show_progress_dialog steps-multi-label 69 \

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Mudar o idioma para o Portuguê Brasileiro [pt_BR]
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 
 error_code="LG002br"
 show_progress_dialog steps-one-label "${label_system_language}" 8 \

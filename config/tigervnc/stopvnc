@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 
 USER=$(whoami)
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 
 # Solicitar a senha do usuário usando dialog
 PASSWORD=$(dialog --title "${label_vnc_setup}" --insecure --passwordbox "${label_vnc_password_input}" 0 0 3>&1 1>&2 2>&3)

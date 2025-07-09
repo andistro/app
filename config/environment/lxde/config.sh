@@ -1,6 +1,6 @@
 #!/bin/bash
 #LXDE config environment
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 17 \
      'sudo apt-get install lxde-core --no-install-recommends -y' \

@@ -3,7 +3,7 @@
 -->
 # Padrões de interface
 > [!IMPORTANT]
-> Exige a chamada do `fixed_variables.sh` usando o `source`.
+> Exige a chamada do `global_var_fun.sh` usando o `source`.
 
 ## Refatoração do `update_progress()`
 Função mobular em bash para uma progresso impresso diretamente na tela do terminal, sem uso de caixas de dialogo.

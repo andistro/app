@@ -1,6 +1,6 @@
 #!/bin/bash
 #XFCE4 config environment
-source "/usr/local/bin/fixed_variables.sh"
+source "/usr/local/bin/global_var_fun.sh"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 19 \
      'sudo apt-get install xfce4 --no-install-recommends -y' \
