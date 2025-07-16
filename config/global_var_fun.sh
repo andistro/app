@@ -12,6 +12,19 @@ for cmd in apt apk pacman dnf zypper; do
     fi
 done
 
+detect_package_manager() {
+  for cmd in apt apk pacman dnf zypper; do
+    if command -v $cmd >/dev/null 2>&1; then
+      echo "Gerenciador de pacotes detectado: $cmd"
+      return 0
+    fi
+  done
+  echo "Gerenciador de pacotes não identificado."
+}
+
+detect_package_manager
+
+
 
 exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
   if [ $? -ne 0 ]; then
