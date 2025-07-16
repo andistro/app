@@ -3,6 +3,15 @@ echo "v0.0.67.5.33"
 export extralink="https://raw.githubusercontent.com/andistro/app/alpha"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
+# detector de gerenciadores de pacotes
+# Detecta o gerenciador de pacotes do sistema e executa comandos específicos
+for pkg_cmd in apt apk pacman dnf zypper; do
+    if command -v $pkg_cmd >/dev/null 2>&1; then
+        echo "Detectado: $pkg_cmd"
+    fi
+done
+
+
 exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
   if [ $? -ne 0 ]; then
     echo "Erro na execução. Abortando instalação. Código ${error_code}"
