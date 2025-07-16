@@ -73,15 +73,137 @@ echo "" > $folder/etc/fstab
 rm -rf $folder/etc/resolv.conf
 echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
 
-./$bin apk update
-        ./$bin apk add --no-cache bash
-        sed -i 's/ash/bash/g' $folder/etc/passwd
-        sed -i 's/bin\/sh/bin\/bash/g' $bin
-	echo "Installation Finished"
-	rm -rf $folder/root/.bash_profile
-  	echo "#!/bin/bash
-              wget https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/Installer/Alpine/alpine-xfce.sh -O /root/alpine-xfce.sh
-              bash /root/alpine-xfce.sh
-              rm -rf /root/alpine-xfce.sh
-              clear" > $folder/root/.bash_profile  
-   	bash $bin
+export USER=$(whoami)
+export PORT=1
+OPTIONS=(1 "LXDE"
+		 2 "XFCE"
+		 3 "Gnome")
+
+CHOICE=$(dialog --clear \
+                --title "$TITLE" \
+                --menu "$MENU_environments_select" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+case $CHOICE in
+	1)	
+		echo "LXDE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/lxde/config.sh"
+		sleep 2
+		;;
+	2)	
+		echo "XFCE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xfce4/config.sh"
+		sleep 2
+		;;
+	3)
+		echo "Gnome UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/gnome/config.sh"
+		sleep 2
+		# Parte da resolução do problema do gnome e do systemd
+		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
+			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
+			echo "pasta criada"
+		fi
+		#mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
+		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid #remover o pid para que o dbus-daemon funcione corretamente
+		rm -rf system_bus_socket
+
+		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket #cria o arquivo
+
+		if grep -q "<listen>tcp:host=localhost" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
+		grep -q "<listen>unix:tmpdir=/tmp</listen>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
+		grep -q "<auth>ANONYMOUS</auth>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
+		grep -q "<allow_anonymous/>" /data/data/com.termux/files/usr/share/dbus-1/system.conf; then # verifica se existe a linha com esse texto
+		echo ""
+			else
+				sed -i 's|<auth>EXTERNAL</auth>|<listen>tcp:host=localhost,bind=*,port=6667,family=ipv4</listen>\
+				<listen>unix:tmpdir=/tmp</listen>\
+				<auth>EXTERNAL</auth>\
+				<auth>ANONYMOUS</auth>\
+				<allow_anonymous/>|' /data/data/com.termux/files/usr/share/dbus-1/system.conf
+		fi
+
+		# É necessário repetir o processo toda vez que alterar o system.conf
+		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
+		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket
+		sed -i "\|command+=\" -b $folder/root:/dev/shm\"|a command+=\" -b system_bus_socket:/run/dbus/system_bus_socket\"" $bin
+		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
+	;;
+esac
+clear
+
+chmod +x $folder/root/config-environment.sh
+
+sleep 4
+
+touch $folder/root/.hushlogin
+bash $bin apk add --no-cache bash > /dev/null 2>&1
+
+sed -i 's/ash/bash/g' $folder/etc/passwd
+sed -i 's/bin\/sh/bin\/bash/g' $bin
+echo '#!/bin/bash
+source "/usr/local/bin/global_var_fun.sh"
+
+update_progress() {
+    local current_step=$1
+    local total_steps=$2
+    local percent=$((current_step * 100 / total_steps))
+    local bar_length=30
+    local filled_length=$((percent * bar_length / 100))
+    local empty_length=$((bar_length - filled_length))
+
+    local filled_bar
+    local empty_bar
+    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+
+    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
+}
+
+total_steps=5
+current_step=0
+
+apk update > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+apk add --no-cache bash > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+apk add dpkg > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+apk add grep > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+apk add sudo -y > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando sudo"
+sleep 0.5
+
+apk add wget -y > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando wget"
+sleep 0.5
+
+apk add dialog -y > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando dialog"
+sleep 0.5
+
+echo    # quebra de linha ao final para não sobrepor prompt
+
+
+rm -rf ~/.bash_profile
+rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
+
+bash $bin
