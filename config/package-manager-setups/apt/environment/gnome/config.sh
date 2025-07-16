@@ -31,7 +31,7 @@ EOF
 "' \
 	'chmod +x ~/.vnc/xstartup' \
 	"echo 'export DISPLAY=":1"' >> /etc/profile" \
-	"wget --tries=20 '${extralink}/config/environment/gnome/start-environment.sh'" \
+	"wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/gnome/start-environment.sh'" \
 	"[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh" \
 	"sudo dpkg --configure -a" \
 	"sudo apt --fix-broken install -y" 

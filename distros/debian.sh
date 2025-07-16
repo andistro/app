@@ -83,7 +83,7 @@ if [ ! -d "$folder/root/.vnc/" ];then
 fi
 
 show_progress_dialog wget-labeled "${label_progress}" 3 \
-	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
+	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
@@ -108,7 +108,7 @@ case $CHOICE in
 	1)
 		sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
 		error_code="LG001br"
-		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/locale/locale_pt-BR.sh"
+		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_pt-BR.sh"
 		sleep 2
 		chmod +x $folder/root/locale_pt-BR.sh
 		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/global_var_fun.sh"
@@ -164,17 +164,17 @@ CHOICE=$(dialog --clear \
 case $CHOICE in
 	1)	
 		echo "LXDE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/lxde/config.sh"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
 		sleep 2
 		;;
 	2)	
 		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/xfce4/config.sh"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 		sleep 2
 		;;
 	3)
 		echo "Gnome UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/environment/gnome/config.sh"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/gnome/config.sh"
 		sleep 2
 		# Parte da resolução do problema do gnome e do systemd
 		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
