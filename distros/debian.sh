@@ -82,9 +82,8 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	echo "pasta criada"
 fi
 
-show_progress_dialog wget-labeled "${label_progress}" 4 \
+show_progress_dialog wget-labeled "${label_progress}" 3 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/system-config.sh" \
-	"${label_progress}" -O "$folder/root/dialog.deb" "${extralink}/debian/sources/dialog_${archurl}.deb" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
