@@ -38,11 +38,6 @@ cat > $bin <<- EOM
 	command+=" --link2symlink"
 	command+=" -0"
 	command+=" -r $folder"
-	if [ -n "\$(ls -A $binds)" ]; then
-    		for f in $binds/* ;do
-      		. \$f
-    	done
-	fi
 	command+=" -b /dev"
 	command+=" -b /proc"
 	command+=" -b $folder/root:/dev/shm"
@@ -138,6 +133,7 @@ chmod +x $folder/root/config-environment.sh
 sleep 4
 
 touch $folder/root/.hushlogin
+bash $bin apk update > /dev/null 2>&1
 bash $bin apk add --no-cache bash > /dev/null 2>&1
 
 sed -i 's/ash/bash/g' $folder/etc/passwd
@@ -162,7 +158,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=5
+total_steps=6
 current_step=0
 
 apk update > /dev/null 2>&1
@@ -175,27 +171,22 @@ apk add --no-cache bash > /dev/null 2>&1
 update_progress "$current_step" "$total_steps" "Atualizando repositórios"
 sleep 0.5
 
-apk add dpkg > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps" "Atualizando repositórios"
-sleep 0.5
-
-apk add grep > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps" "Atualizando repositórios"
-sleep 0.5
-
-apk add sudo -y > /dev/null 2>&1
+apk add --no-cache sudo > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando sudo"
 sleep 0.5
 
-apk add wget -y > /dev/null 2>&1
+apk add --no-cache grep > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+apk add --no-cache wget > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando wget"
 sleep 0.5
 
-apk add dialog -y > /dev/null 2>&1
+apk add --no-cache dialog > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
