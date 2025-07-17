@@ -37,12 +37,5 @@ EOF
 	"sudo apt --fix-broken install -y" 
 sleep 2
 
-show_progress_dialog check-packages "Verificando pacotes instalados..." \
-	gdm3  policykit-1 gnome-session gnome-shell gnome-terminal gnome-tweaks gnome-control-center \
-	gnome-shell-extensions gnome-shell-extension-dashtodock  \
-	gnome-package-updater gnome-calculator lsb-release dconf-cli \
-    exo-utils tigervnc-standalone-server \
-    tigervnc-common tigervnc-tools dbus-x11 python3-gi python3
-
 
 vncpasswd
