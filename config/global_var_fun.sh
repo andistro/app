@@ -30,15 +30,6 @@ exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
   fi
 }
 
-check_dependencies() {
-    local deps=("$@")
-    for dep in "${deps[@]}"; do
-        if ! dpkg -l | grep -qw "$dep"; then
-            apt install -y "$dep" || exit_erro
-        fi
-    done
-}
-
 
 #Formato GMT
 GMT_date=$(date +"%Z":00)
