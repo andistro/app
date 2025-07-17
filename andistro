@@ -175,6 +175,7 @@ if [ -z "$1" ]; then
     echo -e "Opções:"
     echo -e "   debian"
     echo -e "   ubuntu"
+    echo -e "   alpine"
 exit 0
 
 fi
@@ -296,6 +297,12 @@ case "$1" in
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
             clear
 
+        elif [ "$2" == "alpine" ]; then
+            echo -e "Instalando o Alpine...\nAguarde..."
+            andistro atualizar
+            show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/alpine.sh"
+            clear
+
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -358,6 +365,23 @@ case "$1" in
             echo "Desinstalação concluída!"
             clear
 
+        elif [ "$2" == "alpine" ]; then
+            echo -e "Desinstalando o Alpine...\nAguarde..."
+            andistro atualizar
+            rm -rf $HOME/alpine-edge
+            rm -rf $HOME/alpine-edge.tar.xz
+            rm -rf $HOME/alpine-binds
+            rm -rf $HOME/start-alpine.sh
+            rm -rf $PREFIX/bin/andistro_files/start-alpine
+            rm -rf $HOME/start-distro.sh
+            rm -rf $HOME/l10n*.sh
+            rm -rf $HOME/global_var_fun.sh
+            rm -rf $PREFIX/bin/start-alpine
+            rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
+            rm -rf system_bus_socket
+            echo "Desinstalação concluída!"
+            clear
+
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -375,6 +399,7 @@ case "$1" in
             echo -e "Opções:"
             echo -e "   debian"
             echo -e "   ubuntu"
+            echo -e "   alpine"
 
             exit 1
         fi
@@ -387,6 +412,11 @@ case "$1" in
         elif [ "$2" == "ubuntu" ]; then
             echo -e "Iniciando o Ubuntu...\nAguarde..."
             start-ubuntu
+            clear
+
+        elif [ "$2" == "alpine" ]; then
+            echo -e "Iniciando o Alpine...\nAguarde..."
+            start-alpine
             clear
 
         else
@@ -437,6 +467,7 @@ case "$1" in
         echo -e "Opções:"
         echo -e "   debian"
         echo -e "   ubuntu"
+        echo -e "   alpine"
         echo " "
         exit 1
         ;;
