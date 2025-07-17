@@ -13,17 +13,14 @@ for cmd in apt apk pacman dnf zypper; do
 done
 
 detect_package_manager() {
-  for cmd in apt apk pacman dnf zypper; do
-    if command -v $cmd >/dev/null 2>&1; then
-      echo "Gerenciador de pacotes detectado: $cmd"
-      return 0
+    if command -v apt >/dev/null 2>&1; then
+        echo "apt"
+    elif command -v apk >/dev/null 2>&1; then
+        echo "apk"
+    else
+        echo "unknown"
     fi
-  done
-  echo "Gerenciador de pacotes não identificado."
 }
-
-detect_package_manager
-
 
 
 exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
@@ -125,13 +122,10 @@ check_packages_installed() {
 # ==================================================================================================
 # //////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
 # DIALOG menu ==================================================================================
-# Para o menu de seleção no dialog
-export USER=$(whoami)
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
 
 # DIALOG Progress ==================================================================================
 # Função para ter uma barra de progresso usando o dialog em diversas tarefas
@@ -148,36 +142,6 @@ show_progress_dialog() {
     shift
 
     case "$mode" in
-        apt-labeled)
-            # Ex: show_progress_dialog apt-labeled 3 \
-            #    "${label_update}" 'apt update' \
-            #    "${label_upgrade}" 'apt full-upgrade -y' \
-            #    "${label_clean}" 'apt clean'
-
-            local steps="$1"
-            local timestamp=$(date +'%d%m%Y-%H%M%S')
-            shift
-            {
-                local percent step=0
-                while [ "$#" -gt 1 ]; do
-                    local label="$1"
-                    local cmd="$2"
-                    echo "XXX"
-                    percent=$(( step * 100 / steps ))
-                    echo "$percent"
-                    echo "$label"
-                    echo "XXX"
-                    bash -c "$cmd" >> "/sdcard/termux/andistro/logs/apt-labeled_${timestamp}.txt" 2>&1
-                    step=$((step + 1))
-                    shift 2
-                done
-                echo "XXX"
-                echo "100"
-                echo "${label_done}"
-                echo "XXX"
-            } | dialog --gauge "$title_progress" 10 70 0
-            ;;
-        
         steps-one-label)
             # Ex: show_progress_dialog steps-one "${label_etapa}" total_comandos \
             #     'comando1' 'comando2' 'comando3'
@@ -360,6 +324,7 @@ show_progress_dialog() {
             local total="${#packages[@]}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
             local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
+            local pkg_manager=$(detect_package_manager)
             : > "$log_file"
 
             {
@@ -367,11 +332,25 @@ show_progress_dialog() {
                     local pkg="${packages[$i]}"
                     local index=$(printf "%02d" $((i + 1)))
 
-                    if dpkg -s "$pkg" &>/dev/null; then
-                        echo "$index [✓] $pkg está instalado." >> "$log_file"
-                    else
-                        echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
-                    fi
+                    case "$pkg_manager" in
+                        apt)
+                            if dpkg -s "$pkg" &>/dev/null; then
+                                echo "$index [✓] $pkg está instalado." >> "$log_file"
+                            else
+                                echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
+                            fi
+                            ;;
+                        apk)
+                            if apk info -e "$pkg" &>/dev/null; then
+                                echo "$index [✓] $pkg está instalado." >> "$log_file"
+                            else
+                                echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
+                            fi
+                            ;;
+                        *)
+                            echo "$index [?] Não foi possível verificar $pkg (gerenciador desconhecido)." >> "$log_file"
+                            ;;
+                    esac
 
                     # Atualiza porcentagem de progresso
                     percent=$(( (i + 1) * 100 / total ))
