@@ -235,7 +235,7 @@ show_progress_dialog() {
 
                 echo "XXX"
                 echo "100"
-                echo "${label_done:-Done!}"
+                echo "${label_done}"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
             ;;
@@ -278,7 +278,7 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done:-Done!}"
+                echo "${label_done}"
                 echo "XXX"
             } | dialog --gauge "${title_progress:-Progress}" 10 70 0
             ;;
@@ -300,7 +300,7 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done:-Done!}"
+                echo "${label_done}"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
             ;;

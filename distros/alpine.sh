@@ -70,7 +70,7 @@ echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
 
 show_progress_dialog wget-labeled "${label_progress}" 4 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
-	"${label_progress}" -O "$folder/usr/local/bin/global_var_fun.sh" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvnc" \
