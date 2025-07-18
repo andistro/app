@@ -19,72 +19,9 @@ if [ -z "$system_icu_locale_code" ]; then
     if [ -n "$LANG" ]; then
         system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
     else
-        system_icu_locale_code="en-us"
+        system_icu_locale_code="pt-BR"
     fi
 fi
-
-# Define variáveis de fallback se não estiverem definidas
-label_find_update="${label_find_update:-Atualizando lista de pacotes...}"
-label_upgrade="${label_upgrade:-Atualizando sistema...}"
-label_tzdata_settings="${label_tzdata_settings:-Configurando timezone...}"
-label_install_script_download="${label_install_script_download:-Instalando}"
-label_system_setup="${label_system_setup:-Configurando sistema...}"
-label_done="${label_done:-Concluído!}"
-title_progress="${title_progress:-Progresso}"
-
-# Verifica se o comando dialog está disponível
-if ! command -v dialog >/dev/null 2>&1; then
-    echo "Erro: O comando 'dialog' não está disponível no sistema."
-    echo "Instale o dialog primeiro:"
-    echo "  Alpine: sudo apk add dialog"
-    echo "  Debian/Ubuntu: sudo apt install dialog"
-    exit 1
-fi
-
-# Verifica se estamos no Alpine Linux
-if ! command -v apk >/dev/null 2>&1; then
-    echo "Erro: Este script é específico para Alpine Linux (comando 'apk' não encontrado)."
-    exit 1
-fi
-
-# Cria o diretório de logs se não existir
-mkdir -p "/sdcard/termux/andistro/logs" 2>/dev/null || {
-    # Se não conseguir criar em /sdcard, tenta em $HOME
-    mkdir -p "$HOME/andistro/logs"
-    echo "Aviso: Usando $HOME/andistro/logs para logs (não foi possível criar em /sdcard)"
-}
-
-# Função melhorada para verificar se um pacote está instalado no Alpine
-check_apk_package() {
-    local package="$1"
-    apk info -e "$package" >/dev/null 2>&1
-}
-
-# Função para instalar pacote se não estiver instalado
-install_if_missing() {
-    local package="$1"
-    if ! check_apk_package "$package"; then
-        echo "Instalando $package..."
-        sudo apk add --no-cache "$package"
-    else
-        echo "$package já está instalado."
-    fi
-}
-
-# Lista de pacotes essenciais para verificar/instalar
-essential_packages=(
-    "ca-certificates"
-    "wget"
-    "curl"
-    "dialog"
-    "bash"
-)
-
-# Verifica e instala pacotes essenciais primeiro
-echo "Verificando pacotes essenciais..."
-for pkg in "${essential_packages[@]}"; do
-    install_if_missing "$pkg"
-done
 
 # Executa o script principal com tratamento de erros
 echo "Iniciando configuração do sistema Alpine..."
