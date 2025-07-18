@@ -189,6 +189,13 @@ check_packages_installed() {
 }
 
 # DIALOG Progress ==================================================================================
+# Para o menu de seleção no dialog
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
+
 # Função melhorada para barras de progresso
 show_progress_dialog() {
     local mode="$1"
