@@ -81,9 +81,12 @@ show_progress_dialog wget-labeled "${label_progress}" 9 \
 
 sleep 2
 chmod +x "$folder/root/system-config.sh"
-chmod +x "$folder/usr/local/bin/*"
-
-
+chmod +x "$folder/usr/local/bin/vnc"
+chmod +x "$folder/usr/local/bin/vncpasswd"
+chmod +x "$folder/usr/local/bin/startvnc"
+chmod +x "$folder/usr/local/bin/stopvnc"
+chmod +x "$folder/usr/local/bin/startvncserver"
+chmod +x "$folder/usr/local/bin/global_var_fun.sh"
 
 export USER=$(whoami)
 export PORT=1

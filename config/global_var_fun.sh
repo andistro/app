@@ -280,7 +280,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done}"
                 echo "XXX"
-            } | dialog --gauge "${title_progress:-Progress}" 10 70 0
+            } | dialog --gauge "${title_progress}" 10 70 0
             ;;
 
         wget)
