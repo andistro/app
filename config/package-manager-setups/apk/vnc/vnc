@@ -1,0 +1,53 @@
+#!/bin/bash
+source "/usr/local/bin/global_var_fun.sh"
+export DISPLAY=:1
+
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=0
+CHOICE_HEIGHT=5
+BACKTITLE="${label_vncserver_resolution_title}"
+TITLE="startvncserver"
+MENU="${label_vncserver_resolution_option}"
+export PORT=1
+
+
+OPTIONS=(1 "${label_vncserver_resolution_option_uwhd}"
+         2 "${label_vncserver_resolution_option_qdhd}"
+         3 "${label_vncserver_resolution_option_fhd}"
+         4 "${label_vncserver_resolution_option_hd}")
+
+
+
+CHOICE=$(dialog --clear \
+                --backtitle "$BACKTITLE" \
+                --title "$TITLE" \
+                --menu "$MENU" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+
+clear
+case $CHOICE in
+1)
+echo "${label_vncserver_chose_resolution_uwhd}"
+RESOLUTION="2560x1080"
+;;
+2)
+echo "${label_vncserver_chose_resolution_qdhd}"
+RESOLUTION="2560x1440"
+;;
+3)
+echo "${label_vncserver_chose_resolution_fhd}"
+RESOLUTION="1920x1080"
+;;
+4)
+echo "${label_vncserver_chose_resolution_hd}"
+RESOLUTION="1280x720"
+;;
+esac
+
+/usr/bin/Xvfb $DISPLAY -screen 0 $RESOLUTION -ac +extension GLX +render -noreset & 
+sleep 2 && startxfce4 &
+sleep 2 && x11vnc -xkb -noxrecord -noxfixes -noxdamage -display $DISPLAY -forever -bg -rfbauth /root/.vnc/passwd -users root -rfbport 5901 -noshm &
+echo 'Connect to localhost:1 with a VNC client'
