@@ -67,7 +67,8 @@ chmod +x $bin
 echo "" > $folder/etc/fstab
 rm -rf $folder/etc/resolv.conf
 echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
-
+mkdir -p $folder/usr/local/bin
+mkdir -p $folder/usr/share/backgrounds
 show_progress_dialog wget "${label_progress}" 9 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/global_var_fun.sh" "${extralink}/config/global_var_fun.sh" \
