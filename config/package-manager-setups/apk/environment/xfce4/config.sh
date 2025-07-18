@@ -3,7 +3,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 mkdir -p "$HOME/.vnc"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 19 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 7 \
      'sudo apk add --no-cache xfce4' \
      'sudo apk add --no-cache xfce4-terminal' \
      'sudo apk add --no-cache xfce4-appfinder' \
@@ -18,11 +18,7 @@ startxfce4
 EOF
 "' \
      'chmod +x /usr/local/bin/vnc' \
-     "echo 'export DISPLAY=":1"' >> /etc/profile" \
-     "wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/xfce4/start-environment.sh'" \
-     '[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh' \
-     'sudo dpkg --configure -a' \
-     'sudo apt --fix-broken install -y'
+     "echo 'export DISPLAY=":1"' >> /etc/profile"
 sleep 2
 
 vncpasswd
