@@ -121,3 +121,5 @@ fi
 
 echo "Configuração do sistema Alpine concluída com sucesso!"
 sleep 2
+
+#   Root error: execveat() with non-AT_FDCWD fd is not currently supported: Invalid argument─────────────────────
