@@ -84,11 +84,21 @@ fi
 
 show_progress_dialog wget-labeled "${label_progress}" 3 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvncserver" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
-sleep 2
+chmod +x $folder/usr/local/bin/vnc
+chmod +x $folder/usr/local/bin/vncpasswd
+chmod +x $folder/usr/local/bin/startvnc
+chmod +x $folder/usr/local/bin/stopvnc
+chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/root/system-config.sh"
+sleep 2
 
 # Idioma
 export PORT=1
@@ -119,23 +129,7 @@ case $CHOICE in
 	;;
 esac
 
-error_code="VNC001x"
-show_progress_dialog "wget" "${label_progress}" 5 \
-  -P "$folder/usr/local/bin" \
-  "${extralink}/config/tigervnc/vnc" \
-  "${extralink}/config/tigervnc/vncpasswd" \
-  "${extralink}/config/tigervnc/startvnc" \
-  "${extralink}/config/tigervnc/stopvnc" \
-  "${extralink}/config/tigervnc/startvncserver"
 
-sleep 2
-
-chmod +x $folder/usr/local/bin/vnc
-chmod +x $folder/usr/local/bin/vncpasswd
-chmod +x $folder/usr/local/bin/startvnc
-chmod +x $folder/usr/local/bin/stopvnc
-chmod +x $folder/usr/local/bin/startvncserver
-clear
 
 #Copiando arquivos para dentro do linux
 
