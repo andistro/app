@@ -69,17 +69,16 @@ rm -rf $folder/etc/resolv.conf
 echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
 mkdir -p $folder/usr/local/bin
 mkdir -p $folder/usr/share/backgrounds
-show_progress_dialog wget "${label_progress}" 9 \
-	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
-	"${label_progress}" -O "$folder/usr/local/bin/global_var_fun.sh" "${extralink}/config/global_var_fun.sh" \
-	"${label_progress}" -O "$folder/usr/local/bin/vnc" "${extralink}/config/tigervnc/vnc" \
-	"${label_progress}" -O "$folder/usr/local/bin/vncpasswd" "${extralink}/config/tigervnc/vncpasswd" \
-	"${label_progress}" -O "$folder/usr/local/bin/startvnc" "${extralink}/config/tigervnc/startvnc" \
-	"${label_progress}" -O "$folder/usr/local/bin/stopvnc" "${extralink}/config/tigervnc/stopvnc" \
-	"${label_progress}" -O "$folder/usr/local/bin/startvncserver" "${extralink}/config/tigervnc/startvncserver" \
-	"${label_wallpaper_download}" -O "$folder/usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
-	"${label_wallpaper_download}" -O "$folder/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
-
+show_progress_dialog wget-labeled "${label_progress}" 9 \
+	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvncserver" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 sleep 2
 chmod +x "$folder/root/system-config.sh"
 chmod +x "$folder/usr/local/bin/vnc"
