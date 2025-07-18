@@ -82,7 +82,7 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	echo "pasta criada"
 fi
 
-show_progress_dialog wget-labeled "${label_progress}" 3 \
+show_progress_dialog wget-labeled "${label_progress}" 8 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
