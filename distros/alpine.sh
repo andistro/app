@@ -68,6 +68,17 @@ echo "" > $folder/etc/fstab
 rm -rf $folder/etc/resolv.conf
 echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
 
+show_progress_dialog wget-labeled "${label_progress}" 4 \
+	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
+	"${label_progress}" -O "$folder/usr/local/bin/global_var_fun.sh" "${extralink}/config/global_var_fun.sh" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
+
+sleep 2
+chmod +x "$folder/root/system-config.sh"
+chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+
+
 export USER=$(whoami)
 export PORT=1
 OPTIONS=(1 "LXDE"
