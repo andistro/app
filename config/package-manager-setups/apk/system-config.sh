@@ -89,7 +89,7 @@ done
 # Executa o script principal com tratamento de erros
 echo "Iniciando configuração do sistema Alpine..."
 
-show_progress_dialog steps-multi-label 22 \
+show_progress_dialog steps-multi-label 21 \
   "${label_find_update}" 'sudo apk update' \
   "${label_upgrade}" 'sudo apk upgrade' \
   "${label_tzdata_settings}" 'sudo apk add --no-cache tzdata' \
@@ -106,7 +106,6 @@ show_progress_dialog steps-multi-label 22 \
   "${label_install_script_download}\\ntigervnc" 'sudo apk add --no-cache tigervnc' \
   "${label_install_script_download}\\ndbus-x11" 'sudo apk add --no-cache dbus-x11' \
   "${label_install_script_download}\\nnano" 'sudo apk add --no-cache nano' \
-  "${label_install_script_download}\\nnautilus" 'sudo apk add --no-cache nautilus' \
   "${label_install_script_download}\\nfont-manager" 'sudo apk add --no-cache font-manager' \
   "${label_install_script_download}\\nevince" 'sudo apk add --no-cache evince' \
   "${label_install_script_download}\\nfirefox" 'sudo apk add --no-cache firefox' \
