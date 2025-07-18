@@ -32,6 +32,7 @@ show_progress_dialog steps-multi-label 21 \
   "${label_tzdata_settings}" 'sudo apk add --no-cache tzdata' \
   "${label_install_script_download}\\nca-certificates" 'sudo apk add --no-cache ca-certificates' \
   "${label_install_script_download}\\nwget" 'sudo apk add --no-cache wget' \
+  "${label_install_script_download}\\ndialog" 'sudo apk add --no-cache xvfb' \
   "${label_install_script_download}\\ncurl" 'sudo apk add --no-cache curl' \
   "${label_install_script_download}\\ngpg" 'sudo apk add --no-cache gpg' \
   "${label_install_script_download}\\ngit" 'sudo apk add --no-cache git' \
