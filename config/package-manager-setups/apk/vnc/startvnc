@@ -1,2 +1,62 @@
-#!/bin/bash
-nohup /usr/local/bin/vnc
+#!/bin/sh
+source "/usr/local/bin/global_var_fun.sh"
+
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=0
+CHOICE_HEIGHT=5
+BACKTITLE="Escolha a resolução VNC"
+TITLE="Iniciar Servidor VNC"
+MENU="Escolha a resolução desejada para a sessão VNC:"
+
+export PORT=5901  # x11vnc escuta nessa porta por padrão
+
+OPTIONS=(
+  1 "UWHD (2560x1080)"
+  2 "QHD (2560x1440)"
+  3 "Full HD (1920x1080)"
+  4 "HD (1280x720)"
+  5 "Personalizado"
+)
+
+CHOICE=$(dialog --clear \
+                --backtitle "$BACKTITLE" \
+                --title "$TITLE" \
+                --menu "$MENU" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+
+clear
+
+case $CHOICE in
+  1)
+    echo "Resolução escolhida: 2560x1080"
+    export RESOLUTION="2560x1080x24"
+    ;;
+  2)
+    echo "Resolução escolhida: 2560x1440"
+    export RESOLUTION="2560x1440x24"
+    ;;
+  3)
+    echo "Resolução escolhida: 1920x1080"
+    export RESOLUTION="1920x1080x24"
+    ;;
+  4)
+    echo "Resolução escolhida: 1280x720"
+    export RESOLUTION="1280x720x24"
+    ;;
+  5)
+    echo "Digite a resolução personalizada (ex: 1600x900):"
+    read CUSTOM
+    export RESOLUTION="${CUSTOM}x24"
+    ;;
+  *)
+    echo "Operação cancelada."
+    exit 1
+    ;;
+esac
+
+# Iniciar servidor VNC com a resolução escolhida
+#nohup /usr/local/bin/vnc
+/usr/local/bin/vnc
