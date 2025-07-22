@@ -5,6 +5,32 @@ codinome="edge"
 folder="alpine-edge"
 binds="alpine-binds"
 
+
+# Idioma
+export PORT=1
+#Definir o idioma
+OPTIONS=(1 "Português do Brasil (pt-BR)"
+		 2 "English (en-US)")
+
+CHOICE=$(dialog --clear \
+				--title "$TITLE" \
+				--menu "$MENU_language_select" \
+				$HEIGHT $WIDTH $CHOICE_HEIGHT \
+				"${OPTIONS[@]}" \
+				2>&1 >/dev/tty)
+
+clear
+case $CHOICE in
+	1)
+		language_selected="pt-BR"
+	;;
+	2)
+		language_selected="en-US"
+	;;
+esac
+
+language_transformed="${language_selected//-/_}"
+
 #=============================================================================================
 # Caso a versão do debian já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
@@ -64,6 +90,15 @@ cat > $bin <<- EOM
 
 chmod +x $bin
 
+sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
+error_code="LG001br"
+show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_transformed}.sh"
+sleep 2
+chmod +x $folder/root/locale_${language_transformed}.sh
+sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$PREFIX/bin/andistro_files/global_var_fun.sh"
+source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+
+
 echo "" > $folder/etc/fstab
 rm -rf $folder/etc/resolv.conf
 echo nameserver 8.8.8.8 > $folder/etc/resolv.conf
@@ -87,6 +122,7 @@ chmod +x "$folder/usr/local/bin/startvnc"
 chmod +x "$folder/usr/local/bin/stopvnc"
 chmod +x "$folder/usr/local/bin/startvncserver"
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+
 
 export USER=$(whoami)
 export PORT=1
@@ -149,7 +185,6 @@ esac
 clear
 
 chmod +x $folder/root/config-environment.sh
-
 sleep 4
 
 touch $folder/root/.hushlogin
