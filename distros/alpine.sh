@@ -7,50 +7,43 @@ binds="alpine-binds"
 
 
 # Idioma
-lang1_code="pt-BR"
-lang1_label="Português do Brasil (pt-BR)"
+# Verificar se o idioma do sistema está disponível, senão usar fallback
+if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
+    system_lang_code="$system_icu_locale_code"
+else
+    system_lang_code="en-US"
+fi
 
-lang2_code="en-US"
-lang2_label="English (en-US)"
+# Construir a lista de opções
+OPTIONS=()
+# Adicionar idioma detectado como primeiro item
+OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
 
-# Verifica se o idioma detectado é suportado
-case "$system_icu_locale_code" in
-  "$lang1_code"|"${lang1_code%.UTF-8}")  # inclui casos sem UTF-8
-    selected_default="$lang1_code"
-    OPTIONS=(1 "$lang1_label" 2 "$lang2_label")
-    ;;
-  "$lang2_code"|"${lang2_code%.UTF-8}")
-    selected_default="$lang2_code"
-    OPTIONS=(2 "$lang2_label" 1 "$lang1_label")
-    ;;
-  *)
-    # Qualquer outro: forçar como en-US
-    selected_default="$lang2_code"
-    OPTIONS=(2 "$lang2_label" 1 "$lang1_label")
-    ;;
-esac
+# Separador visual (dialog ignora a opção com tag "--")
+OPTIONS+=("--" "────────────")
 
+# Adicionar os demais em ordem alfabética (excluindo o detectado)
+for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
+    [[ "$code" == "$system_lang_code" ]] && continue
+    OPTIONS+=("$code" "${LANG_CODES[$code]}")
+done
 
-export PORT=1
-#Definir o idioma
+# Mostrar menu
 CHOICE=$(dialog --clear \
-	--title "$MENU_language_selected" \
-	--menu "$MENU_language_select" \
-	$HEIGHT $WIDTH $CHOICE_HEIGHT \
-	"${OPTIONS[@]}" \
-	2>&1 >/dev/tty)
+    --title "$MENU_language_select" \
+    --menu "$MENU_language_select" \
+    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+    "${OPTIONS[@]}" \
+    2>&1 >/dev/tty)
 
 clear
 
-# Definir variável language_selected com base na escolha
-case $CHOICE in
-	1)
-		language_selected="$lang1_code"
-		;;
-	2)
-		language_selected="$lang2_code"
-		;;
-esac
+# Determinar o idioma selecionado
+if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
+    language_selected="$system_lang_code"
+else
+    language_selected="$CHOICE"
+fi
 
 # Exemplo: mostrar idioma escolhido
 #echo "Idioma selecionado: $language_selected"
