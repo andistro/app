@@ -30,7 +30,10 @@ distro_install="instalar"
 distro_update="atualizar"
 distro_start="iniciar"
 distro_notinstaled="não instalado"
+distro_command="comando"
+distro_option="opção"
 label_detected="[Detectado]"
+
 #=====================================================================================================
 
 label_distro_stable="Estável"
