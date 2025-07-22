@@ -16,7 +16,8 @@ if grep -q "LANG=en_US.UTF-8" ~/.bashrc; then
   export LC_ALL=en_US.UTF-8
 fi
 
-#=====================================================================================================
+#=====================================================================================================\
+distro_wait="wait"
 distro_del="uninstall"
 distro_instaled="installed"
 distro_install="install"
@@ -24,6 +25,7 @@ distro_update="update"
 distro_start="start"
 distro_notinstaled="not installed"
 distro_command="<command>"
+distro_command_not_found="Command not found:"
 distro_option="<option>"
 distro_desc_line_1="Use: andistro <command> <option> to perform the desired task."
 distro_desc_line_2="Example command for installation:"
