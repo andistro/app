@@ -19,6 +19,9 @@ fi
 #=====================================================================================================
 distro_del="uninstall"
 distro_instaled="installed"
+distro_install="install"
+distro_update="update"
+distro_start="start"
 distro_notinstaled="not installed"
 label_detected="[Detected]"
 #=====================================================================================================
