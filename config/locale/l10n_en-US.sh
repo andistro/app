@@ -23,6 +23,8 @@ distro_install="install"
 distro_update="update"
 distro_start="start"
 distro_notinstaled="not installed"
+distro_command="command"
+distro_option="option"
 label_detected="[Detected]"
 #=====================================================================================================
 
