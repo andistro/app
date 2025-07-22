@@ -24,6 +24,7 @@ fi
 
 
 #=====================================================================================================
+distro_wait="aguarde"
 distro_del="desinstalar"
 distro_instaled="instalado"
 distro_install="instalar"
@@ -31,6 +32,7 @@ distro_update="atualizar"
 distro_start="iniciar"
 distro_notinstaled="não instalado"
 distro_command="<comando>"
+distro_command_not_found="Comando não encontrado:"
 distro_option="<opção>"
 distro_desc_line_1="Use: andistro <comando> <opção> para seja feito a tarefa desejada."
 distro_desc_line_2="Exemplo de comando que permite a instalação:"
