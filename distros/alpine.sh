@@ -268,6 +268,9 @@ sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
 
+if [ -f ~/system-config.sh ]; then
+    bash ~/system-config.sh
+fi
 
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin' > $folder/root/.bash_profile 

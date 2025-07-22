@@ -28,13 +28,14 @@ echo "Iniciando configuração do sistema Alpine..."
 
 show_progress_dialog steps-multi-label 30 \
   "${label_find_update}" 'sudo apk update' \
-  "${label_upgrade}" 'sudo apk upgrade' \
+  "${label_upgrade}" 'sudo apk upgrade --ignore busybox' \
   "${label_tzdata_settings}" 'sudo apk add --no-cache tzdata' \
-  "${label_install_script_download}\\nca-certificates" 'sudo apk add --no-scripts --no-cache ca-certificates' \
-  "${label_install_script_download}\\nwget" 'sudo apk add --no-scripts --no-cache wget' \
-  "${label_install_script_download}\\ndialog" 'sudo apk add --no-scripts --no-cache xvfb' \
-  "${label_install_script_download}\\ncurl" 'sudo apk add --no-scripts --no-cache curl' \
-  "${label_install_script_download}\\ngpg" 'sudo apk add --no-scripts --no-cache gpg' \
+  "${label_install_script_download}\\ngtk3.0" 'sudo apk add --no-cache gtk+3.0' \
+  "${label_install_script_download}\\nca-certificates" 'sudo apk add --no-cache ca-certificates' \
+  "${label_install_script_download}\\nwget" 'sudo apk add --no-cache wget' \
+  "${label_install_script_download}\\ndialog" 'sudo apk add --no-cache xvfb' \
+  "${label_install_script_download}\\ncurl" 'sudo apk add --no-cache curl' \
+  "${label_install_script_download}\\ngpg" 'sudo apk add --no-cache gpg' \
   "${label_install_script_download}\\ngit" 'sudo apk add --no-scripts --no-cache git' \
   "${label_install_script_download}\\nopenssl" 'sudo apk add --no-scripts --no-cache openssl' \
   "${label_install_script_download}\\npython3" 'sudo apk add --no-scripts --no-cache python3' \
@@ -49,8 +50,9 @@ show_progress_dialog steps-multi-label 30 \
   "${label_install_script_download}\\nfirefox" 'sudo apk add --no-scripts --no-cache firefox' \
   "${label_install_script_download}\\ngvfs" 'sudo apk add --no-scripts --no-cache gvfs' \
   "${label_install_script_download}\\ngvfs-fuse" 'sudo apk add --no-scripts --no-cache gvfs-fuse' \
+  "${label_install_script_download}\\nadwaita-icon-theme" 'sudo apk add --no-scripts --no-cache adwaita-icon-theme' \
   "${label_install_script_download}" '/bin/busybox --install -s' \
-  "${label_install_script_download}" 'gtk-update-icon-cache /usr/share/icons/hicolor || true' \
+  "${label_install_script_download}" 'gtk-update-icon-cache /usr/share/icons/Adwaita || true' \
   "${label_install_script_download}" '/usr/bin/mkfontscale /usr/share/fonts || true' \
   "${label_install_script_download}" '/usr/bin/mkfontdir /usr/share/fonts || true' \
   "${label_install_script_download}" 'update-ca-certificates || true' \
