@@ -26,6 +26,9 @@ fi
 #=====================================================================================================
 distro_del="desinstalar"
 distro_instaled="instalado"
+distro_install="instalar"
+distro_update="atualizar"
+distro_start="iniciar"
 distro_notinstaled="não instalado"
 label_detected="[Detectado]"
 #=====================================================================================================
