@@ -27,6 +27,7 @@ fi
 distro_del="desinstalar"
 distro_instaled="instalado"
 distro_notinstaled="não instalado"
+label_detected="[Detectado]"
 #=====================================================================================================
 
 label_distro_stable="Estável"
