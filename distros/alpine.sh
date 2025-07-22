@@ -7,27 +7,54 @@ binds="alpine-binds"
 
 
 # Idioma
+lang1_code="pt-BR"
+lang1_label="Português do Brasil (pt-BR)"
+
+lang2_code="en-US"
+lang2_label="English (en-US)"
+
+# Verifica se o idioma detectado é suportado
+case "$system_icu_locale_code" in
+  "$lang1_code"|"${lang1_code%.UTF-8}")  # inclui casos sem UTF-8
+    selected_default="$lang1_code"
+    OPTIONS=(1 "$lang1_label" 2 "$lang2_label")
+    ;;
+  "$lang2_code"|"${lang2_code%.UTF-8}")
+    selected_default="$lang2_code"
+    OPTIONS=(2 "$lang2_label" 1 "$lang1_label")
+    ;;
+  *)
+    # Qualquer outro: forçar como en-US
+    selected_default="$lang2_code"
+    OPTIONS=(2 "$lang2_label" 1 "$lang1_label")
+    ;;
+esac
+
+
 export PORT=1
 #Definir o idioma
-OPTIONS=(1 "Português do Brasil (pt-BR)"
-		 2 "English (en-US)")
-
 CHOICE=$(dialog --clear \
-				--title "$TITLE" \
-				--menu "$MENU_language_select" \
-				$HEIGHT $WIDTH $CHOICE_HEIGHT \
-				"${OPTIONS[@]}" \
-				2>&1 >/dev/tty)
+	--title "$MENU_language_selected" \
+	--menu "$MENU_language_select" \
+	$HEIGHT $WIDTH $CHOICE_HEIGHT \
+	"${OPTIONS[@]}" \
+	2>&1 >/dev/tty)
 
 clear
+
+# Definir variável language_selected com base na escolha
 case $CHOICE in
 	1)
-		language_selected="pt-BR"
-	;;
+		language_selected="$lang1_code"
+		;;
 	2)
-		language_selected="en-US"
-	;;
+		language_selected="$lang2_code"
+		;;
 esac
+
+# Exemplo: mostrar idioma escolhido
+#echo "Idioma selecionado: $language_selected"
+dialog --msgbox "$MENU_language_selected $language_selected" 10 70 0
 
 language_transformed="${language_selected//-/_}"
 
