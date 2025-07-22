@@ -72,6 +72,12 @@ else
     echo "Arquivo de localização não encontrado para o código: $system_icu_locale_code"
 fi
 
+# Variáveis de idioma
+# Define o idioma do sistema baseado no arquivo de localização carregado
+declare -A LANG_CODES
+LANG_CODES["pt-BR"]="Português do Brasil (pt-BR)"
+LANG_CODES["en-US"]="English (en-US)"
+
 
 # TERMINAL Progress  ==================================================================================
 # A barra de progresso aparece no terminal sem caixa de dialogo
