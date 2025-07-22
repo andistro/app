@@ -108,4 +108,5 @@ label_alpine_download_extract="Extraindo o Alpine para o armazenamento..."
 #TITULO DO MENU DE DIALOGO
 MENU_operating_system_select="Escolha o sistema operacional que será instalado: "
 MENU_language_select="Escolha o idioma "
+MENU_language_selected="Idioma selecionado: "
 MENU_environments_select="Escolha um ambientes de área de trabalho: "
