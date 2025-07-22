@@ -277,35 +277,35 @@ case "$1" in
 
     ${distro_install})
         if [ -z "$2" ]; then
-            echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
+            echo "$distro_desc_line_1"
             echo ""
-            echo -e "Exemplo de comando que permite a instalação:"
-            echo -e "   andistro instalar debian"
+            echo "$distro_desc_line_2"
+            echo "$distro_desc_line_3"
             echo " "
-            echo -e "Comandos:"
-            echo -e "    instalar    - instala a opção escolhida."
+            echo "$distro_desc_line_8"
+            echo "$distro_desc_line_10"
             echo " "
-            echo -e "Opções:"
-            echo -e "   debian"
-            echo -e "   ubuntu"
-            echo " "
+            echo "$distro_desc_line_13"
+            echo "   alpine"
+            echo "   debian"
+            echo "   ubuntu"
             exit 1
         fi
 
         if [ "$2" == "debian" ]; then
-            echo -e "Instalando o Debian...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
             clear
 
         elif [ "$2" == "ubuntu" ]; then
-            echo -e "Instalando o Ubuntu...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
             clear
 
         elif [ "$2" == "alpine" ]; then
-            echo -e "Instalando o Alpine...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/alpine.sh"
             clear
@@ -320,23 +320,23 @@ case "$1" in
         ;;
     ${distro_del})
         if [ -z "$2" ]; then
-            echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
-            echon ""
-            echo -e "Exemplo de comando que permite a desinstalação do Debian:"
-            echo -e "   andistro desinstalar debian"
+            echo "$distro_desc_line_1"
+            echo ""
+            echo "$distro_desc_line_4"
+            echo "$distro_desc_line_5"
             echo " "
-            echo -e "Comandos:"
-            echo -e "    desinstalar - desinstala a opção escolhida."
+            echo "$distro_desc_line_8"
+            echo "$distro_desc_line_11"
             echo " "
-            echo -e "Opções:\n"
-            echo -e "   debian\n"
-            echo -e "   ubuntu\n"
-            echo " "
+            echo "$distro_desc_line_13"
+            echo "   alpine"
+            echo "   debian"
+            echo "   ubuntu"
             exit 1
         fi
 
         if [ "$2" == "debian" ]; then
-            echo -e "Desinstalando o Debian...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             rm -rf $HOME/debian-stable
             rm -rf $HOME/debian-binds
@@ -355,7 +355,7 @@ case "$1" in
             clear
 
         elif [ "$2" == "ubuntu" ]; then
-            echo -e "Desinstalando o Ubuntu...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             rm -rf $HOME/ubuntu-noble
             rm -rf $HOME/ubuntu-noble.tar.xz
@@ -373,7 +373,7 @@ case "$1" in
             clear
 
         elif [ "$2" == "alpine" ]; then
-            echo -e "Desinstalando o Alpine...\nAguarde..."
+            echo "$distro_wait"
             andistro atualizar
             rm -rf $HOME/alpine-edge
             rm -rf $HOME/alpine-edge.tar.xz
@@ -396,33 +396,33 @@ case "$1" in
         ;;
     ${distro_start})
         if [ -z "$2" ]; then
-            echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
-            echo -e "Exemplo de comando que permite a inicialização:"
-            echo -e "   andistro iniciar debian"
+            echo "$distro_desc_line_1"
+            echo ""
+            echo "$distro_desc_line_6"
+            echo "$distro_desc_line_7"
             echo " "
-            echo -e "Comandos:"
-            echo -e "    iniciar     - inicia a versão escolhida."
+            echo "$distro_desc_line_8"
+            echo "$distro_desc_line_12"
             echo " "
-            echo -e "Opções:"
-            echo -e "   debian"
-            echo -e "   ubuntu"
-            echo -e "   alpine"
-
+            echo "$distro_desc_line_13"
+            echo "   alpine"
+            echo "   debian"
+            echo "   ubuntu"
             exit 1
         fi
 
         if [ "$2" == "debian" ]; then
-            echo -e "Iniciando o Debian...\nAguarde..."
+            echo "$distro_wait"
             start-debian
             clear
 
         elif [ "$2" == "ubuntu" ]; then
-            echo -e "Iniciando o Ubuntu...\nAguarde..."
+            echo "$distro_wait"
             start-ubuntu
             clear
 
         elif [ "$2" == "alpine" ]; then
-            echo -e "Iniciando o Alpine...\nAguarde..."
+            echo "$distro_wait"
             start-alpine
             clear
 
@@ -453,28 +453,29 @@ case "$1" in
         ;;
 
     *)
-        echo "Comando não reconhecido: $1"
+        echo "$distro_command_not_found $1"
         echo ""
-        echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
+        echo "$distro_desc_line_1"
         echo ""
-        echo -e "Exemplo de comando que permite a instalação:"
-        echo -e "   andistro instalar debian"
+        echo "$distro_desc_line_2"
+        echo "$distro_desc_line_3"
         echo " "
-        echo -e "Exemplo de comando que permite a desinstalação:"
-        echo -e "   andistro desinstalar debian"
+        echo "$distro_desc_line_4"
+        echo "$distro_desc_line_5"
         echo " "
-        echo -e "Exemplo de comando que permite a inicialização:"
-        echo -e "   andistro iniciar debian"
+        echo "$distro_desc_line_6"
+        echo "$distro_desc_line_7"
         echo " "
-        echo -e "Comandos:"
-        echo -e "    instalar    - instala a opção escolhida."
-        echo -e "    desinstalar - desinstala a opção escolhida."
-        echo -e "    iniciar     - inicializa a versão escolhida."
+        echo "$distro_desc_line_8"
+        echo "$distro_desc_line_9"
+        echo "$distro_desc_line_10"
+        echo "$distro_desc_line_11"
+        echo "$distro_desc_line_12"
         echo " "
-        echo -e "Opções:"
-        echo -e "   debian"
-        echo -e "   ubuntu"
-        echo -e "   alpine"
+        echo "$distro_desc_line_13"
+        echo "   alpine"
+        echo "   debian"
+        echo "   ubuntu"
         echo " "
         exit 1
         ;;
