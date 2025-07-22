@@ -1,5 +1,5 @@
-#!/bin/sh
-source "/usr/local/bin/global_var_fun.sh"
+#!/bin/bash
+#source "/usr/local/bin/global_var_fun.sh"
 
 export USER=$(whoami)
 HEIGHT=0

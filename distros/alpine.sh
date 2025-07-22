@@ -72,11 +72,11 @@ mkdir -p $folder/usr/share/backgrounds
 show_progress_dialog wget-labeled "${label_progress}" 9 \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apk/system-config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/stopvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvncserver" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apk/vnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apk/vnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apk/vnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apk/vnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apk/vnc/startvncserver" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 sleep 2

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
 DISPLAY=:99

@@ -26,27 +26,35 @@ fi
 # Executa o script principal com tratamento de erros
 echo "Iniciando configuração do sistema Alpine..."
 
-show_progress_dialog steps-multi-label 21 \
+show_progress_dialog steps-multi-label 30 \
   "${label_find_update}" 'sudo apk update' \
   "${label_upgrade}" 'sudo apk upgrade' \
   "${label_tzdata_settings}" 'sudo apk add --no-cache tzdata' \
-  "${label_install_script_download}\\nca-certificates" 'sudo apk add --no-cache ca-certificates' \
-  "${label_install_script_download}\\nwget" 'sudo apk add --no-cache wget' \
-  "${label_install_script_download}\\ndialog" 'sudo apk add --no-cache xvfb' \
-  "${label_install_script_download}\\ncurl" 'sudo apk add --no-cache curl' \
-  "${label_install_script_download}\\ngpg" 'sudo apk add --no-cache gpg' \
-  "${label_install_script_download}\\ngit" 'sudo apk add --no-cache git' \
-  "${label_install_script_download}\\nopenssl" 'sudo apk add --no-cache openssl' \
-  "${label_install_script_download}\\npython3" 'sudo apk add --no-cache python3' \
-  "${label_install_script_download}\\ntar" 'sudo apk add --no-cache tar' \
-  "${label_install_script_download}\\nunzip" 'sudo apk add --no-cache unzip' \
-  "${label_install_script_download}\\nzip" 'sudo apk add --no-cache zip' \
-  "${label_install_script_download}\\ntigervnc" 'sudo apk add --no-cache tigervnc' \
-  "${label_install_script_download}\\ndbus-x11" 'sudo apk add --no-cache dbus-x11' \
-  "${label_install_script_download}\\nnano" 'sudo apk add --no-cache nano' \
-  "${label_install_script_download}\\nfont-manager" 'sudo apk add --no-cache font-manager' \
-  "${label_install_script_download}\\nevince" 'sudo apk add --no-cache evince' \
-  "${label_install_script_download}\\nfirefox" 'sudo apk add --no-cache firefox' \
+  "${label_install_script_download}\\nca-certificates" 'sudo apk add --no-scripts --no-cache ca-certificates' \
+  "${label_install_script_download}\\nwget" 'sudo apk add --no-scripts --no-cache wget' \
+  "${label_install_script_download}\\ndialog" 'sudo apk add --no-scripts --no-cache xvfb' \
+  "${label_install_script_download}\\ncurl" 'sudo apk add --no-scripts --no-cache curl' \
+  "${label_install_script_download}\\ngpg" 'sudo apk add --no-scripts --no-cache gpg' \
+  "${label_install_script_download}\\ngit" 'sudo apk add --no-scripts --no-cache git' \
+  "${label_install_script_download}\\nopenssl" 'sudo apk add --no-scripts --no-cache openssl' \
+  "${label_install_script_download}\\npython3" 'sudo apk add --no-scripts --no-cache python3' \
+  "${label_install_script_download}\\ntar" 'sudo apk add --no-scripts --no-cache tar' \
+  "${label_install_script_download}\\nunzip" 'sudo apk add --no-scripts --no-cache unzip' \
+  "${label_install_script_download}\\nzip" 'sudo apk add --no-scripts --no-cache zip' \
+  "${label_install_script_download}\\ndbus-x11" 'sudo apk add --no-scripts --no-cache dbus-x11' \
+  "${label_install_script_download}\\nx11vnc" 'sudo apk add --no-scripts --no-cache x11vnc' \
+  "${label_install_script_download}\\nnano" 'sudo apk add --no-scripts --no-cache nano' \
+  "${label_install_script_download}\\nfont-manager" 'sudo apk add --no-scripts --no-cache font-manager' \
+  "${label_install_script_download}\\nevince" 'sudo apk add --no-scripts --no-cache evince' \
+  "${label_install_script_download}\\nfirefox" 'sudo apk add --no-scripts --no-cache firefox' \
+  "${label_install_script_download}\\ngvfs" 'sudo apk add --no-scripts --no-cache gvfs' \
+  "${label_install_script_download}\\ngvfs-fuse" 'sudo apk add --no-scripts --no-cache gvfs-fuse' \
+  "${label_install_script_download}" '/bin/busybox --install -s' \
+  "${label_install_script_download}" 'gtk-update-icon-cache /usr/share/icons/hicolor || true' \
+  "${label_install_script_download}" '/usr/bin/mkfontscale /usr/share/fonts || true' \
+  "${label_install_script_download}" '/usr/bin/mkfontdir /usr/share/fonts || true' \
+  "${label_install_script_download}" 'update-ca-certificates || true' \
+  "${label_install_script_download}" 'update-mime-database /usr/share/mime || true' \
   "${label_system_setup}" 'if [ ! -d "$HOME/.config/gtk-3.0" ]; then mkdir -p "$HOME/.config/gtk-3.0"; echo "Pasta .config/gtk-3.0 criada"; fi' \
   "${label_system_setup}" 'echo -e "file:/// raiz\\nfile:///sdcard sdcard" > "$HOME/.config/gtk-3.0/bookmarks" && echo "Bookmarks do GTK configurados"'
 
