@@ -174,10 +174,10 @@ if [ -z "$1" ]; then
     echo -e "   andistro iniciar debian"
     echo " "
     echo -e "Comandos:"
-    echo -e "    atualizar    - atualiza todos os pacotes."
-    echo -e "    instalar    - instala a opção escolhida."
-    echo -e "    desinstalar - desinstala a opção escolhida."
-    echo -e "    iniciar     - inicializa a versão escolhida."
+    echo -e "    ${distro_update}    - atualiza todos os pacotes."
+    echo -e "    ${distro_install}    - instala a opção escolhida."
+    echo -e "    ${distro_del} - desinstala a opção escolhida."
+    echo -e "    ${distro_start}     - inicializa a versão escolhida."
     echo " "
     echo -e "Opções:"
     echo -e "   debian"
@@ -188,7 +188,7 @@ exit 0
 fi
 
 case "$1" in
-    atualizar)
+    ${distro_update})
         if [ -z "$2" ]; then
             apt update > /dev/null 2>&1 && apt upgrade -y > /dev/null 2>&1
             update_progress() {
@@ -275,7 +275,7 @@ case "$1" in
         fi
         ;;
 
-    instalar)
+    ${distro_install})
         if [ -z "$2" ]; then
             echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
             echo ""
@@ -318,7 +318,7 @@ case "$1" in
         bash $HOME/start-distro.sh
         rm -rf $HOME/start-distro.sh
         ;;
-    desinstalar)
+    ${distro_del})
         if [ -z "$2" ]; then
             echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
             echon ""
@@ -394,7 +394,7 @@ case "$1" in
             exit 1
         fi
         ;;
-    iniciar)
+    ${distro_start})
         if [ -z "$2" ]; then
             echo -e "Use: andistro <comando> <opção> para seja feito a tarefa desejada."
             echo -e "Exemplo de comando que permite a inicialização:"
