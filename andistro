@@ -221,7 +221,7 @@ case "$1" in
                 sleep 0.5
 
                 #1 
-                curl -s -o "$HOME/andistro.check" "${extralink}/andistro"
+                curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
 
                 if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
                     if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
