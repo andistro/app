@@ -20,6 +20,7 @@ fi
 distro_del="uninstall"
 distro_instaled="installed"
 distro_notinstaled="not installed"
+label_detected="[Detected]"
 #=====================================================================================================
 
 label_distro_stable="Stable"
