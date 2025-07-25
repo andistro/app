@@ -21,9 +21,9 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 25 \
   'xfce4-panel-profiles load xfce4-panel.tar.bz2' \
   'dbus-launch --exit-with-session xfce4-panel-profiles load xfce4-panel.tar.bz2' \
   'sleep 4' \
-  "firefox > /dev/null 2>&1 & PID=\$(pidof firefox); sleep 5; kill \$PID" \
-  "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js"\
-  "echo 'user_pref("security.sandbox.content.level", 0);' >> ~/.mozilla/firefox/*.default-release/prefs.js" \
+  'firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID' \
+  "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
+  'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \
   "sudo apt-get clean" \
   "vncserver -kill :1" \
   "rm -rf /tmp/.X*-lock" \

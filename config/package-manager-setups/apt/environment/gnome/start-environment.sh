@@ -21,9 +21,9 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
 	'sudo apt-get remove --purge lilyterm -y' \
 	'mv /root/.config/lilyterm/default.conf /root/.config/lilyterm/default.conf.bak' \
 	'sudo apt-get autoremove --purge zutty -y' \
-	"firefox > /dev/null 2>&1 & PID=\$(pidof firefox); sleep 5; kill \$PID" \
-	"sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js"\
-	"echo 'user_pref("security.sandbox.content.level", 0);' >> ~/.mozilla/firefox/*.default-release/prefs.js" \
+	'firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID' \
+	"sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
+	'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \
 	"sudo apt-get clean" \
 	'sudo apt-get autoclean' \
 	'sudo apt-get autoremove -y' \
