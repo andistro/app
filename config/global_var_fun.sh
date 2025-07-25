@@ -1,5 +1,5 @@
 #!/bin/bash
-export extralink="https://raw.githubusercontent.com/andistro/app/alpha"
+export extralink="https://raw.githubusercontent.com/andistro/app/main"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
 # detector de gerenciadores de pacotes

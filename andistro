@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #rm -rf * && rm -rf "$PREFIX/bin/andistro_files/" && rm -rf "$PREFIX/bin/andistro"
-extralink="https://raw.githubusercontent.com/andistro/app/alpha" # Para a versão alpha
+extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
 fi
@@ -180,7 +180,6 @@ if [ -z "$1" ]; then
     echo "$distro_desc_line_12"
     echo " "
     echo "$distro_desc_line_13"
-    echo "   alpine"
     echo "   debian"
     echo "   ubuntu"
 exit 0
@@ -286,7 +285,6 @@ case "$1" in
             echo "$distro_desc_line_10"
             echo " "
             echo "$distro_desc_line_13"
-            echo "   alpine"
             echo "   debian"
             echo "   ubuntu"
             exit 1
@@ -302,12 +300,6 @@ case "$1" in
             echo "$distro_wait"
             andistro atualizar 2>&1
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
-            clear
-
-        elif [ "$2" == "alpine" ]; then
-            echo "$distro_wait"
-            andistro atualizar 2>&1
-            show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/alpine.sh"
             clear
 
         else
@@ -329,7 +321,6 @@ case "$1" in
             echo "$distro_desc_line_11"
             echo " "
             echo "$distro_desc_line_13"
-            echo "   alpine"
             echo "   debian"
             echo "   ubuntu"
             exit 1
@@ -372,23 +363,6 @@ case "$1" in
             echo "Desinstalação concluída!"
             clear
 
-        elif [ "$2" == "alpine" ]; then
-            echo "$distro_wait"
-            andistro atualizar 2>&1
-            rm -rf $HOME/alpine-edge
-            rm -rf $HOME/alpine-edge.tar.xz
-            rm -rf $HOME/alpine-binds
-            rm -rf $HOME/start-alpine.sh
-            rm -rf $PREFIX/bin/andistro_files/start-alpine
-            rm -rf $HOME/start-distro.sh
-            rm -rf $HOME/l10n*.sh
-            rm -rf $HOME/global_var_fun.sh
-            rm -rf $PREFIX/bin/start-alpine
-            rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
-            rm -rf system_bus_socket
-            echo "Desinstalação concluída!"
-            clear
-
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -405,7 +379,6 @@ case "$1" in
             echo "$distro_desc_line_12"
             echo " "
             echo "$distro_desc_line_13"
-            echo "   alpine"
             echo "   debian"
             echo "   ubuntu"
             exit 1
@@ -421,35 +394,10 @@ case "$1" in
             start-ubuntu
             clear
 
-        elif [ "$2" == "alpine" ]; then
-            echo "$distro_wait"
-            start-alpine
-            clear
-
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        ;;
-    sistema)
-        # Traduções
-        ## Português do Brasil
-        separator_infos="----------"
-        pt_BR_title="Informações do seu sistema"
-        pt_BR_version_release="Versão do Android"
-        pt_BR_product_manufacturer="Marca"
-        pt_BR_model="Modelo"
-        pt_BR_hardware_chipname="Chipset"
-        pt_BR_chip_architecture="Arquitetura do chipset"
-        pt_BR_country="Região"
-        pt_BR_country_iso="Abreviação"
-        pt_BR_locale_code="Código do idioma"
-        pt_BR_timezone="Fuso horário do sistema"
-        if [ "$system_country" = "Brazil" ]; then
-        system_country="Brasil"
-        fi
-
-        dialog --msgbox "${pt_BR_title}\n${separator_infos} \n${pt_BR_version_release}: ${android_version} \n${pt_BR_product_manufacturer}: ${device_manufacturer} \n${pt_BR_model}: ${device_model} / ${device_model_complete} \n${separator_infos} \n${pt_BR_hardware_chipname}: ${device_hardware} \n${pt_BR_chip_architecture}: ${android_architecture} \n${separator_infos} \n${pt_BR_country}: ${system_country} \n${pt_BR_country_iso}: ${system_country_iso} \n${pt_BR_locale_code}: ${system_icu_locale_code} \n${pt_BR_timezone}: (GMT${GMT_date}:00) ${system_timezone} \n" 0 0
         ;;
 
     *)
@@ -473,7 +421,6 @@ case "$1" in
         echo "$distro_desc_line_12"
         echo " "
         echo "$distro_desc_line_13"
-        echo "   alpine"
         echo "   debian"
         echo "   ubuntu"
         echo " "
