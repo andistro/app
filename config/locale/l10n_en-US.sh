@@ -116,9 +116,6 @@ label_ubuntu_download_extract="Extracting Ubuntu to storage..."
 label_debian_download="Downloading Debian..."
 label_debian_download_extract="Extracting Debian to storage..."
 
-label_alpine_download="Downloading Alpine..."
-label_alpine_download_extract="Extracting Alpine to storage..."
-
 #DIALOG MENU TITLES
 MENU_operating_system_select="Choose the operating system to be installed: "
 MENU_language_select="Choose the language "
