@@ -48,6 +48,10 @@ distro_desc_line_11="    desinstalar - desinstala a opção escolhida."
 distro_desc_line_12="    iniciar - inicializa a versão escolhida."
 distro_desc_line_13="Opções:"
 label_detected="[Detectado]"
+label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
+label_distro_alert_timezone_detected="Fuso horário detectado: "
+label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
+label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
 #=====================================================================================================
 

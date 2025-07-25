@@ -293,12 +293,14 @@ case "$1" in
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
             andistro atualizar 2>&1
+            andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
             clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             andistro atualizar 2>&1
+            andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
             clear
 
@@ -398,6 +400,15 @@ case "$1" in
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
+        ;;
+
+        alerta)
+            {
+                for i in {1..50}; do
+                    sleep 0.1
+                    echo $((i * 2))
+                done
+            } | dialog --gauge "$label_distro_alert_timezone_desc oi\n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s oi" 10 60 0
         ;;
 
     *)
