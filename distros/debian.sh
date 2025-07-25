@@ -3,58 +3,59 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 bin="start-debian.sh"
 codinome="bookworm"
 folder="debian-bookworm"
-
-# Idioma
-# Verificar se o idioma do sistema está disponível, senão usar fallback
+# Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
 else
     system_lang_code="en-US"
 fi
 
-# Construir a lista de opções
+# Montar opções do menu
 OPTIONS=()
-# Adicionar idioma detectado como primeiro item
 OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+OPTIONS+=("SEP" "────────────")  # Separador visual seguro
 
-# Separador visual (dialog ignora a opção com tag "--")
-OPTIONS+=("--" "────────────")
-
-# Adicionar os demais em ordem alfabética (excluindo o detectado)
+# Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
 for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
     [[ "$code" == "$system_lang_code" ]] && continue
     OPTIONS+=("$code" "${LANG_CODES[$code]}")
 done
 
-export USER=$(whoami)
+# Tamanho da janela do dialog
 HEIGHT=0
 WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-# Mostrar menu
+CHOICE_HEIGHT=10
+
+# Mostrar menu com redirecionamento seguro
+exec 3>&1
 CHOICE=$(dialog --clear \
     --title "$MENU_language_select" \
     --menu "$MENU_language_select" \
     $HEIGHT $WIDTH $CHOICE_HEIGHT \
     "${OPTIONS[@]}" \
-    2>&1 >/dev/tty)
+    2>&1 1>&3)
+exec 3>&-
 
 clear
 
-# Determinar o idioma selecionado
+# Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
     language_selected="$system_lang_code"
+elif [[ "$CHOICE" == "SEP" ]]; then
+    exit 0  # ignorar separador
 else
     language_selected="$CHOICE"
 fi
 
-# Exemplo: mostrar idioma escolhido
-#echo "Idioma selecionado: $language_selected"
-dialog --msgbox "$MENU_language_selected $language_selected" 10 70 0
+# Mostrar idioma escolhido
+dialog --msgbox "$MENU_language_selected $language_selected" 10 70
 
+# Converter de pt-BR para pt_BR
 language_transformed="${language_selected//-/_}"
 
-
+# Exportar, se necessário
+export language_selected
+export language_transformed
 
 
 #=============================================================================================
@@ -170,9 +171,12 @@ sleep 2
 #echo "making $bin executable"
 chmod +x $bin
 
-
 export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
 export PORT=1
+
 OPTIONS=(1 "LXDE"
 		 2 "XFCE"
 		 3 "Gnome")
