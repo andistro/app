@@ -48,7 +48,7 @@ else
 fi
 
 # Mostrar idioma escolhido
-dialog --msgbox "$MENU_language_selected $language_selected" 10 70
+#dialog --msgbox "$MENU_language_selected $language_selected" 10 70
 
 # Converter de pt-BR para pt_BR
 language_transformed="${language_selected//-/_}"
@@ -119,9 +119,9 @@ EOM
 
 sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
 error_code="LG001br"
-show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_transformed}.sh"
+show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
-chmod +x $folder/root/locale_${language_transformed}.sh
+chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
