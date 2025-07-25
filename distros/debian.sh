@@ -58,6 +58,9 @@ export language_selected
 export language_transformed
 
 
+
+
+
 #=============================================================================================
 # Caso a versão do debian já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
@@ -144,7 +147,7 @@ fi
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_transformed}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
