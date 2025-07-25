@@ -26,6 +26,11 @@ for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
     OPTIONS+=("$code" "${LANG_CODES[$code]}")
 done
 
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
 # Mostrar menu
 CHOICE=$(dialog --clear \
     --title "$MENU_language_select" \
