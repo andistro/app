@@ -162,7 +162,7 @@ chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
-chmod +x "$folder/usr/local/bin/l10n_${language_transformed}.sh"
+chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
