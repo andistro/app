@@ -163,7 +163,7 @@ show_progress_dialog() {
 
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "$label"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
             ;;
@@ -192,9 +192,9 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "$label"
                 echo "XXX"
-            } | dialog --gauge "$title_progress" 10 70 0
+            } | dialog --gauge "$label" 10 70 0
             ;;
 
         wget)
@@ -218,7 +218,7 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "$label"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
             ;;
@@ -260,7 +260,7 @@ show_progress_dialog() {
                     ((count++))
                 done
 
-                echo -e "XXX\n100\n${label_done}\nXXX"
+                echo -e "$label"
             } | dialog --gauge "$label" 10 70 0
             ;;
 
@@ -317,7 +317,7 @@ show_progress_dialog() {
             # Exemplo de uso:
             # show_progress_dialog check-packages "Verificando" pacote1 pacote2 ...
 
-            local title="$1"
+            local label="$1"
             shift
             local packages=("$@")
             local total="${#packages[@]}"
@@ -356,7 +356,7 @@ show_progress_dialog() {
                     echo "$percent"
                     sleep 0.2
                 done
-            } | dialog --title "$title" --gauge "Verificando pacotes..." 10 60 0
+            } | dialog --title "$label" --gauge "Verificando pacotes..." 10 60 0
 
             # Exibe resultado final com scroll, sem botão OK
             dialog --title "Resultado da verificação" --textbox "$log_file" 25 80
