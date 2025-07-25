@@ -7,7 +7,11 @@
 # Distribuições Linux no Android
 Instale distribuições famosas dentro do ambiente Android e sem root.
 
-O repositório Ubuntu no Android permite instalar o Ubuntu ARM64 em dispositivos Android sem root, com o uso do terminal Termux e uma VNC.
+Este é um projeto que permite instalar distribuições Linux, como Ubuntu e Debian em dispositivos Android sem necessidade de root. O sistema é executado dentro do ambiente Termux e utiliza VNC para fornecer uma interface gráfica completa, sem modificar as configurações do Android.
+
+Para garantir a confiança e segurança, nenhum sistema é hospedado no repositório - todos são baixados diretamente dos sites oficiais das distribuições. O código do instalador está completamente aberto para verificação
+
+
 > [!NOTE]
 > Esse script de instalação foi feito para dispositivos Android com a arquitetura ARM64
 
@@ -21,7 +25,7 @@ O repositório Ubuntu no Android permite instalar o Ubuntu ARM64 em dispositivos
 ---
 <br>
 <br>
-
+<!--
 | **Comece selecionando alguma das opções abaixo.** |
 |--------------------|
 |[**Como funciona?**](#)|
@@ -57,14 +61,20 @@ O script de instalação deste repositório usa o [PRoot](https://wiki.termux.co
 <br>
 <br>
 
-# Qual a função desse script?
-- instalar o Ubuntu em dispositivos Android;
-- Adicionar repositórios que não estão presentes nos repositórios do Ubuntu;
-- Atualizar o repositório do Firefox para que possa ser instalado a partir de um PPA ao invés do instalador snap (padrão) que não funciona no android;
-- instalar o Figma para linux com suporte ao arm;
-- Corrigir o problema de iniciação do vscode, figma linux, brave-browser e vivaldi, que não são auto-abertos em máquina virtual sem o comando `--no-sandbox`;
-- Trocar o idioma do sistema operacional para o Português do Brasil.
+# Dúvidas
 
+## O que é uma distribuição Linux
+
+Uma distribuição Linux, ou "distro", é uma versão completa do sistema operacional Linux que você pode usar no seu computador. Ela é formada pelo núcleo principal chamado kernel Linux, que é responsável por controlar o hardware do computador, como o processador, memória e dispositivos, e por vários outros programas que tornam o sistema fácil de usar, como a interface gráfica (a tela onde você clica e vê janelas), ferramentas para configurar o sistema e programas básicos para tarefas do dia a dia.
+
+
+# Qual a função desse script?
+- Instalação de distribuições Linux populares compatíveis com a arquitetura ARM em dispositivos Android sem root;
+- Adição de repositórios extras não presentes nas distribuições padrão;
+- Atualizar o repositório do Firefox para que possa ser instalado a partir de um PPA ao invés do instalador snap (padrão) que não funciona no android;
+- Instalar o Figma para linux com suporte ao arm;
+- Corrigir o problema de iniciação do vscode, figma linux, brave-browser e vivaldi, que não são auto-abertos em máquina virtual sem o comando `--no-sandbox`;
+- Traz o suporte ao seletor de idiomas.
 
 <br>
 <br>
@@ -102,11 +112,11 @@ Para que tudo funcione corretamente, é necessário a instalação do **Termux**
 > O Termux da Google Play Store está desatualizado e não há mais suporte oficial.
 
 
-# Fazendo a instalação
+# Fazendo instalação
 
 <br>
 
-## Baixando o insalador do sistema
+## Baixando o insalador de distribuições
 
 Após o Termux ter sido instalado no aparelho e iniciado, agora será a vez de baixar o arquivo que irá fazer o sistema funcionar no celular. Siga os passos abaixo:
 
@@ -114,6 +124,14 @@ Após o Termux ter sido instalado no aparelho e iniciado, agora será a vez de b
 ```bash
 curl -O https://raw.githubusercontent.com/andistro/app/main/andistro > /dev/null 2>&1
 ```
+<details>
+<summary>Versão Alpha</summary>
+
+```bash
+curl -O https://raw.githubusercontent.com/andistro/app/alpha/andistro > /dev/null 2>&1
+```
+</details>
+
 2. Copie e cole o código abaixo no Termux para que o arquivo tenha permissão para funcionar:
 ```bash
 chmod +x andistro
@@ -122,15 +140,43 @@ chmod +x andistro
 ```bash
 ./andistro
 ```
->[!NOTE]
-> Irá aparecer uma mensagem de erro por ser a primeira vez que está sendo usado e o arquivo não está na pasta correta. O próprio irá de forma automática ser salvo na pasta correta e irá mostrar um tutorial de como ser usado.<br>
 
-4. Digite ou copie e cole algum dos códigos abaixo no Termux para iniciar a instalação:
+4. O arquivo irá finalizar as configurações necessárias e mostrará uma explicação de como instalar, desinstalar e inicar os sistemas.
+
+<details>
+<summary>Exemplo</summary>
+
+```bash
+Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+
+Exemplo de comando que permite a instalação:
+
+    andistro instalar debian
+
+Exemplo de comando que permite a desinstalação:
+   andistro desinstalar debian
+
+Exemplo de comando que permite a inicialização:
+   andistro iniciar debian
+
+Comandos:
+    atualizar    - atualiza todos os pacotes.
+    instalar    - instala a opção escolhida.
+    desinstalar - desinstala a opção escolhida.
+iniciar     - inicializa a versão escolhida.
+
+Opções:
+    debian
+    ubuntu
+```
+</details>
+
+5. Digite ou copie e cole algum dos códigos abaixo no Termux para iniciar a instalação:
 
 > Instalação direta <br>
 > No lugar de `<NOME_DA_DISTRIBUIÇÃO>` digite o nome do sistema que será instalado.
 ```bash
-andistro <NOME_DA_DISTRIBUIÇÃO>
+andistro instalar <NOME_DA_DISTRIBUIÇÃO>
 ```
 >[!NOTE]
 > Caso digite o comando `andistro` sem nenhum acréscimo e tecle enter (↵), aparecerá um mini guia de como funciona. O mesmo também irá procurar uma atualização para se manter na última versão.
@@ -141,28 +187,49 @@ andistro <NOME_DA_DISTRIBUIÇÃO>
 ```bash
 curl -O https://raw.githubusercontent.com/andistro/app/main/andistro && chmod +x andistro && bash andistro && clear && andistro
 ```
+<details>
+<summary>Versão Alpha</summary>
+
+```bash
+curl -O https://raw.githubusercontent.com/andistro/app/alpha/andistro && chmod +x andistro && bash andistro && clear && andistro
+```
+</details>
+
 ---
 
 <br>
 
----
+## Escolher e instalar uma distribuição
 
->[!WARNING]
-> Os sistemas baseados em Debian tem o mesmo processo de instalação.
----
-### Instalando direta 
-Para fazer a instalação direta de qualquer um dos sistemas operacionais suportados, será usado o comando `andistro <NOME_DA_DISTRIBUIÇÃO>` para iniciar a instalação. Após isso, Aparecerá uma barra de progresso referente aos pacotes que estão sendo baixados para o sistema funcionar e logo após irá perguntar qual versão irá usar. O instalador organiza com o mais recente primeiro.
-
-1. Baixar o Debian
+1. Execute o comando `andistro` para vizualizar uma breve explicação de como será feito a instalação
+**Exemplo:**
 ```bash
-andistro debian
-```
+Use: andistro <comando> <opção> para seja feito a tarefa desejada.
 
-2. Baixar o Ubuntu
-```bash
-andistro ubuntu
+Exemplo de comando que permite a instalação:
+
+    andistro instalar debian
+
+Exemplo de comando que permite a desinstalação:
+   andistro desinstalar debian
+
+Exemplo de comando que permite a inicialização:
+   andistro iniciar debian
+
+Comandos:
+    atualizar    - atualiza todos os pacotes.
+    instalar    - instala a opção escolhida.
+    desinstalar - desinstala a opção escolhida.
+iniciar     - inicializa a versão escolhida.
+
+Opções:
+    debian
+    ubuntu
 ```
----
+> [!IMPORTANT]
+> Os comandos serão adaptados aos formato do idioma do sistema do dispositivo Android do usuário. </br>
+> Atualmente, o único pacote de idiomas suportado é o `PT-BR`. </br>
+<!--- > Caso o idioma identificado não exista na lista de pacote de idiomas suportado, será usado o idioma `EN-US` por padrão. --->
 >[!WARNING]
 > Após executar qualquer um dos comandos citados acima, caso seja a primeira vez que está usando o Termux, irá aparecer a seguinte mensagem:
 ```bash
