@@ -116,9 +116,6 @@ error_code="LG001br"
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_transformed}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_transformed}.sh
-sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$PREFIX/bin/andistro_files/global_var_fun.sh"
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
@@ -138,13 +135,15 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	echo "pasta criada"
 fi
 
-show_progress_dialog wget-labeled "${label_progress}" 8 \
+show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/vncpasswd" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/stopvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/tigervnc/startvncserver" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_transformed}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
@@ -153,14 +152,13 @@ chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
+chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+chmod +x "$folder/usr/local/bin/l10n_${language_transformed}.sh"
 chmod +x "$folder/root/system-config.sh"
+sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
 
 #Copiando arquivos para dentro do linux
-
-#move para o bin
-cp "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" $folder/usr/local/bin
-cp "$PREFIX/bin/andistro_files/global_var_fun.sh" $folder/usr/local/bin
 
 #echo "fixing shebang of $bin"
 #termux-fix-shebang $bin

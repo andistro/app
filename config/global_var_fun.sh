@@ -6,7 +6,7 @@ export NEWT_COLORS="window=,white border=black,white title=black,white textbox=b
 # Detecta o gerenciador de pacotes do sistema e executa comandos específicos
 for cmd in apt apk pacman dnf zypper; do
     if command -v $cmd >/dev/null 2>&1; then
-        echo "Detectado: $cmd"
+        #echo "Detectado: $cmd"
         pkg_cmd="$cmd"
     fi
 done

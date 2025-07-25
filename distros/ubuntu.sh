@@ -5,6 +5,51 @@ codinome="noble"
 folder="ubuntu-noble"
 binds="ubuntu-binds"
 
+# Idioma
+# Verificar se o idioma do sistema está disponível, senão usar fallback
+if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
+    system_lang_code="$system_icu_locale_code"
+else
+    system_lang_code="en-US"
+fi
+
+# Construir a lista de opções
+OPTIONS=()
+# Adicionar idioma detectado como primeiro item
+OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+
+# Separador visual (dialog ignora a opção com tag "--")
+OPTIONS+=("--" "────────────")
+
+# Adicionar os demais em ordem alfabética (excluindo o detectado)
+for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
+    [[ "$code" == "$system_lang_code" ]] && continue
+    OPTIONS+=("$code" "${LANG_CODES[$code]}")
+done
+
+# Mostrar menu
+CHOICE=$(dialog --clear \
+    --title "$MENU_language_select" \
+    --menu "$MENU_language_select" \
+    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+    "${OPTIONS[@]}" \
+    2>&1 >/dev/tty)
+
+clear
+
+# Determinar o idioma selecionado
+if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
+    language_selected="$system_lang_code"
+else
+    language_selected="$CHOICE"
+fi
+
+# Exemplo: mostrar idioma escolhido
+#echo "Idioma selecionado: $language_selected"
+dialog --msgbox "$MENU_language_selected $language_selected" 10 70 0
+
+language_transformed="${language_selected//-/_}"
+
 #=============================================================================================
 # Caso a versão do debian já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
@@ -240,66 +285,28 @@ if [ ! -d "$folder/root/.vnc/" ];then
 	echo "pasta criada"
 fi
 
-show_progress_dialog wget-labeled "${label_progress}" 3 \
+show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_transformed}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
-
-sleep 2
-chmod +x "$folder/root/system-config.sh"
-
-# Idioma
-export PORT=1
-#Definir o idioma
-OPTIONS=(1 "Português do Brasil (pt-BR)"
-		 2 "English (en-US)")
-
-CHOICE=$(dialog --clear \
-				--title "$TITLE" \
-				--menu "$MENU_language_select" \
-				$HEIGHT $WIDTH $CHOICE_HEIGHT \
-				"${OPTIONS[@]}" \
-				2>&1 >/dev/tty)
-
-clear
-case $CHOICE in
-	1)
-		sed -i 's|command+=" LANG=C.UTF-8"|command+=" LANG=pt_BR.UTF-8"|' $bin
-		error_code="LG001br"
-		show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_pt-BR.sh"
-		sleep 2
-		chmod +x $folder/root/locale_pt-BR.sh
-		sed -i 's/system_icu_locale_code=.*$/system_icu_locale_code="pt-BR"/' "$PREFIX/bin/andistro_files/global_var_fun.sh"
-		source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-		;;
-	2)
-		echo ""
-	;;
-esac
-
-error_code="VNC001x"
-show_progress_dialog "wget" "${label_progress}" 5 \
-  -P "$folder/usr/local/bin" \
-  "${extralink}/config/tigervnc/vnc" \
-  "${extralink}/config/tigervnc/vncpasswd" \
-  "${extralink}/config/tigervnc/startvnc" \
-  "${extralink}/config/tigervnc/stopvnc" \
-  "${extralink}/config/tigervnc/startvncserver"
-
-sleep 2
 
 chmod +x $folder/usr/local/bin/vnc
 chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
-clear
-
-#Copiando arquivos para dentro do linux
-
-#move para o bin
-cp "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" $folder/usr/local/bin
-cp "$PREFIX/bin/andistro_files/global_var_fun.sh" $folder/usr/local/bin
+chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+chmod +x "$folder/usr/local/bin/l10n_${language_transformed}.sh"
+chmod +x "$folder/root/system-config.sh"
+sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
+sleep 2
 
 #echo "fixing shebang of $bin"
 #termux-fix-shebang $bin
