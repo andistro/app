@@ -128,6 +128,9 @@ chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
+echo "$system_timezone" | sudo tee $folder/etc/timezone
+sudo ln -sf "$folder/usr/share/zoneinfo/$system_timezone" /etc/localtime
+
 # Se não existir, será criado
 if [ ! -d "$folder/usr/share/backgrounds/" ];then
 	mkdir -p "$folder/usr/share/backgrounds/"
@@ -253,22 +256,8 @@ source "/usr/local/bin/global_var_fun.sh"
 
 echo "${label_alert_autoupdate_for_u}"
 
-update_progress() {
-    local current_step=$1
-    local total_steps=$2
-    local percent=$((current_step * 100 / total_steps))
-    local bar_length=30
-    local filled_length=$((percent * bar_length / 100))
-    local empty_length=$((bar_length - filled_length))
-
-    local filled_bar
-    local empty_bar
-    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
-
-    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
-}
+#======================================================================================================
+# global_var_fun.sh == update_progress() {}
 
 total_steps=5
 current_step=0
@@ -305,7 +294,7 @@ update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
-
+#======================================================================================================
 
 
 clear
