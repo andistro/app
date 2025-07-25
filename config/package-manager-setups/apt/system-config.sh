@@ -16,46 +16,46 @@ show_progress_dialog steps-multi-label 69 \
   "${label_upgrade}" 'sudo apt-get full-upgrade -y' \
   "${label_keyboard_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration -y" \
   "${label_tzdata_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y" \
-  "${label_install_script_download}\n>xz-utils" 'sudo apt-get install xz-utils -y' \
-  "${label_install_script_download}\n>wget" 'sudo apt-get install wget -y' \
-  "${label_install_script_download}\n>curl" 'sudo apt-get install curl -y' \
-  "${label_install_script_download}\n>gpg" 'sudo apt-get install gpg -y' \
-  "${label_install_script_download}\n>git" 'sudo apt-get install git -y' \
-  "${label_install_script_download}\n>python3-gi" 'sudo apt-get install python3-gi -y' \
-  "${label_install_script_download}\n>python3" 'sudo apt-get install python3 -y' \
-  "${label_install_script_download}\n>tar" 'sudo apt-get install tar -y' \
-  "${label_install_script_download}\n>unzip" 'sudo apt-get install unzip -y' \
-  "${label_install_script_download}\n>zip" 'sudo apt-get install zip -y' \
-  "${label_install_script_download}\n>apt-utils" 'sudo apt-get install apt-utils -y' \
-  "${label_install_script_download}\n>exo-utils" 'sudo apt-get install exo-utils --no-install-recommends -y' \
-  "${label_install_script_download}\n>tigervnc-standalone-server" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
-  "${label_install_script_download}\n>tigervnc-common" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
-  "${label_install_script_download}\n>tigervnc-tools" 'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
-  "${label_install_script_download}\n>dbus-x11" 'sudo apt-get install dbus-x11 --no-install-recommends -y' \
-  "${label_install_script_download}\n>nano" 'sudo apt-get install nano -y' \
-  "${label_install_script_download}\n>inetutils-tools" 'sudo apt-get install inetutils-tools -y' \
-  "${label_install_script_download}\n>nautilus" 'sudo apt-get install nautilus --no-install-recommends -y' \
-  "${label_install_script_download}\n>font-manager" 'sudo apt-get install font-manager --no-install-recommends -y' \
-  "${label_install_script_download}\n>evince" 'sudo apt-get install evince -y' \
-  "${label_install_script_download}\n>synaptic" 'sudo apt-get install synaptic --no-install-recommends -y' \
-  "${label_install_script_download}\n>synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
-  "${label_install_script_download}\n>gvfs-backends" 'sudo apt-get install gvfs-backends --no-install-recommends -y' \
-  "${label_install_script_download}\n>at-spi2-core" 'sudo apt-get install at-spi2-core -y' \
-  "${label_install_script_download}\n>bleachbit" 'sudo apt-get install bleachbit -y' \
-  "${label_install_script_download}\n>firefox" 'sudo install -d -m 0755 /etc/apt/keyrings' \
-  "${label_install_script_download}\n>firefox" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
-  "${label_install_script_download}\n>firefox" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
-  "${label_install_script_download}\n>firefox" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
-  "${label_install_script_download}\n>firefox" 'sudo apt-get update && sleep 2' \
-  "${label_install_script_download}\n>firefox" 'sudo apt-get install firefox -y' \
-  "${label_install_script_download}\n>firefox-l10n-$apt_system_icu_locale_code" "sudo apt-get install firefox-l10n-$apt_system_icu_locale_code -y"\
-  "${label_install_script_download}\n>code" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
-  "${label_install_script_download}\n>code" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
-  "${label_install_script_download}\n>code" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
-  "${label_install_script_download}\n>code" 'rm -f packages.microsoft.gpg' \
-  "${label_install_script_download}\n>code" 'sudo apt-get update && sleep 2' \
-  "${label_install_script_download}\n>code" 'sudo apt-get install code -y' \
-  "${label_install_script_download}\n>code" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
+  "${label_install_script_download}" 'sudo apt-get install xz-utils -y' \
+  "${label_install_script_download}" 'sudo apt-get install wget -y' \
+  "${label_install_script_download}" 'sudo apt-get install curl -y' \
+  "${label_install_script_download}" 'sudo apt-get install gpg -y' \
+  "${label_install_script_download}" 'sudo apt-get install git -y' \
+  "${label_install_script_download}" 'sudo apt-get install python3-gi -y' \
+  "${label_install_script_download}" 'sudo apt-get install python3 -y' \
+  "${label_install_script_download}" 'sudo apt-get install tar -y' \
+  "${label_install_script_download}" 'sudo apt-get install unzip -y' \
+  "${label_install_script_download}" 'sudo apt-get install zip -y' \
+  "${label_install_script_download}" 'sudo apt-get install apt-utils -y' \
+  "${label_install_script_download}" 'sudo apt-get install exo-utils --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install dbus-x11 --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install nano -y' \
+  "${label_install_script_download}" 'sudo apt-get install inetutils-tools -y' \
+  "${label_install_script_download}" 'sudo apt-get install nautilus --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install font-manager --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install evince -y' \
+  "${label_install_script_download}" 'sudo apt-get install synaptic --no-install-recommends -y' \
+  "${label_install_script_download}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
+  "${label_install_script_download}" 'sudo apt-get install gvfs-backends --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install at-spi2-core -y' \
+  "${label_install_script_download}" 'sudo apt-get install bleachbit -y' \
+  "${label_install_script_download}" 'sudo install -d -m 0755 /etc/apt/keyrings' \
+  "${label_install_script_download}" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
+  "${label_install_script_download}" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
+  "${label_install_script_download}" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
+  "${label_install_script_download}" 'sudo apt-get update && sleep 2' \
+  "${label_install_script_download}" 'sudo apt-get install firefox -y' \
+  "${label_install_script_download}" "sudo apt-get install firefox-l10n-$apt_system_icu_locale_code -y" \
+  "${label_install_script_download}" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
+  "${label_install_script_download}" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
+  "${label_install_script_download}" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
+  "${label_install_script_download}" 'rm -f packages.microsoft.gpg' \
+  "${label_install_script_download}" 'sudo apt-get update && sleep 2' \
+  "${label_install_script_download}" 'sudo apt-get install code -y' \
+  "${label_install_script_download}" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
   "${label_install_script_download}" 'sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg' \
   "${label_install_script_download}" 'echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
