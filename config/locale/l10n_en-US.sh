@@ -45,6 +45,8 @@ label_distro_alert_timezone_desc="The timezone will be the same as the device."
 label_distro_alert_timezone_detected="Detected timezone: "
 label_sleep_in_5s="This message will disappear in 5 seconds."
 label_sleep_in_10s="This message will disappear in 10 seconds."
+label_keyboard_setup="Starting keyboard settings, $distro_wait...."
+label_tzdata_setup="Starting timezone and date settings, $distro_wait...."
 #=====================================================================================================
 
 label_distro_stable="Stable"

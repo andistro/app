@@ -52,6 +52,8 @@ label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
 label_distro_alert_timezone_detected="Fuso horário detectado: "
 label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
+label_keyboard_setup="Iniciando as configurações do teclado, $distro_wait...."
+label_tzdata_setup="Iniciando as configurações de fuso horário e data, $distro_wait...."
 
 #=====================================================================================================
 

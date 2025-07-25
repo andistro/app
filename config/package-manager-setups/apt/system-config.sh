@@ -83,7 +83,7 @@ sleep 2
     sleep 0.1
     echo $((i * 2))
   done
-} | dialog --gauge "Iniciando as configurações do teclado, aguarde" 10 60 0
+} | dialog --gauge "$label_keyboard_setup" 10 60 0
 sudo dpkg-reconfigure keyboard-configuration
 
 {
@@ -91,5 +91,5 @@ sudo dpkg-reconfigure keyboard-configuration
     sleep 0.1
     echo $((i * 2))
   done
-} | dialog --gauge "Iniciando as configurações de fuso horário e data, aguarde" 10 60 0
+} | dialog --gauge "$label_tzdata_setup" 10 60 0
 sudo dpkg-reconfigure tzdata
