@@ -2,7 +2,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 69 \
+show_progress_dialog steps-multi-label 72 \
   "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
   "${label_progress}" 'sudo apt purge snapd -y' \
   "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -23,10 +23,13 @@ show_progress_dialog steps-multi-label 69 \
   "${label_install_script_download}" 'sudo apt-get install git -y' \
   "${label_install_script_download}" 'sudo apt-get install python3-gi -y' \
   "${label_install_script_download}" 'sudo apt-get install python3 -y' \
+  "${label_install_script_download}" 'sudo apt-get install python3-psutil -y' \
   "${label_install_script_download}" 'sudo apt-get install tar -y' \
   "${label_install_script_download}" 'sudo apt-get install unzip -y' \
   "${label_install_script_download}" 'sudo apt-get install zip -y' \
   "${label_install_script_download}" 'sudo apt-get install apt-utils -y' \
+  "${label_install_script_download}" 'sudo apt-get install dconf-cli --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install lsb-release --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt-get install exo-utils --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt-get install tigervnc-common --no-install-recommends -y' \
@@ -92,4 +95,4 @@ sudo dpkg-reconfigure keyboard-configuration
     echo $((i * 2))
   done
 } | dialog --gauge "$label_tzdata_setup" 10 60 0
-sudo dpkg-reconfigure tzdata
+sudo dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1

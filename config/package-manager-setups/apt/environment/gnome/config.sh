@@ -13,15 +13,6 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 27 \
 	'sudo apt-get install gnome-shell-extension-dashtodock --no-install-recommends -y' \
 	'sudo apt-get install gnome-package-updater --no-install-recommends -y' \
 	'sudo apt-get install gnome-calculator --no-install-recommends -y' \
-	'sudo apt-get install lsb-release --no-install-recommends -y' \
-	'sudo apt-get install dconf-cli --no-install-recommends -y' \
-	'sudo apt-get install exo-utils --no-install-recommends -y' \
-	'sudo apt-get install tigervnc-standalone-server --no-install-recommends -y' \
-	'sudo apt-get install tigervnc-common --no-install-recommends -y' \
-	'sudo apt-get install tigervnc-tools --no-install-recommends -y' \
-	'sudo apt-get install dbus-x11 --no-install-recommends -y' \
-	'sudo apt install python3-gi -y' \
-	'sudo apt install python3 -y' \
 	'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export LANG

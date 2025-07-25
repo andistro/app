@@ -2,10 +2,8 @@
 #LXDE config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 10 \
-     'sudo apt-get install lxde-core --no-install-recommends -y' \
-     'sudo apt-get install lxterminal --no-install-recommends -y' \
-     'sudo apt-get install lxappearance --no-install-recommends -y' \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 17 \
+     'sudo apt-get install kde-plasma-desktop --no-install-recommends -y' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 [ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
@@ -19,7 +17,7 @@ EOF
 "' \
      'chmod +x ~/.vnc/xstartup' \
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
-     "wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/lxde/start-environment.sh'" \
+     "wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/kde/start-environment.sh'" \
      "[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh" \
      "sudo dpkg --configure -a" \
      "sudo apt --fix-broken install -y" 

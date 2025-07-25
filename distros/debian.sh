@@ -57,10 +57,6 @@ language_transformed="${language_selected//-/_}"
 export language_selected
 export language_transformed
 
-
-
-
-
 #=============================================================================================
 # Caso a versão do debian já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
@@ -127,9 +123,6 @@ sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
-
-echo "$system_timezone" | sudo tee $folder/etc/timezone
-sudo ln -sf "$folder/usr/share/zoneinfo/$system_timezone" /etc/localtime
 
 # Se não existir, será criado
 if [ ! -d "$folder/usr/share/backgrounds/" ];then
@@ -247,6 +240,9 @@ sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
+echo "$system_timezone" | sudo tee $folder/etc/timezone
+sudo ln -sf "$folder/usr/share/zoneinfo/$system_timezone" /etc/localtime
+
 source "/usr/local/bin/global_var_fun.sh"
 #echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security stable-security main contrib non-free
@@ -255,6 +251,7 @@ source "/usr/local/bin/global_var_fun.sh"
 #deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
 echo "${label_alert_autoupdate_for_u}"
+
 
 #======================================================================================================
 # global_var_fun.sh == update_progress() {}
