@@ -2,7 +2,7 @@
 #LXDE config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 17 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 14 \
      'sudo apt-get install plasma-desktop --no-install-recommends -y' \
      'sudo apt-get install plasma-workspace --no-install-recommends -y' \
      'sudo apt-get install kwin-data --no-install-recommends -y' \
