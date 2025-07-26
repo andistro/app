@@ -318,12 +318,6 @@ if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
 
-show_progress_dialog check-packages "Verificando todos os pacotes globais instalados..." \
-	sudo xz-utils firefox code bleachbit at-spi2-core gvfs-backends synaptic evince font-manager \
-	nautilus inetutils-tools nano dbus-x11 tigervnc-tools tigervnc-common tigervnc-standalone-server \
-	exo-utils apt-utils python3-gi python3 tar zip unzip curl gpg git dialog wget locales language-pack-pt-base \
-	keyboard-configuration tzdata 
-
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
