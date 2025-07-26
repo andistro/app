@@ -326,7 +326,10 @@ show_progress_dialog check-packages "Verificando todos os pacotes globais instal
 
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
-rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
+rm -rf ~/.hushlogin
+rm -rf ~/system-config.sh
+rm -rf ~/config-environment.sh
+rm -rf ~/start-environment.sh' > $folder/root/.bash_profile 
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
