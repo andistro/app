@@ -233,7 +233,6 @@ case $CHOICE in
 	;;
 esac
 clear
-system_timezone="America/Fortaleza" # Defina o fuso horário padrão
 chmod +x $folder/root/config-environment.sh
 
 sleep 4
