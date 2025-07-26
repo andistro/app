@@ -239,8 +239,6 @@ sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
-echo "$system_timezone" | sudo tee /etc/timezone
-sudo ln -sf "/usr/share/zoneinfo/$system_timezone" /etc/localtime
 
 source "/usr/local/bin/global_var_fun.sh"
 #echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
@@ -292,6 +290,8 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
+echo "$system_timezone" | sudo tee /etc/timezone > /dev/null 2>&1
+sudo ln -sf "/usr/share/zoneinfo/$system_timezone" /etc/localtime
 
 clear
 chmod +x /usr/local/bin/vnc
