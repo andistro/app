@@ -302,8 +302,6 @@ chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_${system_icu_locale_code}.sh
 
-apt update -y > /dev/null 2>&1
-
 bash ~/system-config.sh
 
 clear
