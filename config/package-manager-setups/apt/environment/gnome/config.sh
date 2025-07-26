@@ -10,7 +10,7 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
 	'sudo apt-get install gnome-tweaks --no-install-recommends -y' \
 	'sudo apt-get install gnome-control-center --no-install-recommends -y' \
 	'sudo apt-get install gnome-shell-extensions --no-install-recommends -y' \
-	'sudo apt-get install gnome-shell-extension-dashtodock --no-install-recommends -y' \
+	'sudo apt-get install gnome-shell-extension-dash-to-dock --no-install-recommends -y' \
 	'sudo apt-get install gnome-package-updater --no-install-recommends -y' \
 	'sudo apt-get install gnome-calculator --no-install-recommends -y' \
 	'bash -c "cat > $HOME/.vnc/xstartup <<EOF
