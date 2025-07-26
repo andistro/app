@@ -12,7 +12,7 @@ export LANG
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
 echo \$\$ > /tmp/xsession.pid
-dbus-launch --exit-with-session startlxde
+dbus-launch --exit-with-session startplasma-x11
 EOF
 "' \
      'chmod +x ~/.vnc/xstartup' \
