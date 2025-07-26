@@ -243,11 +243,11 @@ touch $folder/root/.hushlogin
 echo '#!/bin/bash
 
 source "/usr/local/bin/global_var_fun.sh"
-#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security stable-security main contrib non-free
-#deb http://deb.debian.org/debian stable-updates main contrib non-free
-#deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
+echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security stable-security main contrib non-free
+deb http://deb.debian.org/debian stable-updates main contrib non-free
+deb http://ftp.debian.org/debian buster main
+deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
 echo "${label_alert_autoupdate_for_u}"
 
@@ -293,6 +293,7 @@ echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
 etc_timezone=$(cat /etc/timezone)
+
 sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
 clear

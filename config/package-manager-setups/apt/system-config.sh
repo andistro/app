@@ -96,3 +96,5 @@ sudo dpkg-reconfigure keyboard-configuration
   done
 } | dialog --gauge "$label_tzdata_setup" 10 60 0
 sudo dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1
+
+rm -rf system-config.sh
