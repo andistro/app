@@ -1,9 +1,7 @@
 <!--
 📄  Documentação
 -->
-
-![Distribuições Linux no Android](https://raw.githubusercontent.com/distribuicoeslinuxnoandroid/.github/main/profile/thumbnail.png)
-![Distribuiçoes Liux no Android](Doc/assets/environments.png)
+![Distribuiçoes Liux no Android](Doc/assets/banner@2x.png)
 
 # Distribuições Linux no Android
 Instale distribuições famosas dentro do ambiente Android e sem root.
