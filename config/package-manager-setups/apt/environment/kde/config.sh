@@ -2,12 +2,7 @@
 #LXDE config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 14 \
-     'sudo apt-get install plasma-desktop --no-install-recommends -y' \
-     'sudo apt-get install plasma-workspace --no-install-recommends -y' \
-     'sudo apt-get install kwin-data --no-install-recommends -y' \
-     'sudo apt-get install kwin-x11 --no-install-recommends -y' \
-     'sudo apt-get install kde-plasma-addons-data --no-install-recommends -y' \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
      'sudo apt-get install kde-plasma-desktop --no-install-recommends -y' \
      'sudo apt-get install kde-standard --no-install-recommends -y' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
