@@ -6,52 +6,62 @@ folder="ubuntu-noble"
 binds="ubuntu-binds"
 
 # Idioma
-# Verificar se o idioma do sistema está disponível, senão usar fallback
+# Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
 else
     system_lang_code="en-US"
 fi
 
-# Construir a lista de opções
+# Montar opções do menu
 OPTIONS=()
-# Adicionar idioma detectado como primeiro item
 OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+OPTIONS+=("SEP" "────────────")  # Separador visual seguro
 
-# Separador visual (dialog ignora a opção com tag "--")
-OPTIONS+=("--" "────────────")
-
-# Adicionar os demais em ordem alfabética (excluindo o detectado)
+# Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
 for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
     [[ "$code" == "$system_lang_code" ]] && continue
     OPTIONS+=("$code" "${LANG_CODES[$code]}")
 done
 
-# Mostrar menu
+# Tamanho da janela do dialog
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=10
+
+# Mostrar menu com redirecionamento seguro
+exec 3>&1
 CHOICE=$(dialog --clear \
     --title "$MENU_language_select" \
     --menu "$MENU_language_select" \
     $HEIGHT $WIDTH $CHOICE_HEIGHT \
     "${OPTIONS[@]}" \
-    2>&1 >/dev/tty)
+    2>&1 1>&3)
+exec 3>&-
 
 clear
 
-# Determinar o idioma selecionado
+# Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
     language_selected="$system_lang_code"
+elif [[ "$CHOICE" == "SEP" ]]; then
+    exit 0  # ignorar separador
 else
     language_selected="$CHOICE"
 fi
 
-# Exemplo: mostrar idioma escolhido
-#echo "Idioma selecionado: $language_selected"
-dialog --msgbox "$MENU_language_selected $language_selected" 10 70 0
+# Mostrar idioma escolhido
+#dialog --msgbox "$MENU_language_selected $language_selected" 10 70
 
+# Converter de pt-BR para pt_BR
 language_transformed="${language_selected//-/_}"
 
+# Exportar, se necessário
+export language_selected
+export language_transformed
+
 #=============================================================================================
-# Caso a versão do debian já tenha sido baixada, não baixar novamente
+# Caso a versão já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
 	first=1
 	echo "${label_skip_download}"
@@ -219,6 +229,9 @@ fi
 
 cat > $bin <<- EOM
 #!/bin/bash
+source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+sed -i "s|WLAN_IP=\"localhost\"|WLAN_IP=\"$wlan_ip_localhost\"|g" "$folder/usr/local/bin/vnc"
+
 #cd \$(dirname \$0)
 cd $HOME
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -265,6 +278,13 @@ else
 fi
 EOM
 
+sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
+error_code="LG001br"
+show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+sleep 2
+chmod +x $folder/root/locale_${language_selected}.sh
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 rm -f $folder/etc/resolv.conf
 echo -e 'nameserver 8.8.8.8\nnameserver 1.1.1.1' > $folder/etc/resolv.conf
@@ -288,7 +308,7 @@ fi
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_transformed}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
@@ -303,7 +323,7 @@ chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
-chmod +x "$folder/usr/local/bin/l10n_${language_transformed}.sh"
+chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
@@ -388,23 +408,8 @@ groupadd -g 50457 group50457
 groupadd -g 1079 group1079
 
 echo "${label_alert_autoupdate_for_u}"
-
-update_progress() {
-    local current_step=$1
-    local total_steps=$2
-    local percent=$((current_step * 100 / total_steps))
-    local bar_length=30
-    local filled_length=$((percent * bar_length / 100))
-    local empty_length=$((bar_length - filled_length))
-
-    local filled_bar
-    local empty_bar
-    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
-
-    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
-}
+#======================================================================================================
+# global_var_fun.sh == update_progress() {}
 
 total_steps=5
 current_step=0
@@ -441,6 +446,7 @@ update_progress "$current_step" "$total_steps" "Instalando dialog"
 sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
+#======================================================================================================
 
 clear
 chmod +x /usr/local/bin/vnc
@@ -450,8 +456,6 @@ chmod +x /usr/local/bin/stopvnc
 chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_${system_icu_locale_code}.sh
-
-apt update -y > /dev/null 2>&1
 
 bash ~/system-config.sh
 
@@ -463,19 +467,18 @@ if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
 
-show_progress_dialog check-packages "Verificando todos os pacotes globais instalados..." \
-	sudo xz-utils firefox code bleachbit at-spi2-core gvfs-backends synaptic evince font-manager \
-	nautilus inetutils-tools nano dbus-x11 tigervnc-tools tigervnc-common tigervnc-standalone-server \
-	exo-utils apt-utils python3-gi python3 tar zip unzip curl gpg git dialog wget locales language-pack-pt-base \
-	keyboard-configuration tzdata 
-
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
-rm -rf ~/.hushlogin' > $folder/root/.bash_profile 
+rm -rf ~/.hushlogin
+rm -rf ~/system-config.sh
+rm -rf ~/config-environment.sh
+rm -rf ~/start-environment.sh
+exit' > $folder/root/.bash_profile 
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-cp "$bin" "$PREFIX/bin/andistro_files/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
+cp "$bin" "$PREFIX/bin/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
+bash $bin
 bash $bin
