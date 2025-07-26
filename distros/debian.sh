@@ -124,6 +124,8 @@ chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+
 # Se não existir, será criado
 if [ ! -d "$folder/usr/share/backgrounds/" ];then
 	mkdir -p "$folder/usr/share/backgrounds/"
@@ -290,7 +292,7 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
-echo "$etc_timezone" | sudo tee /etc/timezone > /dev/null 2>&1
+etc_timezone=$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
 clear
