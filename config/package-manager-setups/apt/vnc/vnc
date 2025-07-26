@@ -5,7 +5,5 @@ WLAN_IP="localhost"
 LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 vncserver -localhost no -depth 24 -name remote-desktop $GEO :$PORT
 clear
 echo -e "${label_startvnc_desc} $USER\n\n
-${label_vncserver_localhost}\n
-$HOSTNAME:$PORT\n
-$WLAN_IP:$PORT\n\n
+${label_vncserver_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n
 $label_vncserver_password_forgot\n"
