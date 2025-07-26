@@ -290,8 +290,8 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
-echo "$system_timezone" | sudo tee /etc/timezone > /dev/null 2>&1
-sudo ln -sf "/usr/share/zoneinfo/$system_timezone" /etc/localtime
+echo "$etc_timezone" | sudo tee /etc/timezone > /dev/null 2>&1
+sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
 clear
 chmod +x /usr/local/bin/vnc

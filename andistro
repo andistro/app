@@ -294,7 +294,7 @@ case "$1" in
             echo "$distro_wait"
             andistro ${distro_update} 2>&1
             andistro alerta
-            export system_timezone="$system_timezone"
+            export etc_timezone="$system_timezone"
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
             clear
 
