@@ -233,15 +233,15 @@ case $CHOICE in
 	;;
 esac
 clear
-
+system_timezone="America/Fortaleza" # Defina o fuso horário padrão
 chmod +x $folder/root/config-environment.sh
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 echo '#!/bin/bash
-echo "$system_timezone" | sudo tee $folder/etc/timezone
-sudo ln -sf "$folder/usr/share/zoneinfo/$system_timezone" /etc/localtime
+echo "$system_timezone" | sudo tee /etc/timezone
+sudo ln -sf "/usr/share/zoneinfo/$system_timezone" /etc/localtime
 
 source "/usr/local/bin/global_var_fun.sh"
 #echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
