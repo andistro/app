@@ -408,7 +408,7 @@ case "$1" in
                     sleep 0.1
                     echo $((i * 2))
                 done
-            } | dialog --gauge "$label_distro_alert_timezone_desc oi\n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s oi" 10 60 0
+            } | dialog --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
         ;;
 
     *)
