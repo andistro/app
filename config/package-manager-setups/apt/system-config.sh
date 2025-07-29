@@ -2,7 +2,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 72 \
+show_progress_dialog steps-multi-label 73 \
   "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
   "${label_progress}" 'sudo apt purge snapd -y' \
   "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -41,6 +41,7 @@ show_progress_dialog steps-multi-label 72 \
   "${label_install_script_download}" 'sudo apt-get install font-manager --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt-get install evince -y' \
   "${label_install_script_download}" 'sudo apt-get install synaptic --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt-get install software-properties-common --no-install-recommends -y' \
   "${label_install_script_download}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_install_script_download}" 'sudo apt-get install gvfs-backends --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt-get install at-spi2-core -y' \
