@@ -49,7 +49,7 @@ total_steps=18  # Número total de etapas que você quer monitorar
 current_step=0
 
 #1 Atualiza os repositórios
-apt update
+apt update -qq -y > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.1
 
