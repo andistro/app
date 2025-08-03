@@ -1,5 +1,5 @@
 #!/bin/bash
-#XFCED4 start environment
+#XFCE4 start environment
 source "/usr/local/bin/global_var_fun.sh"
 source /etc/profile
 
@@ -16,10 +16,8 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 25 \
   'sleep 4' \
   'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg"' \
   "sed -i 's|/usr/share/backgrounds/xfce/xfce-verticals.png|/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg|' \"\$HOME/.config/xfce4/xfce-perchannel-xml/xfce4-desktop.xml\"" \
-  'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2"  -O ~/xfce4-panel.tar.bz2 > /dev/null 2>&1' \
-  'chmod +x ~/xfce4-panel.tar.bz2' \
-  'xfce4-panel-profiles load xfce4-panel.tar.bz2' \
-  'dbus-launch --exit-with-session xfce4-panel-profiles load xfce4-panel.tar.bz2' \
+  'xfce4-panel-profiles load /root/environment/xfce4/xfce4-panel.tar.bz2' \
+  'dbus-launch --exit-with-session xfce4-panel-profiles load /root/environment/xfce4/xfce4-panel.tar.bz2' \
   'sleep 4' \
   'firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID' \
   "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \

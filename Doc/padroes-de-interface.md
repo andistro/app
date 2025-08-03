@@ -126,7 +126,7 @@ show_progress_dialog tipo <NÚMERO_DE_ETAPAS> "<label>" 'comando'
 ### `steps-one-label`
 Usado quando você tem múltiplos comandos executados sequencialmente com um único rótulo.
 ```bash
-show_progress_dialog steps "<label 1>" 5 \
+show_progress_dialog steps-one-label "<label 1>" 5 \
 "sudo apt update" \
 "sudo apt full-upgrade -y" \
 "sudo apt autoremove -y" \
@@ -141,7 +141,7 @@ show_progress_dialog steps "<label 1>" 5 \
 Usado quando você tem múltiplos comandos executados sequencialmente com rótulos.
 
 ```bash
-show_progress_dialog steps 5 \
+show_progress_dialog steps-multi-label 5 \
 "<label 1>" "sudo apt update" \
 "<label 1>" "sudo apt full-upgrade -y" \
 "<label 2>" "sudo apt autoremove -y" \
