@@ -57,8 +57,8 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep -v '127.0.0.1' | 
 
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
-source "$PREFIX/bin/andistro_files/setup/config/locales/l10n_${system_icu_locale_code}.sh"
-source "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
+source "$PREFIX/bin/andistro_files/setup/config/locale/l10n_${system_icu_locale_code}.sh"
+source "/usr/local/bin/locale/l10n_${system_icu_locale_code}.sh"
 
 # Variáveis de idioma
 # Define o idioma do sistema baseado no arquivo de localização carregado

@@ -29,144 +29,142 @@ clear
 # Função para atualizar a barra de progresso
 # update_progress() precisa ser definido antes de ser usado
 update_progress() {
-    current_step=$1
-    total_steps=$2
+    local current_step=$1
+    local total_steps=$2
+    local percent=$((current_step * 100 / total_steps))
+    local bar_length=30
+    local filled_length=$((percent * bar_length / 100))
+    local empty_length=$((bar_length - filled_length))
 
-    percent=$((current_step * 100 / total_steps))
-    bar_length=30
-    filled_length=$((percent * bar_length / 100))
-    empty_length=$((bar_length - filled_length))
-
+    local filled_bar
+    local empty_bar
     filled_bar=$(printf "%${filled_length}s" | tr " " "=")
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
+    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
-
 
 total_steps=18  # Número total de etapas que você quer monitorar
 current_step=0
 
-{
+#1 Atualiza os repositórios
+apt update
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #1 Atualiza os repositórios
-    apt update
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#2 Instala o bash
+apt install --option=Dpkg::Options::="--force-confold" bash -y
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #2 Instala o bash
-    apt install --option=Dpkg::Options::="--force-confold" bash -y
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#3 Instala o openssl
+apt install --option=Dpkg::Options::="--force-confold" openssl -y
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #3 Instala o openssl
-    apt install --option=Dpkg::Options::="--force-confold" openssl -y
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#4 Atualiza os pacotes
+apt upgrade -y
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #4 Atualiza os pacotes
-    apt upgrade -y
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#5 Verifica se o termux-exec está instalado
+if ! dpkg -l | grep -qw termux-exec; then
+    apt install termux-exec -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #5 Verifica se o termux-exec está instalado
-    if ! dpkg -l | grep -qw termux-exec; then
-        apt install termux-exec -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#6 Verifica se o proot está instalado
+if ! dpkg -l | grep -qw proot; then
+    apt install proot -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #6 Verifica se o proot está instalado
-    if ! dpkg -l | grep -qw proot; then
-        apt install proot -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#7 Verifica se o wget está instalado
+if ! dpkg -l | grep -qw wget; then
+    apt install wget -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #7 Verifica se o wget está instalado
-    if ! dpkg -l | grep -qw wget; then
-        apt install wget -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#8 Verifica se o dialog está instalado
+if ! dpkg -l | grep -qw dialog; then
+    apt install dialog -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #8 Verifica se o dialog está instalado
-    if ! dpkg -l | grep -qw dialog; then
-        apt install dialog -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#9 Verifica se o tar está instalado
+if ! dpkg -l | grep -qw tar; then
+    apt install tar -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #9 Verifica se o tar está instalado
-    if ! dpkg -l | grep -qw tar; then
-        apt install tar -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#10 Verifica se o curl está instalado
+if ! dpkg -l | grep -qw curl; then
+    apt install curl -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #10 Verifica se o curl está instalado
-    if ! dpkg -l | grep -qw curl; then
-        apt install curl -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#11 Verifica se o unzip está instalado
+if ! dpkg -l | grep -qw unzip; then
+    apt install unzip -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #11 Verifica se o unzip está instalado
-    if ! dpkg -l | grep -qw unzip; then
-        apt install unzip -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#12 Verifica se o xz-utils está instalado
+if ! dpkg -l | grep -qw xz-utils; then
+    apt install xz-utils -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #12 Verifica se o xz-utils está instalado
-    if ! dpkg -l | grep -qw xz-utils; then
-        apt install xz-utils -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#13 Verifica se o debootstrap está instalado
+if ! dpkg -l | grep -qw debootstrap; then
+    apt install debootstrap -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #13 Verifica se o debootstrap está instalado
-    if ! dpkg -l | grep -qw debootstrap; then
-        apt install debootstrap -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#14 Verifica se o curl está instalado
+if ! dpkg -l | grep -qw dbus; then
+    apt install dbus -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #14 Verifica se o curl está instalado
-    if ! dpkg -l | grep -qw dbus; then
-        apt install dbus -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#15 Verifica se o curl está instalado
+if ! dpkg -l | grep -qw pv; then
+    apt install pv -y
+fi
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #15 Verifica se o curl está instalado
-    if ! dpkg -l | grep -qw pv; then
-        apt install pv -y
-    fi
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#16 Baixa os códigos
+curl -L -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" "https://github.com/andistro/app/archive/refs/tags/andistro_installer.zip"
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #16 Baixa os códigos
-    curl -L -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" "https://github.com/andistro/app/archive/refs/tags/andistro_installer.zip"
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#17 Extrai o pacote
+unzip -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" -d "$PREFIX/bin/andistro_files/downloads"
+find "$PREFIX/bin/andistro_files" -type f -exec chmod +x {} \;
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #17 Extrai o pacote
-    unzip -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" -d "$PREFIX/bin/andistro_files/downloads"
-    find "$PREFIX/bin/andistro_files" -type f -exec chmod +x {} \;
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
+#18 copia os pacotes e aplica o chmod +x
+cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
+cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
+cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
+cp "/data/data/com.termux/files/usr/etc/bash.bashrc" "$HOME"
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #18 copia os pacotes e aplica o chmod +x
-    cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
-    cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
-    cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
-    cp "/data/data/com.termux/files/usr/etc/bash.bashrc" "$HOME"
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    echo  # pular linha no fim
-}
+echo  # pular linha no fim
 
 clear
 

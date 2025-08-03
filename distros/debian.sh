@@ -128,12 +128,12 @@ show_progress_dialog steps-multi-label 13\
 	"${label_progress}" "mkdir -p \"\$folder/usr/share/backgrounds\"" \
 	"${label_progress}" "mkdir -p \"\$folder/usr/share/icons\"" \
 	"${label_progress}" "mkdir -p \"\$folder/root/.vnc\"" \
-	"${label_progress}" "mkdir -p \"\$folder/usr/local/bin/locales\"" \
+	"${label_progress}" "mkdir -p \"\$folder/usr/local/bin/locale\"" \
 	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/system-config.sh\" \"\$folder/root/system-config.sh\"" \
 	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/environment\" \"\$folder/root/\"" \
 	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/locale\" \"\$folder/root/\"" \
 	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/vnc\" \"\$folder/usr/local/bin\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/locale\" \"\$folder/usr/local/bin/locales\"" \
+	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/locale\" \"\$folder/usr/local/bin/locale\"" \
 	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh\" \"\$folder/usr/local/bin/global_var_fun.sh\"" \
 	"${label_wallpaper_download}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/wallpapers\" \"\$folder/usr/share/backgrounds\""
 
