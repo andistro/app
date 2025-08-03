@@ -54,17 +54,13 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #2 Verifica se o bash está instalado
-    if ! dpkg -l | grep -qw bash; then
-        apt install --option=Dpkg::Options::="--force-confold" bash -y
-    fi
+    #2 Instala o bash
+    apt install --option=Dpkg::Options::="--force-confold" bash -y
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #3 Verifica se o openssl está instalado
-    if ! dpkg -l | grep -qw openssl; then
-        apt install --option=Dpkg::Options::="--force-confold" openssl -y
-    fi
+    #3 Instala o openssl
+    apt install --option=Dpkg::Options::="--force-confold" openssl -y
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
