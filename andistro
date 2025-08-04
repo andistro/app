@@ -166,8 +166,6 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #19 Adicionando uma nova opção no teclado do Termux
-    # extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
-    #               ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
     sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
     sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
     termux-reload-settings
