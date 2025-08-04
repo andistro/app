@@ -161,7 +161,7 @@ current_step=0
     #18 copia os pacotes e aplica o chmod +x
     cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
     cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
-    cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
+    cp "$HOME/andistro" "$PREFIX/bin"
     cp "/data/data/com.termux/files/usr/etc/bash.bashrc" "$HOME"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
