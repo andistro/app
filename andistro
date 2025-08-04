@@ -1,15 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #rm -rf * && rm -rf "$PREFIX/bin/andistro_files/" && rm -rf "$PREFIX/bin/andistro"
 #extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
-sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['KEYBOARD','ESC','/','-','HOME','UP','END','PGUP'], \\\\|" ~/.termux/termux.properties
-sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|               ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
-termux-reload-settings
-
 
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
     mkdir -p "$PREFIX/bin/andistro_files/downloads/"
-    mkdir -p "$PREFIX/bin/andistro_files/setup/"
     mkdir -p "$PREFIX/bin/andistro_files/boot/"
 fi
 
@@ -18,6 +13,7 @@ system_icu_locale_code=$(getprop persist.sys.locale)
 if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
 fi
+
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir "$HOME/storage/shared/termux/"
@@ -50,130 +46,154 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=18  # Número total de etapas que você quer monitorar
+total_steps=19  # Número total de etapas que você quer monitorar
 current_step=0
 
-#1 Atualiza os repositórios
-apt update -qq -y > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+{
+    #1 Atualiza os repositórios
+    apt update -qq -y > /dev/null 2>&1
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#2 Instala o bash
-apt install --option=Dpkg::Options::="--force-confold" bash -y
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #2 Instala o bash
+    apt install --option=Dpkg::Options::="--force-confold" bash -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#3 Instala o openssl
-apt install --option=Dpkg::Options::="--force-confold" openssl -y
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #3 Instala o openssl
+    apt install --option=Dpkg::Options::="--force-confold" openssl -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#4 Atualiza os pacotes
-apt upgrade -y
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #4 Atualiza os pacotes
+    apt upgrade -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#5 Verifica se o termux-exec está instalado
-if ! dpkg -l | grep -qw termux-exec; then
-    apt install termux-exec -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #5 Verifica se o termux-exec está instalado
+    if ! dpkg -l | grep -qw termux-exec; then
+        apt install termux-exec -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#6 Verifica se o proot está instalado
-if ! dpkg -l | grep -qw proot; then
-    apt install proot -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #6 Verifica se o proot está instalado
+    if ! dpkg -l | grep -qw proot; then
+        apt install proot -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#7 Verifica se o wget está instalado
-if ! dpkg -l | grep -qw wget; then
-    apt install wget -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #7 Verifica se o wget está instalado
+    if ! dpkg -l | grep -qw wget; then
+        apt install wget -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#8 Verifica se o dialog está instalado
-if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #8 Verifica se o dialog está instalado
+    if ! dpkg -l | grep -qw dialog; then
+        apt install dialog -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#9 Verifica se o tar está instalado
-if ! dpkg -l | grep -qw tar; then
-    apt install tar -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #9 Verifica se o tar está instalado
+    if ! dpkg -l | grep -qw tar; then
+        apt install tar -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#10 Verifica se o curl está instalado
-if ! dpkg -l | grep -qw curl; then
-    apt install curl -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #10 Verifica se o curl está instalado
+    if ! dpkg -l | grep -qw curl; then
+        apt install curl -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#11 Verifica se o unzip está instalado
-if ! dpkg -l | grep -qw unzip; then
-    apt install unzip -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #11 Verifica se o unzip está instalado
+    if ! dpkg -l | grep -qw unzip; then
+        apt install unzip -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#12 Verifica se o xz-utils está instalado
-if ! dpkg -l | grep -qw xz-utils; then
-    apt install xz-utils -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #12 Verifica se o xz-utils está instalado
+    if ! dpkg -l | grep -qw xz-utils; then
+        apt install xz-utils -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#13 Verifica se o debootstrap está instalado
-if ! dpkg -l | grep -qw debootstrap; then
-    apt install debootstrap -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #13 Verifica se o debootstrap está instalado
+    if ! dpkg -l | grep -qw debootstrap; then
+        apt install debootstrap -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#14 Verifica se o curl está instalado
-if ! dpkg -l | grep -qw dbus; then
-    apt install dbus -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #14 Verifica se o curl está instalado
+    if ! dpkg -l | grep -qw dbus; then
+        apt install dbus -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#15 Verifica se o curl está instalado
-if ! dpkg -l | grep -qw pv; then
-    apt install pv -y
-fi
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #15 Verifica se o curl está instalado
+    if ! dpkg -l | grep -qw pv; then
+        apt install pv -y
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#16 Baixa os códigos
-curl -L -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" "https://github.com/andistro/app/archive/refs/tags/andistro_installer.zip"
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #16 Baixa os códigos
+    curl -L -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" "https://github.com/andistro/app/archive/refs/tags/andistro_installer.zip"
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#17 Extrai o pacote
-unzip -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" -d "$PREFIX/bin/andistro_files/downloads"
-find "$PREFIX/bin/andistro_files" -type f -exec chmod +x {} \;
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #17 Extrai o pacote
+    unzip -o "$PREFIX/bin/andistro_files/downloads/andistro_installer.zip" -d "$PREFIX/bin/andistro_files/downloads"
+    find "$PREFIX/bin/andistro_files" -type f -exec chmod +x {} \;
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-#18 copia os pacotes e aplica o chmod +x
-cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
-cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
-cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
-cp "/data/data/com.termux/files/usr/etc/bash.bashrc" "$HOME"
-((current_step++))
-update_progress "$current_step" "$total_steps"; sleep 0.1
+    #18 copia os pacotes e aplica o chmod +x
+    cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
+    cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
+    cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
+    cp "/data/data/com.termux/files/usr/etc/bash.bashrc" "$HOME"
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-echo  # pular linha no fim
+    #19 Adicionando uma nova opção no teclado do Termux
+    # extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
+    #               ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
+    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
+    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+    termux-reload-settings
+    touch "$HOME/.termux_properties_done"
+    echo -e "#!/bin/bash\nandistro\n.bash_profile" > "$HOME/.bash_profile"
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
 
-clear
+    echo  # pular linha no fim
+}
+
 
 source "$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh"
+
+if [ ! -f "$HOME/.termux_properties_done" ]; then
+    {
+        for i in {1..100}; do
+            sleep 0.1
+            echo $((i * 2))
+        done
+    } | dialog --gauge "Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar." 10 60 0
+    exit
+fi
+
+rm -rf "$HOME/.termux_properties_done"
 clear
 #=============================================================================================
 # COMANDOS
