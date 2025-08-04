@@ -179,7 +179,7 @@ current_step=0
         touch "$HOME/.termux_properties_done"
 
         # Cria .bash_profile
-        echo -e "#!/bin/bash\nandistro\n.bash_profile" > "$HOME/.bash_profile"
+        echo -e "#!/bin/bash\nandistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
     fi
 
     ((current_step++))
