@@ -167,7 +167,7 @@ current_step=0
 
     #19 Adicionando uma nova opção no teclado do Termux
     # Verifica se a configuração já está presente (ignora espaços extras)
-    if ! grep -q "extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]" ~/.termux/termux.properties; then
+    if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'" ~/.termux/termux.properties; then
         # Aplica os sed
         sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
         sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
@@ -197,7 +197,7 @@ if [ -f "$HOME/.termux_properties_done" ]; then
             sleep 0.1
             echo "$i"
         done
-    } | dialog --gauge "Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar." 10 60 0
+    } | dialog --gauge "Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)" 10 60 0
 
     rm -f "$HOME/.termux_properties_done"
     sleep 1
