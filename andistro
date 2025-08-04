@@ -161,16 +161,27 @@ current_step=0
     #18 copia os pacotes e aplica o chmod +x
     cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/config" "$PREFIX/bin/andistro_files/setup"
     cp -r "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/distros" "$PREFIX/bin/andistro_files/setup"
-    cp "$HOME/andistro" "$PREFIX/bin"
+    cp "$PREFIX/bin/andistro_files/downloads/app-andistro_installer/andistro" "$PREFIX/bin"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #19 Adicionando uma nova opção no teclado do Termux
-    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
-    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-    termux-reload-settings
-    touch "$HOME/.termux_properties_done"
-    echo -e "#!/bin/bash\nandistro\n.bash_profile" > "$HOME/.bash_profile" 
+    # Verifica se a configuração já está presente (ignora espaços extras)
+    if ! grep -q "extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]" ~/.termux/termux.properties; then
+        # Aplica os sed
+        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]|" ~/.termux/termux.properties
+        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+        # Recarrega Termux settings
+        termux-reload-settings
+
+        # Marca que foi configurado
+        touch "$HOME/.termux_properties_done"
+
+        # Cria .bash_profile
+        echo -e "#!/bin/bash\nandistro\n.bash_profile" > "$HOME/.bash_profile"
+    fi
+
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -184,12 +195,13 @@ if [ -f "$HOME/.termux_properties_done" ]; then
     {
         for i in {1..100}; do
             sleep 0.1
-            echo $((i * 2))
+            echo "$i"
         done
     } | dialog --gauge "Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar." 10 60 0
 
     rm -f "$HOME/.termux_properties_done"
-    exit
+    sleep 1
+    kill -9 $PPID
 fi
 
 clear
