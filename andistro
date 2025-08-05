@@ -26,12 +26,12 @@ if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOAR
         touch "$HOME/.termux_properties_done"
 
         # Cria .bash_profile
-        echo -e "#!/bin/bash\nandistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+        echo -e "#!/bin/bash\nbash andistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
 fi
 
 if [ -f "$HOME/.termux_properties_done" ]; then
     {
-        for i in {1..100}; do
+        for i in {1..200}; do
             sleep 0.1
             echo "$i"
         done
