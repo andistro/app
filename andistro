@@ -1,6 +1,48 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #rm -rf * && rm -rf "$PREFIX/bin/andistro_files/" && rm -rf "$PREFIX/bin/andistro"
 #extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
+system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)
+
+if [ "$system_icu_locale_code" = "pt-BR" ]; then
+    info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
+    # comando_para_pt_br
+#elif [ "$system_icu_locale_code" = "pt-PT" ]; then
+#    echo "Executando comando para pt-PT"
+#    # comando_para_pt_pt
+else
+    info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments. Start Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
+    # comando_para_outros
+fi
+
+if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'" ~/.termux/termux.properties; then
+        # Aplica os sed
+        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+        # Recarrega Termux settings
+        termux-reload-settings
+
+        # Marca que foi configurado
+        touch "$HOME/.termux_properties_done"
+
+        # Cria .bash_profile
+        echo -e "#!/bin/bash\nandistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+fi
+
+if [ -f "$HOME/.termux_properties_done" ]; then
+    {
+        for i in {1..100}; do
+            sleep 0.1
+            echo "$i"
+        done
+    } | dialog --gauge "${info_extra_key}" 10 60 0
+
+    rm -f "$HOME/.termux_properties_done"
+    sleep 1
+    kill -9 $PPID
+fi
+
+
 
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
@@ -46,7 +88,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=19  # Número total de etapas que você quer monitorar
+total_steps=18  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
@@ -165,44 +207,10 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #19 Adicionando uma nova opção no teclado do Termux
-    # Verifica se a configuração já está presente (ignora espaços extras)
-    if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-        # Recarrega Termux settings
-        termux-reload-settings
-
-        # Marca que foi configurado
-        touch "$HOME/.termux_properties_done"
-
-        # Cria .bash_profile
-        echo -e "#!/bin/bash\nandistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
-    fi
-
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
     echo  # pular linha no fim
 }
 
-
 source "$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh"
-
-if [ -f "$HOME/.termux_properties_done" ]; then
-    {
-        for i in {1..100}; do
-            sleep 0.1
-            echo "$i"
-        done
-    } | dialog --gauge "Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)" 10 60 0
-
-    rm -f "$HOME/.termux_properties_done"
-    sleep 1
-    kill -9 $PPID
-fi
 
 clear
 #=============================================================================================
