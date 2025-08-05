@@ -28,7 +28,7 @@ if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOAR
         touch "$HOME/.termux_properties_done"
 
         # Cria .bash_profile
-        echo -e "#!/bin/bash\nbash andistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+        echo -e "#!/bin/bash\nbash andistro update\nrm -rf .bash_profile" > "$HOME/.bash_profile"
 fi
 
 if [ -f "$HOME/.termux_properties_done" ]; then
@@ -45,15 +45,38 @@ if [ -f "$HOME/.termux_properties_done" ]; then
     exit
 fi
 
-if [ ! -f "$PREFIX/bin/andistro" ];then
-    bash $HOME/andistro update
-fi
-
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
 
 # Verifica os argumentos passados ao script
+if [ -z "$1" ]; then
+    source "$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh"
+    # Caso nenhum argumento seja passado, exibe a mensagem de instrução
+    echo "$distro_desc_line_1"
+    echo ""
+    echo "$distro_desc_line_2"
+    echo "$distro_desc_line_3"
+    echo " "
+    echo "$distro_desc_line_4"
+    echo "$distro_desc_line_5"
+    echo " "
+    echo "$distro_desc_line_6"
+    echo "$distro_desc_line_7"
+    echo " "
+    echo "$distro_desc_line_8"
+    echo "$distro_desc_line_9"
+    echo "$distro_desc_line_10"
+    echo "$distro_desc_line_11"
+    echo "$distro_desc_line_12"
+    echo " "
+    echo "$distro_desc_line_13"
+    echo "   debian"
+    echo "   ubuntu"
+exit 0
+
+fi
+
 case "$1" in
     update)
         if [ -z "$2" ]; then
@@ -372,8 +395,7 @@ case "$1" in
         ;;
 
     *)
-        #echo "$distro_command_not_found $1"
-        source "$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh"
+        echo "$distro_command_not_found $1"
         echo ""
         echo "$distro_desc_line_1"
         echo ""
