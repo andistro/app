@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh"
+source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 bin="start-debian.sh"
 codinome="bookworm"
 folder="debian-bookworm"
@@ -76,7 +76,7 @@ if [ "$first" != 1 ];then
 		echo "unknown architecture"; exit 1 ;;
 	esac
 	error_code="DW001deb"
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}_${archurl}/installer.tar.xz"
+	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/dists/${archurl}/debian/${codinome}/installer.tar.xz"
 	sleep 2
 	show_progress_dialog extract "${label_debian_download_extract}" "$HOME/$folder.tar.xz" 
 	sleep 2
@@ -110,8 +110,7 @@ command+=" /usr/bin/env -i"
 command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
-#command+=" LANG=C.UTF-8"
-command+=" LANG=$language_transformed.UTF-8"
+command+=" LANG=C.UTF-8"
 command+=" /bin/bash --login"
 com="\$@"
 if [ -z "\$1" ];then
@@ -120,27 +119,62 @@ else
     \$command -c "\$com"
 fi
 EOM
-chmod +x $bin
 
-show_progress_dialog steps-multi-label 13\
-	"${label_progress}" "echo \"127.0.0.1 localhost localhost\" > \$folder/etc/hosts" \
-	"${label_progress}" "echo \"\$system_timezone\" | tee \$folder/etc/timezone > /dev/null 2>&1" \
-	"${label_progress}" "mkdir -p \"\$folder/usr/share/backgrounds\"" \
-	"${label_progress}" "mkdir -p \"\$folder/usr/share/icons\"" \
-	"${label_progress}" "mkdir -p \"\$folder/root/.vnc\"" \
-	"${label_progress}" "mkdir -p \"\$folder/usr/local/bin/locale\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/system-config.sh\" \"\$folder/root/system-config.sh\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/environment\" \"\$folder/root/\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/locale\" \"\$folder/root/\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/package-manager-setups/apt/vnc\" \"\$folder/usr/local/bin\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/locale\" \"\$folder/usr/local/bin/locale\"" \
-	"${label_progress}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/global_var_fun.sh\" \"\$folder/usr/local/bin/global_var_fun.sh\"" \
-	"${label_wallpaper_download}" "cp -r \"\$PREFIX/bin/andistro_files/setup/config/wallpapers\" \"\$folder/usr/share/backgrounds\""
+sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
+error_code="LG001br"
+show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+sleep 2
+chmod +x $folder/root/locale_${language_selected}.sh
 
+echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
-find "$folder/usr/local/bin/" -type f -exec chmod +x {} \;
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+
+# Se não existir, será criado
+if [ ! -d "$folder/usr/share/backgrounds/" ];then
+	mkdir -p "$folder/usr/share/backgrounds/"
+	echo "pasta criada"
+fi
+
+if [ ! -d "$folder/usr/share/icons/" ];then
+	mkdir -p "$folder/usr/share/icons/"
+	echo "pasta criada"
+fi
+
+if [ ! -d "$folder/root/.vnc/" ];then
+	mkdir -p $folder/root/.vnc/
+	echo "pasta criada"
+fi
+
+show_progress_dialog wget-labeled "${label_progress}" 10 \
+	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
+	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
+
+chmod +x $folder/usr/local/bin/vnc
+chmod +x $folder/usr/local/bin/vncpasswd
+chmod +x $folder/usr/local/bin/startvnc
+chmod +x $folder/usr/local/bin/stopvnc
+chmod +x $folder/usr/local/bin/startvncserver
+chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
+chmod +x "$folder/root/system-config.sh"
 sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
+
+#Copiando arquivos para dentro do linux
+
+#echo "fixing shebang of $bin"
+#termux-fix-shebang $bin
+#echo "making $bin executable"
+chmod +x $bin
 
 export USER=$(whoami)
 HEIGHT=0
@@ -161,15 +195,18 @@ CHOICE=$(dialog --clear \
 case $CHOICE in
 	1)	
 		echo "LXDE UI"
-		environment_selected="lxde"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
+		sleep 2
 		;;
 	2)	
 		echo "XFCE UI"
-		environment_selected="xfce4"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		sleep 2
 		;;
 	3)
 		echo "Gnome UI"
-		environment_selected="gnome"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/gnome/config.sh"
+		sleep 2
 		# Parte da resolução do problema do gnome e do systemd
 		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
 			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
@@ -199,29 +236,25 @@ case $CHOICE in
 		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket
 		sed -i "\|command+=\" -b $folder/root:/dev/shm\"|a command+=\" -b system_bus_socket:/run/dbus/system_bus_socket\"" $bin
 		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
-		
 	;;
 esac
 clear
-export environment_selected
+chmod +x $folder/root/config-environment.sh
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
-#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security stable-security main contrib non-free
-#deb http://deb.debian.org/debian stable-updates main contrib non-free
-#deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
+echo '#!/bin/bash
 
-echo "#!/bin/bash
-export LC_ALL=$language_transformed.UTF-8
-export LANG=$language_transformed.UTF-8
-export LANG=$language_transformed.UTF-8
+source "/usr/local/bin/global_var_fun.sh"
+echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security stable-security main contrib non-free
+deb http://deb.debian.org/debian stable-updates main contrib non-free
+deb http://ftp.debian.org/debian buster main
+deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
-source \"/usr/local/bin/global_var_fun.sh\"
+echo "${label_alert_autoupdate_for_u}"
 
-echo ${label_alert_autoupdate_for_u}
 
 #======================================================================================================
 # global_var_fun.sh == update_progress() {}
@@ -267,23 +300,32 @@ etc_timezone=$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
+clear
+chmod +x /usr/local/bin/vnc
+chmod +x /usr/local/bin/vncpasswd
+chmod +x /usr/local/bin/startvnc
+chmod +x /usr/local/bin/stopvnc
+chmod +x /usr/local/bin/startvncserver
 
-
-bash ~/locale/locale_${language_selected}.sh
+bash ~/locale_${system_icu_locale_code}.sh
 
 bash ~/system-config.sh
 
-bash ~/environment/${environment_selected}/config.sh
-if [ ! -e "~/environment/${environment_selected}/start-environment.sh" ]; then
+clear
 
-# limpeza final
+bash ~/config-environment.sh
+
+if [ ! -e "~/start-environment.sh" ];then
+	bash ~/start-environment.sh
+fi
+
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-exit" > "$folder/root/.bash_profile"
+exit' > $folder/root/.bash_profile 
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin

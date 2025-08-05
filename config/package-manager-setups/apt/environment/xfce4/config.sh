@@ -2,7 +2,7 @@
 #XFCE4 config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 11 \
      'sudo apt-get install xfce4 --no-install-recommends -y' \
      'sudo apt-get install xfce4-goodies --no-install-recommends -y' \
      'sudo apt-get install xfce4-terminal --no-install-recommends -y' \
@@ -19,6 +19,8 @@ EOF
 "' \
      'chmod +x ~/.vnc/xstartup' \
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
+     "wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/xfce4/start-environment.sh'" \
+     '[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh' \
      'sudo dpkg --configure -a' \
      'sudo apt --fix-broken install -y'
 sleep 2

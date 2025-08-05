@@ -1,4 +1,5 @@
 #!/bin/bash
+export extralink="https://raw.githubusercontent.com/andistro/app/main"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
 # detector de gerenciadores de pacotes
@@ -57,17 +58,19 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep -v '127.0.0.1' | 
 
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
-
-if [ -f "$PREFIX/bin/andistro_files/setup/config/locale/l10n_${system_icu_locale_code}.sh" ]; then
-    source "$PREFIX/bin/andistro_files/setup/config/locale/l10n_${system_icu_locale_code}.sh"
-elif [ -f "/usr/local/bin/locale/l10n_${system_icu_locale_code}.sh" ]; then
-    source "/usr/local/bin/locale/l10n_${system_icu_locale_code}.sh"
+if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ]; then
+    echo "Solicitando a fonte $PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+    clear
+    chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+    source "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+elif [ -f "/usr/local/bin/l10n_${system_icu_locale_code}.sh" ]; then
+    echo "Solicitando a fonte /usr/local/bin/l10n_${system_icu_locale_code}.sh"
+    clear
+    chmod +x "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
+    source "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
 else
-    echo "Arquivo de localização não encontrado para '$system_icu_locale_code'"
-    # opcional: source um fallback, ex:
-    # source "/caminho/padrao/l10n_default.sh"
+    echo "Arquivo de localização não encontrado para o código: $system_icu_locale_code"
 fi
-
 
 # Variáveis de idioma
 # Define o idioma do sistema baseado no arquivo de localização carregado

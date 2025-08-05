@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 # GNOME Config
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 16 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
 	'sudo apt-get install gdm3 --no-install-recommends -y' \
 	'sudo apt-get install policykit-1 --no-install-recommends -y' \
 	'sudo apt-get install gnome-session --no-install-recommends -y' \
@@ -22,6 +22,8 @@ EOF
 "' \
 	'chmod +x ~/.vnc/xstartup' \
 	"echo 'export DISPLAY=":1"' >> /etc/profile" \
+	"wget --tries=20 '${extralink}/config/package-manager-setups/apt/environment/gnome/start-environment.sh'" \
+	"[ -f ~/start-environment.sh ] && chmod +x ~/start-environment.sh" \
 	"sudo dpkg --configure -a" \
 	"sudo apt --fix-broken install -y" 
 sleep 2
