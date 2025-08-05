@@ -3,14 +3,31 @@
 #extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)
 
+termux-setup-storage
+
+if [ ! -d "$PREFIX/bin/andistro_files/" ];then
+	mkdir -p "$PREFIX/bin/andistro_files/"
+    mkdir -p "$PREFIX/bin/andistro_files/downloads/"
+    mkdir -p "$PREFIX/bin/andistro_files/boot/"
+fi
+
+# Log de erros
+if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
+    mkdir "$HOME/storage/shared/termux/"
+    mkdir "$HOME/storage/shared/termux/andistro"
+    mkdir "$HOME/storage/shared/termux/andistro/logs"
+fi
+
+clear
+
 if [ "$system_icu_locale_code" = "pt-BR" ]; then
-    info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
+    info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática.\nInicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
     # comando_para_pt_br
 #elif [ "$system_icu_locale_code" = "pt-PT" ]; then
 #    echo "Executando comando para pt-PT"
 #    # comando_para_pt_pt
 else
-    info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments. Start Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
+    info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments.\nStart Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
     # comando_para_outros
 fi
 
@@ -40,30 +57,12 @@ if [ -f "$HOME/.termux_properties_done" ]; then
     rm -f "$HOME/.termux_properties_done"
     sleep 1
     kill -9 $PPID
+    sleep 10
 fi
 
 
 
-if [ ! -d "$PREFIX/bin/andistro_files/" ];then
-	mkdir -p "$PREFIX/bin/andistro_files/"
-    mkdir -p "$PREFIX/bin/andistro_files/downloads/"
-    mkdir -p "$PREFIX/bin/andistro_files/boot/"
-fi
 
-system_icu_locale_code=$(getprop persist.sys.locale)
-
-if [ ! -d "$HOME/storage" ];then
-    termux-setup-storage
-fi
-
-# Log de erros
-if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
-    mkdir "$HOME/storage/shared/termux/"
-    mkdir "$HOME/storage/shared/termux/andistro"
-    mkdir "$HOME/storage/shared/termux/andistro/logs"
-fi
-
-clear
 
 # ==============================================================================================
 # GLOBAL
