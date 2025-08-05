@@ -7,7 +7,16 @@ fi
 
 system_icu_locale_code=$(getprop persist.sys.locale)
 
-apt update > /dev/null 2>&1 && apt upgrade -y
+if [ "$system_icu_locale_code" = "pt-BR" ]; then
+    info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática.\nInicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
+    # comando_para_pt_br
+#elif [ "$system_icu_locale_code" = "pt-PT" ]; then
+#    echo "Executando comando para pt-PT"
+#    # comando_para_pt_pt
+else
+    info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments.\nStart Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
+
+fi
 
 if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
@@ -47,6 +56,26 @@ total_steps=14  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
+    # Atualiza os repositórios
+    apt update
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #Instala o bash
+    apt install --option=Dpkg::Options::="--force-confold" bash -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #Instala o openssl
+    apt install --option=Dpkg::Options::="--force-confold" openssl -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #Atualiza os pacotes
+    apt upgrade -y
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
     #1 Verifica se o termux-exec está instalado
     if ! dpkg -l | grep -qw termux-exec; then
         apt install termux-exec -y
@@ -154,6 +183,35 @@ clear
 
 chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+
+
+if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'" ~/.termux/termux.properties; then
+        # Aplica os sed
+        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+        # Recarrega Termux settings
+        termux-reload-settings
+
+        # Marca que foi configurado
+        touch "$HOME/.termux_properties_done"
+
+        # Cria .bash_profile
+        echo -e "#!/bin/bash\nbash andistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+fi
+
+if [ -f "$HOME/.termux_properties_done" ]; then
+    {
+        for i in {1..100}; do
+            sleep 0.1
+            echo "$i"
+        done
+    } | dialog --gauge "${info_extra_key}" 10 100 0
+
+    rm -f "$HOME/.termux_properties_done"
+    sleep 1
+    kill -9 $PPID
+fi
 clear
 #=============================================================================================
 # COMANDOS

@@ -76,7 +76,7 @@ if [ "$first" != 1 ];then
 		echo "unknown architecture"; exit 1 ;;
 	esac
 	error_code="DW001deb"
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/dists/${archurl}/debian/${codinome}/installer.tar.xz"
+	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}_${archurl}/installer.tar.xz"
 	sleep 2
 	show_progress_dialog extract "${label_debian_download_extract}" "$HOME/$folder.tar.xz" 
 	sleep 2
