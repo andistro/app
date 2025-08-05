@@ -3,7 +3,9 @@
 #extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)
 
-termux-setup-storage
+if [ ! -d "$HOME/storage" ];then
+    termux-setup-storage
+fi
 
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
