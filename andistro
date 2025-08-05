@@ -5,19 +5,16 @@ system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)
 
 if [ "$system_icu_locale_code" = "pt-BR" ]; then
     info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática.\nInicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
-    info_termux-setup-storage="Permita o acesso ao armazenamento"
+    info_termux_setup_storage="Permita o acesso ao armazenamento"
     # comando_para_pt_br
 #elif [ "$system_icu_locale_code" = "pt-PT" ]; then
 #    echo "Executando comando para pt-PT"
 #    # comando_para_pt_pt
 else
     info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments.\nStart Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
-    info_termux-setup-storage="Allow access to storage"
+    info_termux_setup_storage="Allow access to storage"
     # comando_para_outros
 fi
-
-
-
 
 if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
@@ -26,7 +23,7 @@ if [ ! -d "$HOME/storage" ];then
             sleep 0.15
             echo "$i"
         done
-    } | dialog --gauge "${info_termux-setup-storage}" 10 60 0
+    } | dialog --gauge "${info_termux_setup_storage}" 10 60 0
 
 fi
 
