@@ -28,7 +28,7 @@ if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOAR
         touch "$HOME/.termux_properties_done"
 
         # Cria .bash_profile
-        echo -e "#!/bin/bash\nbash andistro update\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+        echo -e "#!/bin/bash\nbash andistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
 fi
 
 if [ -f "$HOME/.termux_properties_done" ]; then
@@ -43,6 +43,10 @@ if [ -f "$HOME/.termux_properties_done" ]; then
     sleep 1
     kill -9 $PPID
     exit
+fi
+
+if [ ! -f "$PREFIX/bin/andistro" ];then
+    bash $HOME/andistro update
 fi
 
 #=============================================================================================
