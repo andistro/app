@@ -23,7 +23,7 @@ if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
     {
         for i in {1..100}; do
-            sleep 0.1
+            sleep 0.15
             echo "$i"
         done
     } | dialog --gauge "${info_termux-setup-storage}" 10 60 0
