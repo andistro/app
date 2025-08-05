@@ -5,12 +5,14 @@ system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)
 
 if [ "$system_icu_locale_code" = "pt-BR" ]; then
     info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática.\nInicie o Termux assim que fechar.\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
+    info_setup_storage="Permita o acesso ao armazenamento"
     # comando_para_pt_br
 #elif [ "$system_icu_locale_code" = "pt-PT" ]; then
 #    echo "Executando comando para pt-PT"
 #    # comando_para_pt_pt
 else
     info_extra_key="You will need to restart the application.\nIt will close automatically in a few moments.\nStart Termux as soon as it closes.\nIf the message [Process completed (signal 9) - press Enter] appears, click on the message and then press Enter (↵)"
+
     # comando_para_outros
 fi
 
@@ -35,7 +37,7 @@ if [ -f "$HOME/.termux_properties_done" ]; then
             sleep 0.1
             echo "$i"
         done
-    } | dialog --gauge "${info_extra_key}" 10 60 0
+    } | dialog --gauge "${info_extra_key}" 10 100 0
 
     rm -f "$HOME/.termux_properties_done"
     sleep 1
@@ -86,6 +88,12 @@ case "$1" in
         if [ -z "$2" ]; then
             if [ ! -d "$HOME/storage" ];then
                 termux-setup-storage
+                {
+                    for i in {1..100}; do
+                        sleep 0.1
+                        echo "$i"
+                    done
+                } | dialog --gauge "${info_setup_storage}" 10 60 0
             fi
 
             if [ ! -d "$PREFIX/bin/andistro_files/" ];then
@@ -100,6 +108,8 @@ case "$1" in
                 mkdir "$HOME/storage/shared/termux/andistro"
                 mkdir "$HOME/storage/shared/termux/andistro/logs"
             fi
+
+           
             # ==============================================================================================
             # GLOBAL
             # ==============================================================================================
