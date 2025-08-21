@@ -2,10 +2,11 @@
 #LXDE config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 10 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 11 \
      'sudo apt-get install lxde-core --no-install-recommends -y' \
      'sudo apt-get install lxterminal --no-install-recommends -y' \
      'sudo apt-get install lxappearance --no-install-recommends -y' \
+     'sudo apt-get install obconf --no-install-recommends -y' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 [ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources

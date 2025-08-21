@@ -53,7 +53,7 @@ else
     system_architecture=$(dpkg --print-architecture)
 fi
 
-wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}') # IP da rede 
+wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
 
 
 # PACOTE DE IDIOMAS ==================================================================================
