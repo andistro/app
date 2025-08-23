@@ -333,4 +333,4 @@ cp "$bin" "$PREFIX/bin/${bin%.sh}" #isso permite que o comando seja iniciado sem
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
 bash $bin
-#bash $bin
+bash $bin
