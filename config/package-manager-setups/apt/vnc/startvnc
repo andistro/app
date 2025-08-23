@@ -56,3 +56,4 @@ GEO="-geometry $custom" PORT=$port vnc
 esac
 
 bash --login
+
