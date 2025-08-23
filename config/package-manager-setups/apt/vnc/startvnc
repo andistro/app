@@ -1,6 +1,8 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
+stopvnc
+
 export USER=$(whoami)
 HEIGHT=0
 WIDTH=0
