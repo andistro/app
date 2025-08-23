@@ -1,4 +1,6 @@
 #!/bin/bash
+stopvnc
+
 source "/usr/local/bin/global_var_fun.sh"
 
 export USER=$(whoami)
