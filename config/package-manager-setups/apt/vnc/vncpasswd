@@ -7,7 +7,7 @@ while true; do
     msgbox_status=$?
 
     if [ "$msgbox_status" -eq 0 ]; then
-        PASSWORD=$(dialog --title "oi" --insecure --passwordbox "$label_vnc_password_input" 0 0 3>&1 1>&2 2>&3)
+        PASSWORD=$(dialog --insecure --passwordbox "$label_vnc_password_input" 0 0 3>&1 1>&2 2>&3)
         if [ $? -eq 0 ]; then
             break
         else
