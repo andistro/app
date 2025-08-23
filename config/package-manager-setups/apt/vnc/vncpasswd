@@ -3,11 +3,11 @@
 source "/usr/local/bin/global_var_fun.sh"
 
 while true; do
-    dialog --msgbox "Toque no botão para abrir o teclado (⌨). Caso não faça isso, a próxima etapa terá erro. Depois pressione OK." 0 0
+    dialog --msgbox "$label_vnc_password_input_alert" 0 0
     msgbox_status=$?
 
     if [ "$msgbox_status" -eq 0 ]; then
-        PASSWORD=$(dialog --title "oi" --insecure --passwordbox "teste amigo" 0 0 3>&1 1>&2 2>&3)
+        PASSWORD=$(dialog --title "oi" --insecure --passwordbox "$label_vnc_password_input" 0 0 3>&1 1>&2 2>&3)
         if [ $? -eq 0 ]; then
             break
         else
@@ -16,14 +16,14 @@ while true; do
         fi
     else
         clear
-        echo "Tentando novamente... (status=$msgbox_status)"
+        echo "$label_retry (status=$msgbox_status)"
         sleep 0.5
     fi
 done
 
 # Salvar a senha no arquivo apropriado
 if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-    dialog --title "Erro" --msgbox "Falha ao salvar a senha!" 0 0
+    dialog --title "$label_error" --msgbox "$label_vnc_password_save_failed" 0 0
     exit 1
 fi
 
