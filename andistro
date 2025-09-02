@@ -173,20 +173,15 @@ clear
 chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 
-if ! grep -q "extra-keys *= *\[\['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+if ! grep -Fq "extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+    # Aplica os sed
+    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
 
-        # Recarrega Termux settings
-        termux-reload-settings
-
-        # Marca que foi configurado
-#        touch "$HOME/.termux_properties_done"
-
-        # Cria .bash_profile
-#        echo -e "#!/bin/bash\nbash andistro\nrm -rf .bash_profile" > "$HOME/.bash_profile"
+    # Recarrega Termux settings
+    termux-reload-settings
 fi
+
 
 #if [ "$system_icu_locale_code" = "pt-BR" ]; then
 #    info_extra_key="Será necessário reiniciar o aplicativo. \nEm alguns instantes será fechado de forma automática. Inicie o Termux assim que fechar.\n\nCaso apareça a mensagem: [Process completed (signal 9) - press Enter], clique na mensagem e depois no Enter (↵)"
