@@ -189,7 +189,7 @@ show_progress_dialog() {
 
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "${label_done:-🗹}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
             } | dialog --gauge "$label" 10 70 0
@@ -219,7 +219,7 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "${label_done:-🗹}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
             } | dialog --gauge "$title_progress" 10 70 0
@@ -246,7 +246,7 @@ show_progress_dialog() {
                 done
                 echo "XXX"
                 echo "100"
-                echo "${label_done}"
+                echo "${label_done:-🗹}"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
             ;;
@@ -288,7 +288,7 @@ show_progress_dialog() {
                     ((count++))
                 done
 
-                echo -e "XXX\n100\n${label_done}\nXXX"
+                echo -e "XXX\n100\n${label_done:-🗹}\nXXX"
             } | dialog --gauge "$label" 10 70 0
             ;;
 
