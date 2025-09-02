@@ -492,90 +492,87 @@ fi
 
 case "$1" in
     -u)
-        if [ -z "$2" ]; then
-            apt update > /dev/null 2>&1 && apt upgrade -y > /dev/null 2>&1
-            update_progress() {
-                local current_step=$1
-                local total_steps=$2
-                local percent=$((current_step * 100 / total_steps))
-                local bar_length=30
-                local filled_length=$((percent * bar_length / 100))
-                local empty_length=$((bar_length - filled_length))
+        apt update > /dev/null 2>&1 && apt upgrade -y > /dev/null 2>&1
+        update_progress() {
+            local current_step=$1
+            local total_steps=$2
+            local percent=$((current_step * 100 / total_steps))
+            local bar_length=30
+            local filled_length=$((percent * bar_length / 100))
+            local empty_length=$((bar_length - filled_length))
 
-                local filled_bar
-                local empty_bar
-                filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-                empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+            local filled_bar
+            local empty_bar
+            filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+            empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-                # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-                printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
-            }
-            total_steps=5  # Número total de etapas que você quer monitorar
-            current_step=0
-            {
-                apt update -qq -y > /dev/null 2>&1
-                ((current_step++))
-                update_progress "$current_step" "$total_steps" "Atualizando repositórios"
-                sleep 0.5
+            # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+            printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
+        }
+        total_steps=5  # Número total de etapas que você quer monitorar
+        current_step=0
+        {
+            apt update -qq -y > /dev/null 2>&1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+            sleep 0.5
 
-                apt upgrade -y > /dev/null 2>&1
-                ((current_step++))
-                update_progress "$current_step" "$total_steps" "Atualizando repositórios"
-                sleep 0.5
+            apt upgrade -y > /dev/null 2>&1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+            sleep 0.5
 
-                #1 
-                curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
+            #1 
+            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
 
-                if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
-                    if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
-                        rm "$PREFIX/bin/andistro"
-                        mv "$HOME/andistro.check" "$PREFIX/bin/andistro"
-                        chmod +x "$PREFIX/bin/andistro"
-                    else
-                        rm "$HOME/andistro.check"
-                    fi
+            if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
+                if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
+                    rm "$PREFIX/bin/andistro"
+                    mv "$HOME/andistro.check" "$PREFIX/bin/andistro"
+                    chmod +x "$PREFIX/bin/andistro"
+                else
+                    rm "$HOME/andistro.check"
                 fi
-                ((current_step++))
-                update_progress "$current_step" "$total_steps"; sleep 0.1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                #2 
-                curl -s -o "$PREFIX/bin/andistro_files/global_var_fun.check" "${extralink}/config/global_var_fun.sh" 2>&1
+            #2 
+            curl -s -o "$PREFIX/bin/andistro_files/global_var_fun.check" "${extralink}/config/global_var_fun.sh" 2>&1
 
-                if [ -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ] && [ -f "$PREFIX/bin/andistro_files/global_var_fun.check" ]; then
-                    if ! cmp -s "$PREFIX/bin/andistro_files/global_var_fun.sh" "$PREFIX/bin/andistro_files/global_var_fun.check"; then
-                        rm "$PREFIX/bin/andistro_files/global_var_fun.sh"
-                        mv "$PREFIX/bin/andistro_files/global_var_fun.check" "$PREFIX/bin/andistro_files/global_var_fun.sh"
-                        chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
-                    else
-                        rm "$PREFIX/bin/andistro_files/global_var_fun.check"
-                    fi
+            if [ -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ] && [ -f "$PREFIX/bin/andistro_files/global_var_fun.check" ]; then
+                if ! cmp -s "$PREFIX/bin/andistro_files/global_var_fun.sh" "$PREFIX/bin/andistro_files/global_var_fun.check"; then
+                    rm "$PREFIX/bin/andistro_files/global_var_fun.sh"
+                    mv "$PREFIX/bin/andistro_files/global_var_fun.check" "$PREFIX/bin/andistro_files/global_var_fun.sh"
+                    chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
+                else
+                    rm "$PREFIX/bin/andistro_files/global_var_fun.check"
                 fi
-                ((current_step++))
-                update_progress "$current_step" "$total_steps"; sleep 0.1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                #3 
-                curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
-                
-                if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
-                    if ! cmp -s "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"; then
-                        rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-                        mv "${extralink}/config/locale/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-                        chmod +x "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-                    else
-                        rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"
-                    fi
+            #3 
+            curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
+            
+            if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
+                if ! cmp -s "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"; then
+                    rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                    mv "${extralink}/config/locale/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                    chmod +x "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                else
+                    rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"
                 fi
-                ((current_step++))
-                update_progress "$current_step" "$total_steps"; sleep 0.1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                echo  # pular linha no fim
-            }
+            echo  # pular linha no fim
+        }
 
-            source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-            andistro
-            exit 1
-
-        fi
+        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+        andistro
+        exit 1
         ;;
 
     -i)
