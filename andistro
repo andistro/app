@@ -3,7 +3,7 @@
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
-    mkdir -p "$PREFIX/bin/andistro_files/boot/"
+    mkdir -p "$PREFIX/bin/andistro_files/boot"
 fi
 
 system_icu_locale_code=$(getprop persist.sys.locale)
@@ -54,142 +54,110 @@ fi
 #=============================================================================================
 if [ -z "$1" ]; then
 
-    export USER=$(whoami)
-    HEIGHT=0
-    WIDTH=100
-    CHOICE_HEIGHT=5
-    export PORT=1
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
 
-    # Checa se existem arquivos start-* na pasta de boot
-    BOOT_DIR="$PREFIX/bin/andistro_files/boot"
-    START_FILES=("$BOOT_DIR"/start-*)
-    SHOW_START_MENU=false
+OPTIONS=(1 "Iniciar"
+         2 "Instalar"
+		 3 "Atualizar"
+         4 "Desinstalar"
+         5 "Ver como terminal")
 
-    # Se existir pelo menos um arquivo start-*, habilita a opção Iniciar
-    if [ -e "${START_FILES[0]}" ]; then
-        SHOW_START_MENU=true
-    fi
+CHOICE=$(dialog --clear \
+    --title "AnDistro" \
+    --menu "Escolha uma das opções:" \
+    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+    "${OPTIONS[@]}" \
+    2>&1 >/dev/tty)
 
-    OPTIONS=()
-    OPTION_NUM=1
-
-
-    if $SHOW_START_MENU; then
-        OPTIONS+=($OPTION_NUM "Iniciar")
-        ((OPTION_NUM++))
-    fi
-
-    OPTIONS+=($OPTION_NUM "Instalar")
-    ((OPTION_NUM++))
-    OPTIONS+=($OPTION_NUM "Atualizar")
-    ((OPTION_NUM++))
-    OPTIONS+=($OPTION_NUM "Desinstalar")
-    ((OPTION_NUM++))
-    OPTIONS+=($OPTION_NUM "Ver como terminal")
-
-    CHOICE=$(dialog --clear \
-        --title "AnDistro" \
-        --menu "Escolha uma das opções:" \
-        $HEIGHT $WIDTH $CHOICE_HEIGHT \
-        "${OPTIONS[@]}" \
-        2>&1 >/dev/tty)
-
-    menu_boot_distros() {
-        OPTIONS=()
-        OPTION_NUM=1
-        for file in "$BOOT_DIR"/start-*; do
-            if [ -f "$file" ]; then
-                # Pega apenas o nome da distro (remove start- prefixo)
-                distro_name=$(basename "$file" | sed 's/^start-//')
-                OPTIONS+=($OPTION_NUM "$distro_name")
-                ((OPTION_NUM++))
-            fi
-        done
-
-        # Sempre adiciona a opção "Ver como terminal"
-        OPTIONS+=($OPTION_NUM "Ver como terminal")
+case $CHOICE in
+	1)	
+        export PORT=1
+        OPTIONS=(1 "Debian"
+                2 "Ubuntu"
+                3 "Ver como terminal")
 
         CHOICE=$(dialog --clear \
             --title "AnDistro" \
-            --menu "Escolha a distro para iniciar:" \
-            $HEIGHT $WIDTH $(( ${#OPTIONS[@]} / 2 )) \
+            --menu "Escolha uma das opções:" \
+            $HEIGHT $WIDTH $CHOICE_HEIGHT \
             "${OPTIONS[@]}" \
             2>&1 >/dev/tty)
-
         case $CHOICE in
-            [0-9]*)
-                selected=${OPTIONS[$((CHOICE*2-1))]}
-                if [ "$selected" = "Ver como terminal" ]; then
-                    andistro -s
-                else
-                    andistro -s "$selected"
-                fi
+            1)
+                andistro -s debian
+                ;;
+            2)
+                andistro -s ubuntu
+                ;;
+            3)
+                andistro -s
                 ;;
         esac
-    }
-    # Menu principal
-    case $CHOICE in
-        1)
-            if $SHOW_START_MENU; then
-                menu_boot_distros
-            fi
-        ;;
-        2)
-            export PORT=1
-            OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+	;;
+	2)	
+        export PORT=1
+        OPTIONS=(1 "Debian"
+                2 "Ubuntu"
+                3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
-                --title "AnDistro" \
-                --menu "Escolha uma das opções:" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-            case $CHOICE in
-                1)
-                    andistro -i debian
-                    ;;
-                2)
-                    andistro -i ubuntu
-                    ;;
-                3)
-                    andistro -i
-                    ;;
-            esac
-        ;;
-        3)
-            andistro -u
-        ;;
-        4)
-            export PORT=1
-            OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+        CHOICE=$(dialog --clear \
+            --title "AnDistro" \
+            --menu "Escolha uma das opções:" \
+            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+            "${OPTIONS[@]}" \
+            2>&1 >/dev/tty)
+        case $CHOICE in
+            1)
+                andistro -i debian
+                ;;
+            2)
+                andistro -i ubuntu
+                ;;
+            3)
+                andistro -i
+                ;;
+        esac
+	;;
 
-            CHOICE=$(dialog --clear \
-                --title "AnDistro" \
-                --menu "Escolha uma das opções:" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-            case $CHOICE in
-                1)
-                    andistro -d debian
-                    ;;
-                2)
-                    andistro -d ubuntu
-                    ;;
-                3)
-                    andistro -d
-                    ;;
-            esac
-        ;;
-        5)
-            andistro terminal
-        ;;
-    esac
+    3)
+        andistro -u
+    ;;
 
+	4)
+        export PORT=1
+        OPTIONS=(1 "Debian"
+                2 "Ubuntu"
+                3 "Ver como terminal")
+
+        CHOICE=$(dialog --clear \
+            --title "AnDistro" \
+            --menu "Escolha uma das opções:" \
+            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+            "${OPTIONS[@]}" \
+            2>&1 >/dev/tty)
+        case $CHOICE in
+            1)
+                andistro -d debian
+                ;;
+            2)
+                andistro -d ubuntu
+                ;;
+            3)
+                andistro -d
+                ;;
+        esac
+	;;
+
+    5)
+        andistro terminal
+    ;;
+esac
+
+#exit 0
 fi
 
 
@@ -390,7 +358,7 @@ case "$1" in
 
         andistro
         exit 1
-        ;;
+    ;;
 
     -i)
         if [ -z "$2" ]; then
@@ -429,7 +397,8 @@ case "$1" in
         chmod +x $HOME/start-distro.sh
         bash $HOME/start-distro.sh
         rm -rf $HOME/start-distro.sh
-        ;;
+    ;;
+    
     -d)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
@@ -487,7 +456,8 @@ case "$1" in
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        ;;
+    ;;
+    
     -s)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
@@ -506,51 +476,51 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            start-debian
+            bash $PREFIX/bin/andistro_files/boot/start-debian
             clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            start-ubuntu
+            bash $PREFIX/bin/andistro_files/boot/start-ubuntu
             clear
 
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        ;;
+    ;;
 
-        terminal)
-            echo "$distro_desc_line_1"
-            echo ""
-            echo "$distro_desc_line_2"
-            echo "$distro_desc_line_3"
-            echo " "
-            echo "$distro_desc_line_4"
-            echo "$distro_desc_line_5"
-            echo " "
-            echo "$distro_desc_line_6"
-            echo "$distro_desc_line_7"
-            echo " "
-            echo "$distro_desc_line_8"
-            echo "$distro_desc_line_9"
-            echo "$distro_desc_line_10"
-            echo "$distro_desc_line_11"
-            echo "$distro_desc_line_12"
-            echo " "
-            echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
-        ;;
+    terminal)
+        echo "$distro_desc_line_1"
+        echo ""
+        echo "$distro_desc_line_2"
+        echo "$distro_desc_line_3"
+        echo " "
+        echo "$distro_desc_line_4"
+        echo "$distro_desc_line_5"
+        echo " "
+        echo "$distro_desc_line_6"
+        echo "$distro_desc_line_7"
+        echo " "
+        echo "$distro_desc_line_8"
+        echo "$distro_desc_line_9"
+        echo "$distro_desc_line_10"
+        echo "$distro_desc_line_11"
+        echo "$distro_desc_line_12"
+        echo " "
+        echo "$distro_desc_line_13"
+        echo "   debian"
+        echo "   ubuntu"
+    ;;
 
-        alerta)
-            {
-                for i in {1..50}; do
-                    sleep 0.1
-                    echo $((i * 2))
-                done
-            } | dialog --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
-        ;;
+    alerta)
+        {
+            for i in {1..50}; do
+                sleep 0.1
+                echo $((i * 2))
+            done
+        } | dialog --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+    ;;
 
     *)
         echo "$distro_command_not_found $1"
