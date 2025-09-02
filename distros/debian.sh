@@ -86,7 +86,7 @@ echo "${label_start_script}"
 cat > $bin <<- EOM
 #!/bin/bash
 source "\$PREFIX/bin/andistro_files/global_var_fun.sh"
-sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
+sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "\$HOME/$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
 cd \$HOME
