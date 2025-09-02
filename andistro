@@ -1,7 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #rm -rf * && rm -rf "$PREFIX/bin/andistro_files/" && rm -rf "$PREFIX/bin/andistro"
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 if [ ! -d "$PREFIX/bin/andistro_files/" ];then
 	mkdir -p "$PREFIX/bin/andistro_files/"
 fi
