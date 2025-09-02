@@ -1,8 +1,13 @@
 #!/data/data/com.termux/files/usr/bin/bash
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-bin="start-debian.sh"
+distro_name="debian"
+bin="start-$distro_name.sh"
 codinome="bookworm"
-folder="debian-bookworm"
+folder="andistro_files/boot/$distro_name/$codinome"
+
+if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
+    mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
+fi
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
@@ -78,7 +83,7 @@ if [ "$first" != 1 ];then
 	error_code="DW001deb"
 	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}_${archurl}/installer.tar.xz"
 	sleep 2
-	show_progress_dialog extract "${label_debian_download_extract}" "$HOME/$folder.tar.xz" 
+	show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
 
@@ -86,7 +91,7 @@ echo "${label_start_script}"
 cat > $bin <<- EOM
 #!/bin/bash
 source "\$PREFIX/bin/andistro_files/global_var_fun.sh"
-sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "\$HOME/$folder/usr/local/bin/vnc"
+sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
 cd \$HOME
@@ -97,10 +102,10 @@ command="proot"
 command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
-command+=" -r \$HOME/$folder"
+command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b \$HOME/$folder/root:/dev/shm"
+command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 ## uncomment the following line to mount /sdcard directly to / 
@@ -326,7 +331,7 @@ exit' > $folder/root/.bash_profile
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"' $bin
-cp "$bin" "$PREFIX/bin/andistro_files/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
+cp "$bin" "$PREFIX/bin/andistro_files/boot/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
 bash $bin
