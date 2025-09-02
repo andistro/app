@@ -210,36 +210,288 @@ fi
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
-
-# Verifica os argumentos passados ao script
 if [ -z "$1" ]; then
-    # Caso nenhum argumento seja passado, exibe a mensagem de instrução
-    echo "$distro_desc_line_1"
-    echo ""
-    echo "$distro_desc_line_2"
-    echo "$distro_desc_line_3"
-    echo " "
-    echo "$distro_desc_line_4"
-    echo "$distro_desc_line_5"
-    echo " "
-    echo "$distro_desc_line_6"
-    echo "$distro_desc_line_7"
-    echo " "
-    echo "$distro_desc_line_8"
-    echo "$distro_desc_line_9"
-    echo "$distro_desc_line_10"
-    echo "$distro_desc_line_11"
-    echo "$distro_desc_line_12"
-    echo " "
-    echo "$distro_desc_line_13"
-    echo "   debian"
-    echo "   ubuntu"
-exit 0
 
+# Função para capitalizar a primeira letra
+capitalize() {
+    echo "$1" | sed -e "s/^\(.\)/\U\1/"
+}
+
+# Função para listar distros para iniciar (baseado nos arquivos start-*)
+list_start_distros() {
+    local files=("$PREFIX/bin/andistro_files"/start-*)
+    local distros=()
+
+    for f in "${files[@]}"; do
+        if [[ -f "$f" ]]; then
+            local name="${f##*/start-}"
+            distros+=("$name")
+        fi
+    done
+
+    # Ordena alfabeticamente e imprime com número e nome capitalizado
+    IFS=$'\n' sorted=($(sort <<<"${distros[*]}"))
+    unset IFS
+
+    local i=1
+    for d in "${sorted[@]}"; do
+        echo "$i" "$(capitalize "$d")"
+        ((i++))
+    done
+}
+
+# Função para listar distros instaladas para desinstalar (diretórios distro-nomeversao no $HOME)
+list_installed_distros() {
+    local dirs=("$HOME"/debian-*)
+    local distros=()
+
+    for d in "${dirs[@]}"; do
+        if [[ -d "$d" ]]; then
+            # Pega só o nome da pasta
+            local name="${d##*/}"
+            distros+=("$name")
+        fi
+    done
+
+    # Ordena alfabeticamente e imprime com número e nome capitalizado
+    IFS=$'\n' sorted=($(sort <<<"${distros[*]}"))
+    unset IFS
+
+    local i=1
+    for d in "${sorted[@]}"; do
+        echo "$i" "$(capitalize "$d")"
+        ((i++))
+    done
+}
+
+# Checa existência de arquivos start-*
+has_start_files() {
+    shopt -s nullglob
+    local files=("$PREFIX/bin/andistro_files"/start-*)
+    [[ ${#files[@]} -gt 0 ]]
+}
+
+# Checa existência de distros instaladas no $HOME
+has_installed_distros() {
+    shopt -s nullglob
+    local dirs=("$HOME"/*-*) # identificar a distro
+    [[ ${#dirs[@]} -gt 0 ]]
+}
+
+show_main_menu() {
+    local menu_items=()
+    local height=15
+    local width=50
+    local menu_height=6
+
+    if has_start_files && has_installed_distros; then
+        # Caso exista start-* e distros instaladas
+        menu_items=(
+            1 "Iniciar"
+            2 "Instalar"
+            3 "Desinstalar"
+            4 "Atualizar"
+            5 "Modo Terminal"
+        )
+        menu_height=7
+    elif has_start_files && ! has_installed_distros; then
+        # Existe start-* mas nenhuma distro instalada
+        menu_items=(
+            1 "Iniciar"
+            2 "Instalar"
+            3 "Atualizar"
+            4 "Modo Terminal"
+        )
+        menu_height=6
+    else
+        # Nenhum start-* nem distros instaladas
+        menu_items=(
+            1 "Instalar"
+            2 "Atualizar"
+            3 "Modo Terminal"
+        )
+        menu_height=5
+    fi
+
+    CHOICE=$(dialog --clear \
+        --title "Andistro" \
+        --menu "Selecione uma opção:" "$height" "$width" "$menu_height" \
+        "${menu_items[@]}" \
+        3>&1 1>&2 2>&3)
+
+    clear
+    echo "$CHOICE"
+}
+
+show_start_menu() {
+    local options=()
+    local i=1
+
+    while read -r line; do
+        local num=$(echo "$line" | awk '{print $1}')
+        local name=$(echo "$line" | cut -d' ' -f2-)
+        options+=("$num" "$name")
+        ((i++))
+    done < <(list_start_distros)
+
+    if [ ${#options[@]} -eq 0 ]; then
+        dialog --msgbox "Nenhuma distribuição disponível para iniciar." 6 40
+        return 1
+    fi
+
+    local choice=$(dialog --clear \
+        --title "Iniciar Distribuição" \
+        --menu "Escolha a distribuição para iniciar:" 15 50 $(( ${#options[@]} / 2 )) \
+        "${options[@]}" \
+        3>&1 1>&2 2>&3)
+
+    clear
+    echo "$choice"
+}
+
+show_uninstall_menu() {
+    local options=()
+    local i=1
+
+    while read -r line; do
+        local num=$(echo "$line" | awk '{print $1}')
+        local name=$(echo "$line" | cut -d' ' -f2-)
+        options+=("$num" "$name")
+        ((i++))
+    done < <(list_installed_distros)
+
+    if [ ${#options[@]} -eq 0 ]; then
+        dialog --msgbox "Nenhuma distribuição instalada para desinstalar." 6 40
+        return 1
+    fi
+
+    local choice=$(dialog --clear \
+        --title "Desinstalar Distribuição" \
+        --menu "Escolha a distribuição para desinstalar:" 15 50 $(( ${#options[@]} / 2 )) \
+        "${options[@]}" \
+        3>&1 1>&2 2>&3)
+
+    clear
+    echo "$choice"
+}
+
+# Função para executar o start da distro selecionada
+start_distro() {
+    local choice=$1
+    local distros=()
+
+    while read -r line; do
+        distros+=("$(echo "$line" | cut -d' ' -f2- | tr '[:upper:]' '[:lower:]')")
+    done < <(list_start_distros)
+
+    local distro_name="${distros[$((choice - 1))]}"
+    if [ -n "$distro_name" ]; then
+        local start_script="$PREFIX/bin/andistro_files/start-$distro_name"
+        if [ -x "$start_script" ]; then
+            "$start_script"
+        else
+            dialog --msgbox "Script para iniciar $distro_name não encontrado ou não executável." 6 50
+        fi
+    fi
+}
+
+# Função para desinstalar a distro selecionada
+uninstall_distro() {
+    local choice=$1
+    local distros=()
+
+    while read -r line; do
+        distros+=("$(echo "$line" | cut -d' ' -f2- | tr '[:upper:]' '[:lower:]')")
+    done < <(list_installed_distros)
+
+    local distro_dir="${distros[$((choice - 1))]}"
+    local full_path="$HOME/$distro_dir"
+    if [ -d "$full_path" ]; then
+        dialog --yesno "Deseja realmente desinstalar $distro_dir?" 7 50
+        if [ $? -eq 0 ]; then
+            rm -rf "$full_path"
+            dialog --msgbox "$distro_dir desinstalado com sucesso." 6 40
+        fi
+    else
+        dialog --msgbox "Diretório $distro_dir não encontrado." 6 40
+    fi
+}
+
+main() {
+    while true; do
+        choice=$(show_main_menu)
+
+        case "$choice" in
+            1)
+                if has_start_files; then
+                    start_choice=$(show_start_menu)
+                    if [ -n "$start_choice" ]; then
+                        start_distro "$start_choice"
+                    fi
+                else
+                    # Instalar
+                    andistro -i
+                fi
+                ;;
+            2)
+                if has_start_files; then
+                    # Instalar
+                    andistro -i
+                else
+                    # Atualizar
+                    andistro -u
+                fi
+                ;;
+            3)
+                if has_start_files && has_installed_distros; then
+                    # Desinstalar
+                    uninstall_choice=$(show_uninstall_menu)
+                    if [ -n "$uninstall_choice" ]; then
+                        uninstall_distro "$uninstall_choice"
+                    fi
+                else
+                    # Modo Terminal
+                    echo "Entrando no modo terminal..."
+                    andistro terminal
+                    # Aqui você pode colocar a saída que quiser para o modo terminal
+                fi
+                ;;
+            4)
+                if has_start_files && has_installed_distros; then
+                    # Atualizar
+                    andistro -u
+                else
+                    # Modo Terminal
+                    echo "Entrando no modo terminal..."
+                    andistro terminal
+                fi
+                ;;
+            5)
+                # Modo Terminal
+                echo "Entrando no modo terminal..."
+                andistro terminal
+                ;;
+            0)
+                clear
+                echo "Saindo..."
+                exit 0
+                ;;
+            *)
+                clear
+                echo "Saindo..."
+                exit 0
+                ;;
+        esac
+    done
+}
+
+main
+exit 0
 fi
 
+
 case "$1" in
-    ${distro_update})
+    -u)
         if [ -z "$2" ]; then
             apt update > /dev/null 2>&1 && apt upgrade -y > /dev/null 2>&1
             update_progress() {
@@ -326,7 +578,7 @@ case "$1" in
         fi
         ;;
 
-    ${distro_install})
+    -i)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -364,7 +616,7 @@ case "$1" in
         bash $HOME/start-distro.sh
         rm -rf $HOME/start-distro.sh
         ;;
-    ${distro_del})
+    -d)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -422,7 +674,7 @@ case "$1" in
             exit 1
         fi
         ;;
-    ${distro_start})
+    -s)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -454,6 +706,29 @@ case "$1" in
         fi
         ;;
 
+        terminal)
+            echo "$distro_desc_line_1"
+            echo ""
+            echo "$distro_desc_line_2"
+            echo "$distro_desc_line_3"
+            echo " "
+            echo "$distro_desc_line_4"
+            echo "$distro_desc_line_5"
+            echo " "
+            echo "$distro_desc_line_6"
+            echo "$distro_desc_line_7"
+            echo " "
+            echo "$distro_desc_line_8"
+            echo "$distro_desc_line_9"
+            echo "$distro_desc_line_10"
+            echo "$distro_desc_line_11"
+            echo "$distro_desc_line_12"
+            echo " "
+            echo "$distro_desc_line_13"
+            echo "   debian"
+            echo "   ubuntu"
+        ;;
+
         alerta)
             {
                 for i in {1..50}; do
@@ -465,28 +740,7 @@ case "$1" in
 
     *)
         echo "$distro_command_not_found $1"
-        echo ""
-        echo "$distro_desc_line_1"
-        echo ""
-        echo "$distro_desc_line_2"
-        echo "$distro_desc_line_3"
-        echo " "
-        echo "$distro_desc_line_4"
-        echo "$distro_desc_line_5"
-        echo " "
-        echo "$distro_desc_line_6"
-        echo "$distro_desc_line_7"
-        echo " "
-        echo "$distro_desc_line_8"
-        echo "$distro_desc_line_9"
-        echo "$distro_desc_line_10"
-        echo "$distro_desc_line_11"
-        echo "$distro_desc_line_12"
-        echo " "
-        echo "$distro_desc_line_13"
-        echo "   debian"
-        echo "   ubuntu"
-        echo " "
+        andistro terminal
         exit 1
         ;;
 esac
