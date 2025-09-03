@@ -26,6 +26,12 @@ if [ -f "$HOME/andistro" ]; then
     rm -rf "$HOME/andistro"
 fi
 
+if [ ! -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
+    andistro -u
+fi
+
+source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+
 # ==============================================================================================
 # GLOBAL
 # ==============================================================================================
@@ -47,11 +53,6 @@ fi
 # COMANDOS
 #=============================================================================================
 if [ -z "$1" ]; then
-if [ ! -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
-    andistro -u
-fi
-
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
     # Caso nenhum argumento seja passado, exibe a mensagem de instrução
     echo "$distro_desc_line_1"
     echo ""

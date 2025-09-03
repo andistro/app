@@ -87,7 +87,7 @@ case $CHOICE in
             2>&1 >/dev/tty)
         case $CHOICE in
             1)
-                andistro.new -i debian
+                andistro.new  -i debian
                 ;;
             2)
                 andistro.new -i ubuntu
