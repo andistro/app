@@ -193,7 +193,7 @@ show_progress_dialog() {
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
             } | dialog --gauge "$label" 10 70 0
-            ;;
+        ;;
 
         steps-multi-label)
             # Ex: show_progress_dialog steps 2 \
@@ -223,7 +223,7 @@ show_progress_dialog() {
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
             } | dialog --gauge "$title_progress" 10 70 0
-            ;;
+        ;;
 
         wget)
             # Ex: show_progress_dialog wget "${label}" -O arquivo URL
@@ -249,7 +249,7 @@ show_progress_dialog() {
                 echo "${label_completed}"
                 echo "XXX"
             } | dialog --gauge "$label" 10 70 0
-            ;;
+        ;;
 
         wget-labeled)
             local label="$1"
@@ -291,56 +291,67 @@ show_progress_dialog() {
                 echo -e "XXX\n100\n${label_completed}\nXXX"
                 echo -e "XXX\n100\nXXX"
             } | dialog --gauge "$label" 10 70 0
-            ;;
+        ;;
+        
+        extract)
+            local label="$1"
+            local file="$2"
+            local dest="$3"
 
-            extract)
-                local label="$1"
-                local file="$2"
-                local dest="$3"
-
-                [ -z "$dest" ] && dest="."
-
-                # Verifica se o arquivo existe
-                if [ ! -f "$file" ]; then
-                    dialog --title "Erro" --msgbox "Arquivo não encontrado: $file" 10 50
-                    return 1
-                fi
-
-                # Garante que o diretório de destino existe
-                mkdir -p "$dest"
-
+            # Se não passar destino, cria pasta com o mesmo nome do arquivo (sem extensão)
+            if [ -z "$dest" ]; then
                 case "$file" in
-                    *.tar.xz) cmd=(tar -xJf "$file" -C "$dest") ;;
-                    *.tar.gz|*.tgz) cmd=(tar -xzf "$file" -C "$dest") ;;
-                    *.tar.bz2) cmd=(tar -xjf "$file" -C "$dest") ;;
-                    *.tar) cmd=(tar -xf "$file" -C "$dest") ;;
-                    *.zip) cmd=(unzip -o "$file" -d "$dest") ;;
-                    *.xz) cmd=(xz -d "$file") ;;
-                    *.gz) cmd=(gunzip "$file") ;;
-                    *)
-                        dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 50
-                        return 1
-                        ;;
+                    *.tar.xz) dest="$(dirname "$file")/$(basename "$file" .tar.xz)" ;;
+                    *.tar.gz) dest="$(dirname "$file")/$(basename "$file" .tar.gz)" ;;
+                    *.tgz)    dest="$(dirname "$file")/$(basename "$file" .tgz)" ;;
+                    *.tar.bz2) dest="$(dirname "$file")/$(basename "$file" .tar.bz2)" ;;
+                    *.tar)    dest="$(dirname "$file")/$(basename "$file" .tar)" ;;
+                    *.zip)    dest="$(dirname "$file")/$(basename "$file" .zip)" ;;
+                    *)        dest="$(dirname "$file")" ;; # fallback
                 esac
+            fi
 
-                set +m
-                (
-                    "${cmd[@]}" >/dev/null 2>&1
-                ) & disown
-                pid=$!
+            # Verifica se o arquivo existe
+            if [ ! -f "$file" ]; then
+                dialog --title "Erro" --msgbox "Arquivo não encontrado: $file" 10 50
+                return 1
+            fi
 
-                {
-                    i=0
-                    while kill -0 "$pid" 2>/dev/null; do
-                        echo $i
-                        sleep 0.2
-                        i=$((i + 2))
-                        [ $i -ge 95 ] && i=95
-                    done
-                    echo 100
-                    set -m
-                } | dialog --gauge "$label" 10 70 0
+            mkdir -p "$dest"
+
+            case "$file" in
+                *.tar.xz) cmd=(tar -xJf "$file" -C "$dest") ;;
+                *.tar.gz|*.tgz) cmd=(tar -xzf "$file" -C "$dest") ;;
+                *.tar.bz2) cmd=(tar -xjf "$file" -C "$dest") ;;
+                *.tar) cmd=(tar -xf "$file" -C "$dest") ;;
+                *.zip) cmd=(unzip -o "$file" -d "$dest") ;;
+                *.xz) cmd=(xz -d "$file") ;;
+                *.gz) cmd=(gunzip "$file") ;;
+                *)
+                    dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 50
+                    return 1
                 ;;
+            esac
+
+            set +m
+            (
+                "${cmd[@]}" >/dev/null 2>&1
+            ) & disown
+            pid=$!
+
+            {
+                i=0
+                while kill -0 "$pid" 2>/dev/null; do
+                    echo $i
+                    sleep 0.2
+                    i=$((i + 2))
+                    [ $i -ge 95 ] && i=95
+                done
+                echo 100
+                set -m
+            } | dialog --gauge "$label" 10 70 0
+        ;;
+
 
         check-packages)
             # Exemplo de uso:
@@ -394,6 +405,6 @@ show_progress_dialog() {
         *)
             echo "Modo desconhecido para show_progress_dialog: $mode" >&2
             return 1
-            ;;
+        ;;
     esac
 }
