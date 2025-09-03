@@ -29,7 +29,6 @@ fi
 if [ ! -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
     andistro -u
 fi
-
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 
 # ==============================================================================================
@@ -47,7 +46,6 @@ if ! grep -Fq "extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','
     # Recarrega Termux settings
     termux-reload-settings
 fi
-
 
 #=============================================================================================
 # COMANDOS
@@ -86,7 +84,7 @@ case $CHOICE in
             $HEIGHT $WIDTH $CHOICE_HEIGHT \
             "${OPTIONS[@]}" \
             2>&1 >/dev/tty)
-            
+
         case $CHOICE in
             1)
                 andistro -s debian
