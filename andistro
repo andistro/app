@@ -415,7 +415,6 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            andistro ${distro_update} 2>&1
             rm -rf $HOME/debian-stable
             rm -rf $HOME/debian-binds
             rm -rf $HOME/start-debian.sh
@@ -434,7 +433,6 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            andistro ${distro_update} 2>&1
             rm -rf $HOME/ubuntu-noble
             rm -rf $HOME/ubuntu-noble.tar.xz
             rm -rf $HOME/ubuntu-fs
