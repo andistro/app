@@ -52,9 +52,6 @@ else
     language_selected="$CHOICE"
 fi
 
-# Mostrar idioma escolhido
-#dialog --msgbox "$MENU_language_selected $language_selected" 10 70
-
 # Converter de pt-BR para pt_BR
 language_transformed="${language_selected//-/_}"
 
