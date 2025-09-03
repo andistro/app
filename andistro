@@ -88,13 +88,13 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro.new  -i debian
+                    andistro  -i debian
                     ;;
                 2)
-                    andistro.new -i ubuntu
+                    andistro -i ubuntu
                     ;;
                 3)
-                    andistro.new -i
+                    andistro -i
                     ;;
             esac
         ;;
@@ -112,19 +112,19 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro.new -s debian
+                    andistro -s debian
                     ;;
                 2)
-                    andistro.new -s ubuntu
+                    andistro -s ubuntu
                     ;;
                 3)
-                    andistro.new -s
+                    andistro -s
                     ;;
             esac
         ;;
 
         3)
-            andistro.new -u
+            andistro -u
         ;;
 
         4)
@@ -141,19 +141,19 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro.new -d debian
+                    andistro -d debian
                     ;;
                 2)
-                    andistro.new -d ubuntu
+                    andistro -d ubuntu
                     ;;
                 3)
-                    andistro.new -d
+                    andistro -d
                     ;;
             esac
         ;;
 
         5)
-            andistro.new terminal
+            andistro terminal
         ;;
     esac
 #exit 0
