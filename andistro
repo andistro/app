@@ -312,12 +312,12 @@ case "$1" in
             curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
                     
             if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
-                if ! cmp -s "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"; then
-                    rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-                    mv "${extralink}/config/locale/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
-                    chmod +x "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
+                if ! cmp -s "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check"; then
+                    rm "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+                    mv "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
+                    chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
                 else
-                    rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"
+                    rm "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check"
                 fi
             fi
             ((current_step++))
