@@ -62,7 +62,7 @@ export PORT=1
 
 OPTIONS=(1 "Iniciar"
          2 "Instalar"
-		 3 "Atualizar"
+         3 "Atualizar"
          4 "Desinstalar"
          5 "Ver como terminal")
 
@@ -77,8 +77,8 @@ case $CHOICE in
 	1)	
         export PORT=1
         OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+                 2 "Ubuntu"
+                 3 "Ver como terminal")
 
         CHOICE=$(dialog --clear \
             --title "AnDistro" \
@@ -89,20 +89,23 @@ case $CHOICE in
         case $CHOICE in
             1)
                 andistro -s debian
-                ;;
+            ;;
+            
             2)
                 andistro -s ubuntu
-                ;;
+            ;;
+            
             3)
                 andistro -s
-                ;;
+            ;;
         esac
 	;;
+
 	2)	
         export PORT=1
         OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+                 2 "Ubuntu"
+                 3 "Ver como terminal")
 
         CHOICE=$(dialog --clear \
             --title "AnDistro" \
@@ -113,13 +116,15 @@ case $CHOICE in
         case $CHOICE in
             1)
                 andistro -i debian
-                ;;
+            ;;
+            
             2)
                 andistro -i ubuntu
-                ;;
+            ;;
+            
             3)
                 andistro -i
-                ;;
+            ;;
         esac
 	;;
 
@@ -127,11 +132,11 @@ case $CHOICE in
         andistro -u
     ;;
 
-	4)
+    4)
         export PORT=1
         OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+                    2 "Ubuntu"
+                    3 "Ver como terminal")
 
         CHOICE=$(dialog --clear \
             --title "AnDistro" \
@@ -142,22 +147,23 @@ case $CHOICE in
         case $CHOICE in
             1)
                 andistro -d debian
-                ;;
+            ;;
+            
             2)
                 andistro -d ubuntu
-                ;;
+            ;;
+            
             3)
                 andistro -d
-                ;;
+            ;;
         esac
-	;;
+    ;;
 
     5)
         andistro terminal
     ;;
 esac
 
-#exit 0
 fi
 
 
@@ -310,8 +316,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #19 Verifica e atualiza o l10n_${locale}.sh
-            curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
-                    
+            curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1    
             if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
                 if ! cmp -s "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.check"; then
                     rm "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh"
@@ -347,7 +352,7 @@ case "$1" in
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
-            
+
             echo  # pular linha no fim
         }
 
@@ -457,7 +462,7 @@ case "$1" in
             exit 1
         fi
     ;;
-    
+
     -s)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
