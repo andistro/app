@@ -1,6 +1,8 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
-
+if ! dpkg -l | grep -qw dialog; then
+    apt install dialog -y > /dev/null 2>&1
+fi
 stopvnc
 
 export USER=$(whoami)

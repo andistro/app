@@ -3,10 +3,10 @@
 source "/usr/local/bin/global_var_fun.sh"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 11 \
-     'sudo apt-get install xfce4 --no-install-recommends -y' \
-     'sudo apt-get install xfce4-goodies --no-install-recommends -y' \
-     'sudo apt-get install xfce4-terminal --no-install-recommends -y' \
-     'sudo apt-get install xfce4-panel-profiles --no-install-recommends -y' \
+     'sudo apt install xfce4 --no-install-recommends -y' \
+     'sudo apt install xfce4-goodies --no-install-recommends -y' \
+     'sudo apt install xfce4-terminal --no-install-recommends -y' \
+     'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1

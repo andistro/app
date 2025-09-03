@@ -2,17 +2,17 @@
 source "/usr/local/bin/global_var_fun.sh"
 # GNOME Config
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
-	'sudo apt-get install gdm3 --no-install-recommends -y' \
-	'sudo apt-get install policykit-1 --no-install-recommends -y' \
-	'sudo apt-get install gnome-session --no-install-recommends -y' \
-	'sudo apt-get install gnome-shell --no-install-recommends -y' \
-	'sudo apt-get install gnome-terminal --no-install-recommends -y' \
-	'sudo apt-get install gnome-tweaks --no-install-recommends -y' \
-	'sudo apt-get install gnome-control-center --no-install-recommends -y' \
-	'sudo apt-get install gnome-shell-extensions --no-install-recommends -y' \
-	'sudo apt-get install gnome-shell-extension-dashtodock --no-install-recommends -y' \
-	'sudo apt-get install gnome-package-updater --no-install-recommends -y' \
-	'sudo apt-get install gnome-calculator --no-install-recommends -y' \
+	'sudo apt install gdm3 --no-install-recommends -y' \
+	'sudo apt install policykit-1 --no-install-recommends -y' \
+	'sudo apt install gnome-session --no-install-recommends -y' \
+	'sudo apt install gnome-shell --no-install-recommends -y' \
+	'sudo apt install gnome-terminal --no-install-recommends -y' \
+	'sudo apt install gnome-tweaks --no-install-recommends -y' \
+	'sudo apt install gnome-control-center --no-install-recommends -y' \
+	'sudo apt install gnome-shell-extensions --no-install-recommends -y' \
+	'sudo apt install gnome-shell-extension-dashtodock --no-install-recommends -y' \
+	'sudo apt install gnome-package-updater --no-install-recommends -y' \
+	'sudo apt install gnome-calculator --no-install-recommends -y' \
 	'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export LANG

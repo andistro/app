@@ -18,16 +18,16 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
 	'gsettings set org.gnome.desktop.session idle-delay 0' \
 	'gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0' \
 	'gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0' \
-	'sudo apt-get remove --purge lilyterm -y' \
+	'sudo apt remove --purge lilyterm -y' \
 	'mv /root/.config/lilyterm/default.conf /root/.config/lilyterm/default.conf.bak' \
-	'sudo apt-get autoremove --purge zutty -y' \
+	'sudo apt autoremove --purge zutty -y' \
 	'firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID' \
 	"sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
 	'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \
-	"sudo apt-get clean" \
-	'sudo apt-get autoclean' \
-	'sudo apt-get autoremove -y' \
-	'sudo apt-get purge -y' \
+	"sudo apt clean" \
+	'sudo apt autoclean' \
+	'sudo apt autoremove -y' \
+	'sudo apt purge -y' \
 	"vncserver -kill :1" \
 	"rm -rf /tmp/.X*-lock" \
 	"rm -rf /tmp/.X11-unix/X*" \

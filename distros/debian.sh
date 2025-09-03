@@ -88,7 +88,7 @@ fi
 echo "${label_start_script}"
 cat > $bin <<- EOM
 #!/bin/bash
-source "\$PREFIX/bin/andistro_files/global_var_fun.sh"
+wlan_ip_localhost=\$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print \$2}') # IP da rede 
 sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
@@ -209,7 +209,7 @@ case $CHOICE in
 		sleep 2
 		# Parte da resolução do problema do gnome e do systemd
 		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
-			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
+			mkdir -p /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
 			echo "pasta criada"
 		fi
 		#mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
@@ -247,7 +247,7 @@ touch $folder/root/.hushlogin
 
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
-export LANG=$language_selected.UTF-8
+export LANG=$language_transformed.UTF-8
 
 source "/usr/local/bin/global_var_fun.sh"
 
@@ -266,7 +266,7 @@ update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 if ! dpkg -l | grep -qw sudo; then
-    apt-get install sudo -y > /dev/null 2>&1
+    apt install sudo -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando sudo"
@@ -278,14 +278,14 @@ update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
 if ! dpkg -l | grep -qw wget; then
-    apt-get install wget -y > /dev/null 2>&1
+    apt install wget -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
 if ! dpkg -l | grep -qw dialog; then
-    apt-get install dialog -y > /dev/null 2>&1
+    apt install dialog -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"

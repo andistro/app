@@ -50,6 +50,7 @@ if command -v getprop > /dev/null 2>&1; then
     system_timezone=$(getprop persist.sys.timezone 2>/dev/null)            # Timezone
 else
     system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/')
+    apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
     system_architecture=$(dpkg --print-architecture)
 fi
 
