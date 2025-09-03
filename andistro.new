@@ -21,9 +21,9 @@ fi
 clear
 
 #Verifica se o andistro está em $HOME
-if [ -f "$HOME/andistro" ]; then
-    mv "$HOME/andistro" "$PREFIX/bin/andistro"
-    rm -rf "$HOME/andistro"
+if [ -f "$HOME/andistro.new" ]; then
+    mv "$HOME/andistro.new" "$PREFIX/bin/andistro"
+    rm -rf "$HOME/andistro.new"
 fi
 
 # ==============================================================================================
