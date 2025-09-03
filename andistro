@@ -55,107 +55,107 @@ if [ -z "$1" ]; then
     fi
 
     export USER=$(whoami)
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
+    HEIGHT=0
+    WIDTH=100
+    CHOICE_HEIGHT=5
+    export PORT=1
 
-OPTIONS=(1 "Instalar"
-		 2 "Iniciar"
-		 3 "Atualizar"
-         4 "Desinstalar"
-         5 "Ver como terminal")
+    OPTIONS=(1 "Instalar"
+            2 "Iniciar"
+            3 "Atualizar"
+            4 "Desinstalar"
+            5 "Ver como terminal")
 
-CHOICE=$(dialog --clear \
-    --title "AnDistro" \
-    --menu "Escolha uma das opções:" \
-    $HEIGHT $WIDTH $CHOICE_HEIGHT \
-    "${OPTIONS[@]}" \
-    2>&1 >/dev/tty)
+    CHOICE=$(dialog --clear \
+        --title "AnDistro" \
+        --menu "Escolha uma das opções:" \
+        $HEIGHT $WIDTH $CHOICE_HEIGHT \
+        "${OPTIONS[@]}" \
+        2>&1 >/dev/tty)
 
-case $CHOICE in
-	1)	
-        export PORT=1
-        OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+    case $CHOICE in
+        1)	
+            export PORT=1
+            OPTIONS=(1 "Debian"
+                    2 "Ubuntu"
+                    3 "Ver como terminal")
 
-        CHOICE=$(dialog --clear \
-            --title "AnDistro" \
-            --menu "Escolha uma das opções:" \
-            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-            "${OPTIONS[@]}" \
-            2>&1 >/dev/tty)
-        case $CHOICE in
-            1)
-                andistro.new  -i debian
-                ;;
-            2)
-                andistro.new -i ubuntu
-                ;;
-            3)
-                andistro.new -i
-                ;;
-        esac
-	;;
-	2)	
-        export PORT=1
-        OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+            CHOICE=$(dialog --clear \
+                --title "AnDistro" \
+                --menu "Escolha uma das opções:" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+            case $CHOICE in
+                1)
+                    andistro.new  -i debian
+                    ;;
+                2)
+                    andistro.new -i ubuntu
+                    ;;
+                3)
+                    andistro.new -i
+                    ;;
+            esac
+        ;;
+        2)	
+            export PORT=1
+            OPTIONS=(1 "Debian"
+                    2 "Ubuntu"
+                    3 "Ver como terminal")
 
-        CHOICE=$(dialog --clear \
-            --title "AnDistro" \
-            --menu "Escolha uma das opções:" \
-            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-            "${OPTIONS[@]}" \
-            2>&1 >/dev/tty)
-        case $CHOICE in
-            1)
-                andistro.new -s debian
-                ;;
-            2)
-                andistro.new -s ubuntu
-                ;;
-            3)
-                andistro.new -s
-                ;;
-        esac
-	;;
+            CHOICE=$(dialog --clear \
+                --title "AnDistro" \
+                --menu "Escolha uma das opções:" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+            case $CHOICE in
+                1)
+                    andistro.new -s debian
+                    ;;
+                2)
+                    andistro.new -s ubuntu
+                    ;;
+                3)
+                    andistro.new -s
+                    ;;
+            esac
+        ;;
 
-    3)
-        andistro.new -u
-    ;;
+        3)
+            andistro.new -u
+        ;;
 
-	4)
-        export PORT=1
-        OPTIONS=(1 "Debian"
-                2 "Ubuntu"
-                3 "Ver como terminal")
+        4)
+            export PORT=1
+            OPTIONS=(1 "Debian"
+                    2 "Ubuntu"
+                    3 "Ver como terminal")
 
-        CHOICE=$(dialog --clear \
-            --title "AnDistro" \
-            --menu "Escolha uma das opções:" \
-            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-            "${OPTIONS[@]}" \
-            2>&1 >/dev/tty)
-        case $CHOICE in
-            1)
-                andistro.new -d debian
-                ;;
-            2)
-                andistro.new -d ubuntu
-                ;;
-            3)
-                andistro.new -d
-                ;;
-        esac
-	;;
+            CHOICE=$(dialog --clear \
+                --title "AnDistro" \
+                --menu "Escolha uma das opções:" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+            case $CHOICE in
+                1)
+                    andistro.new -d debian
+                    ;;
+                2)
+                    andistro.new -d ubuntu
+                    ;;
+                3)
+                    andistro.new -d
+                    ;;
+            esac
+        ;;
 
-    5)
-        andistro.new terminal
-    ;;
-esac
+        5)
+            andistro.new terminal
+        ;;
+    esac
 #exit 0
 fi
 
