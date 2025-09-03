@@ -360,6 +360,7 @@ case "$1" in
         ;;
 
     -i)
+        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -377,14 +378,14 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            andistro ${distro_update} 2>&1
+            #andistro ${distro_update} 2>&1
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
             clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            andistro ${distro_update} 2>&1
+            #andistro ${distro_update} 2>&1
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
             clear
@@ -398,6 +399,7 @@ case "$1" in
         rm -rf $HOME/start-distro.sh
         ;;
     -d)
+        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -454,6 +456,7 @@ case "$1" in
         fi
         ;;
     -s)
+        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
             echo ""
@@ -486,6 +489,7 @@ case "$1" in
         ;;
 
         terminal)
+            source "$PREFIX/bin/andistro_files/global_var_fun.sh"
             echo "$distro_desc_line_1"
             echo ""
             echo "$distro_desc_line_2"
@@ -509,6 +513,7 @@ case "$1" in
         ;;
 
         alerta)
+            source "$PREFIX/bin/andistro_files/global_var_fun.sh"
             {
                 for i in {1..50}; do
                     sleep 0.1
