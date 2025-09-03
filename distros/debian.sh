@@ -3,7 +3,7 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 distro_name="debian"
 bin="start-$distro_name.sh"
 codinome="bookworm"
-folder="andistro_files/boot/$distro_name/$codinome"
+folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
 
 if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
