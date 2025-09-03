@@ -87,13 +87,13 @@ case $CHOICE in
             2>&1 >/dev/tty)
         case $CHOICE in
             1)
-                andistro -i debian
+                andistro.new -i debian
                 ;;
             2)
-                andistro -i ubuntu
+                andistro.new -i ubuntu
                 ;;
             3)
-                andistro -i
+                andistro.new -i
                 ;;
         esac
 	;;
@@ -111,19 +111,19 @@ case $CHOICE in
             2>&1 >/dev/tty)
         case $CHOICE in
             1)
-                andistro -s debian
+                andistro.new -s debian
                 ;;
             2)
-                andistro -s ubuntu
+                andistro.new -s ubuntu
                 ;;
             3)
-                andistro -s
+                andistro.new -s
                 ;;
         esac
 	;;
 
     3)
-        andistro -u
+        andistro.new -u
     ;;
 
 	4)
@@ -140,19 +140,19 @@ case $CHOICE in
             2>&1 >/dev/tty)
         case $CHOICE in
             1)
-                andistro -d debian
+                andistro.new -d debian
                 ;;
             2)
-                andistro -d ubuntu
+                andistro.new -d ubuntu
                 ;;
             3)
-                andistro -d
+                andistro.new -d
                 ;;
         esac
 	;;
 
     5)
-        andistro terminal
+        andistro.new terminal
     ;;
 esac
 
