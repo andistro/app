@@ -74,8 +74,8 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         1)	
             export PORT=1
             OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+                     2 "Ubuntu"
+                     3 "Ver como terminal")
 
             CHOICE=$(dialog --clear \
                 --title "AnDistro" \
@@ -102,8 +102,8 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         2)	
             export PORT=1
             OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+                     2 "Ubuntu"
+                     3 "Ver como terminal")
 
             CHOICE=$(dialog --clear \
                 --title "AnDistro" \
@@ -134,8 +134,8 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
         4)
             export PORT=1
             OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+                     2 "Ubuntu"
+                     3 "Ver como terminal")
 
             CHOICE=$(dialog --clear \
                 --title "AnDistro" \
