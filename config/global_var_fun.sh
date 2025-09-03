@@ -320,10 +320,10 @@ show_progress_dialog() {
             mkdir -p "$dest"
 
             case "$file" in
-                *.tar.xz) cmd=(tar -xJf "$file" -C "$dest") ;;
-                *.tar.gz|*.tgz) cmd=(tar -xzf "$file" -C "$dest") ;;
-                *.tar.bz2) cmd=(tar -xjf "$file" -C "$dest") ;;
-                *.tar) cmd=(tar -xf "$file" -C "$dest") ;;
+                *.tar.xz) cmd=(tar --strip-components=1 -xJf "$file" -C "$dest") ;;
+                *.tar.gz|*.tgz) cmd=(tar --strip-components=1 -xzf "$file" -C "$dest") ;;
+                *.tar.bz2) cmd=(tar --strip-components=1 -xjf "$file" -C "$dest") ;;
+                *.tar) cmd=(tar --strip-components=1 -xf "$file" -C "$dest") ;;
                 *.zip) cmd=(unzip -o "$file" -d "$dest") ;;
                 *.xz) cmd=(xz -d "$file") ;;
                 *.gz) cmd=(gunzip "$file") ;;

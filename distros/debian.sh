@@ -5,6 +5,7 @@ bin="start-$distro_name.sh"
 codinome="bookworm"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
 
+
 if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
 fi
