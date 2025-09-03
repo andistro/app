@@ -86,6 +86,7 @@ case $CHOICE in
             $HEIGHT $WIDTH $CHOICE_HEIGHT \
             "${OPTIONS[@]}" \
             2>&1 >/dev/tty)
+            
         case $CHOICE in
             1)
                 andistro -s debian
@@ -113,6 +114,7 @@ case $CHOICE in
             $HEIGHT $WIDTH $CHOICE_HEIGHT \
             "${OPTIONS[@]}" \
             2>&1 >/dev/tty)
+
         case $CHOICE in
             1)
                 andistro -i debian
@@ -144,6 +146,7 @@ case $CHOICE in
             $HEIGHT $WIDTH $CHOICE_HEIGHT \
             "${OPTIONS[@]}" \
             2>&1 >/dev/tty)
+
         case $CHOICE in
             1)
                 andistro -d debian
