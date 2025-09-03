@@ -42,18 +42,18 @@ if ! grep -Fq "extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','
     termux-reload-settings
 fi
 
-if [ -s "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
-    source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-else
-    andistro -u
-fi
-
 
 
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
 if [ -z "$1" ]; then
+    if [ -s "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
+        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+    else
+        andistro -u
+    fi
+
     # Caso nenhum argumento seja passado, exibe a mensagem de instrução
     echo "$distro_desc_line_1"
     echo ""
