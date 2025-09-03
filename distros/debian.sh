@@ -244,14 +244,12 @@ chmod +x $folder/root/config-environment.sh
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
-echo '#!/bin/bash
+
+cat > $folder/root/.bash_profile <<- EOM
+#!/bin/bash
+export LANG=$language_selected.UTF-8
 
 source "/usr/local/bin/global_var_fun.sh"
-#echo "deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security stable-security main contrib non-free
-#deb http://deb.debian.org/debian stable-updates main contrib non-free
-#deb http://ftp.debian.org/debian buster main
-#deb http://ftp.debian.org/debian buster-updates main" >> /etc/apt/sources.list
 
 echo "${label_alert_autoupdate_for_u}"
 
@@ -264,33 +262,33 @@ current_step=0
 
 apt update -qq -y > /dev/null 2>&1
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 if ! dpkg -l | grep -qw sudo; then
     apt-get install sudo -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando sudo"
+update_progress "\$current_step" "\$total_steps" "Instalando sudo"
 sleep 0.5
 
 sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando dialog"
+update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
 if ! dpkg -l | grep -qw wget; then
     apt-get install wget -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando wget"
+update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
 if ! dpkg -l | grep -qw dialog; then
     apt-get install dialog -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando dialog"
+update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
@@ -298,7 +296,7 @@ echo    # quebra de linha ao final para não sobrepor prompt
 
 etc_timezone=$(cat /etc/timezone)
 
-sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
+sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 clear
 chmod +x /usr/local/bin/vnc
@@ -307,7 +305,7 @@ chmod +x /usr/local/bin/startvnc
 chmod +x /usr/local/bin/stopvnc
 chmod +x /usr/local/bin/startvncserver
 
-bash ~/locale_${system_icu_locale_code}.sh
+bash ~/locale_\$system_icu_locale_code.sh
 
 bash ~/system-config.sh
 
@@ -325,7 +323,8 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-exit' > $folder/root/.bash_profile 
+exit
+EOM
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"' $bin
