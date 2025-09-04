@@ -123,6 +123,7 @@ else
     \$command -c "\$com"
 fi
 EOM
+chmod +x $bin
 
 sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
 error_code="LG001br"
@@ -131,6 +132,8 @@ sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
+
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
@@ -170,11 +173,11 @@ chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
-sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
+#sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
 
 
-chmod +x $bin
+
 
 export USER=$(whoami)
 HEIGHT=0
