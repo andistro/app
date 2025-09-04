@@ -127,7 +127,7 @@ label_gnome_download_setup="Downloading necessary settings for Gnome..."
 label_ubuntu_download="Downloading Ubuntu..."
 label_ubuntu_download_extract="Extracting Ubuntu to storage..."
 
-label_debian_download="Downloading Debian..."
+label_debian_download="Downloading the latest version of Debian..."
 label_debian_download_extract="Extracting Debian to storage..."
 
 #DIALOG MENU TITLES
