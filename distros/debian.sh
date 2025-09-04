@@ -2,7 +2,7 @@
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 distro_name="debian"
 bin="start-$distro_name.sh"
-codinome="bookworm"
+codinome="trixie"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
 
 
