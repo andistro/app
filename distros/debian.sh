@@ -347,7 +347,7 @@ exit
 EOM
 
 # Cria uma gui de inicialização
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"' $bin
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 cp "$bin" "$PREFIX/bin/andistro_files/boot/${bin%.sh}"
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
