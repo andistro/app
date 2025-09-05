@@ -417,6 +417,7 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
+            rm -rf $PREFIX/bin/andistro_files/boot/debian/
             rm -rf $PREFIX/bin/andistro_files/boot/debian/*
             rm -rf $PREFIX/bin/andistro_files/boot/start-debian*
             rm -rf $HOME/debian-stable
@@ -437,6 +438,7 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
+            rm -rf $PREFIX/bin/andistro_files/boot/ubuntu/
             rm -rf $PREFIX/bin/andistro_files/boot/ubuntu/*
             rm -rf $PREFIX/bin/andistro_files/boot/start-ubuntu*
             rm -rf $HOME/ubuntu-noble
