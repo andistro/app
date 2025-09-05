@@ -350,4 +350,4 @@ sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"
 cp "$bin" "$PREFIX/bin/andistro_files/boot/${bin%.sh}"
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
-bash $bin
+bash $bin && andistro -s debian
