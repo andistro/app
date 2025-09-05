@@ -3,6 +3,7 @@ source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 distro_name="debian"
 bin="start-$distro_name.sh"
 codinome="trixie"
+andistro_files="$PREFIX/bin/andistro_files"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
 
 
@@ -219,7 +220,7 @@ case $CHOICE in
 		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid #remover o pid para que o dbus-daemon funcione corretamente
 		rm -rf system_bus_socket
 
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket #cria o arquivo
+		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket #cria o arquivo
 
 		if grep -q "<listen>tcp:host=localhost" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
 		grep -q "<listen>unix:tmpdir=/tmp</listen>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
@@ -236,9 +237,9 @@ case $CHOICE in
 
 		# É necessário repetir o processo toda vez que alterar o system.conf
 		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket
+		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket
 		sed -i "\|command+=\" -b $folder/root:/dev/shm\"|a command+=\" -b system_bus_socket:/run/dbus/system_bus_socket\"" $bin
-		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
+		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket\n' $bin
 	;;
 esac
 clear
