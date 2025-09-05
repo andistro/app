@@ -2,7 +2,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 73 \
+show_progress_dialog steps-multi-label 77 \
   "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
   "${label_progress}" 'sudo apt purge snapd -y' \
   "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
