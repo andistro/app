@@ -1,7 +1,9 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 # GNOME Config
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 18 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 20 \
+	'sleep 1' \
+	'sleep 10' \
 	'sudo apt install gdm3 --no-install-recommends -y' \
 	'sudo apt install policykit-1 --no-install-recommends -y' \
 	'sudo apt install gnome-session --no-install-recommends -y' \
