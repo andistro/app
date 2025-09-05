@@ -7,8 +7,8 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
 	'touch ~/.Xauthority' \
 	'vncserver -name remote-desktop -geometry 1920x1080 :1' \
 	'sleep 10' \
-	'gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'' \
-	'gsettings set org.gnome.desktop.background picture-uri-dark 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'' \
+	"gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'" \
+	"gsettings set org.gnome.desktop.background picture-uri-dark 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'" \
 	'gsettings set org.gnome.desktop.interface color-scheme prefer-dark' \
 	'dbus-launch xfconf-query -c xsettings -p /Net/ThemeName -s ZorinBlue-Dark' \
 	'gnome-extensions enable dash-to-dock@micxgx.gmail.com' \

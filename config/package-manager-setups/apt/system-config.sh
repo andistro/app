@@ -34,6 +34,8 @@ show_progress_dialog steps-multi-label 77 \
   "${label_install_script_download}" 'sudo apt install tigervnc-standalone-server --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install tigervnc-common --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt install xterm --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo apt install xorg --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install dbus-x11 --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install nano -y' \
   "${label_install_script_download}" 'sudo apt install inetutils-tools -y' \
