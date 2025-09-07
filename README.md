@@ -24,7 +24,8 @@
 |![Root](https://img.shields.io/badge/-gray?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZTNlM2UzIj48cGF0aCBkPSJtMjQwLTE2MCA0MC0xNjBIMTIwbDIwLTgwaDE2MGw0MC0xNjBIMTgwbDIwLTgwaDE2MGw0MC0xNjBoODBsLTQwIDE2MGgxNjBsNDAtMTYwaDgwbC00MCAxNjBoMTYwbC0yMCA4MEg2NjBsLTQwIDE2MGgxNjBsLTIwIDgwSDYwMGwtNDAgMTYwaC04MGw0MC0xNjBIMzYwbC00MCAxNjBoLTgwWm0xNDAtMjQwaDE2MGw0MC0xNjBINDIwbC00MCAxNjBaIi8+PC9zdmc+)|Root|![Não é necessário](https://img.shields.io/badge/Não_é_necessário-red)|
 |![ADB](https://img.shields.io/badge/-gray?logo=android&logoColor=white)|ADB|![Pode ser necessário](https://img.shields.io/badge/Necessário_no_Android_12,_13_e_14-073042)|
 
-![Distribuiçoes Liux no Android](https://raw.githubusercontent.com/andistro/.github/main/profile/thumbnail.2.png)
-
 # Distribuições Linux no Android
 Consulte a [wiki](https://github.com/andistro/app/wiki) para documentação e mais informações.
+
+![Distribuiçoes Liux no Android](https://raw.githubusercontent.com/andistro/.github/main/profile/thumbnail.2.png)
+
