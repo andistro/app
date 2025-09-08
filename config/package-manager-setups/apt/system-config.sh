@@ -2,7 +2,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 
-show_progress_dialog steps-multi-label 77 \
+show_progress_dialog steps-multi-label 74 \
   "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
   "${label_progress}" 'sudo apt purge snapd -y' \
   "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
@@ -11,11 +11,9 @@ show_progress_dialog steps-multi-label 77 \
   "${label_progress}" 'sudo apt autoremove --purge flatpak -y' \
   "${label_progress}" 'sudo rm -rf /var/cache/flatpak' \
   "${label_progress}" 'sudo apt clean' \
-  "${label_progress}" 'sudo apt autoremove --purge whiptail -y' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
-  "${label_keyboard_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration -y" \
-  "${label_tzdata_settings}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y" \
+  "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y" \
   "${label_install_script_download}" 'sudo apt install xz-utils -y' \
   "${label_install_script_download}" 'sudo apt install wget -y' \
   "${label_install_script_download}" 'sudo apt install curl -y' \
@@ -34,8 +32,6 @@ show_progress_dialog steps-multi-label 77 \
   "${label_install_script_download}" 'sudo apt install tigervnc-standalone-server --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install tigervnc-common --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
-  "${label_install_script_download}" 'sudo apt install xterm --no-install-recommends -y' \
-  "${label_install_script_download}" 'sudo apt install xorg --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install dbus-x11 --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install nano -y' \
   "${label_install_script_download}" 'sudo apt install inetutils-tools -y' \
@@ -54,7 +50,6 @@ show_progress_dialog steps-multi-label 77 \
   "${label_install_script_download}" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
   "${label_install_script_download}" 'sudo apt update && sleep 2' \
   "${label_install_script_download}" 'sudo apt install firefox -y' \
-  "${label_install_script_download}" "sudo apt install firefox-l10n-$apt_system_icu_locale_code -y" \
   "${label_install_script_download}" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
   "${label_install_script_download}" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
   "${label_install_script_download}" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
@@ -90,7 +85,7 @@ sleep 2
     echo $((i * 2))
   done
 } | dialog --gauge "$label_keyboard_setup" 10 60 0
-sudo dpkg-reconfigure keyboard-configuration
+sudo apt install keyboard-configuration -y > /dev/null 2>&1
 
 {
   for i in {1..50}; do
