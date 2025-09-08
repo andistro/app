@@ -187,8 +187,7 @@ CHOICE_HEIGHT=5
 export PORT=1
 
 OPTIONS=(1 "LXDE"
-		 2 "XFCE"
-		 3 "Gnome")
+		 2 "XFCE")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -207,40 +206,6 @@ case $CHOICE in
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 		sleep 2
 		;;
-	3)
-		echo "Gnome UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/gnome/config.sh"
-		sleep 2
-		# Parte da resolução do problema do gnome e do systemd
-		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
-			mkdir -p /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
-			echo "pasta criada"
-		fi
-		#mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
-		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid #remover o pid para que o dbus-daemon funcione corretamente
-		rm -rf system_bus_socket
-
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket #cria o arquivo
-
-		if grep -q "<listen>tcp:host=localhost" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<listen>unix:tmpdir=/tmp</listen>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<auth>ANONYMOUS</auth>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<allow_anonymous/>" /data/data/com.termux/files/usr/share/dbus-1/system.conf; then # verifica se existe a linha com esse texto
-		echo ""
-			else
-				sed -i 's|<auth>EXTERNAL</auth>|<listen>tcp:host=localhost,bind=*,port=6667,family=ipv4</listen>\
-				<listen>unix:tmpdir=/tmp</listen>\
-				<auth>EXTERNAL</auth>\
-				<auth>ANONYMOUS</auth>\
-				<allow_anonymous/>|' /data/data/com.termux/files/usr/share/dbus-1/system.conf
-		fi
-
-		# É necessário repetir o processo toda vez que alterar o system.conf
-		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket
-		sed -i "\|command+=\" -b $folder/root:/dev/shm\"|a command+=\" -b system_bus_socket:/run/dbus/system_bus_socket\"" $bin
-		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=$PREFIX/bin/andistro_files/system_bus_socket\n' $bin
-	;;
 esac
 clear
 chmod +x $folder/root/config-environment.sh
