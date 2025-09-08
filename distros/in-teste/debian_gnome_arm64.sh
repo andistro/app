@@ -191,7 +191,7 @@ echo "Atualizações e instalações necessárias"
 apt update
 apt autoremove --purge whiptail -y
 apt --fix-broken install -y
-apt install dbus dbus-bin sudo wget dialog locales -y
+apt install dbus dbus-bin sudo wget dialog locales gpg -y
 sed -i 's/^# *\(pt_BR.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 echo 'export LC_ALL=pt_BR.UTF-8' >> ~/.bashrc
