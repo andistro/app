@@ -186,13 +186,12 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
-source "/usr/local/bin/global_var_fun.sh"
-
 echo "Atualizações e instalações necessárias"
 
 apt update
-sudo apt autoremove --purge whiptail -y
-apt install sudo wget dialog locales -y
+apt autoremove --purge whiptail -y
+apt --fix-broken install -y
+apt install dbus dbus-bin sudo wget dialog locales -y
 sed -i 's/^# *\(pt_BR.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 echo 'export LC_ALL=pt_BR.UTF-8' >> ~/.bashrc
