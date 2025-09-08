@@ -13,11 +13,11 @@ if ! grep -Fq "extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','
 fi
 
 
-apt update
-apt install --option=Dpkg::Options::="--force-confold" bash -y
-apt install --option=Dpkg::Options::="--force-confold" openssl -y
-apt upgrade -y
-apt install curl wget dialog tar unzip xz-utils dbus debootstrap proot termux-exec -y
+pkg update
+pkg install --option=Dpkg::Options::="--force-confold" bash -y
+pkg install --option=Dpkg::Options::="--force-confold" openssl -y
+pkg upgrade -y
+pkg install curl wget dialog tar unzip xz-utils dbus debootstrap proot termux-exec -y
 
 
 distro_name="debian"
