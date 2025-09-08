@@ -86,7 +86,7 @@ mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
 
 mkdir -p "$folder/root/.config/gtk-3.0"
-echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee "$folder/root/.config/gtk-3.0/bookmarks"
+echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee "$HOME/.config/gtk-3.0/bookmarks"
 
 
 cat > "$folder/usr/local/bin/vnc" <<- EOM
@@ -211,6 +211,8 @@ sudo apt full-upgrade -y
 sudo apt install keyboard-configuration -y
 
 sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y
+echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee "\$HOME/.config/gtk-3.0/bookmarks"
+
 etc_timezone=\$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
@@ -253,7 +255,7 @@ cd \$HOME
 echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee \$HOME/.config/gtk-3.0/settings.ini
 echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee \$HOME/.gtkrc-2.0
 
-sudo apt install gdm3 policykit-1 gnome-session gnome-shell gnome-terminal gnome-tweaks gnome-control-center gnome-shell-extensions gnome-shell-extension-dashtodock gnome-package-updater gnome-calculator --no-install-recommends -y
+sudo apt install gdm3 gnome-session gnome-shell gnome-terminal gnome-tweaks gnome-control-center gnome-shell-extensions gnome-shell-extension-dashtodock gnome-package-updater gnome-calculator --no-install-recommends -y
 cat > \$HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export LANG
