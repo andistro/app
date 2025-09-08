@@ -266,7 +266,8 @@ chmod +x ~/.vnc/xstartup
 echo 'export DISPLAY=":1"' >> /etc/profile
 
 touch ~/.Xauthority
-
+vncserver -name remote-desktop -geometry 1920x1080 :1
+sleep 10
 gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'
 gsettings set org.gnome.desktop.background picture-uri-dark 'file:///usr/share/backgrounds/john-towner-JgOeRuGD_Y4.jpg'
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
@@ -288,13 +289,11 @@ sudo apt clean
 sudo apt autoclean
 sudo apt autoremove -y
 sudo apt purge -y
-
-vncserver -name remote-desktop -geometry 1920x1080 :1
-sleep 10
+vncserver -kill :1
 
 
-#rm -rf /tmp/.X*-lock
-#rm -rf /tmp/.X11-unix/X*
+rm -rf /tmp/.X*-lock
+rm -rf /tmp/.X11-unix/X*
 rm -rf ~/start-environment.sh
 rm -rf zorin-*-themes/
 rm -rf ~/.bash_profile
