@@ -236,6 +236,9 @@ sudo apt install dconf-cli lsb-release exo-utils tigervnc-standalone-server tige
 sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop
 
 sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop # Isso faz o VSCode iniciar
+sudo sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable %U --no-sandbox|' /usr/share/applications/brave-browser.desktop # Isso faz o Brave iniciar
+sudo sed -i 's|Exec=/usr/bin/brave-browser-stable %U|Exec=/usr/bin/brave-browser-stable %U --no-sandbox|' /usr/share/applications/com.brave.Browser.desktop # Isso faz o Brave iniciar
+
 
 git clone https://github.com/ZorinOS/zorin-icon-themes.git
 git clone https://github.com/ZorinOS/zorin-desktop-themes.git
