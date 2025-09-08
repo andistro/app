@@ -192,7 +192,7 @@ echo "Atualizações e instalações necessárias"
 
 apt update
 sudo apt autoremove --purge whiptail -y
-apt install sudo wget dialog locales language-pack-pt-base -y
+apt install sudo wget dialog locales -y
 sed -i 's/^# *\(pt_BR.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 echo 'export LC_ALL=pt_BR.UTF-8' >> ~/.bashrc
