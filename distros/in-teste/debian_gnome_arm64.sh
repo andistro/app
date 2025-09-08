@@ -282,7 +282,7 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 
 sudo apt remove --purge lilyterm -y
 mv /root/.config/lilyterm/default.conf /root/.config/lilyterm/default.conf.bak
 sudo apt autoremove --purge zutty -y
-firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID
+firefox > /dev/null 2>&1 & PID=\$!; sleep 5; kill \$PID
 sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js
 echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js
 sudo apt clean
