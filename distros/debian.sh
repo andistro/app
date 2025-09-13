@@ -79,9 +79,26 @@ if [ "$first" != 1 ];then
 		echo "unknown architecture"; exit 1 ;;
 	esac
 	error_code="DW001deb"
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}/installer-${archurl}.tar.xz"
+	#show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}/installer-${archurl}.tar.xz"
+
+	{
+		for i in {1..50}; do
+			sleep 0.1
+			echo $((i * 2))
+		done
+	} | dialog --gauge "$label_debian_download_start" 10 60 0
+	debootstrap --arch=$archurl stable $folder http://ftp.debian.org/debian/  2>&1 | dialog --title "${label_debian_download}" --progressbox 20 70
 	sleep 2
-	show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
+	{
+		for i in {1..50}; do
+			sleep 0.1
+			echo $((i * 2))
+		done
+	} | dialog --gauge "$label_debian_download_finish" 10 60 0
+
+	#proot -w /home -b /dev -b /proc --link2symlink -0 -r /data/data/com.termux/files/home/debian-stable dpkg --force-overwrite --force-confold --skip-same-version --install /var/cache/apt/archives/adduser_3.152_all.deb /var/cache/apt/archives/cron-daemon-common_3.0pl1-197_all.deb /var/cache/apt/archives/libapparmor1_4.1.0-1_arm64.deb /var/cache/apt/archives/libsystemd-shared_257.8-1~deb13u1_arm64.deb /var/cache/apt/archives/systemd_257.8-1~deb13u1_arm64.deb
+	#sleep 2
+	#show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
 
