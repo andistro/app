@@ -161,13 +161,65 @@ show_progress_dialog() {
 
     case "$mode" in
         distro)
-        # Ex: show_progress_dialog distro <texto_do_dialogo> --arch=<arquitetura> <nome da versão da distro> <caminho que será salva a distro> <url do download>
-        # Ex: show_progress_dialog distro <texto_do_dialogo> \
-        #       --arch=<arquitetura> \
-        #       <nome da versão da distro> \
-        #       <caminho que será salva a distro> \
-        #       <url do download>
+            # Ex: show_progress_dialog distro <texto_do_dialogo> --arch=<arquitetura> <nome da versão da distro> <caminho que será salva a distro> <url do download>
+            # Ex: show_progress_dialog distro <texto_do_dialogo> \
+            #       --arch=<arquitetura> \
+            #       <nome da versão da distro> \
+            #       <caminho que será salva a distro> \
+            #       <url do download>
+            # Ex: show_progress_dialog distro <texto_do_dialogo> --arch=<arquitetura> <nome da versão da distro> <caminho que será salva a distro> <url do download>
+            # $2 = Texto a ser exibido no dialog (rótulo principal)
+            # $3 = --arch=...
+            # $4 = nome versão (stable, bookworm, etc)
+            # $5 = target/diretório destino
+            # $6 = url base do repositório
 
+            local texto_dialog="$2"
+            local arch="$3"
+            local release="$4"
+            local target="$5"
+            local repo="$6"
+
+            (
+                # 0–10%: Preparando lista de pacotes
+                echo "XXX"
+                echo "0"
+                echo "Preparando lista de pacotes..."
+                echo "XXX"
+                mapfile -t pkgs < <(debootstrap --arch="${arch#*=}" --print-debs "$release" "$target" "$repo" 2>/dev/null)
+                local total=${#pkgs[@]}
+                sleep 1
+
+                echo "XXX"
+                echo "10"
+                echo "Baixando pacotes ($total pacotes)..."
+                echo "XXX"
+
+                # 11–95%: Progresso no download dos pacotes
+                local i=1 percent
+                for pkg in "${pkgs[@]}"; do
+                    percent=$(( 10 + (85 * i / total) ))
+                    echo "XXX"
+                    echo "$percent"
+                    echo "Baixando ($i/$total): $(basename "$pkg")"
+                    echo "XXX"
+                    # Simula: troque sleep por comando de download real caso for baixar na mão!
+                    sleep 0.05
+                    ((i++))
+                done
+
+                # 95–100%: Finalizando
+                echo "XXX"
+                echo "95"
+                echo "Finalizando a instalação..."
+                echo "XXX"
+                sleep 1
+                echo "XXX"
+                echo "100"
+                echo "Concluído!"
+                echo "XXX"
+                sleep 1
+            ) | dialog --gauge "$texto_dialog" 10 70 0
         ;;
         
         steps-one-label)
