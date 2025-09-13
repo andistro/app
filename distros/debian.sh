@@ -6,10 +6,10 @@ codinome="trixie"
 andistro_files="$PREFIX/bin/andistro_files"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
 
-
 if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
 fi
+
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
@@ -43,7 +43,6 @@ CHOICE=$(dialog --clear \
     2>&1 1>&3)
 exec 3>&-
 
-clear
 
 # Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
@@ -89,6 +88,11 @@ fi
 echo "${label_start_script}"
 cat > $bin <<- EOM
 #!/bin/bash
+
+if [ ! -d "\$HOME/storage" ];then
+    termux-setup-storage
+fi
+
 wlan_ip_localhost=\$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print \$2}') # IP da rede 
 sed -i "s|WLAN_IP=\"localhost\"|WLAN_IP=\"\$wlan_ip_localhost\"|g" "$folder/usr/local/bin/vnc"
 
@@ -124,9 +128,9 @@ else
     \$command -c "\$com"
 fi
 EOM
+
 chmod +x $bin
 
-#sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
 error_code="LG001br"
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
@@ -139,20 +143,10 @@ echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 # Se não existir, será criado
-if [ ! -d "$folder/usr/share/backgrounds/" ];then
-	mkdir -p "$folder/usr/share/backgrounds/"
-	echo "pasta criada"
-fi
 
-if [ ! -d "$folder/usr/share/icons/" ];then
-	mkdir -p "$folder/usr/share/icons/"
-	echo "pasta criada"
-fi
-
-if [ ! -d "$folder/root/.vnc/" ];then
-	mkdir -p $folder/root/.vnc/
-	echo "pasta criada"
-fi
+mkdir -p "$folder/usr/share/backgrounds/"
+mkdir -p "$folder/usr/share/icons/"
+mkdir -p "$folder/root/.vnc/"
 
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
@@ -174,40 +168,10 @@ chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
-#sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
 
-
-
-
-export USER=$(whoami)
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-
-OPTIONS=(1 "LXDE"
-		 2 "XFCE")
-
-CHOICE=$(dialog --clear \
-                --title "$TITLE" \
-                --menu "$MENU_environments_select" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-case $CHOICE in
-	1)	
-		echo "LXDE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
-		sleep 2
-	;;
-	2)	
-		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
-		sleep 2
-	;;
-esac
-clear
+show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+sleep 2
 chmod +x $folder/root/config-environment.sh
 
 sleep 4

@@ -156,18 +156,20 @@ export PORT=1
 # DIALOG Progress ==================================================================================
 # Função para ter uma barra de progresso usando o dialog em diversas tarefas
 show_progress_dialog() {
-    # show_progress_dialog [type] [title] [steps/count/pid] [commands...]
-    # Types supported:
-    #   steps         - Multiple labeled commands
-    #   apt-labeled   - apt/apt-get with labels
-    #   wget          - Simple download
-    #   wget-labeled  - Multiple labeled downloads
-    #   pid           - Background process (long-running)
-    #   extract       - Extract .zip, .tar, .tar.gz, .xz
     local mode="$1"
     shift
 
     case "$mode" in
+        distro)
+        # Ex: show_progress_dialog distro <texto_do_dialogo> --arch=<arquitetura> <nome da versão da distro> <caminho que será salva a distro> <url do download>
+        # Ex: show_progress_dialog distro <texto_do_dialogo> \
+        #       --arch=<arquitetura> \
+        #       <nome da versão da distro> \
+        #       <caminho que será salva a distro> \
+        #       <url do download>
+
+        ;;
+        
         steps-one-label)
             # Ex: show_progress_dialog steps-one "${label_etapa}" total_comandos \
             #     'comando1' 'comando2' 'comando3'
