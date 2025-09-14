@@ -273,7 +273,7 @@ chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_\$system_icu_locale_code.sh
 
-bash ~/system-config.shr
+bash ~/system-config.sh
 
 bash ~/config-environment.sh
 
