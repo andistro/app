@@ -82,15 +82,15 @@ sleep 2
     echo $((i * 2))
   done
 } | dialog --gauge "$label_keyboard_setup" 10 60 0
-sudo apt install keyboard-configuration -y > /dev/null 2>&1
+sudo dpkg-reconfigure -f noninteractive keyboard-configuration > /dev/null 2>&1
 
-{
-  for i in {1..50}; do
-    sleep 0.1
-    echo $((i * 2))
-  done
-} | dialog --gauge "$label_tzdata_setup" 10 60 0
-sudo dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1
+#{
+#  for i in {1..50}; do
+#    sleep 0.1
+#    echo $((i * 2))
+#  done
+#} | dialog --gauge "$label_tzdata_setup" 10 60 0
+#sudo dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1
 
 rm -rf system-config.sh
 
