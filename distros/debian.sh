@@ -144,7 +144,7 @@ else
 fi
 EOM
 
-chmod +x $bin
+chmod +x $PREFIX/bin/andistro_files/boot/$bin
 
 error_code="LG001br"
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
