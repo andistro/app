@@ -3,7 +3,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 
 error_code="LG002en"
-show_progress_dialog steps-one-label "${label_system_language}" 8 \
+show_progress_dialog steps-one-label "${label_system_language}" 9 \
     "apt update" \
     "apt install locales -y" \
     "apt install language-pack-en-base -y" \
