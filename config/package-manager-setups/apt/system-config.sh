@@ -1,14 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-multi-label 72 \
-  "${label_progress}" 'sudo apt autoremove --purge snapd -y' \
-  "${label_progress}" 'sudo apt purge snapd -y' \
-  "${label_progress}" 'sudo rm -rf /var/cache/snapd' \
-  "${label_progress}" 'sudo rm -rf ~/snap' \
-  "${label_progress}" 'sudo apt purge flatpak -y' \
-  "${label_progress}" 'sudo apt autoremove --purge flatpak -y' \
-  "${label_progress}" 'sudo rm -rf /var/cache/flatpak' \
+show_progress_dialog steps-multi-label 64 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -38,7 +31,6 @@ show_progress_dialog steps-multi-label 72 \
   "${label_install_script_download}" 'sudo apt install font-manager --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install evince --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install synaptic --no-install-recommends -y' \
-  "${label_install_script_download}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_install_script_download}" 'sudo apt install gvfs-backends --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install at-spi2-core --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install bleachbit --no-install-recommends -y' \
@@ -58,15 +50,17 @@ show_progress_dialog steps-multi-label 72 \
   "${label_install_script_download}" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
-  "${label_install_script_download}" 'sudo apt update' \
+  "${label_system_setup}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'mkdir -p "/root/Desktop"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
-  "${label_system_setup}" '(cd zorin-icon-themes && sudo mv Zorin*/ /usr/share/icons/)' \
+  "${label_system_setup}" 'cd zorin-icon-themes' \
+  "${label_system_setup}" 'mv Zorin*/ /usr/share/icons/' \
   "${label_system_setup}" "cd \$HOME" \
-  "${label_system_setup}" '(cd zorin-desktop-themes && sudo mv Zorin*/ /usr/share/themes/)' \
+  "${label_system_setup}" 'cd zorin-desktop-themes' \
+  "${label_system_setup}" 'mv Zorin*/ /usr/share/themes/' \
   "${label_system_setup}" "cd \$HOME" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
   "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
@@ -82,8 +76,7 @@ sleep 2
     echo $((i * 2))
   done
 } | dialog --gauge "$label_keyboard_setup" 10 60 0
-sudo dpkg-reconfigure -f noninteractive keyboard-configuration > /dev/null 2>&1
-
+sudo dpkg-reconfigure keyboard-configuration
 #{
 #  for i in {1..50}; do
 #    sleep 0.1
