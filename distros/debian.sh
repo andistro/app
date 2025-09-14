@@ -281,6 +281,8 @@ if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
 
+sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
+
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin

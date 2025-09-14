@@ -15,8 +15,5 @@ show_progress_dialog steps-one-label "${label_system_language}" 8 \
     "apt update"
 
 sleep 2
-## Exportar os comandos de configuração de idioma para ~/.bashrc
-## Essa configuração necessita de reboot
-#sed -i '\|export LANG|a LANG=pt_BR.UTF-8|' ~/.vnc/xstartup\
 
 rm -rf locale_pt-BR.sh
