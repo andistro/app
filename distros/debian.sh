@@ -199,7 +199,7 @@ export LANG=$language_transformed.UTF-8
 
 source "/usr/local/bin/global_var_fun.sh"
 
-echo "${label_alert_autoupdate_for_u}"
+echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security $codinome-security main contrib non-free
