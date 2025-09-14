@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 distro_name="debian"
-bin="start-$distro_name.sh"
+bin="start-$distro_name"
 codinome="trixie"
 andistro_files="$PREFIX/bin/andistro_files"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
@@ -101,7 +101,7 @@ if [ "$first" != 1 ];then
 fi
 
 echo "${label_start_script}"
-cat > $bin <<- EOM
+cat > "$PREFIX/bin/andistro_files/boot/$bin" <<- EOM
 #!/bin/bash
 
 if [ ! -d "\$HOME/storage" ];then
@@ -294,8 +294,7 @@ exit
 EOM
 
 # Cria uma gui de inicialização
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-cp "$bin" "$PREFIX/bin/andistro_files/boot/${bin%.sh}"
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $PREFIX/bin/andistro_files/boot/$bin
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
-bash $bin && andistro -s debian
+andistro -s $distro_name
