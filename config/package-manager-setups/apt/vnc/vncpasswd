@@ -17,7 +17,6 @@ while true; do
             exit 1
         fi
     else
-        clear
         echo "$label_retry (status=$msgbox_status)"
         sleep 0.5
     fi
@@ -39,5 +38,3 @@ chmod 600 "$HOME/.vnc/passwd"
         echo $i
     done
 } | dialog --gauge "${label_change_password}" 6 50 0
-
-clear

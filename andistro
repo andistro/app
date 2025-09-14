@@ -18,8 +18,6 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir "$HOME/storage/shared/termux/andistro/logs"
 fi
 
-clear
-
 #Verifica se o andistro está em $HOME
 if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
@@ -348,8 +346,6 @@ case "$1" in
             echo  # pular linha no fim
         }
 
-        clear
-
         chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
         source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 
@@ -379,15 +375,11 @@ case "$1" in
             #andistro ${distro_update} 2>&1
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
-            clear
-
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             #andistro ${distro_update} 2>&1
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
-            clear
-
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -432,8 +424,6 @@ case "$1" in
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
             echo "Desinstalação concluída!"
-            clear
-
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             rm -rf $PREFIX/bin/andistro_files/boot/ubuntu/
@@ -452,8 +442,6 @@ case "$1" in
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
             echo "Desinstalação concluída!"
-            clear
-
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -479,13 +467,9 @@ case "$1" in
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
             bash $PREFIX/bin/andistro_files/boot/start-debian
-            clear
-
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             bash $PREFIX/bin/andistro_files/boot/start-ubuntu
-            clear
-
         else
             echo "Distribuição não reconhecida: $2"
             exit 1

@@ -201,9 +201,9 @@ source "/usr/local/bin/global_var_fun.sh"
 
 echo "${label_alert_autoupdate_for_u}"
 
-echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security $codinome-security main contrib non-free
-deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
+#echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
+#deb http://security.debian.org/debian-security $codinome-security main contrib non-free
+#deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
 
 #======================================================================================================
 # global_var_fun.sh == update_progress() {}
@@ -265,7 +265,6 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
-clear
 chmod +x /usr/local/bin/vnc
 chmod +x /usr/local/bin/vncpasswd
 chmod +x /usr/local/bin/startvnc
@@ -274,9 +273,7 @@ chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_\$system_icu_locale_code.sh
 
-bash ~/system-config.sh
-
-clear
+bash ~/system-config.shr
 
 bash ~/config-environment.sh
 
@@ -297,4 +294,6 @@ EOM
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $PREFIX/bin/andistro_files/boot/$bin
 rm -rf $HOME/distrolinux-install.sh
 rm -rf $HOME/start-distro.sh
+
+#bash $PREFIX/bin/andistro_files/boot/$bin
 andistro -s $distro_name

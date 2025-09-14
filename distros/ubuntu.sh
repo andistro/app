@@ -39,8 +39,6 @@ CHOICE=$(dialog --clear \
     2>&1 1>&3)
 exec 3>&-
 
-clear
-
 # Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
     language_selected="$system_lang_code"
@@ -392,7 +390,6 @@ case $CHOICE in
 		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
 	;;
 esac
-clear
 
 chmod +x $folder/root/config-environment.sh
 
@@ -448,7 +445,6 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
-clear
 chmod +x /usr/local/bin/vnc
 chmod +x /usr/local/bin/vncpasswd
 chmod +x /usr/local/bin/startvnc
@@ -458,8 +454,6 @@ chmod +x /usr/local/bin/startvncserver
 bash ~/locale_${system_icu_locale_code}.sh
 
 bash ~/system-config.sh
-
-clear
 
 bash ~/config-environment.sh
 

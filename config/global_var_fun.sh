@@ -61,12 +61,10 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '
 # Irá carregar os pacotes de idiomas que tiver no sistema
 if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ]; then
     echo "Solicitando a fonte $PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
-    clear
     chmod +x "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
     source "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
 elif [ -f "/usr/local/bin/l10n_${system_icu_locale_code}.sh" ]; then
     echo "Solicitando a fonte /usr/local/bin/l10n_${system_icu_locale_code}.sh"
-    clear
     chmod +x "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
     source "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
 else
