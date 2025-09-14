@@ -485,6 +485,7 @@ case "$1" in
 
         terminal)
             source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+            echo ""
             echo "$distro_desc_line_1"
             echo ""
             echo "$distro_desc_line_2"
