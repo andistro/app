@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-multi-label 64 \
+show_progress_dialog steps-multi-label 66 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
