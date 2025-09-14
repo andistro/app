@@ -58,3 +58,5 @@ GEO="-geometry $custom" PORT=$port vnc
 ;;
 esac
 
+clear
+
