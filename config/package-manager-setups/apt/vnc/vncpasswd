@@ -9,7 +9,7 @@ while true; do
     msgbox_status=$?
 
     if [ "$msgbox_status" -eq 0 ]; then
-        PASSWORD=$(dialog --insecure --passwordbox "$label_vnc_password_input" 20 50 3>&1 1>&2 2>&3)
+        PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_vnc_password_input" 20 50 3>&1 1>&2 2>&3)
         if [ $? -eq 0 ]; then
             break
         else
@@ -24,7 +24,7 @@ done
 
 # Salvar a senha no arquivo apropriado
 if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-    dialog --title "$label_error" --msgbox "$label_vnc_password_save_failed" 20 50
+    dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_save_failed" 20 50
     exit 1
 fi
 
@@ -37,4 +37,4 @@ chmod 600 "$HOME/.vnc/passwd"
         sleep 0.08
         echo $i
     done
-} | dialog --gauge "${label_change_password}" 20 50 0
+} | dialog --no-shadow --gauge "${label_change_password}" 20 50 0

@@ -35,7 +35,7 @@ CHOICE_HEIGHT=10
 
 # Mostrar menu com redirecionamento seguro
 exec 3>&1
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
     --title "$MENU_language_select" \
     --menu "$MENU_language_select" \
     $HEIGHT $WIDTH $CHOICE_HEIGHT \

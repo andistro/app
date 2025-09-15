@@ -64,7 +64,7 @@ if [ -z "$1" ]; then
             4 "Desinstalar"
             5 "Ver como terminal")
 
-    CHOICE=$(dialog --clear \
+    CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
         --menu "Escolha uma das opções:" \
         $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -78,7 +78,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -103,7 +103,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -134,7 +134,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$( --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -515,7 +515,7 @@ case "$1" in
                     sleep 0.1
                     echo $((i * 2))
                 done
-            } | dialog --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+            } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
         ;;
 
     *)

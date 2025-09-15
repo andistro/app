@@ -31,7 +31,7 @@ CHOICE_HEIGHT=10
 
 # Mostrar menu com redirecionamento seguro
 exec 3>&1
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
     --title "$MENU_language_select" \
     --menu "$MENU_language_select" \
     $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -338,7 +338,7 @@ OPTIONS=(1 "LXDE"
 		 2 "XFCE"
 		 3 "Gnome")
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
                 --title "$TITLE" \
                 --menu "$MENU_environments_select" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \

@@ -23,7 +23,7 @@ OPTIONS=(1 "${label_vncserver_resolution_option_custom}"
 
 
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
                 --backtitle "$BACKTITLE" \
                 --title "$TITLE" \
                 --menu "$MENU" \
@@ -36,7 +36,7 @@ case $CHOICE in
 1)
 # Mostra o formulário com dialog
 exec 3>&1
-result=$(dialog --ok-label "Confirmar" --backtitle "Configuração do VNC Server" \
+result=$(dialog --no-shadow --ok-label "Confirmar" --backtitle "Configuração do VNC Server" \
   --form "$label_vncserver_chose_resolution_custom\n$label_vncserver_chose_resolution_custom_desc\n$label_vncserver_chose_resolution_custom_desc_port\nAviso: Não tecle \"ENTER\" (↲) antes de preencher todos os campos \nLegenda: digitar no espaço marcado em azul. Clique no texto para selecionar e puder digitar." \
   20 50 4 \
   "Largura:"  1 1 "" 1 20 10 0 \

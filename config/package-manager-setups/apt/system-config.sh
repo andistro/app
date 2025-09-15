@@ -76,7 +76,7 @@ sleep 2
    sleep 0.1
    echo $((i * 2))
  done
-} | dialog --gauge "$label_keyboard_setup" 10 60 0
+} | dialog --no-shadow --gauge "$label_keyboard_setup" 10 60 0
 sudo dpkg-reconfigure keyboard-configuration
 
 rm -rf system-config.sh

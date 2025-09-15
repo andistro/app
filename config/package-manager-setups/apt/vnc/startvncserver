@@ -22,7 +22,7 @@ OPTIONS=(1 "${label_vncserver_resolution_option_uwhd}"
          4 "${label_vncserver_resolution_option_hd}"
          5 "${label_vncserver_resolution_option_custom}")
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --no-shadow --clear \
                 --backtitle "$BACKTITLE" \
                 --title "$TITLE" \
                 --menu "$MENU" \
