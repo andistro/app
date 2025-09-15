@@ -1,19 +1,10 @@
 <!--
 📄  Documentação
 -->
-<center>
-
 ![ForYou](https://img.shields.io/badge/-Criado_com_❤️-gray) <img src="./Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px"><br>
 ![Android](https://img.shields.io/badge/Android-gray?logo=android)
 ![Termux](https://img.shields.io/badge/Termux-gray?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+CgogICAgPCEtLSBTY3JlZW4gYW5kIGJvcmRlci4gLS0+CiAgICA8cGF0aCBmaWxsPSIjMDAwIgogICAgICAgICAgc3Ryb2tlPSIjQkZDQkNEIgogICAgICAgICAgc3Ryb2tlLXdpZHRoPSIyIgogICAgICAgICAgZD0iTTksNgogICAgICAgICAgICAgbDMwLDAKICAgICAgICAgICAgIHEzIDAsMyAzCiAgICAgICAgICAgICBsMCwzMAogICAgICAgICAgICAgcTAgMywgLTMgMwogICAgICAgICAgICAgbC0zMCwwCiAgICAgICAgICAgICBxLTMgMCwgLTMtMwogICAgICAgICAgICAgbDAgLTMwCiAgICAgICAgICAgICBxMCAtMywgMyAtMyIKICAgIC8+CgogICAgPCEtLSBCbG9jayBjdXJzb3IuIC0tPgogICAgPHBhdGggZmlsbD0iI0ZGRiIKICAgICAgICAgIGQ9Ik0xNCwxNAogICAgICAgICAgICAgbDUsMAogICAgICAgICAgICAgbDAsMTAKICAgICAgICAgICAgIGwtNSwwIgogICAgLz4KCjwvc3ZnPgo=)
 <br>
-</center>
-
-
-<!--![XFCE Com problemas](https://img.shields.io/badge/XFCE-Com_problemas-red?logo=xfce&logoColor=white)-->
-<!-- ![LXDE Com problemas](https://img.shields.io/badge/LXDE-Com_problemas-red?logo=lxde&logoColor=white) -->
-<!-- ![GNOME](https://img.shields.io/badge/GNOME-Suportado-4A86CF?logo=gnome&logoColor=white) -->
-
 
 # Distribuições Linux no Android 
 Consulte a [wiki](https://github.com/andistro/app/wiki) para documentação e mais informações.
