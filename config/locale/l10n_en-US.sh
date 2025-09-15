@@ -110,7 +110,7 @@ label_vncserver_resolution_option_uwhd="Start vncserver in Ultrawide HD resoluti
 label_vncserver_resolution_option_qdhd="Start vncserver in Quad-HD resolution"
 label_vncserver_resolution_option_fhd="Start vncserver in Full-HD resolution"
 label_vncserver_resolution_option_hd="Start vncserver in HD resolution"
-label_vncserver_resolution_option_custom="Start vncserver with custom resolution and port"
+label_vncserver_resolution_option_custom="Set resolution, port and scale manually"
 
 label_vncserver_chose_resolution_uwhd="You chose Ultra Wide HD resolution"
 label_vncserver_chose_resolution_qdhd="You chose Quad-HD resolution"
