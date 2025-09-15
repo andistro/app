@@ -2,7 +2,10 @@
 #XFCE4 config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}" 11 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}" 14 \
+     'sleep 2' \
+     'sleep 4' \
+     'sleep 6' \
      'sudo apt install xfce4 --no-install-recommends -y' \
      'sudo apt install xfce4-goodies --no-install-recommends -y' \
      'sudo apt install xfce4-terminal --no-install-recommends -y' \

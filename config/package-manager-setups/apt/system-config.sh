@@ -6,6 +6,7 @@ show_progress_dialog steps-multi-label 66 \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
   "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata --no-install-recommends -y" \
+  "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration --no-install-recommends -y" \
   "${label_install_script_download}" 'sudo apt install xz-utils --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install wget --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install curl --no-install-recommends -y' \
@@ -70,37 +71,13 @@ show_progress_dialog steps-multi-label 66 \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
 sleep 2
 
-# {
-#   for i in {1..50}; do
-#     sleep 0.1
-#     echo $((i * 2))
-#   done
-# } | dialog --gauge "$label_keyboard_setup" 10 60 0
-
-# if ! dpkg -l | grep -qw keyboard-configuration; then
-#     sudo apt install keyboard-configuration -y > /dev/null 2>&1
-#     else
-#       sudo dpkg-reconfigure keyboard-configuration
-# fi
-
-sudo apt-get install keyboard-configuration -y > /dev/null 2>&1 &
-
-# Mostra a barra de progresso enquanto o download ocorre
-for i in {1..100}; do
-  sleep 0.1
-  echo $i
-done | dialog --gauge "$label_keyboard_setup" 10 60 0
-
-# Aguarda o término do download
-wait
-
-#{
-#  for i in {1..50}; do
-#    sleep 0.1
-#    echo $((i * 2))
-#  done
-#} | dialog --gauge "$label_tzdata_setup" 10 60 0
-#sudo dpkg-reconfigure -f noninteractive tzdata > /dev/null 2>&1
+{
+ for i in {1..50}; do
+   sleep 0.1
+   echo $((i * 2))
+ done
+} | dialog --gauge "$label_keyboard_setup" 10 60 0
+sudo dpkg-reconfigure keyboard-configuration > /dev/null 2>&1
 
 rm -rf system-config.sh
 
