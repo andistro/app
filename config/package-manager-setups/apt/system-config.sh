@@ -76,7 +76,13 @@ sleep 2
     echo $((i * 2))
   done
 } | dialog --gauge "$label_keyboard_setup" 10 60 0
-sudo dpkg-reconfigure keyboard-configuration
+
+if ! dpkg -l | grep -qw sudo; then
+    sudo apt install keyboard-configuration -y > /dev/null 2>&1
+    else
+      sudo dpkg-reconfigure keyboard-configuration
+fi
+
 #{
 #  for i in {1..50}; do
 #    sleep 0.1
