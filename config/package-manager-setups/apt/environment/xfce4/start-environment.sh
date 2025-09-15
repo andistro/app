@@ -3,7 +3,7 @@
 source "/usr/local/bin/global_var_fun.sh"
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 22 \
   'vncserver -name remote-desktop -geometry 1920x1080 :1' \
   'sleep 10' \
   'xfce4-session > /dev/null 2>&1 &' \
@@ -24,4 +24,5 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   "vncserver -kill :1" \
   "rm -rf /tmp/.X*-lock" \
   "rm -rf /tmp/.X11-unix/X*" \
-  "rm -rf ~/start-environment.sh"
+  "rm -rf ~/start-environment.sh" \
+  "rm -rf ~/xfce4-panel.tar.bz2"
