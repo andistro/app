@@ -280,8 +280,10 @@ show_progress_dialog() {
                     ((count++))
                 done
 
-                echo -e "XXX\n100\n${label_completed}\nXXX"
-                echo -e "XXX\n100\nXXX"
+                echo "XXX"
+                echo "100"
+                echo "${label_completed}"
+                echo "XXX"
             } | dialog --gauge "$label" 10 70 0
         ;;
         
