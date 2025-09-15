@@ -1,17 +1,19 @@
 {
   "SM-S928B": {
     "name": "Samsung Galaxy S24 Ultra",
-    "hd": {
-      "width": 720,
-      "height": 1560
-    },
-    "fhd": {
-      "width": 1080,
-      "height": 2340
-    },
-    "qhd": {
-      "width": 1440,
-      "height": 3120
+    "sizes": {
+      "hd": {
+        "width": 720,
+        "height": 1560
+      },
+      "fhd": {
+        "width": 1080,
+        "height": 2340
+      },
+      "qhd": {
+        "width": 1440,
+        "height": 3120
+      }
     }
   }
 }

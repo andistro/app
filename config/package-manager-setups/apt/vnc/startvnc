@@ -15,11 +15,11 @@ MENU="${label_vncserver_resolution_option}"
 export PORT=1
 
 
-OPTIONS=(1 "${label_vncserver_resolution_option_uwhd}"
-         2 "${label_vncserver_resolution_option_qdhd}"
-         3 "${label_vncserver_resolution_option_fhd}"
-         4 "${label_vncserver_resolution_option_hd}"
-         5 "${label_vncserver_resolution_option_custom}")
+OPTIONS=(1 "${label_vncserver_resolution_option_custom}"
+         2 "${label_vncserver_resolution_option_uwhd}"
+         3 "${label_vncserver_resolution_option_qdhd}"
+         4 "${label_vncserver_resolution_option_fhd}"
+         5 "${label_vncserver_resolution_option_hd}")
 
 
 
@@ -33,27 +33,44 @@ CHOICE=$(dialog --clear \
 
 case $CHOICE in
 1)
+# Mostra o formulário com dialog
+exec 3>&1
+result=$(dialog --ok-label "Confirmar" --backtitle "Configuração do VNC Server" \
+  --form "$label_vncserver_chose_resolution_custom\n$label_vncserver_chose_resolution_custom_desc\n$label_vncserver_chose_resolution_custom_desc_port\nAviso: Não tecle \"ENTER\" (↲) antes de preencher todos os campos \nLegenda: digitar no espaço marcado em azul" \
+  15 60 4 \
+  "Largura:"  1 1 "" 1 20 10 0 \
+  "Altura:"   2 1 "" 2 20 10 0 \
+  "Escala:"   3 1 "" 3 20 5 0 \
+  "Porta:"    4 1 "" 4 20 5 0 \
+  2>&1 1>&3)
+exec 3>&-
+
+# Interpretação dos campos
+largura=$(echo "$result" | sed -n 1p)
+altura=$(echo "$result" | sed -n 2p)
+escala=$(echo "$result" | sed -n 3p)
+porta=$(echo "$result" | sed -n 4p)
+
+# Exibe os dados preenchidos
+echo "Resolução definida: ${largura}x${altura}, Escala: ${escala}, Porta: ${porta}"
+GEO="-geometry ${largura}x${altura}" PORT=$porta vnc
+xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s $escala
+;;
+2)
 echo "${label_vncserver_chose_resolution_uwhd}"
 GEO="-geometry 2560x1080" vnc
 ;;
-2)
+3)
 echo "${label_vncserver_chose_resolution_qdhd}"
 GEO="-geometry 2560x1440" vnc
 ;;
-3)
+4)
 echo "${label_vncserver_chose_resolution_fhd}"
 GEO="-geometry 1920x1080" vnc
 ;;
-4)
+5)
 echo "${label_vncserver_chose_resolution_hd}"
 GEO="-geometry 1280x720" vnc
 ;;
-5)
-echo "${label_vncserver_chose_resolution_custom}"
-echo "${label_vncserver_chose_resolution_custom_desc}"
-read custom
-echo "${label_vncserver_chose_resolution_custom_desc_port}"
-read port
-GEO="-geometry $custom" PORT=$port vnc
-;;
+
 esac
