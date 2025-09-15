@@ -81,7 +81,15 @@ while true; do
         "Escala:"   3 1 "$escala_default"   3 20 10 0 \
         "Porta:"    4 1 "$porta_default"    4 20 10 0 \
         2>&1 1>&3)
+    dialog_exit_status=$? # <-- Aqui captura o status
     exec 3>&-
+
+    # Cancelar? Sai do loop e chama startvnc
+    if [[ $dialog_exit_status -ne 0 || -z "$result" ]]; then
+        set -H
+        startvnc
+        exit 0
+    fi
 
     tentou=1
 
