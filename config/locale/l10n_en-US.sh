@@ -87,6 +87,11 @@ label_change_password="VNC password changed successfully. "
 label_retry="Trying again..."
 label_error="Error"
 label_vnc_password_save_failed="Failed to save password!"
+label_numbers_only="(numbers only)"
+label_width="Width"
+label_height="Height"
+label_scale="Scale"
+label_port="Port"
 
 #VNC
 label_vnc_setup="VNC Setup"
@@ -114,6 +119,9 @@ label_vncserver_chose_resolution_hd="You chose HD resolution"
 label_vncserver_chose_resolution_custom="You chose to set resolution and port manually"
 label_vncserver_chose_resolution_custom_desc="Enter custom resolution in WIDTHxHEIGHT format. Example: 1920x1200"
 label_vncserver_chose_resolution_custom_desc_port="Enter the port number. Example: 2. Default port is 1"
+label_vncserver_chose_resolution_custom_alert="Attention: Do not press ENTER (↲) before filling in all fields. Click on the text to select and be able to type."
+label_vncserver_chose_resolution_custom_alert_caption="Legend: the field in blue is the one selected for typing. Use the ↑ and ↓ keys to change the selection."
+label_vncserver_chose_resolution_custom_alert_error="Missing or invalid values in the fields below:\n"
 
 # About downloads
 label_install_script_download="Downloading installation script..."

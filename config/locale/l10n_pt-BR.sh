@@ -95,6 +95,11 @@ label_change_password="A senha do VNC foi alterada com sucesso. "
 label_retry="Tentando novamente..."
 label_error="Erro"
 label_vnc_password_save_failed="Falha ao salvar a senha!"
+label_numbers_only="(somente número)"
+label_width="Largura"
+label_height="Altura"
+label_scale="Escala"
+label_port="Porta"
 
 #VNC
 label_vnc_setup="Configuração do VNC"
@@ -122,6 +127,10 @@ label_vncserver_chose_resolution_hd="Você escolheu a resolução HD"
 label_vncserver_chose_resolution_custom="Você escolheu definir a resolução e porta manualmente"
 label_vncserver_chose_resolution_custom_desc="Insira a resolução personalizada no formato LARGURAxALTURA. Exemplo: 1920x1200"
 label_vncserver_chose_resolution_custom_desc_port="Insira o número da porta. Exemplo: 2. A porta padrão é 1"
+label_vncserver_chose_resolution_custom_alert="Atenção: Não tecle ENTER (↲) antes de preencher todos os campos. Clique no texto para selecionar e poder digitar."
+label_vncserver_chose_resolution_custom_alert_caption="Legenda: o campo em azul é o que está selecionado para digitar. Use as teclas ↑ e ↓ para trocar a seleção."
+label_vncserver_chose_resolution_custom_alert_error="Faltam ou há valores inválidos nos campos abaixo:\n"
+
 
 # Sobre downloads
 label_install_script_download="Baixando script de instalação..."
