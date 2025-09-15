@@ -184,7 +184,7 @@ show_progress_dialog() {
                 echo "${label_done}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --gauge "$label" 0 50 0
+            } | dialog --gauge "$label" 20 50 0
         ;;
 
         steps-multi-label)
@@ -214,7 +214,7 @@ show_progress_dialog() {
                 echo "${label_done}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --gauge "$title_progress" 0 50 0
+            } | dialog --gauge "$title_progress" 20 50 0
         ;;
 
         wget)
@@ -240,7 +240,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done}"
                 echo "XXX"
-            } | dialog --gauge "$label" 0 50 0
+            } | dialog --gauge "$label" 20 50 0
         ;;
 
         wget-labeled)
@@ -284,7 +284,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done}"
                 echo "XXX"
-            } | dialog --gauge "$label" 0 50 0
+            } | dialog --gauge "$label" 20 50 0
         ;;
         
         extract)
@@ -307,7 +307,7 @@ show_progress_dialog() {
 
             # Verifica se o arquivo existe
             if [ ! -f "$file" ]; then
-                dialog --title "Erro" --msgbox "Arquivo não encontrado: $file" 10 50
+                dialog --title "Erro" --msgbox "Arquivo não encontrado: $file" 20 50
                 return 1
             fi
 
@@ -322,7 +322,7 @@ show_progress_dialog() {
                 *.xz) cmd=(xz -d "$file") ;;
                 *.gz) cmd=(gunzip "$file") ;;
                 *)
-                    dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 50
+                    dialog --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 20 50
                     return 1
                 ;;
             esac
@@ -343,7 +343,7 @@ show_progress_dialog() {
                 done
                 echo 100
                 set -m
-            } | dialog --gauge "$label" 0 50
+            } | dialog --gauge "$label" 20 50
         ;;
 
 
@@ -390,10 +390,10 @@ show_progress_dialog() {
                     echo "$percent"
                     sleep 0.2
                 done
-            } | dialog --title "$title" --gauge "Verificando pacotes..." 0 50 0
+            } | dialog --title "$title" --gauge "Verificando pacotes..." 20 50 0
 
             # Exibe resultado final com scroll, sem botão OK
-            dialog --title "Resultado da verificação" --textbox "$log_file" 0 50
+            dialog --title "Resultado da verificação" --textbox "$log_file" 20 50
             ;;
 
         *)
