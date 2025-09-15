@@ -50,71 +50,6 @@ GEO="-geometry 1280x720" vnc
 ;;
 5)
 set +H
-while true; do
-    dialog_msgbox="$label_vncserver_chose_resolution_custom\n$label_vncserver_chose_resolution_custom_desc\n$label_vncserver_chose_resolution_custom_desc_port\n$label_vncserver_chose_resolution_custom_alert\n$label_vncserver_chose_resolution_custom_alert_caption\n\n"
-    mensagem_erro=""
-
-    # Testa se não é a primeira vez (já tentou e falhou)
-    if [[ -n "$tentou" ]]; then
-        falta_msg=""
-        [[ -z "$largura_default" || ! "$largura_default" =~ ^[0-9]+$ ]] && falta_msg="${falta_msg}${label_width} ${label_numbers_only}\n"
-        [[ -z "$altura_default"  || ! "$altura_default"  =~ ^[0-9]+$ ]] && falta_msg="${falta_msg}${label_height} ${label_numbers_only}\n"
-        [[ -z "$escala_default"  || ! "$escala_default"  =~ ^[0-9]+$ ]] && falta_msg="${falta_msg}${label_scale} ${label_numbers_only}\n"
-        [[ -z "$porta_default"   || ! "$porta_default"   =~ ^[0-9]+$ ]] && falta_msg="${falta_msg}${label_port} ${label_numbers_only}\n"
-        [[ -n "$falta_msg" ]] && mensagem_erro="${label_vncserver_chose_resolution_custom_alert_error}:\n$falta_msg"
-    fi
-
-    # Cabeçalho, variável ou mensagem de erro
-    cabecalho="Configuração do VNC Server"
-    if [[ -n "$mensagem_erro" ]]; then
-        titulo="$dialog_msgbox\n----------------\n$mensagem_erro\n\n"
-        else
-            titulo="$dialog_msgbox"
-    fi
-
-    exec 3>&1
-    result=$(dialog --no-shadow --ok-label "Confirmar" --backtitle "$cabecalho" \
-        --form "$titulo" \
-        0 0 4 \
-        "Largura:"  1 1 "$largura_default"  1 20 10 0 \
-        "Altura:"   2 1 "$altura_default"   2 20 10 0 \
-        "Escala:"   3 1 "$escala_default"   3 20 10 0 \
-        "Porta:"    4 1 "$porta_default"    4 20 10 0 \
-        2>&1 1>&3)
-    dialog_exit_status=$? # <-- Aqui captura o status
-    exec 3>&-
-
-    # Cancelar? Sai do loop e chama startvnc
-    if [[ $dialog_exit_status -ne 0 || -z "$result" ]]; then
-        set -H
-        startvnc
-        exit 0
-    fi
-
-    tentou=1
-
-    largura_default="$(echo "$result" | sed -n 1p)"
-    altura_default="$(echo "$result" | sed -n 2p)"
-    escala_default="$(echo "$result" | sed -n 3p)"
-    porta_default="$(echo "$result" | sed -n 4p)"
-
-    # Validação
-    if [[ "$largura_default" =~ ^[0-9]+$ ]] &&
-        [[ "$altura_default"  =~ ^[0-9]+$ ]] &&
-        [[ "$escala_default"  =~ ^[0-9]+$ ]] &&
-        [[ "$porta_default"   =~ ^[0-9]+$ ]]; then
-        break
-    fi
-done
-set -H
-echo "Resolução definida: ${largura_default}x${altura_default}, Escala: ${escala_default}, Porta: ${porta_default}"
-
-
-
-
-# =============================================================================================
-
-set +H
 largura_default=""; altura_default=""; escala_default="1"; porta_default="1"
 tentou=""
 foi_confirmado=0
@@ -135,24 +70,25 @@ while true; do
 
     cabecalho="Configuração do VNC Server"
     if [[ -n "$mensagem_erro" ]]; then
-        titulo="$dialog_msgbox\n----------------\n$mensagem_erro\n\n"
+        titulo="$dialog_msgbox\n----------------\n$mensagem_erro\n\n${label_numbers_only}"
     else
-        titulo="$dialog_msgbox"
+        titulo="$dialog_msgbox\n${label_numbers_only}"
     fi
     exec 3>&1
     result=$(dialog --no-shadow --ok-label "${label_confirm}" --cancel-label "${label_cancel}" --backtitle "$cabecalho" \
         --form "$titulo" \
-        20 50 4 \
-        "${label_width} ${label_numbers_only}:" 1 1 "$largura_default" 1 20 10 0 \
-        "${label_height} ${label_numbers_only}:"  2 1 "$altura_default"  2 20 10 0 \
-        "${label_scale} ${label_numbers_only}:"  3 1 "$escala_default"  3 20 10 0 \
-        "${label_port} ${label_numbers_only}:"   4 1 "$porta_default"   4 20 10 0 \
+        0 0 4 \
+        "${label_width}:" 1 1 "$largura_default" 1 20 10 0 \
+        "${label_height}:"  2 1 "$altura_default"  2 20 10 0 \
+        "${label_scale}:"  3 1 "$escala_default"  3 20 10 0 \
+        "${label_port}:"   4 1 "$porta_default"   4 20 10 0 \
         2>&1 1>&3)
     dialog_exit_status=$?
     exec 3>&-
 
     if [[ $dialog_exit_status -eq 1 || $dialog_exit_status -eq 255 || -z "$result" ]]; then
         echo "Cancelado. Use o comando startvnc para selecionar outra resolução"
+        clear
         startvnc
         break
     fi
