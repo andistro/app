@@ -114,7 +114,6 @@ if [[ $foi_confirmado -eq 1 ]]; then
     echo "Resolução definida: ${largura_default}x${altura_default}, Escala: ${escala_default}, Porta: ${porta_default}"
 fi
 
-
 GEO="-geometry ${largura_default}x${altura_default}" PORT=$porta_default vnc
 xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s $escala_default
 ;;
