@@ -1,16 +1,16 @@
 <!--
 📄  Documentação
 -->
-![ForYou](https://img.shields.io/badge/-Criado_com_❤️-gray) <img src="./Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px"><br>
+<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Bandeira do Brasil"> <img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos">  ![ForYou](https://img.shields.io/badge/-Criado_com_❤️-gray)
 ![Android](https://img.shields.io/badge/Android-gray?logo=android)
 ![Termux](https://img.shields.io/badge/Termux-gray?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+CgogICAgPCEtLSBTY3JlZW4gYW5kIGJvcmRlci4gLS0+CiAgICA8cGF0aCBmaWxsPSIjMDAwIgogICAgICAgICAgc3Ryb2tlPSIjQkZDQkNEIgogICAgICAgICAgc3Ryb2tlLXdpZHRoPSIyIgogICAgICAgICAgZD0iTTksNgogICAgICAgICAgICAgbDMwLDAKICAgICAgICAgICAgIHEzIDAsMyAzCiAgICAgICAgICAgICBsMCwzMAogICAgICAgICAgICAgcTAgMywgLTMgMwogICAgICAgICAgICAgbC0zMCwwCiAgICAgICAgICAgICBxLTMgMCwgLTMtMwogICAgICAgICAgICAgbDAgLTMwCiAgICAgICAgICAgICBxMCAtMywgMyAtMyIKICAgIC8+CgogICAgPCEtLSBCbG9jayBjdXJzb3IuIC0tPgogICAgPHBhdGggZmlsbD0iI0ZGRiIKICAgICAgICAgIGQ9Ik0xNCwxNAogICAgICAgICAgICAgbDUsMAogICAgICAgICAgICAgbDAsMTAKICAgICAgICAgICAgIGwtNSwwIgogICAgLz4KCjwvc3ZnPgo=)
-<br>
 
 # Distribuições Linux no Android <a href="https://www.linkedin.com/company/andistro/" target="_blank">![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yNCAyLjE0Mjg2VjIxLjg1NzFDMjQgMjMuMDQgMjMuMDQgMjQgMjEuODU3MSAyNEgyLjE0Mjg2QzAuOTYgMjQgMCAyMy4wNCAwIDIxLjg1NzFWMi4xNDI4NkMwIDAuOTYgMC45NiAwIDIuMTQyODYgMEgyMS44NTcxQzIzLjA0IDAgMjQgMC45NiAyNCAyLjE0Mjg2Wk04LjU3MTQzIDguNTcxNDNIMTEuNzQyOVYxMC4zMTMxSDExLjgxNjZDMTIuNDQ0IDkuNDk4ODYgMTMuNzQ1MSA4LjQ2NTE0IDE1Ljg1NzEgOC40NjUxNEMxOS4wNzE0IDguNDY1MTQgMjAuNTcxNCA5Ljk1NjU3IDIwLjU3MTQgMTMuNzE0M1YyMC41NzE0SDE3LjE0MjlWMTVDMTcuMTQyOSAxMi41MzY2IDE2LjU4MDYgMTEuNzg1NyAxNC43OTc3IDExLjc4NTdDMTIuODU3MSAxMS43ODU3IDEyIDEzLjI4NTcgMTIgMTUuNDI4NlYyMC41NzE0SDguNTcxNDNWOC41NzE0M1pNMy40Mjg1NyAyMC41NzE0SDYuODU3MTRWOC41NzE0M0gzLjQyODU3VjIwLjU3MTRaTTcuNDMxNDMgNS4xNDI4NkM3LjQzMTQzIDYuNDA2MjkgNi40MDYyOSA3LjQzMTQzIDUuMTQyODYgNy40MzE0M0MzLjg3OTQzIDcuNDMxNDMgMi44NTQyOSA2LjQwNjI5IDIuODU0MjkgNS4xNDI4NkMyLjg1NDI5IDMuODc5NDMgMy44Nzk0MyAyLjg1NDI5IDUuMTQyODYgMi44NTQyOUM2LjQwNjI5IDIuODU0MjkgNy40MzE0MyAzLjg3OTQzIDcuNDMxNDMgNS4xNDI4NloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=)</a>
 
-| WIKI |
-|-|
-|[Português do Brasil (pt-BR)](https://github.com/andistro/app/blob/main/wiki/pt-BR/README.md)|
+| WIKI ||
+|-|-|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Bandeira do Brasil">|[Português do Brasil (pt-BR)](https://github.com/andistro/app/blob/main/wiki/pt-BR/README.md)|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos">|[English of United States (en-US)](https://github.com/andistro/app/blob/main/wiki/en-US/README.md)|
 
 ![Distribuiçoes Liux no Android](https://raw.githubusercontent.com/andistro/.github/main/profile/thumbnail.2.png)
 
