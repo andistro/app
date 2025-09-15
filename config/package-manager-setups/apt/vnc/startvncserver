@@ -22,8 +22,6 @@ OPTIONS=(1 "${label_vncserver_resolution_option_uwhd}"
          4 "${label_vncserver_resolution_option_hd}"
          5 "${label_vncserver_resolution_option_custom}")
 
-
-
 CHOICE=$(dialog --clear \
                 --backtitle "$BACKTITLE" \
                 --title "$TITLE" \
@@ -31,7 +29,6 @@ CHOICE=$(dialog --clear \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
-
 case $CHOICE in
 1)
 echo "${label_vncserver_chose_resolution_uwhd}"
@@ -58,6 +55,6 @@ read port
 GEO="-geometry $custom" PORT=$port vnc
 ;;
 esac
-clear
+
 bash --login
 
