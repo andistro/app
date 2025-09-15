@@ -1,21 +1,4 @@
 #!/bin/bash
-
-if command -v getprop > /dev/null 2>&1; then
-    system_country=$(getprop ro.csc.country_code 2>/dev/null)              # Country
-fi
-
-# If ~/.bashrc file doesn't exist, create an empty one
-if [ ! -f ~/.bashrc ]; then
-  touch ~/.bashrc
-fi
-
-# If LANG=en_US.UTF-8 line exists in ~/.bashrc
-if grep -q "LANG=en_US.UTF-8" ~/.bashrc; then
-  export LANGUAGE=en_US_US.UTF-8
-  export LANG=en_US.UTF-8
-  export LC_ALL=en_US.UTF-8
-fi
-
 #=====================================================================================================\
 distro_wait="wait"
 distro_del="uninstall"
@@ -92,6 +75,8 @@ label_width="Width"
 label_height="Height"
 label_scale="Scale"
 label_port="Port"
+label_confirm="Confirm"
+label_cancel="Cancel"
 
 #VNC
 label_vnc_setup="VNC Setup"

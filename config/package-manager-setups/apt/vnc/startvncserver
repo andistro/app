@@ -140,7 +140,7 @@ while true; do
         titulo="$dialog_msgbox"
     fi
     exec 3>&1
-    result=$(dialog --no-shadow --ok-label "Confirmar" --cancel-label "Cancelar" --backtitle "$cabecalho" \
+    result=$(dialog --no-shadow --ok-label "${label_confirm}" --cancel-label "${label_cancel}" --backtitle "$cabecalho" \
         --form "$titulo" \
         20 50 4 \
         "${label_width} ${label_numbers_only}:" 1 1 "$largura_default" 1 20 10 0 \
@@ -153,6 +153,7 @@ while true; do
 
     if [[ $dialog_exit_status -eq 1 || $dialog_exit_status -eq 255 || -z "$result" ]]; then
         echo "Cancelado. Use o comando startvnc para selecionar outra resolução"
+        startvnc
         break
     fi
 

@@ -1,24 +1,8 @@
 #!/bin/bash
-
-if command -v getprop > /dev/null 2>&1; then
-    system_country=$(getprop ro.csc.country_code 2>/dev/null)              # País
-fi
 # Troca o nome "Brazil" por "Brasil"
 if [ "$system_country" = "Brazil" ]; then
   system_country="Brasil"
 fi
-
-# Se o arquivo ~/.bashrc não existir, cria um vazio
-if [ ! -f ~/.bashrc ]; then
-  touch ~/.bashrc
-fi
-
-# Se existir a linha LANG=pt_BR.UTF-8 dentro de ~/.bashrc
-# if grep -q "LANG=pt_BR.UTF-8" ~/.bashrc; then
-#   export LANGUAGE=pt_BR.UTF-8
-#   export LANG=pt_BR.UTF-8
-#   export LC_ALL=pt_BR.UTF-8
-# fi
 
 # Exclui o arquivo ~/.bashrc vazio
 
@@ -100,6 +84,8 @@ label_width="Largura"
 label_height="Altura"
 label_scale="Escala"
 label_port="Porta"
+label_confirm="Confirmar"
+label_cancel="Cancelar"
 
 #VNC
 label_vnc_setup="Configuração do VNC"
