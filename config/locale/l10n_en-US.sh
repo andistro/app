@@ -120,7 +120,7 @@ label_vncserver_chose_resolution_custom="You chose to set resolution and port ma
 label_vncserver_chose_resolution_custom_desc="Enter custom resolution in WIDTHxHEIGHT format. Example: 1920x1200"
 label_vncserver_chose_resolution_custom_desc_port="Enter the port number. Example: 2. Default port is 1"
 label_vncserver_chose_resolution_custom_alert="Attention: Do not press ENTER (↲) before filling in all fields. Click on the text to select and be able to type."
-label_vncserver_chose_resolution_custom_alert_caption="Legend: the field in blue is the one selected for typing. Use the ↑ and ↓ keys to change the selection."
+label_vncserver_chose_resolution_custom_alert_caption="Legend: the field in blue is the one selected for typing. Use the ↑ and ↓ keys to change the selection. You can click on the names to select."
 label_vncserver_chose_resolution_custom_alert_error="Missing or invalid values in the fields below:\n"
 
 # About downloads
