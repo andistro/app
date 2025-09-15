@@ -75,7 +75,7 @@ while true; do
     exec 3>&1
     result=$(dialog --no-shadow --ok-label "Confirmar" --backtitle "$cabecalho" \
         --form "$titulo" \
-        24 68 4 \
+        0 0 4 \
         "Largura:"  1 1 "$largura_default"  1 20 10 0 \
         "Altura:"   2 1 "$altura_default"   2 20 10 0 \
         "Escala:"   3 1 "$escala_default"   3 20 10 0 \
