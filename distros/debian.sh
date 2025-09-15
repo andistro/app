@@ -292,6 +292,8 @@ rm -rf ~/start-environment.sh
 exit
 EOM
 
+bash $PREFIX/bin/andistro_files/boot/$bin
+
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $PREFIX/bin/andistro_files/boot/$bin
 rm -rf $HOME/distrolinux-install.sh
