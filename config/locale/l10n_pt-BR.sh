@@ -14,11 +14,11 @@ if [ ! -f ~/.bashrc ]; then
 fi
 
 # Se existir a linha LANG=pt_BR.UTF-8 dentro de ~/.bashrc
-if grep -q "LANG=pt_BR.UTF-8" ~/.bashrc; then
-  export LANGUAGE=pt_BR.UTF-8
-  export LANG=pt_BR.UTF-8
-  export LC_ALL=pt_BR.UTF-8
-fi
+# if grep -q "LANG=pt_BR.UTF-8" ~/.bashrc; then
+#   export LANGUAGE=pt_BR.UTF-8
+#   export LANG=pt_BR.UTF-8
+#   export LC_ALL=pt_BR.UTF-8
+# fi
 
 # Exclui o arquivo ~/.bashrc vazio
 
