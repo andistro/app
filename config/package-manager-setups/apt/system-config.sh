@@ -77,7 +77,7 @@ sleep 2
   done
 } | dialog --gauge "$label_keyboard_setup" 10 60 0
 
-if ! dpkg -l | grep -qw sudo; then
+if ! dpkg -l | grep -qw keyboard-configuration; then
     sudo apt install keyboard-configuration -y > /dev/null 2>&1
     else
       sudo dpkg-reconfigure keyboard-configuration
