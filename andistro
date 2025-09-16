@@ -24,6 +24,7 @@ if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
     rm -rf "$HOME/andistro"
     andistro -u
+    andistro
 fi
 
 # ==============================================================================================
