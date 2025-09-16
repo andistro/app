@@ -266,6 +266,8 @@ bash ~/system-config.sh
 
 bash ~/config-environment.sh
 
+mkdir -p "/root/Desktop"
+
 if [ ! -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi

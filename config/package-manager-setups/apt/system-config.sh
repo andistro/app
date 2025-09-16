@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-multi-label 64 \
+show_progress_dialog steps-multi-label 60 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -28,7 +28,6 @@ show_progress_dialog steps-multi-label 64 \
   "${label_install_script_download}" 'sudo apt install font-manager --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install synaptic --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install gvfs-backends --no-install-recommends -y' \
-  "${label_install_script_download}" 'sudo apt install at-spi2-core --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo apt install bleachbit --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo install -d -m 0755 /etc/apt/keyrings' \
   "${label_install_script_download}" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
@@ -47,7 +46,6 @@ show_progress_dialog steps-multi-label 64 \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
   "${label_system_setup}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
-  "${label_system_setup}" 'mkdir -p "/root/Desktop"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
