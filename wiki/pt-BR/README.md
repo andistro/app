@@ -4,11 +4,13 @@
 
 | WIKI ||
 |-|-|
-|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Bandeira do Brasil">|[Português do Brasil (pt-BR)](https://github.com/andistro/app/blob/main/wiki/pt-BR/README.md)|
-|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos">|[English of United States (en-US)](https://github.com/andistro/app/blob/main/wiki/en-US/README.md)|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Bandeira do Brasil">|[Português do Brasil (pt-BR)](/wiki/pt-BR/README.md)|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos">|[English of United States (en-US)](/wiki/en-US/README.md)|
 
+| **Comece selecionando alguma das opções abaixo.** |
+|--------------------|
 |[**Requisitos**](#Requisitos)|
-|-|
+||
 |[**Instalações necessárias**](#Instalações-necessárias)|
 ||
 |[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema)|
