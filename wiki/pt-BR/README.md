@@ -17,6 +17,9 @@
 |  **↳** [**Baixando o instalador**](#baixando-o-instalador)|
 ||
 |[**Resolução de problemas**](/wiki/pt-BR/bugs.md)|
+||
+|[**DevTools ‐ Padrões de interface de código**](/wiki/pt-BR/DevTools.md)|
+
 
 <!--
 h1
