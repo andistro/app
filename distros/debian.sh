@@ -289,3 +289,4 @@ bash $bin
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 andistro -s $distro_name
+rm -rf $HOME/start-distro.sh
