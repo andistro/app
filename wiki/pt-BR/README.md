@@ -18,6 +18,7 @@
 |      **↳** [**Permitir que o Termux use o adb**](#permitir-que-o-termux-use-o-adb)|
 |      **↳** [**Desativando o monitor de processos fantasmas pelo Termux**](#desativando-o-monitor-de-processos-fantasmas-pelo-termux)|
 |  **↳** [**Desabilitando o Phantom Process no Android 14 e 15**](#desabilitando-o-phantom-process-no-android-14-e-15)|
+||
 |[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema)|
 |  **↳** [**Baixando o instalador**](#baixando-o-instalador)|
 <!--
