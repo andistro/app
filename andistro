@@ -354,9 +354,9 @@ case "$1" in
         }
 
         chmod +x "$PREFIX/bin/andistro_files/global_var_fun.sh"
-        source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+        export source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 
-        andistro
+        echo -e "$label_update_finish"
         exit 1
         ;;
 

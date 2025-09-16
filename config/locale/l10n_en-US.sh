@@ -77,6 +77,7 @@ label_scale="Scale"
 label_port="Port"
 label_confirm="Confirm"
 label_cancel="Cancel"
+label_update_finish="Update completed! \nUse the 'andistro' command to start."
 
 #VNC
 label_vnc_setup="VNC Setup"

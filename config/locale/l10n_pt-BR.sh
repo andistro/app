@@ -86,6 +86,7 @@ label_scale="Escala"
 label_port="Porta"
 label_confirm="Confirmar"
 label_cancel="Cancelar"
+label_update_finish="Atualização concluída! \nUse o comando 'andistro' para iniciar."
 
 #VNC
 label_vnc_setup="Configuração do VNC"
