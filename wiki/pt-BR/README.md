@@ -12,7 +12,11 @@
 |  **↳** [**Desabilitando o Phantom Process no Android 12 e 13**](#desabilitando-o-phantom-process-no-android-12-e-13)|
 |    **↳** [**Desativar o monitor de processos fantasmas pelo sinalizadores de recursos**](#desativar-o-monitor-de-processos-fantasmas-pelo-sinalizadores-de-recursos)|
 |    **↳** [**Desativar o monitor de processos fantasmas pelo adb**](#desativar-o-monitor-de-processos-fantasmas-pelo-adb)|
+|      **↳** [**Permitir que o Termux use o adb**](#permitir-que-o-termux-use-o-adb)|
+|      **↳** [**Desativando o monitor de processos fantasmas pelo Termux**](#desativando-o-monitor-de-processos-fantasmas-pelo-termux)|
 |  **↳** [**Desabilitando o Phantom Process no Android 14 e 15**](#desabilitando-o-phantom-process-no-android-14-e-15)|
+|[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema)|
+|  **↳** [**Baixando o instalador**](#baixando-o-instalador)|
 <!--
 h1
 |[** **]()|
@@ -22,6 +26,8 @@ h2
 |  **↳** [** **]()|
 h3
 |    **↳** [** **]()|
+h4
+|      **↳** [** **]()|
 -->
 <img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px"> ![ForYou](https://img.shields.io/badge/-Criado_com_❤️-gray)
 ![Android](https://img.shields.io/badge/Android-gray?logo=android)
@@ -232,9 +238,9 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 > Diferente do `adb`, este necessita que as `opções do desenvolvedor` se mantenham ativada.
 
 
-# Iniciando a Instalação
+# Iniciando a Instalação do sistema
 
-# Baixando o instalador
+## Baixando o instalador
 
 A primeira etapa mais importante será a de instalar os aplicativos para o funcionamento do instalador. [Está listado aqui](https://github.com/andistro/app/wiki/Instala%C3%A7%C3%B5es-necess%C3%A1rias).
 
@@ -294,5 +300,3 @@ Opções:
 
 >[!NOTE]
 > Caso digite o comando `andistro` sem nenhum acréscimo e tecle enter (↵), aparecerá o menu de escolha.
-
-# 
