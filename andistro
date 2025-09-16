@@ -14,9 +14,9 @@ if [ ! -d "$HOME/storage" ];then
 fi
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
-    mkdir "$HOME/storage/shared/termux/"
-    mkdir "$HOME/storage/shared/termux/andistro"
-    mkdir "$HOME/storage/shared/termux/andistro/logs"
+    mkdir -p "$HOME/storage/shared/termux/"
+    mkdir -p "$HOME/storage/shared/termux/andistro"
+    mkdir -p "$HOME/storage/shared/termux/andistro/logs"
 fi
 
 #Verifica se o andistro está em $HOME
