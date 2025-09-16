@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
 distro_name="debian"
-bin="start-$distro_name"
+bin="$PREFIX/bin/andistro_files/boot/start-$distro_name"
 codinome="trixie"
 andistro_files="$PREFIX/bin/andistro_files"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
@@ -101,7 +101,7 @@ if [ "$first" != 1 ];then
 fi
 
 echo "${label_start_script}"
-cat > "$PREFIX/bin/andistro_files/boot/$bin" <<- EOM
+cat > "$bin" <<- EOM
 #!/bin/bash
 
 if [ ! -d "\$HOME/storage" ];then
@@ -144,7 +144,7 @@ else
 fi
 EOM
 
-chmod +x $PREFIX/bin/andistro_files/boot/$bin
+chmod +x $bin
 
 error_code="LG001br"
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
@@ -224,7 +224,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
 }
 
-total_steps=5
+total_steps=4
 current_step=0
 
 apt update -qq -y > /dev/null 2>&1
@@ -233,26 +233,21 @@ update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 if ! dpkg -l | grep -qw sudo; then
-    apt install sudo -y > /dev/null 2>&1
+    apt install sudo --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando sudo"
 sleep 0.5
 
-sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando dialog"
-sleep 0.5
-
 if ! dpkg -l | grep -qw wget; then
-    apt install wget -y > /dev/null 2>&1
+    apt install wget --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y > /dev/null 2>&1
+    apt install dialog --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
@@ -264,12 +259,6 @@ echo    # quebra de linha ao final para não sobrepor prompt
 etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
-
-chmod +x /usr/local/bin/vnc
-chmod +x /usr/local/bin/vncpasswd
-chmod +x /usr/local/bin/startvnc
-chmod +x /usr/local/bin/stopvnc
-chmod +x /usr/local/bin/startvncserver
 
 bash ~/locale_\$system_icu_locale_code.sh
 
@@ -292,12 +281,9 @@ rm -rf ~/start-environment.sh
 exit
 EOM
 
-bash $PREFIX/bin/andistro_files/boot/$bin
+bash $bin
 
 # Cria uma gui de inicialização
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $PREFIX/bin/andistro_files/boot/$bin
-rm -rf $HOME/distrolinux-install.sh
-rm -rf $HOME/start-distro.sh
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
-#bash $PREFIX/bin/andistro_files/boot/$bin
 andistro -s $distro_name
