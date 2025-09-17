@@ -184,7 +184,7 @@ show_progress_dialog() {
                 echo "${label_done}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --no-shadow --gauge "$label" 0 50 0
+            } | dialog --no-shadow --gauge "$label" 10 50 0
         ;;
 
         steps-multi-label)
