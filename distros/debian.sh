@@ -108,6 +108,7 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
+#/data/data/com.termux/files/usr/bin/ifconfig
 wlan_ip_localhost=\$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print \$2}') # IP da rede 
 sed -i "s|WLAN_IP=\"[^\"]*\"|WLAN_IP=\"$wlan_ip_localhost\"|g" "$PREFIX/bin/andistro_files/boot/debian/trixie/usr/local/bin/vnc"
 
