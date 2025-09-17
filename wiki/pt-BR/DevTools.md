@@ -9,10 +9,40 @@
 |<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Bandeira do Brasil">|[Português do Brasil (pt-BR)](/wiki/pt-BR/README.md)|
 |<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos">|[English of United States (en-US)](/wiki/en-US/README.md)|
 
+| **Comece selecionando alguma das opções abaixo.** |
+|--------------------|
+|[**Refatoração do `update_progress()`**](#refatoração-do-update_progress)|
+|  **↳** [**Exemplo de uso**](#exemplo-de-uso)|
+|    **↳** [**Uso direto**](#uso-direto)|
+|    **↳** [**Usando o `global_var_fun.sh`**](#usando-o-global_var_funsh)|
+||
+|[**Refatoração do `show_progress_dialog()`**](#refatoração-do-show_progress_dialog)|
+|  **↳** [**Padrão  de uso 1**](#padrão-de-uso-1)|
+|  **↳** [**Padrão  de uso 2**](#padrão-de-uso-2)|
+|  **↳** [**`steps-one-label`**](#steps-one-label)|
+|  **↳** [**`steps-multi-label`**](#steps-multi-label)|
+|  **↳** [**`wget`**](#wget)|
+|  **↳** [**`wget-labeled`**](#wget-labeled)|
+|  **↳** [**`extract`**](#extract)|
+|  **↳** [**`check-packages`**](#check-packages)|
+
+<!--
+h1
+|[** **]()|
+h1 alt
+|**↳** [** **]()|
+h2
+|  **↳** [** **]()|
+h3
+|    **↳** [** **]()|
+h4
+|      **↳** [** **]()|
+-->
+
 
 Apesar de ser uma ferramenta autoexecutável, possui padrões de código que podem ser usadas fora dos instaladores, permitindo que os usuários possam instalar outras distribuições usando os padrões de código aqui presentes para facilitar e agilizar o processo de configuração e instalação.
 
-## Refatoração do `update_progress()`
+# Refatoração do `update_progress()`
 Função modular em bash para uma progresso impresso diretamente na tela do terminal, sem uso de caixas de dialogo.
 
 ```bash
@@ -50,10 +80,10 @@ echo    # quebra de linha ao final para não sobrepor prompt
 
 ```
 
-### Exemplo de uso:
+## Exemplo de uso:
 Existe duas opções, uma será chamando o `update_progress()` pelo módulo `global_var_fun.sh` e a outra é usando diretamente no código.
 
-**Uso direto:**
+### Uso direto:
 ```bash
 update_progress() {
     local current_step=$1
@@ -109,7 +139,7 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 ```
 
-**Usando o `global_var_fun.sh`:**
+### Usando o `global_var_fun.sh`:
 
 ```bash
 source global_var_fun.sh
@@ -154,7 +184,7 @@ echo    # quebra de linha ao final para não sobrepor prompt
 > Troque o `source global_var_fun.sh` pelo caminho correto. Os caminhos padrões estarão documentados abaixo
 
 
-## Refatoração do `show_progress_dialog()`
+# Refatoração do `show_progress_dialog()`
 Função modular do `global_var_fun.sh` para usar a barra de progresso do `dialog` enquanto executa as tarefas. 
 
 > [!IMPORTANT]
@@ -169,19 +199,19 @@ Função modular do `global_var_fun.sh` para usar a barra de progresso do `dialo
 - Terceiro: número de etapas
 - Depois: pares "rótulo" comando
 
-### Padrão 1:
+## Padrão de uso 1:
 ```bash
 show_progress_dialog tipo <NÚMERO_DE_ETAPAS> \
 "<label 1>" 'comando_1' \
 "<label 2>" 'comando_2' \
 ```
-### Padrão 2:
+## Padrão de uso 2:
 ```bash
 show_progress_dialog tipo "<label> <NÚMERO_DE_ETAPAS>" 'comando'
 ```
 <hr>
 
-#### `steps-one-label`
+## `steps-one-label`
 Usado quando você tem múltiplos comandos executados sequencialmente com um único rótulo.
 
 ```bash
@@ -196,7 +226,7 @@ show_progress_dialog steps-one-label "<label 1>" 5 \
 > [!NOTE]
 > Lembre de usar o `DEBIAN_FRONTEND=noninteractive` no apt caso o pacote seja auto executável, como exemplo, o `tzdata`.
 
-#### `steps-multi-label`
+## `steps-multi-label`
 Usado quando você tem múltiplos comandos executados sequencialmente com rótulos.
 
 ```bash
@@ -211,14 +241,14 @@ show_progress_dialog steps-multi-label 5 \
 > [!NOTE]
 > Lembre de usar o `DEBIAN_FRONTEND=noninteractive` no apt caso o pacote seja auto executável, como exemplo, o `tzdata`.
 
-#### `wget`
+## `wget`
 Para baixar um arquivo ou mais com o mesmo rótulo.
 
 ```bash
 show_progress_dialog wget "<label>" 1 -O "$HOME/arquivo.tar.xz" "<url_do_arquivo>"
 ```
 
-#### `wget-labeled`
+## `wget-labeled`
 Para baixar vários arquivos, cada um com seu próprio rótulo.
 
 ```bash
@@ -227,7 +257,7 @@ show_progress_dialog wget-labeled 2 \
 "<label 2>" -P "caminho" "${url2}"
 ```
 
-#### `extract`
+## `extract`
 Extrator de arquivos. Suporta as extensões `.tar.xz`, `.tar.gz`, `.tar.bz2`, `.tar`, `.zip`, `..xz`, `.gz`
 
 **Extraindo no diretório atual:**
@@ -240,7 +270,7 @@ show_progress_dialog extract "<label>" "$HOME/rootfs.tar.xz"
 show_progress_dialog extract "<label>" "/sdcard/fotos.zip" "$HOME/galeria"
 ```
 
-#### `check-packages`
+## `check-packages`
 Confirma se os pacotes escolhidos foram instalados ou não.
 
 ```bash
