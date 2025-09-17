@@ -134,7 +134,7 @@ command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
-command+=" -b /sdcard/termux/andistro/boot/debian/trixie:/root"
+#command+=" -b /sdcard/termux/andistro/boot/debian/trixie:/root"
 ## uncomment the following line to mount /sdcard directly to / 
 command+=" -b /sdcard"
 command+=" -w /root"
