@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-multi-label 63 \
+show_progress_dialog steps-multi-label 60 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -48,17 +48,14 @@ show_progress_dialog steps-multi-label 63 \
   "${label_install_script_download}" 'sudo apt update && sleep 2' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
+  "${label_install_script_download}" 'sleep 5' \
   "${label_system_setup}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
-  "${label_system_setup}" 'cd zorin-icon-themes' \
-  "${label_system_setup}" 'mv Zorin*/ /usr/share/icons/' \
-  "${label_system_setup}" "cd \$HOME" \
-  "${label_system_setup}" 'cd zorin-desktop-themes' \
-  "${label_system_setup}" 'mv Zorin*/ /usr/share/themes/' \
-  "${label_system_setup}" "cd \$HOME" \
+  "${label_system_setup}" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
+  "${label_system_setup}" 'mv zorin-desktop-themes/Zorin*/ /usr/share/themes/' \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
   "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
   "${label_system_setup}" "echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee $HOME/.gtkrc-2.0" \

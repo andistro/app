@@ -10,7 +10,7 @@ if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
 fi
 
-if [ ! -d "$HOME/storage/shared/termux/andistro/boot" ];then
+if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
     mkdir -p "$HOME/storage/shared/termux/"
     mkdir -p "$HOME/storage/shared/termux/andistro"
     mkdir -p "$HOME/storage/shared/termux/andistro/boot"
@@ -291,6 +291,7 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
+rm -rf $HOME/start-distro.sh
 EOM
 
 
