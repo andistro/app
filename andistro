@@ -435,7 +435,8 @@ case "$1" in
             rm -rf $PREFIX/bin/start-debian
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
-            rm -rf /sdcard/termux/andistro/debian            
+            rm -rf /sdcard/termux/andistro/debian
+            rm -rf /sdcard/termux/andistro/boot/debian            
             echo "Desinstalação concluída!"
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
@@ -454,7 +455,7 @@ case "$1" in
             rm -rf $PREFIX/bin/start-ubuntu
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
-            rm -rf /sdcard/termux/andistro/ubuntu
+            rm -rf /sdcard/termux/andistro/boot/ubuntu
             echo "Desinstalação concluída!"
         else
             echo "Distribuição não reconhecida: $2"
