@@ -383,19 +383,22 @@ case "$1" in
             echo "$distro_wait"
             #andistro ${distro_update} 2>&1
             andistro alerta
-            show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/debian.sh"
+            show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/bin/andistro_files/boot/install-debian.sh" "${extralink}/distros/debian.sh"
+            chmod +x $PREFIX/bin/andistro_files/boot/install-debian.sh
+            bash $PREFIX/bin/andistro_files/boot/install-debian.sh
+            rm -rf $PREFIX/bin/andistro_files/boot/install-debian.sh
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             #andistro ${distro_update} 2>&1
             andistro alerta
-            show_progress_dialog "wget" "${label_progress}" 1 -O "$HOME/start-distro.sh" "${extralink}/distros/ubuntu.sh"
+            show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/bin/andistro_files/boot/install-ubuntu.sh" "${extralink}/distros/ubuntu.sh"
+            chmod +x $PREFIX/bin/andistro_files/boot/install-ubuntu.sh
+            bash $PREFIX/bin/andistro_files/boot/install-ubuntu.sh
+            rm -rf $PREFIX/bin/andistro_files/boot/install-ubuntu.sh
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        chmod +x $HOME/start-distro.sh
-        bash $HOME/start-distro.sh
-        rm -rf $HOME/start-distro.sh
         ;;
     -d)
         source "$PREFIX/bin/andistro_files/global_var_fun.sh"
