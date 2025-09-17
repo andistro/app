@@ -79,6 +79,7 @@ label_port="Port"
 label_confirm="Confirm"
 label_cancel="Cancel"
 label_update_finish="Update completed! \nUse the 'andistro' command to start."
+label_system_icu_locale_code_file_error="Localization file not found:"
 
 #VNC
 label_vnc_setup="VNC Setup"
