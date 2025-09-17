@@ -132,6 +132,8 @@ command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
+#command+=" -b /data/data/com.termux/files/home:/root"
+command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /sdcard/termux/andistro/boot/debian/trixie:/root"
 ## uncomment the following line to mount /sdcard directly to / 
 command+=" -b /sdcard"
@@ -289,13 +291,11 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-exit
+rm -rf /termux-home/start-distro.sh
 EOM
 
-bash $bin
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-
-andistro -s $distro_name
 rm -rf $HOME/start-distro.sh
+bash $bin
