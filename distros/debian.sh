@@ -109,7 +109,7 @@ if [ ! -d "\$HOME/storage" ];then
 fi
 
 wlan_ip_localhost=\$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print \$2}') # IP da rede 
-sed -i "s|WLAN_IP=\"localhost\"|WLAN_IP=\"\$wlan_ip_localhost\"|g" "$folder/usr/local/bin/vnc"
+sed -i "s|WLAN_IP=\"[^\"]*\"|WLAN_IP=\"$wlan_ip_localhost\"|g" "$PREFIX/bin/andistro_files/boot/debian/trixie/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
 cd \$HOME
