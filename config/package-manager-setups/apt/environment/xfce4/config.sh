@@ -43,10 +43,9 @@ vncpasswd
 
 sleep 2
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 22 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   'vncserver -name remote-desktop -geometry 1920x1080 :1' \
   'sleep 10' \
-  'xfce4-session > /dev/null 2>&1 &' \
   'sleep 4' \
   'dbus-launch xfconf-query -c xsettings -p /Net/ThemeName -s ZorinBlue-Dark' \
   'sleep 4' \
