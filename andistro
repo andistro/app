@@ -484,7 +484,7 @@ case "$1" in
 	            bash $PREFIX/bin/andistro_files/boot/start-debian
             else
                 echo "$distro_command_not_found $1"
-                andistro terminal
+                echo -e "$label_update_finish"
             fi
             
             
@@ -494,7 +494,7 @@ case "$1" in
 	            bash $PREFIX/bin/andistro_files/boot/start-ubuntu
             else
                 echo "$distro_command_not_found $1"
-                andistro terminal
+                echo -e "$label_update_finish"
             fi  
         else
             echo "Distribuição não reconhecida: $2"
