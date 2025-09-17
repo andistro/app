@@ -24,7 +24,7 @@
 |  **↳** [**Disabling Phantom Process on Android 14 and 15**](#disabling-phantom-process-on-android-14-and-15)|
 ||
 
-# Enable Android developer mode
+# Enable Android developer mode [[ ↑ ]](#)
 
 > [!CAUTION]
 > This is a risky area. All settings listed here are system-level modifications. If you don't know what you're doing, find out what each thing does and how to revert the situation before running the commands.
@@ -44,9 +44,9 @@
 6. A toast alert will appear stating that developer mode is active;
 7. Go back to the beginning of system settings.
 
-# Fixing the forced system stop issue in Termux ‐ `[Process completed (signal 9) ‐ press Enter]`
+# Fixing the forced system stop issue in Termux ‐ `[Process completed (signal 9) ‐ press Enter]` [[ ↑ ]](#)
 
-## About the issue
+## About the issue [[ ↑ ]](#)
 
 > [!CAUTION]
 > This is a risky area. All settings listed here are system-level modifications. If you don't know what you're doing, find out what each thing does and how to revert the situation before running the commands.
@@ -62,9 +62,9 @@ Even with this restriction, there are alternatives to disable this restriction, 
 > [!NOTE]
 > On Samsung's OneUI 7, it will be necessary to disable the automatic blocker in `settings > security and privacy > automatic blocker`. Otherwise, it will not be possible to enable Wi-Fi debugging and the system will create restriction barriers.
 
-## Disabling Phantom Process on Android 12 and 13
+## Disabling Phantom Process on Android 12 and 13 [[ ↑ ]](#)
 
-### Disable phantom process monitor via `feature flags`
+### Disable phantom process monitor via `feature flags` [[ ↑ ]](#)
 
 > [!NOTE]
 > Not all devices will have the possibility to use this step.
@@ -74,9 +74,9 @@ Even with this restriction, there are alternatives to disable this restriction, 
 2. Look for the `feature flags` option;
 3. Disable the `settings_enable_monitor_phantom_procs` option;
 
-### Disable phantom process monitor via `adb`
+### Disable phantom process monitor via `adb` [[ ↑ ]](#)
 
-#### Allow Termux to use `adb`
+#### Allow Termux to use `adb` [[ ↑ ]](#)
 
 > [!CAUTION]
 > You will need to use `adb`. Pay attention, as `adb` can make aggressive modifications to the Android system, and in some cases, it will be necessary to restore the device to factory settings or even reinstall the system if you remove something essential for operation. What is said here has already been documented on various portals on the internet, and each manufacturer may create different restrictions on the command.
@@ -133,7 +133,7 @@ adb pair <IP address and port> <wireless pairing code>
 adb connect <IP address and port>
 ```
 
-#### Disabling phantom process monitor via Termux
+#### Disabling phantom process monitor via Termux [[ ↑ ]](#)
 
 > [!CAUTION]
 > As mentioned, all `adb` commands on this page are system modifications and may cause problems that will only be resolved by restoring to factory settings and may even be irreversible. Be careful; if you continue, it will be at your own risk.
@@ -182,7 +182,7 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 >[!NOTE]
 > It is expected to return the value `2147483647`
 
-## Disabling Phantom Process on Android 14 and 15
+## Disabling Phantom Process on Android 14 and 15 [[ ↑ ]](#)
 
 1. Enable developer options. [The tutorial is here](https://github.com/andistro/app/wiki/3.-Enable-Android-developer-mode);
 2. Go to developer options. Usually the last option in your device's settings;

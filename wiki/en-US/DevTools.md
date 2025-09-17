@@ -43,7 +43,7 @@ h4
 
 Despite being a self-executable tool, it has code standards that can be used outside the installers, allowing users to install other distributions using the code standards present here to facilitate and speed up the configuration and installation process.
 
-# Refactoring `update_progress()`
+# Refactoring `update_progress()` [[ ↑ ]](#)
 
 Modular bash function for progress printed directly to the terminal screen, without using dialog boxes.
 
@@ -79,11 +79,11 @@ sleep 0.5
 echo    # line break at the end so as not to overwrite the prompt
 ```
 
-## Usage example:
+## Usage example [[ ↑ ]](#)
 
 There are two options, one is calling `update_progress()` from the `global_var_fun.sh` module and the other is using it directly in the code.
 
-### Direct use:
+### Direct use [[ ↑ ]](#)
 
 ```bash
 update_progress() {
@@ -183,7 +183,7 @@ echo    # line break at the end so as not to overwrite the prompt
 > [!IMPORTANT]
 > Replace `source global_var_fun.sh` with the correct path. Default paths will be documented below
 
-# Refactoring `show_progress_dialog()`
+# Refactoring `show_progress_dialog()` [[ ↑ ]](#)
 
 Modular function from `global_var_fun.sh` to use the `dialog` progress bar while executing tasks.
 
@@ -199,7 +199,7 @@ Modular function from `global_var_fun.sh` to use the `dialog` progress bar while
 - Third: number of steps
 - Then: pairs "label" command
 
-## Usage pattern 1:
+## Usage pattern 1 [[ ↑ ]](#)
 
 ```bash
 show_progress_dialog type <n> \
@@ -207,13 +207,13 @@ show_progress_dialog type <n> \
 "<label>" 'command_2' \
 ```
 
-## Usage pattern 2:
+## Usage pattern 2 [[ ↑ ]](#)
 
 ```bash
 show_progress_dialog type "<n>" 'command'
 ```
 
-## `steps-one-label`
+## `steps-one-label` [[ ↑ ]](#)
 
 Used when you have multiple commands executed sequentially with a single label.
 
@@ -229,7 +229,7 @@ show_progress_dialog steps-one-label "<label>" 5 \
 > [!NOTE]
 > Remember to use `DEBIAN_FRONTEND=noninteractive` in apt if the package is self-executable, such as `tzdata`.
 
-## `steps-multi-label`
+## `steps-multi-label` [[ ↑ ]](#)
 
 Used when you have multiple commands executed sequentially with labels.
 
@@ -245,7 +245,7 @@ show_progress_dialog steps-multi-label 5 \
 > [!NOTE]
 > Remember to use `DEBIAN_FRONTEND=noninteractive` in apt if the package is self-executable, such as `tzdata`.
 
-## `wget`
+## `wget` [[ ↑ ]](#)
 
 To download one or more files with the same label.
 
@@ -253,7 +253,7 @@ To download one or more files with the same label.
 show_progress_dialog wget "<label>" 1 -O "$HOME/file.tar.xz" "<file_url>"
 ```
 
-## `wget-labeled`
+## `wget-labeled` [[ ↑ ]](#)
 
 To download multiple files, each with its own label.
 
@@ -263,23 +263,23 @@ show_progress_dialog wget-labeled 2 \
 "<label>" -P "path" "${url2}"
 ```
 
-## `extract`
+## `extract` [[ ↑ ]](#)
 
 File extractor. Supports the extensions `.tar.xz`, `.tar.gz`, `.tar.bz2`, `.tar`, `.zip`, `.xz`, `.gz`
 
-**Extracting in the current directory:**
+### Extracting in the current directory [[ ↑ ]](#)
 
 ```bash
 show_progress_dialog extract "<label>" "$HOME/rootfs.tar.xz"
 ```
 
-**Extracting a .zip in a specific directory:**
+### Extracting a .zip in a specific directory [[ ↑ ]](#)
 
 ```bash
 show_progress_dialog extract "<label>" "/sdcard/photos.zip" "$HOME/gallery"
 ```
 
-## `check-packages`
+## `check-packages` [[ ↑ ]](#)
 
 Confirms whether the selected packages were installed or not.
 

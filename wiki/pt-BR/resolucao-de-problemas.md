@@ -37,7 +37,7 @@ h4
 -->
 
 
-# Ativar o modo desenvolvedor do Android
+# Ativar o modo desenvolvedor do Android [[ ↑ ]](#)
 
 > [!CAUTION]
 > Esta é uma área de risco. Todas as configurações aqui listadas são modificações de nível de sistema. Caso não saiba o que está fazendo, busque descobrir o que cada coisa faz e como poder reverter a situação antes de executar os comandos. <br>
@@ -55,9 +55,9 @@ h4
 6. Aparecerá um alerta toast de que o modo desenvolvedor está ativo;
 7. Volte para o início das configurações do sistema.
 
-# Corrigindo o problema da parada forçada do sistema no Termux ‐ `[Process completed (signal 9) ‐ press Enter]`
+# Corrigindo o problema da parada forçada do sistema no Termux ‐ `[Process completed (signal 9) ‐ press Enter]` [[ ↑ ]](#)
 
-## Sobre o problema
+## Sobre o problema [[ ↑ ]](#)
 
 > [!CAUTION]
 > Esta é uma área de risco. Todas as configurações aqui listadas são modificações de nível de sistema. Caso não saiba o que está fazendo, busque descobrir o que cada coisa faz e como poder reverter a situação antes de executar os comandos. <br>
@@ -74,9 +74,10 @@ Mesmo com esta restrição, existe alternativas para podermos desabilitar esta r
 
 <br><br>
 
-## Desabilitando o Phantom Process no Android 12 e 13
+## Desabilitando o Phantom Process no Android 12 e 13 [[ ↑ ]](#)
 
-### Desativar o monitor de processos fantasmas pelo `sinalizadores de recursos`
+### Desativar o monitor de processos fantasmas pelo `sinalizadores de recursos` [[ ↑ ]](#)
+
 > [!NOTE]
 > Nem todos os dispositivos terão a possibilidade de usar esse passo.
 1. Ative as opções do desenvolvedor. [O tutorial está aqui](https://github.com/andistro/app/wiki/3.-Ativar-o-modo-desenvolvedor-do-Android);
@@ -85,8 +86,9 @@ Mesmo com esta restrição, existe alternativas para podermos desabilitar esta r
 3. Desative a opção `settings_enable_monitor_phantom_procs`;
 <br><br>
 
-### Desativar o monitor de processos fantasmas pelo `adb`
-#### Permitir que o Termux use o `adb`
+### Desativar o monitor de processos fantasmas pelo `adb`[[ ↑ ]](#)
+
+#### Permitir que o Termux use o `adb`[[ ↑ ]](#) 
 
 > [!CAUTION]
 > Será necessário usar o `adb`. Atente-se, pois, o `adb` pode fazer modificações agressivas no sistema Android e em alguns casos será necessário restaurar o aparelho aos padrões de fabrica ou até mesmo fazer uma reinstalação do sistema caso remova algo essencial para o funcionamento. O que será dito aqui já foi documentado em vários portais na internet cada fabricante poderá criar diferentes restrições encima do comando.
@@ -134,7 +136,7 @@ adb pair <IP Address and port> <wireless pairing code>
 ```shell
 adb connect <IP Address and port>
 ```
-#### Desativando o monitor de processos fantasmas pelo Termux
+#### Desativando o monitor de processos fantasmas pelo Termux [[ ↑ ]](#)
 
 > [!CAUTION]
 > Como informado, todos os comandos de `adb` presentes nessa página são de modificação do sistema e os mesmos podem causar problemas que só serão resolvidos em caso de restauração aos padrões de fábrica e talvez até sejam irreversíveis. Tome cuidado, se continuar será por sua conta e risco.
@@ -180,7 +182,7 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 
 <br><br><br>
 
-## Desabilitando o Phantom Process no Android 14 e 15
+## Desabilitando o Phantom Process no Android 14 e 15 [[ ↑ ]](#)
 1. Ative as opções do desenvolvedor. [O tutorial está aqui](https://github.com/andistro/app/wiki/3.-Ativar-o-modo-desenvolvedor-do-Android);
 2. Vá até as opções do desenvolvedor. Normalmente é a última opção das configurações do seu aparelho;
 3. Procure por `desabilitar restrições do processo secundário` e habilite a opção.
