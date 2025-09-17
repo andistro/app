@@ -481,7 +481,7 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            if [ ! -e "$PREFIX/bin/andistro_files/boot/start-debian" ];then
+            if [ -e "$PREFIX/bin/andistro_files/boot/start-debian" ];then
 	            bash $PREFIX/bin/andistro_files/boot/start-debian
             else
                 echo "$distro_command_not_found $1"
@@ -491,7 +491,7 @@ case "$1" in
             
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            if [ ! -e "$PREFIX/bin/andistro_files/boot/start-ubuntu" ];then
+            if [ -e "$PREFIX/bin/andistro_files/boot/start-ubuntu" ];then
 	            bash $PREFIX/bin/andistro_files/boot/start-ubuntu
             else
                 echo "$distro_command_not_found $1"
