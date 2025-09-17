@@ -2,7 +2,7 @@
 #XFCE4 config environment
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n" 13 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13 \
      'sleep 2' \
      'sleep 4' \
      'sleep 6' \
