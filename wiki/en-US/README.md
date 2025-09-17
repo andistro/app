@@ -1,18 +1,29 @@
-<!--
+# 📄 Documentation
+
+<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos"> ![Translated by GitHub Copilot](https://img.shields.io/badge/Translated_by_GitHub_Copilot-gray?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJtNDc2LTgwIDE4Mi00ODBoODRMOTI0LTgwaC04NGwtNDMtMTIySDYwM0w1NjAtODBoLTg0Wk0xNjAtMjAwbC01Ni01NiAyMDItMjAycS0zNS0zNS02My41LTgwVDE5MC02NDBoODRxMjAgMzkgNDAgNjh0NDggNThxMzMtMzMgNjguNS05Mi41VDQ4NC03MjBINDB2LTgwaDI4MHYtODBoODB2ODBoMjgwdjgwSDU2NHEtMjEgNzItNjMgMTQ4dC04MyAxMTZsOTYgOTgtMzAgODItMTIyLTEyNS0yMDIgMjAxWm00NjgtNzJoMTQ0bC03Mi0yMDQtNzIgMjA0WiIvPjwvc3ZnPg==)
+![ForYou](https://img.shields.io/badge/Created_with_❤️-gray)
+![Android](https://img.shields.io/badge/Android-gray?logo=android)
+![Termux](https://img.shields.io/badge/Termux-gray?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+CgogICAgPCEtLSBTY3JlZW4gYW5kIGJvcmRlci4gLS0+CiAgICA8cGF0aCBmaWxsPSIjMDAwIgogICAgICAgICAgc3Ryb2tlPSIjQkZDQkNEIgogICAgICAgICAgc3Ryb2tlLXdpZHRoPSIyIgogICAgICAgICAgZD0iTTksNgogICAgICAgICAgICAgbDMwLDAKICAgICAgICAgICAgIHEzIDAsMyAzCiAgICAgICAgICAgICBsMCwzMAogICAgICAgICAgICAgcTAgMywgLTMgMwogICAgICAgICAgICAgbC0zMCwwCiAgICAgICAgICAgICBxLTMgMCwgLTMtMwogICAgICAgICAgICAgbDAgLTMwCiAgICAgICAgICAgICBxMCAtMywgMyAtMyIKICAgIC8+CgogICAgPCEtLSBCbG9jayBjdXJzb3IuIC0tPgogICAgPHBhdGggZmlsbD0iI0ZGRiIKICAgICAgICAgIGQ9Ik0xNCwxNAogICAgICAgICAgICAgbDUsMAogICAgICAgICAgICAgbDAsMTAKICAgICAgICAgICAgIGwtNSwwIgogICAgLz4KCjwvc3ZnPgo=)
+
+
+| 📄 |Documentation|
+|-|-|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1e7_1f1f7.svg" width="22px" alt="Brazil Flag">|[Brazilian Portuguese (pt-BR)](/wiki/pt-BR/README.md)|
+|<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="United States Flag">|[English of United States (en-US)](/wiki/en-US/README.md)|
+
 | **Start by selecting one of the options below.** |
 |--------------------|
-|[**How does it work?**](#)|
+|[**Requirements**](#Requirements)|
 ||
-|[**What is the purpose of this script?**](#)|
+|[**Required installations**](#Required-installations)|
 ||
-|[**Minimum requirements**](#)|
+|[**Starting the system installation**](#Starting-the-system-installation)|
+|  **↳** [**Downloading the installer**](#downloading-the-installer)|
 ||
-|[**Required installations**](#)|
+|[**Troubleshooting**](/wiki/en-US/troubleshooting.md)|
 ||
-|[**Installing**](#)|
-|  **↳** [**Step 1 - installing the distribution**](#)|
-|  **↳** [**Step 2 - starting the graphical interface**](#)|
-|  **↳** [**Step 3 - finishing the system**](#)|
+|[**DevTools ‐ Code interface standards**](/wiki/en-US/DevTools.md)|
+
 
 <!--
 h1
@@ -23,10 +34,9 @@ h2
 |  **↳** [** **]()|
 h3
 |    **↳** [** **]()|
+h4
+|      **↳** [** **]()|
 -->
-<img src="https://raw.githubusercontent.com/andistro/app/refs/heads/main/Doc/assets/emojis/emoji_u1f1fa_1f1f8.svg" width="22px" alt="Bandeira dos Estados Unidos"> ![ForYou](https://img.shields.io/badge/-Created_with_❤️-gray)
-![Android](https://img.shields.io/badge/Android-gray?logo=android)
-![Termux](https://img.shields.io/badge/Termux-gray?logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+CgogICAgPCEtLSBTY3JlZW4gYW5kIGJvcmRlci4gLS0+CiAgICA8cGF0aCBmaWxsPSIjMDAwIgogICAgICAgICAgc3Ryb2tlPSIjQkZDQkNEIgogICAgICAgICAgc3Ryb2tlLXdpZHRoPSIyIgogICAgICAgICAgZD0iTTksNgogICAgICAgICAgICAgbDMwLDAKICAgICAgICAgICAgIHEzIDAsMyAzCiAgICAgICAgICAgICBsMCwzMAogICAgICAgICAgICAgcTAgMywgLTMgMwogICAgICAgICAgICAgbC0zMCwwCiAgICAgICAgICAgICBxLTMgMCwgLTMtMwogICAgICAgICAgICAgbDAgLTMwCiAgICAgICAgICAgICBxMCAtMywgMyAtMyIKICAgIC8+CgogICAgPCEtLSBCbG9jayBjdXJzb3IuIC0tPgogICAgPHBhdGggZmlsbD0iI0ZGRiIKICAgICAgICAgIGQ9Ik0xNCwxNAogICAgICAgICAgICAgbDUsMAogICAgICAgICAgICAgbDAsMTAKICAgICAgICAgICAgIGwtNSwwIgogICAgLz4KCjwvc3ZnPgo=)
 
 <!-- **Install popular distributions inside the Android environment without root.** -->
 **Install Linux distributions inside the Android environment without root.**
@@ -34,6 +44,7 @@ h3
 This is a project that allows you to install Linux distributions, such as Ubuntu and Debian, on Android devices without the need for root. The system runs inside the Termux environment and uses VNC to provide a complete graphical interface, without modifying Android settings.
 
 To ensure trust and security, no system is hosted in the repository—all are downloaded directly from the official distribution websites. The installer code is completely open for verification.
+
 
 > [!NOTE]
 > This installation script was made for Android devices with ARM64 architecture.
@@ -57,6 +68,8 @@ To ensure trust and security, no system is hosted in the repository—all are do
 |![Root](https://img.shields.io/badge/-gray?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjZTNlM2UzIj48cGF0aCBkPSJtMjQwLTE2MCA0MC0xNjBIMTIwbDIwLTgwaDE2MGw0MC0xNjBIMTgwbDIwLTgwaDE2MGw0MC0xNjBoODBsLTQwIDE2MGgxNjBsNDAtMTYwaDgwbC00MCAxNjBoMTYwbC0yMCA4MEg2NjBsLTQwIDE2MGgxNjBsLTIwIDgwSDYwMGwtNDAgMTYwaC04MGw0MC0xNjBIMzYwbC00MCAxNjBoLTgwWm0xNDAtMjQwaDE2MGw0MC0xNjBINDIwbC00MCAxNjBaIi8+PC9zdmc+)|Root|![Not required](https://img.shields.io/badge/Not_required-red)|
 |![ADB](https://img.shields.io/badge/-gray?logo=android&logoColor=white)|ADB|![May be required](https://img.shields.io/badge/Required_on_Android_12,_13_and_14-073042)|
 
+
+
 |||Supported|With issues|In testing|
 |-|-|-|-|-|
 ||Systems| ![Debian](https://img.shields.io/badge/Debian-13-red?logo=debian&logoColor=white) <br>![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04-E95420?logo=ubuntu&logoColor=white)|
@@ -72,9 +85,9 @@ For everything to work correctly, you need to install **Termux**, **Andronix**, 
 |------|
 ||
 |**Termux**|
-|<a href="https://github.com/termux/termux-app/releases" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-github.png" alt="Download from GitHub"></a> <a href="https://f-droid.org/en/packages/com.termux/" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-fdroid.png" alt="Download from F-Droid"></a>|
+|<a href="https://github.com/termux/termux-app/releases" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-github.png" alt="Download from GitHub"></a> <a href="https://f-droid.org/pt_BR/packages/com.termux/" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-fdroid.png" alt="Download from F-Droid"></a>|
 |**AVNC**|
-|<a href="https://github.com/gujjwal00/avnc/releases" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-github.png" alt="Download from GitHub"></a><a href="https://f-droid.org/en/packages/com.gaurav.avnc/" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-fdroid.png" alt="Download from F-Droid"></a> <a href="https://play.google.com/store/apps/details?id=com.gaurav.avnc" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-google-play.png" alt="Download from Google Play Store"></a>|
+|<a href="https://github.com/gujjwal00/avnc/releases" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-github.png" alt="Download from GitHub"></a><a href="https://f-droid.org/pt_BR/packages/com.gaurav.avnc/" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-fdroid.png" alt="Download from F-Droid"></a> <a href="https://play.google.com/store/apps/details?id=com.gaurav.avnc" target="_blank"><img width="256px" src="https://raw.githubusercontent.com/andistro/app/main/Doc/assets/badges/get-it-on-google-play.png" alt="Download from Google Play Store"></a>|
 > [!WARNING]
 > The Termux from Google Play Store is outdated and no longer has official support.
 
@@ -98,24 +111,26 @@ For everything to work correctly, you need to install **Termux**, **Andronix**, 
 
 # Fixing the forced system stop issue in Termux ‐ `[Process completed (signal 9) ‐ press Enter]`
 
-# About the issue
+## About the issue
 
 > [!CAUTION]
 > This is a risky area. All settings listed here are system-level modifications. If you don't know what you're doing, find out what each thing does and how to revert the situation before running the commands. <br>
 > In some cases, it will be necessary to restore the device to factory settings; in other cases, you may need to reinstall the operating system on the device. <br>
 > `adb` processes may change depending on the device and Android version.
 
+
 Since Android 12, Termux and other apps have received restrictions on CPU usage. This is better explained by [Agnostic-apollo in a documentation called "Phantom, Cached And Empty Processes"](https://github.com/agnostic-apollo/Android-Docs/blob/master/en/docs/apps/processes/phantom-cached-and-empty-processes.md). In short, Android is limiting the performance of any app that tries to excessively use the CPU, and because of this restriction, Termux—the app used to install the Linux distribution inside Android—shows the error `[Process completed (signal 9) - press Enter]` and forces the system to stop, making the user restart the app and the local server.
 
-Even with this restriction, there are alternatives to disable it, but you will need access to the developer options on your phone. One way is to use Termux itself, adb, and Wi-Fi debugging from the developer options to disable `settings_enable_monitor_phantom_procs`.
+Even with this restriction, there are alternatives to disable it, but you will need access to the developer options on your phone. One way is to use Termux itself, adb, and Wi-Fi debugging from the developer options to disable `settings_enable_monitor_phantom_procs`
 
 > [!NOTE]
 > On Samsung's OneUI 7, you need to disable the auto blocker in `settings > security and privacy > auto blocker`. Otherwise, you won't be able to enable Wi-Fi debugging and the system will create restriction barriers.
 
 <br><br>
-# Disabling Phantom Process on Android 12 and 13
 
-## Disable phantom process monitor via `feature flags`
+## Disabling Phantom Process on Android 12 and 13
+
+### Disable phantom process monitor via `feature flags`
 > [!NOTE]
 > Not all devices will have this option.
 1. Enable developer options. [Tutorial here](https://github.com/andistro/app/wiki/3.-Ativar-o-modo-desenvolvedor-do-Android);
@@ -124,8 +139,8 @@ Even with this restriction, there are alternatives to disable it, but you will n
 3. Disable the `settings_enable_monitor_phantom_procs` option;
 <br><br>
 
-## Disable phantom process monitor via `adb`
-### Allow Termux to use `adb`
+### Disable phantom process monitor via `adb`
+#### Allow Termux to use `adb`
 
 > [!CAUTION]
 > You will need to use `adb`. Pay attention, as `adb` can make aggressive changes to the Android system, and in some cases, you may need to restore the device to factory settings or even reinstall the system if you remove something essential for operation. What is described here has already been documented on several portals on the internet, and each manufacturer may create different restrictions on the command.
@@ -136,6 +151,7 @@ Even with this restriction, there are alternatives to disable it, but you will n
 
 > [!NOTE]
 > `adb` is already installed on Android, so you don't need to install it. For this process, which aims to solve the `process 9` issue, you will need an app that can have developer permissions and execute the necessary commands to disable phantom processes. In this documentation, Termux will be used, but depending on the device, you may need a computer.
+
 
 1. Enable developer options. [Tutorial here](https://github.com/andistro/app/wiki/3.-Ativar-o-modo-desenvolvedor-do-Android);
 2. Go to developer options. Usually the last option in your device's settings;
@@ -165,14 +181,14 @@ adb pair <IP Address and port> <wireless pairing code>
 > The IP address may be `localhost`, which is recommended because if the Wi-Fi network is restarted, the IP address may change and consequently, `adb pair` will not work because it can't find the link.
 
 > [!NOTE]
-> When paired, a success message will appear in English.
+> When paired, a success message will appear in English
 
 8. Check the list of paired devices using the command `adb devices`. If the message `List of devices attached` appears and no other message listing paired devices, you should pair Termux to run `adb` commands.
 9. Run the command `adb connect` to reconnect Termux to adb via Wi-Fi
 ```shell
 adb connect <IP Address and port>
 ```
-### Disabling phantom process monitor via Termux
+#### Disabling phantom process monitor via Termux
 
 > [!CAUTION]
 > As mentioned, all `adb` commands on this page modify the system and may cause problems that can only be resolved by restoring to factory settings and may even be irreversible. Be careful; if you continue, it is at your own risk.
@@ -215,8 +231,10 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 >[!NOTE]
 > It is expected to return the value `2147483647`
 
+
 <br><br><br>
-# Disabling Phantom Process on Android 14 and 15
+
+## Disabling Phantom Process on Android 14 and 15
 1. Enable developer options. [Tutorial here](https://github.com/andistro/app/wiki/3.-Ativar-o-modo-desenvolvedor-do-Android);
 2. Go to developer options. Usually the last option in your device's settings;
 3. Look for `disable secondary process restrictions` and enable the option.
@@ -224,9 +242,10 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 >[!NOTE]
 > Unlike `adb`, this requires that `developer options` remain enabled.
 
-# Starting the Installation
 
-# Downloading the installer
+# Starting the system installation
+
+## Downloading the installer
 
 The first and most important step is to install the apps for the installer to work. [They are listed here](https://github.com/andistro/app/wiki/Instala%C3%A7%C3%B5es-necess%C3%A1rias).
 
@@ -247,6 +266,7 @@ bash andistro -u
 ```
 > [!NOTE]
 > The `-u` command forces the update and configuration of the tool. If you don't use it, the tool may have execution problems.
+
 
 > [!NOTE]
 > You can use this command directly if you don't want to run one command at a time
@@ -284,4 +304,4 @@ Options:
 ```
 
 >[!NOTE]
-> If you type the command `andistro` without any addition and press enter (↵), the selection
+> If you type the command `andistro` without any addition and press enter (↵), the selection menu will appear.
