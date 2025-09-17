@@ -11,12 +11,12 @@
 
 | **Comece selecionando alguma das opções abaixo.** |
 |--------------------|
-|[**Requisitos**](#Requisitos)|
+|[**Requisitos**](#Requisitos---)|
 ||
-|[**Instalações necessárias**](#Instalações-necessárias)|
+|[**Instalações necessárias**](#Instalações-necessárias---)|
 ||
-|[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema)|
-|  **↳** [**Baixando o instalador**](#baixando-o-instalador)|
+|[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema---)|
+|  **↳** [**Baixando o instalador**](#baixando-o-instalador---)|
 ||
 |[**Resolução de problemas**](/wiki/pt-BR/bugs.md)|
 ||

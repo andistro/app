@@ -12,16 +12,16 @@
 
 | **Start by selecting one of the options below.** |
 |--------------------|
-|[**Enable Android developer mode**](#enable-android-developer-mode)|
+|[**Enable Android developer mode**](#enable-android-developer-mode---)|
 ||
-|[**Fixing the forced system stop issue in Termux ‐ `[Process completed (signal 9) ‐ press Enter]`**](##fixing-the-forced-system-stop-issue-in-termux--process-completed-signal-9--press-enter)|
-|  **↳** [**About the issue**](#about-the-issue)|
-|  **↳** [**Disabling Phantom Process on Android 12 and 13**](#disabling-phantom-process-on-android-12-and-13)|
-|    **↳** [**Disable phantom process monitor via feature flags**](#disable-phantom-process-monitor-via-feature-flags)|
-|    **↳** [**Disable phantom process monitor via adb**](#disable-phantom-process-monitor-via-adb)|
-|      **↳** [**Allow Termux to use adb**](#allow-termux-to-use-adb)|
-|      **↳** [**Disabling phantom process monitor via Termux**](#disabling-phantom-process-monitor-via-termux)|
-|  **↳** [**Disabling Phantom Process on Android 14 and 15**](#disabling-phantom-process-on-android-14-and-15)|
+|[**Fixing the forced system stop issue in Termux ‐ `[Process completed (signal 9) ‐ press Enter]`**](#fixing-the-forced-system-stop-issue-in-termux--process-completed-signal-9--press-enter---)|
+|  **↳** [**About the issue**](#about-the-issue---)|
+|  **↳** [**Disabling Phantom Process on Android 12 and 13**](#disabling-phantom-process-on-android-12-and-13---)|
+|    **↳** [**Disable phantom process monitor via feature flags**](#disable-phantom-process-monitor-via-feature-flags---)|
+|    **↳** [**Disable phantom process monitor via adb**](#disable-phantom-process-monitor-via-adb---)|
+|      **↳** [**Allow Termux to use adb**](#allow-termux-to-use-adb---)|
+|      **↳** [**Disabling phantom process monitor via Termux**](#disabling-phantom-process-monitor-via-termux---)|
+|  **↳** [**Disabling Phantom Process on Android 14 and 15**](#disabling-phantom-process-on-android-14-and-15---)|
 ||
 
 # Enable Android developer mode [[ ↑ ]](#)

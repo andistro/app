@@ -13,12 +13,12 @@
 
 | **Start by selecting one of the options below.** |
 |--------------------|
-|[**Requirements**](#Requirements)|
+|[**Requirements**](#Requirements---)|
 ||
-|[**Required installations**](#Required-installations)|
+|[**Required installations**](#Required-installations---)|
 ||
-|[**Starting the system installation**](#Starting-the-system-installation)|
-|  **↳** [**Downloading the installer**](#downloading-the-installer)|
+|[**Starting the system installation**](#Starting-the-system-installation---)|
+|  **↳** [**Downloading the installer**](#downloading-the-installer---)|
 ||
 |[**Troubleshooting**](/wiki/en-US/troubleshooting.md)|
 ||

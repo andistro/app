@@ -11,20 +11,22 @@
 
 | **Comece selecionando alguma das opções abaixo.** |
 |--------------------|
-|[**Refatoração do `update_progress()`**](#refatoração-do-update_progress)|
-|  **↳** [**Exemplo de uso**](#exemplo-de-uso)|
-|    **↳** [**Uso direto**](#uso-direto)|
-|    **↳** [**Usando o `global_var_fun.sh`**](#usando-o-global_var_funsh)|
+|[**Refatoração do `update_progress()`**](#refatoração-do-update_progress---)|
+|  **↳** [**Exemplo de uso**](#exemplo-de-uso---)|
+|    **↳** [**Uso direto**](#uso-direto---)|
+|    **↳** [**Usando o `global_var_fun.sh`**](#usando-o-global_var_funsh---)|
 ||
-|[**Refatoração do `show_progress_dialog()`**](#refatoração-do-show_progress_dialog)|
-|  **↳** [**Padrão  de uso 1**](#padrão-de-uso-1)|
-|  **↳** [**Padrão  de uso 2**](#padrão-de-uso-2)|
-|  **↳** [**`steps-one-label`**](#steps-one-label)|
-|  **↳** [**`steps-multi-label`**](#steps-multi-label)|
-|  **↳** [**`wget`**](#wget)|
-|  **↳** [**`wget-labeled`**](#wget-labeled)|
-|  **↳** [**`extract`**](#extract)|
-|  **↳** [**`check-packages`**](#check-packages)|
+|[**Refatoração do `show_progress_dialog()`**](#refatoração-do-show_progress_dialog---)|
+|  **↳** [**Padrão  de uso 1**](#padrão-de-uso-1---)|
+|  **↳** [**Padrão  de uso 2**](#padrão-de-uso-2---)|
+|  **↳** [**`steps-one-label`**](#steps-one-label---)|
+|  **↳** [**`steps-multi-label`**](#steps-multi-label---)|
+|  **↳** [**`wget`**](#wget---)|
+|  **↳** [**`wget-labeled`**](#wget-labeled---)|
+|  **↳** [**`extract`**](#extract---)|
+|    **↳** [**Extraindo no diretório atual**](#extraindo-no-diretório-atual---)|
+|    **↳** [**Extraindo em um diretório específico**](#extraindo-em-um-diretório-específico---)|
+|  **↳** [**`check-packages`**](#check-packages---)|
 
 <!--
 h1
@@ -265,7 +267,7 @@ Extrator de arquivos. Suporta as extensões `.tar.xz`, `.tar.gz`, `.tar.bz2`, `.
 show_progress_dialog extract "<label>" "$HOME/rootfs.tar.xz"
 ```
 
-### Extraindo um .zip em um diretório específico [[ ↑ ]](#)
+### Extraindo em um diretório específico [[ ↑ ]](#)
 ```bash
 show_progress_dialog extract "<label>" "/sdcard/fotos.zip" "$HOME/galeria"
 ```

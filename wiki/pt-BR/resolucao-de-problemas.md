@@ -11,16 +11,16 @@
 
 | **Comece selecionando alguma das opções abaixo.** |
 |--------------------|
-|[**Ativar o modo desenvolvedor do Android**](#Ativar-o-modo-desenvolvedor-do-Android)|
+|[**Ativar o modo desenvolvedor do Android**](#Ativar-o-modo-desenvolvedor-do-Android---)|
 ||
-|[**Corrigindo o problema da parada forçada do sistema no Termux ‐ `[Process completed (signal 9) ‐ press Enter]`**](##corrigindo-o-problema-da-parada-forçada-do-sistema-no-termux--process-completed-signal-9--press-enter)|
-|  **↳** [**Sobre o problema**](#Sobre-o-problema)|
-|  **↳** [**Desabilitando o Phantom Process no Android 12 e 13**](#desabilitando-o-phantom-process-no-android-12-e-13)|
-|    **↳** [**Desativar o monitor de processos fantasmas pelo sinalizadores de recursos**](#desativar-o-monitor-de-processos-fantasmas-pelo-sinalizadores-de-recursos)|
-|    **↳** [**Desativar o monitor de processos fantasmas pelo adb**](#desativar-o-monitor-de-processos-fantasmas-pelo-adb)|
-|      **↳** [**Permitir que o Termux use o adb**](#permitir-que-o-termux-use-o-adb)|
-|      **↳** [**Desativando o monitor de processos fantasmas pelo Termux**](#desativando-o-monitor-de-processos-fantasmas-pelo-termux)|
-|  **↳** [**Desabilitando o Phantom Process no Android 14 e 15**](#desabilitando-o-phantom-process-no-android-14-e-15)|
+|[**Corrigindo o problema da parada forçada do sistema no Termux ‐ `[Process completed (signal 9) ‐ press Enter]`**](#corrigindo-o-problema-da-parada-forçada-do-sistema-no-termux--process-completed-signal-9--press-enter---)|
+|  **↳** [**Sobre o problema**](#Sobre-o-problema---)|
+|  **↳** [**Desabilitando o Phantom Process no Android 12 e 13**](#desabilitando-o-phantom-process-no-android-12-e-13---)|
+|    **↳** [**Desativar o monitor de processos fantasmas pelo sinalizadores de recursos**](#desativar-o-monitor-de-processos-fantasmas-pelo-sinalizadores-de-recursos---)|
+|    **↳** [**Desativar o monitor de processos fantasmas pelo adb**](#desativar-o-monitor-de-processos-fantasmas-pelo-adb---)|
+|      **↳** [**Permitir que o Termux use o adb**](#permitir-que-o-termux-use-o-adb---)|
+|      **↳** [**Desativando o monitor de processos fantasmas pelo Termux**](#desativando-o-monitor-de-processos-fantasmas-pelo-termux---)|
+|  **↳** [**Desabilitando o Phantom Process no Android 14 e 15**](#desabilitando-o-phantom-process-no-android-14-e-15---)|
 ||
 
 <!--

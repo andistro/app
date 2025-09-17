@@ -14,20 +14,22 @@
 
 | **Start by selecting one of the options below.** |
 |--------------------|
-|[**Refactoring `update_progress()`**](#refactoring-update_progress)|
-|  **↳** [**Usage example**](#usage-example)|
-|    **↳** [**Direct use**](#direct-use)|
-|    **↳** [**Using `global_var_fun.sh`**](#using-global_var_funsh)|
+|[**Refactoring `update_progress()`**](#refactoring-update_progress---)|
+|  **↳** [**Usage example**](#usage-example---)|
+|    **↳** [**Direct use**](#direct-use---)|
+|    **↳** [**Using `global_var_fun.sh`**](#using-global_var_funsh---)|
 ||
-|[**Refactoring `show_progress_dialog()`**](#refactoring-show_progress_dialog)|
-|  **↳** [**Usage pattern 1**](#usage-pattern-1)|
-|  **↳** [**Usage pattern 2**](#usage-pattern-2)|
-|  **↳** [**`steps-one-label`**](#steps-one-label)|
-|  **↳** [**`steps-multi-label`**](#steps-multi-label)|
-|  **↳** [**`wget`**](#wget)|
-|  **↳** [**`wget-labeled`**](#wget-labeled)|
-|  **↳** [**`extract`**](#extract)|
-|  **↳** [**`check-packages`**](#check-packages)|
+|[**Refactoring `show_progress_dialog()`**](#refactoring-show_progress_dialog---)|
+|  **↳** [**Usage pattern 1**](#usage-pattern-1---)|
+|  **↳** [**Usage pattern 2**](#usage-pattern-2---)|
+|  **↳** [**`steps-one-label`**](#steps-one-label---)|
+|  **↳** [**`steps-multi-label`**](#steps-multi-label---)|
+|  **↳** [**`wget`**](#wget---)|
+|  **↳** [**`wget-labeled`**](#wget-labeled---)|
+|  **↳** [**`extract`**](#extract---)|
+|    **↳** [**Extracting in the current directory**](#extracting-in-the-current-directory---)|
+|    **↳** [**Extracting in a specific directory**](#extracting-in-a-specific-directory---)|
+|  **↳** [**`check-packages`**](#check-packages---)|
 
 <!--h1
 |[** **]()|
@@ -273,7 +275,7 @@ File extractor. Supports the extensions `.tar.xz`, `.tar.gz`, `.tar.bz2`, `.tar`
 show_progress_dialog extract "<label>" "$HOME/rootfs.tar.xz"
 ```
 
-### Extracting a .zip in a specific directory [[ ↑ ]](#)
+### Extracting in a specific directory [[ ↑ ]](#)
 
 ```bash
 show_progress_dialog extract "<label>" "/sdcard/photos.zip" "$HOME/gallery"
