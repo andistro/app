@@ -10,6 +10,13 @@ if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
 fi
 
+if [ ! -d "$HOME/storage/shared/termux/andistro/boot" ];then
+    mkdir -p "$HOME/storage/shared/termux/"
+    mkdir -p "$HOME/storage/shared/termux/andistro"
+    mkdir -p "$HOME/storage/shared/termux/andistro/boot"
+    mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
+fi
+
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
@@ -115,6 +122,8 @@ sed -i "s|WLAN_IP=\"[^\"]*\"|WLAN_IP=\"$wlan_ip_localhost\"|g" "$PREFIX/bin/andi
 #cd \$(dirname \$0)
 cd \$HOME
 ## unset LD_PRELOAD in case termux-exec is installed
+mkdir -p "$folder/termux"
+mkdir -p "$folder/termux/bin"
 
 unset LD_PRELOAD
 command="proot"
@@ -126,7 +135,7 @@ command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
-#command+=" -b /data/data/com.termux/files/home:/root"
+command+=" -b /sdcard/termux/andistro/boot/debian/trixie:/root"
 ## uncomment the following line to mount /sdcard directly to / 
 command+=" -b /sdcard"
 command+=" -w /root"
@@ -201,6 +210,8 @@ export LANG=$language_transformed.UTF-8
 source "/usr/local/bin/global_var_fun.sh"
 
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
+
+echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security $codinome-security main contrib non-free
