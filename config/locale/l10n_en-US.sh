@@ -1,4 +1,5 @@
 #!/bin/bash
+# Translated by GitHub Copilot
 #=====================================================================================================\
 distro_wait="wait"
 distro_del="uninstall"
