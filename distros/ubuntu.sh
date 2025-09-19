@@ -1,9 +1,22 @@
 #!/data/data/com.termux/files/usr/bin/bash
 source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-bin="start-ubuntu.sh"
+distro_name="ubuntu"
 codinome="noble"
-folder="ubuntu-noble"
-binds="ubuntu-binds"
+bin="$PREFIX/bin/andistro_files/boot/start-$distro_name"
+folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
+andistro_files="$PREFIX/bin/andistro_files"
+binds="$distro_name/binds"
+
+if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
+    mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
+fi
+
+if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
+    mkdir -p "$HOME/storage/shared/termux/"
+    mkdir -p "$HOME/storage/shared/termux/andistro"
+    mkdir -p "$HOME/storage/shared/termux/andistro/boot"
+    mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
+fi
 
 # Idioma
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
@@ -76,11 +89,10 @@ if [ "$first" != 1 ];then
 	*)
 		echo "unknown architecture"; exit 1 ;;
 	esac
-	error_code="DW001deb"
-	show_progress_dialog wget "${label_ubuntu_download}" 1 -O $folder.tar.xz "${extralink}/distros/files/dists/${archurl}/ubuntu/${codinome}/installer.tar.xz"
+
+	show_progress_dialog wget "${label_ubuntu_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
-	show_progress_dialog extract "${label_ubuntu_download_extract}" "$HOME/$folder.tar.xz"
-	#rm -rf $folder/snap/
+	show_progress_dialog extract "${label_ubuntu_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
 
@@ -89,8 +101,8 @@ mkdir -p ${folder}/proc/fakethings
 
 echo "${label_start_script}"
 
-if [ ! -f "${HOME}/${folder}/proc/fakethings/stat" ]; then
-	cat <<- EOF > "${HOME}/${folder}/proc/fakethings/stat"
+if [ ! -f "${folder}/proc/fakethings/stat" ]; then
+	cat <<- EOF > "${folder}/proc/fakethings/stat"
 cpu  5502487 1417100 4379831 62829678 354709 539972 363929 0 0 0
 cpu0 611411 171363 667442 7404799 61301 253898 205544 0 0 0
 cpu1 660993 192673 571402 7853047 39647 49434 29179 0 0 0
@@ -111,14 +123,14 @@ softirq 175407567 14659158 51739474 28359 5901272 8879590 0 11988166 46104015 0 
 fi
 
 KERNEL_VERSON=$(uname -r)
-if [ ! -f "${HOME}/${folder}/proc/fakethings/version" ]; then
-	cat <<- EOF > "${HOME}/${folder}/proc/fakethings/version"
+if [ ! -f "${folder}/proc/fakethings/version" ]; then
+	cat <<- EOF > "${folder}/proc/fakethings/version"
 	$KERNEL_VERSION (FakeAndroid) #1 SMP PREEMPT Sat Apr  5 02:10:31 -03 2025
 	EOF
 fi
 
-if [ ! -f "${HOME}/${folder}/proc/fakethings/vmstat" ]; then
-	cat <<- EOF > "${HOME}/${folder}/proc/fakethings/vmstat"
+if [ ! -f "${folder}/proc/fakethings/vmstat" ]; then
+	cat <<- EOF > "${folder}/proc/fakethings/vmstat"
 	nr_free_pages 15717
 	nr_zone_inactive_anon 87325
 	nr_zone_active_anon 259521
@@ -227,8 +239,9 @@ fi
 
 cat > $bin <<- EOM
 #!/bin/bash
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
-sed -i "s|WLAN_IP=\"localhost\"|WLAN_IP=\"$wlan_ip_localhost\"|g" "$folder/usr/local/bin/vnc"
+if [ ! -d "\$HOME/storage" ];then
+    termux-setup-storage
+fi
 
 #cd \$(dirname \$0)
 cd $HOME
@@ -254,11 +267,12 @@ command+=" -b /proc/self/fd/1:/dev/stdout"
 command+=" -b /proc/self/fd/0:/dev/stdin"
 command+=" -b /dev/urandom:/dev/random"
 command+=" -b /proc/self/fd:/dev/fd"
-command+=" -b ${HOME}/${folder}/proc/fakethings/stat:/proc/stat"
-command+=" -b ${HOME}/${folder}/proc/fakethings/vmstat:/proc/vmstat"
-command+=" -b ${HOME}/${folder}/proc/fakethings/version:/proc/version"
+command+=" -b $folder/proc/fakethings/stat:/proc/stat"
+command+=" -b $folder/proc/fakethings/vmstat:/proc/vmstat"
+command+=" -b $folder/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
+command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -266,7 +280,8 @@ command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
-command+=" LANG=C.UTF-8"
+#command+=" LANG=C.UTF-8"
+command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
 com="\$@"
 if [ -z "\$1" ];then
@@ -276,32 +291,21 @@ else
 fi
 EOM
 
-sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
-error_code="LG001br"
-show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+chmod +x $binshow_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
-echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
-rm -f $folder/etc/resolv.conf
-echo -e 'nameserver 8.8.8.8\nnameserver 1.1.1.1' > $folder/etc/resolv.conf
+
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 # Se não existir, será criado
-if [ ! -d "$folder/usr/share/backgrounds/" ];then
-	mkdir -p "$folder/usr/share/backgrounds/"
-	echo "pasta criada"
-fi
 
-if [ ! -d "$folder/usr/share/icons/" ];then
-	mkdir -p "$folder/usr/share/icons/"
-	echo "pasta criada"
-fi
-
-if [ ! -d "$folder/root/.vnc/" ];then
-	mkdir -p $folder/root/.vnc/
-	echo "pasta criada"
-fi
+mkdir -p "$folder/usr/share/backgrounds/"
+mkdir -p "$folder/usr/share/icons/"
+mkdir -p "$folder/root/.vnc/"
 
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
@@ -323,143 +327,100 @@ chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global_var_fun.sh"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
-sed -i "s/system_icu_locale_code=.*$/system_icu_locale_code=\"${language_selected}\"/" "$folder/usr/local/bin/global_var_fun.sh"
 sleep 2
 
-#echo "fixing shebang of $bin"
-#termux-fix-shebang $bin
-#echo "making $bin executable"
-chmod +x $bin
-
-
-export USER=$(whoami)
-export PORT=1
-OPTIONS=(1 "LXDE"
-		 2 "XFCE"
-		 3 "Gnome")
-
-CHOICE=$(dialog --no-shadow --clear \
-                --title "$TITLE" \
-                --menu "$MENU_environments_select" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-case $CHOICE in
-	1)	
-		echo "LXDE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
-		sleep 2
-		;;
-	2)	
-		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
-		sleep 2
-		;;
-	3)
-		echo "Gnome UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/gnome/config.sh"
-		sleep 2
-		# Parte da resolução do problema do gnome e do systemd
-		if [ ! -d "/data/data/com.termux/files/usr/var/run/dbus" ];then
-			mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
-			echo "pasta criada"
-		fi
-		#mkdir /data/data/com.termux/files/usr/var/run/dbus # criar a pasta que o dbus funcionará
-		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid #remover o pid para que o dbus-daemon funcione corretamente
-		rm -rf system_bus_socket
-
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket #cria o arquivo
-
-		if grep -q "<listen>tcp:host=localhost" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<listen>unix:tmpdir=/tmp</listen>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<auth>ANONYMOUS</auth>" /data/data/com.termux/files/usr/share/dbus-1/system.conf && # verifica se existe a linha com esse texto
-		grep -q "<allow_anonymous/>" /data/data/com.termux/files/usr/share/dbus-1/system.conf; then # verifica se existe a linha com esse texto
-		echo ""
-			else
-				sed -i 's|<auth>EXTERNAL</auth>|<listen>tcp:host=localhost,bind=*,port=6667,family=ipv4</listen>\
-				<listen>unix:tmpdir=/tmp</listen>\
-				<auth>EXTERNAL</auth>\
-				<auth>ANONYMOUS</auth>\
-				<allow_anonymous/>|' /data/data/com.termux/files/usr/share/dbus-1/system.conf
-		fi
-
-		# É necessário repetir o processo toda vez que alterar o system.conf
-		rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid
-		dbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket
-		sed -i "\|command+=\" -b $folder/root:/dev/shm\"|a command+=\" -b system_bus_socket:/run/dbus/system_bus_socket\"" $bin
-		sed -i '1 a\rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid \ndbus-daemon --fork --config-file=/data/data/com.termux/files/usr/share/dbus-1/system.conf --address=unix:path=system_bus_socket\n' $bin
-	;;
-esac
-
+show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+sleep 2
 chmod +x $folder/root/config-environment.sh
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
-echo '#!/bin/bash
+
+cat > $folder/root/.bash_profile <<- EOM
+#!/bin/bash
+export LANG=$language_transformed.UTF-8
+
 source "/usr/local/bin/global_var_fun.sh"
+
 groupadd -g 3003 group3003
 groupadd -g 9997 group9997
 groupadd -g 20457 group20457
 groupadd -g 50457 group50457
 groupadd -g 1079 group1079
 
-echo "${label_alert_autoupdate_for_u}"
+echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
+
+echo "alias ls='ls --color=auto'" >> ~/.bashrc
+
 #======================================================================================================
 # global_var_fun.sh == update_progress() {}
+update_progress() {
+    local current_step=\$1
+    local total_steps=\$2
+    local percent=\$((current_step * 100 / total_steps))
+    local bar_length=30
+    local filled_length=\$((percent * bar_length / 100))
+    local empty_length=\$((bar_length - filled_length))
 
-total_steps=5
+    local filled_bar
+    local empty_bar
+    filled_bar=\$(printf "%\${filled_length}s" | tr " " "=")
+    empty_bar=\$(printf "%\${empty_length}s" | tr " " " ")
+
+    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
+}
+
+total_steps=4
 current_step=0
 
 apt update -qq -y > /dev/null 2>&1
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 if ! dpkg -l | grep -qw sudo; then
-    apt-get install sudo -y > /dev/null 2>&1
+    apt install sudo --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando sudo"
-sleep 0.5
-
-sudo apt autoremove --purge whiptail -y > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando dialog"
+update_progress "\$current_step" "\$total_steps" "Instalando sudo"
 sleep 0.5
 
 if ! dpkg -l | grep -qw wget; then
-    apt-get install wget -y > /dev/null 2>&1
+    apt install wget --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando wget"
+update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
 if ! dpkg -l | grep -qw dialog; then
-    apt-get install dialog -y > /dev/null 2>&1
+    apt install dialog --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
-update_progress "$current_step" "$total_steps" "Instalando dialog"
+update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
-chmod +x /usr/local/bin/vnc
-chmod +x /usr/local/bin/vncpasswd
-chmod +x /usr/local/bin/startvnc
-chmod +x /usr/local/bin/stopvnc
-chmod +x /usr/local/bin/startvncserver
+etc_timezone=\$(cat /etc/timezone)
 
-bash ~/locale_${system_icu_locale_code}.sh
+sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
+
+bash ~/locale_\$system_icu_locale_code.sh
 
 bash ~/system-config.sh
 
 bash ~/config-environment.sh
 
-if [ ! -e "~/start-environment.sh" ];then
+mkdir -p "/root/Desktop"
+
+if [ -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
+
+sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
@@ -467,12 +428,11 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-exit' > $folder/root/.bash_profile 
+EOM
 
-# Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-cp "$bin" "$PREFIX/bin/${bin%.sh}" #isso permite que o comando seja iniciado sem o uso do bash ou ./
-rm -rf $HOME/distrolinux-install.sh
-rm -rf $HOME/start-distro.sh
 bash $bin
-bash $bin
+
+if [ -e "$HOME/start-distro.sh" ];then
+	rm -rf $HOME/start-distro.sh
+fi

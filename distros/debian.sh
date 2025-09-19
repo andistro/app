@@ -101,7 +101,7 @@ if [ "$first" != 1 ];then
 	# 	done
 	# } | dialog --gauge "$label_debian_download_finish" 10 60 0
 
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/debian_${codinome}/installer-${archurl}.tar.xz"
+	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
 	show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
 	sleep 2
@@ -114,9 +114,6 @@ cat > "$bin" <<- EOM
 if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
-
-#wlan_ip_localhost=\$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print \$2}') # IP da rede 
-#sed -i "s|WLAN_IP=\"[^\"]*\"|WLAN_IP=\"\$wlan_ip_localhost\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
 cd \$HOME
@@ -134,11 +131,10 @@ command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
-#command+=" -b /sdcard/termux/andistro/boot/debian/trixie:/root"
-## uncomment the following line to mount /sdcard directly to / 
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
+command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
@@ -279,7 +275,7 @@ bash ~/config-environment.sh
 
 mkdir -p "/root/Desktop"
 
-if [ ! -e "~/start-environment.sh" ];then
+if [ -e "~/start-environment.sh" ];then
 	bash ~/start-environment.sh
 fi
 
@@ -291,7 +287,6 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-rm -rf /termux-home/start-distro.sh
 EOM
 
 
