@@ -18,6 +18,8 @@ PORTA=$(echo "$PID_FILES" | head -n1 | cut -d':' -f2 | cut -d'.' -f1)
 echo "$label_vncserver_kill"
 echo "$label_vncserver_killed: $PORTA"
 
+xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
+
 # Parar o servidor VNC
 vncserver -kill :$PORTA
 
