@@ -5,7 +5,7 @@ fi
 source "/usr/local/bin/global_var_fun.sh"
 
 while true; do
-    dialog --msgbox "$label_vnc_password_input_alert" 10 50
+    dialog --no-shadow --msgbox "$label_vnc_password_input_alert" 10 50
     msgbox_status=$?
 
     if [ "$msgbox_status" -eq 0 ]; then
