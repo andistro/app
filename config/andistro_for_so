@@ -1,0 +1,76 @@
+#!/bin/bash
+# Cores
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
+NC='\033[0m' # Reset
+
+
+if [ -z "$1" ]; then
+    echo "Use o comando --system-info para exibir informações do sistema."
+    exit 1
+fi
+
+case "$1" in
+    --system-info)
+            # Distro info
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            DISTRO="$NAME"
+            CODENAME="$VERSION_CODENAME"
+            VERSION="$VERSION_ID"
+            else
+                DISTRO=$(lsb_release -si 2>/dev/null)
+                CODENAME=$(lsb_release -sc 2>/dev/null)
+                VERSION=$(lsb_release -sr 2>/dev/null)
+        fi
+
+        # Memória
+        FILE_MEMINFO="/proc/meminfo"  # OU: FILE_MEMINFO="$folder/proc/meminfo"
+
+        MEMTOTAL=$(grep MemTotal $FILE_MEMINFO | awk '{print $2}')
+        MEMAVAILABLE=$(grep MemAvailable $FILE_MEMINFO | awk '{print $2}')
+
+        MEMTOTAL_MB=$((MEMTOTAL / 1024))
+        MEMAVAILABLE_MB=$((MEMAVAILABLE / 1024))
+        MEMUSED_MB=$((MEMTOTAL_MB - MEMAVAILABLE_MB))
+
+        # Interface gráfica
+        INTERFACE="Desconhecida"
+        if grep -qi startxfce4 "$HOME/.vnc/xstartup"; then
+            INTERFACE="XFCE"
+            elif grep -qi startkde "$HOME/.vnc/xstartup"; then
+                INTERFACE="KDE"
+            elif grep -qi gnome-session "$HOME/.vnc/xstartup"; then
+                INTERFACE="GNOME"
+            # Adicione outros ambientes gráficos conforme necessário
+        fi
+
+        # Resolução de tela (funciona com xrandr)
+        if command -v xrandr >/dev/null 2>&1; then
+            RESOLUCAO=$(xrandr | grep '*' | head -n1 | awk '{print $1}')
+            else
+                RESOLUCAO="Indisponível"
+        fi
+
+        # Escala (DPI)
+        ESCALA=$(xfconf-query -c xsettings -p /Gdk/WindowScalingFactor 2>/dev/null)
+
+        # Tema GTK atual (GSettings, só para ambientes GNOME ou compatível)
+        THEME=$(xfconf-query -c xsettings -p /Net/ThemeName 2>/dev/null)
+        [ -z "$THEME" ] && THEME="Indisponível"
+
+        # Impressão das informações
+        echo -e "${CYAN}Nome da Distro:${NC}    ${WHITE}${DISTRO}${NC}"
+        echo -e "${CYAN}Codinome:${NC}          ${WHITE}${CODENAME}${NC}"
+        echo -e "${CYAN}Versão:${NC}            ${WHITE}${VERSION}${NC}"
+        echo -e "${CYAN}Memória Uso/Total:${NC} ${WHITE}${MEMUSED_MB}MB / ${MEMTOTAL_MB}MB${NC}"
+        echo -e "${CYAN}Interface gráfica:${NC} ${WHITE}${INTERFACE}${NC}"
+        echo -e "${CYAN}Resolução:${NC}         ${WHITE}${RESOLUCAO}${NC}"
+        echo -e "${CYAN}Escala:${NC}            ${WHITE}${ESCALA}${NC}"
+        echo -e "${CYAN}Tema:${NC}              ${WHITE}${THEME}${NC}"
+        exit 0
+    ;;
+    *)
+        SCRIPT_PATH="$1"
+        ;;
+esac

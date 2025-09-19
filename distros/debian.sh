@@ -5,6 +5,7 @@ bin="$PREFIX/bin/andistro_files/boot/start-$distro_name"
 codinome="trixie"
 andistro_files="$PREFIX/bin/andistro_files"
 folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
+binds="$distro_name/binds"
 
 if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
     mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
@@ -16,6 +17,8 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];t
     mkdir -p "$HOME/storage/shared/termux/andistro/boot"
     mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
 fi
+
+mkdir -p $binds
 
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
@@ -108,12 +111,16 @@ if [ "$first" != 1 ];then
 fi
 
 echo "${label_start_script}"
+
 cat > "$bin" <<- EOM
 #!/bin/bash
 
 if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
+
+meminfo=$(cat /proc/meminfo)
+echo "$meminfo" >> $folder/proc/meminfo
 
 #cd \$(dirname \$0)
 cd \$HOME
@@ -151,7 +158,6 @@ EOM
 
 chmod +x $bin
 
-error_code="LG001br"
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
@@ -162,14 +168,18 @@ echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
-# Se não existir, será criado
+meminfo=$(cat /proc/meminfo)
+echo "$meminfo" >> $folder/proc/meminfo
 
+# Se não existir, será criado
+mkdir -p $folder/proc/fakethings
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
 
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -O "$folder/root/andistro_info" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
@@ -189,6 +199,15 @@ chmod +x "$folder/usr/local/bin/global_var_fun.sh"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
+
+KERNEL_VERSON=$(uname -r)
+
+if [ ! -f "${folder}/proc/fakethings/version" ]; then
+	cat <<- EOF > "${folder}/proc/fakethings/version"
+	$KERNEL_VERSION (FakeAndroid)
+	EOF
+fi
+
 
 show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 sleep 2
