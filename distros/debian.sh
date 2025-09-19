@@ -179,7 +179,7 @@ mkdir -p "$folder/root/.vnc/"
 
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
-	"${label_progress}" -O "$folder/root/andistro_info" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
@@ -190,6 +190,7 @@ show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
+chmod +x $folder/usr/local/bin/andistro
 chmod +x $folder/usr/local/bin/vnc
 chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
