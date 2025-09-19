@@ -291,11 +291,14 @@ rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
-#rm -rf $HOME/start-distro.sh
+rm -rf /termux-home/start-distro.sh
 EOM
 
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 bash $bin
-#rm -rf $HOME/start-distro.sh
+
+if [ -e "$HOME/start-distro.sh" ];then
+	rm -rf $HOME/start-distro.sh
+fi
