@@ -71,6 +71,8 @@ case "$1" in
         exit 0
     ;;
     *)
-        SCRIPT_PATH="$1"
-        ;;
+        echo "$distro_command_not_found $1"
+        andistro
+        exit 1
+    ;;
 esac
