@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/usr/local/bin/global_var_fun.sh"
 
-show_progress_dialog steps-multi-label 60 \
+show_progress_dialog steps-multi-label 61 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -22,14 +22,15 @@ show_progress_dialog steps-multi-label 60 \
   "${label_install_script_download}\n\n → tigervnc-standalone-server" 'sudo apt install tigervnc-standalone-server --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tigervnc-common" 'sudo apt install tigervnc-common --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tigervnc-tools" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install dbus-x11 --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install nano --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install inetutils-tools --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install font-manager --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install synaptic --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install gvfs-backends --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install bleachbit --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install net-tools --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → dbus-x11" 'sudo apt install dbus-x11 --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → nano" 'sudo apt install nano --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → inetutils-tools" 'sudo apt install inetutils-tools --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → font-manager" 'sudo apt install font-manager --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → synaptic" 'sudo apt install synaptic --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → gvfs-backends" 'sudo apt install gvfs-backends --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → pulseaudio" 'sudo apt install pulseaudio --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo install -d -m 0755 /etc/apt/keyrings' \
   "${label_install_script_download}\n\n → firefox" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
   "${label_install_script_download}\n\n → firefox" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
