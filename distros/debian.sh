@@ -126,7 +126,7 @@ echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
 
 ## Copia o meminfo atual para dentro do ambiente proot
 meminfo=$(cat /proc/meminfo)
-echo "$meminfo" >> $folder/proc/meminfo
+echo "\$meminfo" >> $folder/proc/meminfo
 
 #cd \$(dirname \$0)
 cd \$HOME
