@@ -1,14 +1,14 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+source "$PREFIX/var/lib/andistro/global_var_fun.sh"
 distro_name="debian"
-bin="$PREFIX/bin/andistro_files/boot/start-$distro_name"
+bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 codinome="trixie"
-andistro_files="$PREFIX/bin/andistro_files"
-folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
+andistro_files="$PREFIX/var/lib/andistro"
+folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$distro_name/binds"
 
-if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
-    mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
+if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
+    mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 fi
 
 if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
@@ -134,6 +134,7 @@ command+=" -0"
 command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
+command+=" -b /sys"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
@@ -143,6 +144,7 @@ command+=" -w /root"
 command+=" /usr/bin/env -i"
 command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
+command+=" DISPLAY=:1"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
@@ -155,6 +157,9 @@ else
     \$command -c "\$com"
 fi
 EOM
+
+#proot -0 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /bin/bash --login -c "dbus-launch --exit-with-session startxfce4"
+
 
 chmod +x $bin
 

@@ -1,14 +1,14 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/bin/andistro_files/global_var_fun.sh"
+source "$PREFIX/var/lib/andistro/global_var_fun.sh"
 distro_name="ubuntu"
 codinome="noble"
-bin="$PREFIX/bin/andistro_files/boot/start-$distro_name"
-folder="$PREFIX/bin/andistro_files/boot/$distro_name/$codinome"
-andistro_files="$PREFIX/bin/andistro_files"
+bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
+folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
+andistro_files="$PREFIX/var/lib/andistro"
 binds="$distro_name/binds"
 
-if [ ! -d "$PREFIX/bin/andistro_files/boot/$distro_name" ];then
-    mkdir -p "$PREFIX/bin/andistro_files/boot/$distro_name"
+if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
+    mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 fi
 
 if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
@@ -258,7 +258,9 @@ if [ -n "\$(ls -A $binds)" ]; then
     done
 fi
 command+=" -b /dev"
+command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
 command+=" -b /proc"
+command+=" -b /data/data/com.termux/files/usr/tmp:/tmp"
 command+=" -b /sys"
 command+=" -b /data"
 command+=" -b $folder/root:/dev/shm"
