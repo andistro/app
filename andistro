@@ -183,115 +183,141 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=21  # Número total de etapas que você quer monitorar
+        total_steps=25  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
             #1 Atualiza os repositórios
-            apt update -qq -y > /dev/null 2>&1
+            pkg update > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #2 Instala o bash
-            apt install --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+            pkg install --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #3 Instala o openssl
-            apt install --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
+            pkg install --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #4 Atualiza os pacotes
-            apt upgrade -y > /dev/null 2>&1
+            #4 Instala o apt
+            pkg install --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #5 Verifica se o termux-exec está instalado
+            #5 Atualiza os pacotes
+            pkg upgrade -y > /dev/null 2>&1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #6 Verifica se o termux-exec está instalado
             if ! dpkg -l | grep -qw termux-exec; then
-                apt install termux-exec -y > /dev/null 2>&1
+                pkg install termux-exec -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #6 Verifica se o proot está instalado
+            #7 Verifica se o proot está instalado
             if ! dpkg -l | grep -qw proot; then
-                apt install proot -y > /dev/null 2>&1
+                pkg install proot -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #7 Verifica se o wget está instalado
+            #8 Verifica se o x11-repo está instalado
+            if ! dpkg -l | grep -qw x11-repo; then
+                pkg install x11-repo -y > /dev/null 2>&1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #9 Verifica se o termux-x11-nightly está instalado
+            if ! dpkg -l | grep -qw termux-x11-nightly; then
+                pkg install termux-x11-nightly -y > /dev/null 2>&1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #10 Verifica se o pulseaudio está instalado
+            if ! dpkg -l | grep -qw pulseaudio; then
+                pkg install pulseaudio -y > /dev/null 2>&1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #11 Verifica se o wget está instalado
             if ! dpkg -l | grep -qw wget; then
-                apt install wget -y > /dev/null 2>&1
+                pkg install wget -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #8 Verifica se o dialog está instalado
+            #12 Verifica se o dialog está instalado
             if ! dpkg -l | grep -qw dialog; then
-                apt install dialog -y > /dev/null 2>&1
+                pkg install dialog -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #9 Verifica se o tar está instalado
+            #13 Verifica se o tar está instalado
             if ! dpkg -l | grep -qw tar; then
-                apt install tar -y > /dev/null 2>&1
+                pkg install tar -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #10 Verifica se o curl está instalado
+            #14 Verifica se o curl está instalado
             if ! dpkg -l | grep -qw curl; then
-                apt install curl -y > /dev/null 2>&1
+                pkg install curl -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #11 Verifica se o unzip está instalado
+            #15 Verifica se o unzip está instalado
             if ! dpkg -l | grep -qw unzip; then
-                apt install unzip -y > /dev/null 2>&1
+                pkg install unzip -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #12 Verifica se o xz-utils está instalado
+            #16 Verifica se o xz-utils está instalado
             if ! dpkg -l | grep -qw xz-utils; then
-                apt install xz-utils -y > /dev/null 2>&1
+                pkg install xz-utils -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #13 Verifica se o debootstrap está instalado
+            #17 Verifica se o debootstrap está instalado
             if ! dpkg -l | grep -qw debootstrap; then
-                apt install debootstrap -y > /dev/null 2>&1
+                pkg install debootstrap -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #14 Verifica se o dbus está instalado
+            #18 Verifica se o dbus está instalado
             if ! dpkg -l | grep -qw dbus; then
-                apt install dbus -y > /dev/null 2>&1
+                pkg install dbus -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #15 Verifica se o pv está instalado
+            #19 Verifica se o pv está instalado
             if ! dpkg -l | grep -qw pv; then
-                apt install pv -y > /dev/null 2>&1
+                pkg install pv -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #16 Verifica e baixa global_var_fun.sh
+            #20 Verifica e baixa global_var_fun.sh
             if [ ! -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ]; then
                 curl -s -o "$PREFIX/bin/andistro_files/global_var_fun.sh" "${extralink}/config/global_var_fun.sh" > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #17 Verifica e atualiza o global_var_fun
+            #21 Verifica e atualiza o global_var_fun
             curl -s -o "$PREFIX/bin/andistro_files/global_var_fun.check" "${extralink}/config/global_var_fun.sh" 2>&1
 
             if [ -f "$PREFIX/bin/andistro_files/global_var_fun.sh" ] && [ -f "$PREFIX/bin/andistro_files/global_var_fun.check" ]; then
@@ -306,14 +332,14 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #18 Verifica e baixa l10n_${locale}.sh
+            #22 Verifica e baixa l10n_${locale}.sh
             if [ ! -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ]; then
                 curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #19 Verifica e atualiza o l10n_${locale}.sh
+            #23 Verifica e atualiza o l10n_${locale}.sh
             curl -s -o "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
                     
             if [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.check" ]; then
@@ -328,7 +354,7 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #20 Verifica se o andistro está em $HOME
+            #24 Verifica se o andistro está em $HOME
             if [ -f "$HOME/andistro" ]; then
                 mv "$HOME/andistro" "$PREFIX/bin/andistro"
                 rm -rf "$HOME/andistro"
@@ -337,7 +363,7 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            # 21 Verifica e atualiza o andistro
+            #25 Verifica e atualiza o andistro
             curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
