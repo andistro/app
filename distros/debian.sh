@@ -131,8 +131,11 @@ echo "\$meminfo" >> $folder/proc/meminfo
 #cd \$(dirname \$0)
 cd \$HOME
 
+pulseaudio --start
+
 ## Remove a variável de ambiente LD_PRELOAD caso o termux-exec esteja instalado.
 unset LD_PRELOAD
+
 command="proot"
 command+=" --kill-on-exit"
 command+=" --link2symlink"
@@ -141,10 +144,18 @@ command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
+command+=" -b /data"
+command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
+command+=" -b /proc/self/fd/2:/dev/stderr"
+command+=" -b /proc/self/fd/1:/dev/stdout"
+command+=" -b /proc/self/fd/0:/dev/stdin"
+command+=" -b /dev/urandom:/dev/random"
+command+=" -b /proc/self/fd:/dev/fd"
 ## Descomente a linha a seguir para ter acesso ao diretório raiz do termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
+command+=" -b /data/data/com.termux/files/usr/bin:/bin/termux-bin"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -163,9 +174,6 @@ else
     \$command -c "\$com"
 fi
 EOM
-
-#proot -0 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /bin/bash --login -c "dbus-launch --exit-with-session startxfce4"
-
 
 chmod +x $bin
 
