@@ -21,9 +21,9 @@
 <br>
 <div align="center">
   
-  |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/refs/heads/main/profile/assets/flags/brasil.svg" />|[Guia de instalação e resolução de problemas](https://github.com/andistro/app/blob/main/wiki/pt-BR/README.md)|
+  |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/refs/heads/main/profile/assets/flags/brasil.svg" />|[Guia de instalação e resolução de problemas](./wiki/pt-BR/README.md)|
   |-|-|
-  |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/refs/heads/main/profile/assets/flags/united_states.svg" />|[**Installation and troubleshooting guide**](https://github.com/andistro/app/blob/main/wiki/en-US/README.md)|
+  |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/refs/heads/main/profile/assets/flags/united_states.svg" />|[**Installation and troubleshooting guide**](./wiki/en-US/README.md)|
   
 </div>
 
