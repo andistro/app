@@ -440,8 +440,9 @@ case "$1" in
             echo "$distro_desc_line_11"
             echo " "
             echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
+            echo "  total"
+            echo "  debian"
+            echo "  ubuntu"
             exit 1
         fi
 
