@@ -5,7 +5,7 @@ bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
-binds="$distro_name/binds"
+binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
 
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
     mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
