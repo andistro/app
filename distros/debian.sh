@@ -201,17 +201,49 @@ chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
 
-KERNEL_VERSON=$(uname -r)
+# KERNEL_VERSON=$(uname -r)
 
-if [ ! -f "${folder}/proc/fakethings/version" ]; then
-	cat <<- EOF > "${folder}/proc/fakethings/version"
-	$KERNEL_VERSION (FakeAndroid)
-	EOF
-fi
+# if [ ! -f "${folder}/proc/fakethings/version" ]; then
+# 	cat <<- EOF > "${folder}/proc/fakethings/version"
+# 	$KERNEL_VERSION (FakeAndroid)
+# 	EOF
+# fi
 
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
 
-show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
-sleep 2
+OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
+		 2 "${MENU_environments_select_light} (LXDE)"
+		 3 "${MENU_environments_select_null}") 
+
+CHOICE=$(dialog --clear \
+                --title "$TITLE" \
+                --menu "$MENU_environments_select" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+case $CHOICE in
+	1)	
+		
+		echo "XFCE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		sleep 2
+		;;
+	2)	
+		echo "LXDE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
+		sleep 2
+	;;
+	3)
+		echo "Nenhum ambiente de área de trabalho selecionado"
+		rm -rf "$folder/root/system-config.sh"
+		sleep 2
+	;;
+esac
+clear
 chmod +x $folder/root/config-environment.sh
 
 sleep 4
@@ -221,6 +253,10 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
+
+groupadd storage
+groupadd wheel
+groupadd video
 
 source "/usr/local/bin/global_var_fun.sh"
 
@@ -287,11 +323,28 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
+if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
+	bash ~/locale_\$system_icu_locale_code.sh
+	else
+	show_progress_dialog "wget" "\${label_language_download}" 1 -P "/root/" "\${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+	sleep 2
+	bash ~/system-config.sh
+fi
+
 bash ~/locale_\$system_icu_locale_code.sh
 
-bash ~/system-config.sh
+if [ -e "~/system-config.sh" ];then
+	bash ~/system-config.sh
+	else
+	show_progress_dialog "wget" "\${label_progress}" 1 -O "~/system-config.sh" "\${extralink}/config/package-manager-setups/apt/system-config.sh"
 
-bash ~/config-environment.sh
+	sleep 2
+	bash ~/system-config.sh
+fi
+
+if [ -e "~/config-environment.sh" ];then
+	bash ~/config-environment.sh
+fi
 
 mkdir -p "/root/Desktop"
 
