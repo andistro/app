@@ -142,3 +142,6 @@ MENU_operating_system_select="Escolha o sistema operacional que será instalado:
 MENU_language_select="Escolha o idioma "
 MENU_language_selected="Idioma selecionado: "
 MENU_environments_select="Escolha um ambientes de área de trabalho: "
+MENU_environments_select_default="Padrão"
+MENU_environments_select_light="Leve"
+MENU_environments_select_null="Nenhum"
