@@ -48,6 +48,8 @@ if command -v getprop > /dev/null 2>&1; then
     system_country_iso=$(getprop ro.csc.countryiso_code 2>/dev/null)       # Abreviação do País
     system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)       # Locale
     system_timezone=$(getprop persist.sys.timezone 2>/dev/null)            # Timezone
+
+    device_dpi=$(getprop ro.sf.lcd_density 2>/dev/null)                     # DPI
 else
     system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/')
     apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
