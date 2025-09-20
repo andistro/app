@@ -341,7 +341,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #23 Verifica e atualiza o l10n_${locale}.sh
-            curl -s -o "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
+            curl -s -o "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" > /dev/null 2>&1
                     
             if [ -f "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.check" ]; then
                 if ! cmp -s "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh" "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.check"; then
@@ -365,7 +365,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #25 Verifica e atualiza o andistro
-            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
+            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" > /dev/null 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
                 if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
@@ -445,7 +445,13 @@ case "$1" in
             exit 1
         fi
 
-        if [ "$2" == "debian" ]; then
+        if [ "$2" == "total" ]; then
+            echo "$distro_wait"
+            andistro -d debian > /dev/null 2>&1
+            andistro -d ubuntu > /dev/null 2>&1
+            rm -rf $PREFIX/var/lib/andistro/
+            rm -rf $PREFIX/bin/andistro
+        elif [ "$2" == "debian" ]; then
             echo "$distro_wait"
             rm -rf $PREFIX/var/lib/andistro/boot/debian/
             rm -rf $PREFIX/var/lib/andistro/boot/debian/*
@@ -563,7 +569,7 @@ case "$1" in
                     sleep 0.1
                     echo $((i * 2))
                 done
-            } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+            } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 0 60 0
         ;;
 
     *)
