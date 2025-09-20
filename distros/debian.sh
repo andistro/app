@@ -114,18 +114,24 @@ echo "${label_start_script}"
 
 cat > "$bin" <<- EOM
 #!/bin/bash
-
+## Cria o diretório de armazenamento, se não existir
 if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
+## Define a DPI do dispositivo
+device_dpi=$(getprop ro.sf.lcd_density 2>/dev/null)
+mkdir -p $folder/.Xresources
+echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
+
+## Copia o meminfo atual para dentro do ambiente proot
 meminfo=$(cat /proc/meminfo)
 echo "$meminfo" >> $folder/proc/meminfo
 
 #cd \$(dirname \$0)
 cd \$HOME
 
-## unset LD_PRELOAD in case termux-exec is installed
+## Remove a variável de ambiente LD_PRELOAD caso o termux-exec esteja instalado.
 unset LD_PRELOAD
 command="proot"
 command+=" --kill-on-exit"
@@ -136,7 +142,7 @@ command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
 command+=" -b $folder/root:/dev/shm"
-## uncomment the following line to have access to the home directory of termux
+## Descomente a linha a seguir para ter acesso ao diretório raiz do termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /sdcard"
