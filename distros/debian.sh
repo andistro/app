@@ -341,25 +341,10 @@ if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
 fi
 
 bash ~/locale_\$system_icu_locale_code.sh
-
-if [ -e "~/system-config.sh" ];then
-	bash ~/system-config.sh
-	else
-	show_progress_dialog "wget" "\${label_progress}" 1 -O "~/system-config.sh" "\${extralink}/config/package-manager-setups/apt/system-config.sh"
-
-	sleep 2
-	bash ~/system-config.sh
-fi
-
-if [ -e "~/config-environment.sh" ];then
-	bash ~/config-environment.sh
-fi
+bash ~/system-config.sh
+bash ~/config-environment.sh
 
 mkdir -p "/root/Desktop"
-
-if [ -e "~/start-environment.sh" ];then
-	bash ~/start-environment.sh
-fi
 
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
