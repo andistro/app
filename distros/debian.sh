@@ -220,13 +220,13 @@ CHOICE=$(dialog --no-shadow --clear \
                 2>&1 >/dev/tty)
 case $CHOICE in
 	1)	
-		echo "LXDE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
+		echo "XFCE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 		sleep 2
 		;;
 	2)	
-		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		echo "LXDE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
 		sleep 2
 	;;
 	3)
