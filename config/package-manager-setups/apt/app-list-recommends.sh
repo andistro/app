@@ -4,6 +4,7 @@ source "/usr/local/bin/global_var_fun.sh"
 PROGS=(
     "brave-browser"   "Brave Browser"      off
     "inkscape"  "Inkscape" off
+    "libreoffice"  "LibreOffice" off
 )
 
 # Mostra o checklist e coleta seleção
