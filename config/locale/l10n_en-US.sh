@@ -78,6 +78,8 @@ label_scale="Scale"
 label_port="Port"
 label_confirm="Confirm"
 label_cancel="Cancel"
+label_themes="Themes"
+label_icons="Icons"
 label_update_finish="Update completed! \nUse the 'andistro' command to start."
 label_system_icu_locale_code_file_error="Localization file not found:"
 
@@ -134,3 +136,8 @@ MENU_environments_select="Choose a desktop environment: "
 MENU_environments_select_default="Default"
 MENU_environments_select_light="Light"
 MENU_environments_select_null="None"
+
+# Theme selector
+MENU_theme_select="Choose a theme: "
+MENU_theme_select_light="Light"
+MENU_theme_select_dark="Dark"

@@ -86,6 +86,8 @@ label_scale="Escala"
 label_port="Porta"
 label_confirm="Confirmar"
 label_cancel="Cancelar"
+label_themes="Temas"
+label_icons="Ícones"
 label_update_finish="Atualização concluída! \nUse o comando 'andistro' para iniciar."
 label_system_icu_locale_code_file_error="Arquivo de localização não encontrado:"
 
@@ -145,3 +147,8 @@ MENU_environments_select="Escolha um ambientes de área de trabalho: "
 MENU_environments_select_default="Padrão"
 MENU_environments_select_light="Leve"
 MENU_environments_select_null="Nenhum"
+
+# Seletor de temas
+MENU_theme_select="Escolha um tema: "
+MENU_theme_select_light="Claro"
+MENU_theme_select_dark="Escuro"
