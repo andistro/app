@@ -1,11 +1,12 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/var/lib/andistro/global_var_fun.sh"
 distro_name="debian"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
+
+source "$PREFIX/var/lib/andistro/global_var_fun.sh"
 
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
     mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
