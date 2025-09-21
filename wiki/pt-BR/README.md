@@ -15,7 +15,7 @@
 ||
 |[**Instalações necessárias**](#Instalações-necessárias---)|
 ||
-|[**Iniciando a Instalação do sistema**](#niciando-a-Instalação-do-sistema---)|
+|[**Iniciando a Instalação do sistema**](#iniciando-a-Instalação-do-sistema---)|
 |  **↳** [**Baixando o instalador**](#baixando-o-instalador---)|
 ||
 |[**Resolução de problemas**](/wiki/pt-BR/bugs.md)|
