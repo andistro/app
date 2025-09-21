@@ -178,11 +178,8 @@ echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
-meminfo=$(cat /proc/meminfo)
-echo "$meminfo" >> $folder/proc/meminfo
-
 # Se não existir, será criado
-mkdir -p $folder/proc/fakethings
+#mkdir -p $folder/proc/fakethings
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
@@ -219,7 +216,6 @@ sleep 2
 # 	EOF
 # fi
 
-export USER=$(whoami)
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=5
@@ -229,7 +225,7 @@ OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
 		 2 "${MENU_environments_select_light} (LXDE)"
 		 3 "${MENU_environments_select_null}") 
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
                 --title "$TITLE" \
                 --menu "$MENU_environments_select" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
