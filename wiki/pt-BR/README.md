@@ -117,7 +117,7 @@ bash andistro -u
 > [!NOTE]
 > Pode usar esse comando direto, caso não queira executar um comando por vez
 > ```bash
-> curl -O https://raw.githubusercontent.com/andistro/app/main/andistro && chmod +x andistro && bash andistro -u
+> curl -O https://raw.githubusercontent.com/andistro/app/main/andistro && chmod +x andistro && echo "Aguarde um instante" && bash andistro -u
 > ```
 
 4. O arquivo irá finalizar as configurações necessárias e mostrará uma explicação de como instalar, desinstalar e iniciar os sistemas.
