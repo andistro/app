@@ -47,19 +47,19 @@ show_progress_dialog steps-multi-label 61 \
   "${label_install_script_download}" 'sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg' \
   "${label_install_script_download}" 'echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list' \
   "${label_install_script_download}" 'sudo apt update && sleep 2' \
-  "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
-  "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
   "${label_install_script_download}" 'sleep 5' \
-  "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
-  "${label_system_setup}" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
-  "${label_system_setup}" 'mv zorin-desktop-themes/Zorin*/ /usr/share/themes/' \
+  "${label_system_setup}\n\n → ${label_themes}zorin-desktop-themes" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
+  "${label_system_setup}\n\n → ${label_themes}zorin-desktop-themes" 'mv zorin-desktop-themes/Zorin*/ /usr/share/themes/' \
+  "${label_system_setup}\n\n → ${label_icons}zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
+  "${label_system_setup}\n\n → ${label_icons}zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
+  "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
-  "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-Dark' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
-  "${label_system_setup}" "echo 'gtk-theme-name=\"ZorinBlue-Dark\"' | sudo tee $HOME/.gtkrc-2.0" \
+  "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
+  "${label_system_setup}" "echo 'gtk-theme-name=\"ZorinBlue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
   "${label_system_setup}" 'sudo apt-get clean' \
   "${label_system_setup}" 'sudo dpkg --configure -a ' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
