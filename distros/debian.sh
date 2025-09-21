@@ -329,6 +329,34 @@ etc_timezone=\$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 bash ~/locale_\$system_icu_locale_code.sh
+
+
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
+
+OPTIONS=(1 "\${MENU_theme_select_light}"
+		 2 "\${MENU_theme_select_dark}")
+
+CHOICE=\$(dialog --no-shadow --clear \
+                --title "\$TITLE" \
+                --menu "\$MENU_theme_select" \
+                \$HEIGHT \$WIDTH \$CHOICE_HEIGHT \
+                "\${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+case \$CHOICE in
+	1)	
+		echo "Light Theme"
+		export distro_theme="Light"
+	;;
+	2)	
+		echo "Dark Theme"
+		export distro_theme="Dark"
+	;;
+esac
+
+
 bash ~/system-config.sh
 bash ~/config-environment.sh
 
