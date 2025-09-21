@@ -6,7 +6,6 @@ stopvnc
 
 source "/usr/local/bin/global_var_fun.sh"
 
-export USER=$(whoami)
 HEIGHT=0
 WIDTH=0
 CHOICE_HEIGHT=5

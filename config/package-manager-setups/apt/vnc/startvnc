@@ -5,7 +5,6 @@ if ! dpkg -l | grep -qw dialog; then
 fi
 stopvnc
 
-export USER=$(whoami)
 HEIGHT=0
 WIDTH=0
 CHOICE_HEIGHT=5
