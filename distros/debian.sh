@@ -238,7 +238,7 @@ OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
 		 2 "${MENU_environments_select_light} (LXDE)"
 		 3 "${MENU_environments_select_null}") 
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
                 --title "$TITLE" \
                 --menu "$MENU_environments_select" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -342,10 +342,10 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
-if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
+if [ -e "~/locale_\${system_icu_locale_code}.sh" ];then
 	bash ~/locale_\$system_icu_locale_code.sh
 	else
-	show_progress_dialog "wget" "\${label_language_download}" 1 -P "/root/" "\${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+	show_progress_dialog "wget" "${label_language_download}" 1 -P "/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 	sleep 2
 	bash ~/system-config.sh
 fi
@@ -355,7 +355,7 @@ bash ~/locale_\$system_icu_locale_code.sh
 if [ -e "~/system-config.sh" ];then
 	bash ~/system-config.sh
 	else
-	show_progress_dialog "wget" "\${label_progress}" 1 -O "~/system-config.sh" "\${extralink}/config/package-manager-setups/apt/system-config.sh"
+	show_progress_dialog "wget" "${label_progress}" 1 -O "~/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh"
 
 	sleep 2
 	bash ~/system-config.sh
