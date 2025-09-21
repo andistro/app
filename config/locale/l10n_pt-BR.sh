@@ -131,6 +131,10 @@ label_wallpaper_download="Baixando wallpaper..."
 label_gnome_download_setup="Baixando as configurações necessárias para o Gnome..."
 
 #Download do sistema
+label_ubuntu_download="Baixando o $distro_name..."
+label_ubuntu_download_extract="Extraindo o $distro_name para o armazenamento..."
+
+
 label_ubuntu_download="Baixando o Ubuntu..."
 label_ubuntu_download_extract="Extraindo o Ubuntu para o armazenamento..."
 
