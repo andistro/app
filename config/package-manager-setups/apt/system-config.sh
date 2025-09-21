@@ -50,7 +50,7 @@ show_progress_dialog steps-multi-label 61 \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_install_script_download}" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
   "${label_install_script_download}" 'sleep 5' \
-  "${label_system_setup}" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
+  "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \

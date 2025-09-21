@@ -166,6 +166,7 @@ command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
+command+=" /usr/local/bin/startvncserver"
 com="\$@"
 if [ -z "\$1" ]; then
     exec \$command
@@ -173,6 +174,8 @@ else
     \$command -c "\$com"
 fi
 EOM
+
+sed -i '\|command+=" /bin/bash --login"|a ' $bin
 
 chmod +x $bin
 
@@ -355,15 +358,9 @@ bash ~/locale_\$system_icu_locale_code.sh
 
 bash ~/system-config.sh
 
-if [ -e "~/config-environment.sh" ];then
-	bash ~/config-environment.sh
-fi
+bash ~/config-environment.sh
 
 mkdir -p "/root/Desktop"
-
-if [ -e "~/start-environment.sh" ];then
-	bash ~/start-environment.sh
-fi
 
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
@@ -383,7 +380,7 @@ EOM
 } | dialog --no-shadow --gauge "Olá" 10 60 0
 
 # Cria uma gui de inicialização
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 bash $bin
 
 if [ -e "$HOME/start-distro.sh" ];then
