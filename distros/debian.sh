@@ -1,9 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 source "$PREFIX/var/lib/andistro/global_var_fun.sh"
 distro_name="debian"
-bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
+bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
 
@@ -128,7 +128,6 @@ command+=" -0"
 command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
@@ -347,7 +346,7 @@ EOM
    sleep 0.1
    echo $((i * 2))
  done
-} | dialog --no-shadow --gauge "Olá" 10 60 0
+} | dialog --no-shadow --gauge "Olá 2" 10 60 0
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
