@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-distro_name="debian"
+export distro_name="debian"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
