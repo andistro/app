@@ -354,7 +354,7 @@ EOM
    sleep 0.1
    echo $((i * 2))
  done
-} | dialog --no-shadow --gauge "Olá 4" 10 60 0
+} | dialog --no-shadow --gauge "Olá 1" 10 60 0
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
