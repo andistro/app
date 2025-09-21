@@ -332,14 +332,6 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
-if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
-	bash ~/locale_\$system_icu_locale_code.sh
-	else
-	show_progress_dialog "wget" "\${label_language_download}" 1 -P "/root/" "\${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
-	sleep 2
-	bash ~/system-config.sh
-fi
-
 bash ~/locale_\$system_icu_locale_code.sh
 bash ~/system-config.sh
 bash ~/config-environment.sh
