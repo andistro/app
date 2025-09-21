@@ -104,9 +104,9 @@ if [ "$first" != 1 ];then
 	# 		echo $((i * 2))
 	# 	done
 	# } | dialog --gauge "$label_debian_download_finish" 10 60 0
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}_${archurl}/installer.tar.xz"
+	show_progress_dialog wget "${label_distro_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
-	show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
+	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
 
@@ -346,7 +346,7 @@ EOM
    sleep 0.1
    echo $((i * 2))
  done
-} | dialog --no-shadow --gauge "Olá 2" 10 60 0
+} | dialog --no-shadow --gauge "Olá 3" 10 60 0
 
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
