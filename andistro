@@ -184,10 +184,12 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=25  # Número total de etapas que você quer monitorar
+        total_steps=26  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
+            #0 Inicia a atualização
+            sleep 1
             #1 Atualiza os repositórios
             pkg update > /dev/null 2>&1
             ((current_step++))
