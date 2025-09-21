@@ -53,6 +53,7 @@ CHOICE=$(dialog --no-shadow --clear \
     2>&1 1>&3)
 exec 3>&-
 
+clear
 
 # Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
@@ -103,30 +104,23 @@ if [ "$first" != 1 ];then
 	# 		echo $((i * 2))
 	# 	done
 	# } | dialog --gauge "$label_debian_download_finish" 10 60 0
-
-	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
+	show_progress_dialog wget "${label_debian_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}_${archurl}/installer.tar.xz"
 	sleep 2
 	show_progress_dialog extract "${label_debian_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
 
 echo "${label_start_script}"
-
-cat > "$bin" <<- EOM
+cat > $bin <<- EOM
 #!/bin/bash
-## Cria o diretório de armazenamento, se não existir
-if [ ! -d "\$HOME/storage" ];then
-    termux-setup-storage
-fi
+source "\$PREFIX/var/lib/andistro/global_var_fun.sh"
+#sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
 cd \$HOME
+## unset LD_PRELOAD in case termux-exec is installed
 
-pulseaudio --start
-
-## Remove a variável de ambiente LD_PRELOAD caso o termux-exec esteja instalado.
 unset LD_PRELOAD
-
 command="proot"
 command+=" --kill-on-exit"
 command+=" --link2symlink"
@@ -134,25 +128,15 @@ command+=" -0"
 command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b /sys"
-command+=" -b /data"
 command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
-command+=" -b /proc/self/fd/2:/dev/stderr"
-command+=" -b /proc/self/fd/1:/dev/stdout"
-command+=" -b /proc/self/fd/0:/dev/stdin"
-command+=" -b /dev/urandom:/dev/random"
-command+=" -b /proc/self/fd:/dev/fd"
-## Descomente a linha a seguir para ter acesso ao diretório raiz do termux
+## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
-command+=" -b /data/data/com.termux/files/usr/bin:/bin/termux-bin"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
-command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
-command+=" DISPLAY=:1"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
@@ -168,6 +152,8 @@ EOM
 
 chmod +x $bin
 
+sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
+
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
@@ -179,12 +165,12 @@ echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 # Se não existir, será criado
-#mkdir -p $folder/proc/fakethings
+
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
-mkdir -p "$folder/root/.vnc/"
+mkdir -p $folder/root/.vnc/
 
-show_progress_dialog wget-labeled "${label_progress}" 10 \
+show_progress_dialog wget-labeled "${label_progress}" 11 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
@@ -233,18 +219,16 @@ CHOICE=$(dialog --no-shadow --clear \
                 2>&1 >/dev/tty)
 case $CHOICE in
 	1)	
-		
-		echo "XFCE UI"
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
-		sleep 2
-		;;
-	2)	
 		echo "LXDE UI"
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
 		sleep 2
+		;;
+	2)	
+		echo "XFCE UI"
+		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		sleep 2
 	;;
 	3)
-		echo "Nenhum ambiente de área de trabalho selecionado"
 		rm -rf "$folder/root/system-config.sh"
 		sleep 2
 	;;
@@ -259,15 +243,6 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
-
-groupadd storage
-groupadd wheel
-
-source "/usr/local/bin/global_var_fun.sh"
-
-echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
-
-echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security $codinome-security main contrib non-free
@@ -330,7 +305,6 @@ sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 bash ~/locale_\$system_icu_locale_code.sh
 
-
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=5
@@ -359,11 +333,7 @@ esac
 
 bash ~/system-config.sh
 bash ~/config-environment.sh
-
-mkdir -p "/root/Desktop"
-
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
-
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
@@ -376,7 +346,5 @@ EOM
 # Cria uma gui de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 bash $bin
-
-if [ -e "$HOME/start-distro.sh" ];then
-	rm -rf $HOME/start-distro.sh
-fi
+rm -rf $HOME/distrolinux-install.sh
+rm -rf $HOME/start-distro.sh
