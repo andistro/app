@@ -277,7 +277,7 @@ export LANGUAGE=$language_transformed.UTF-8
 
 groupadd storage
 groupadd wheel
-groupadd video
+#groupadd video
 
 source "/usr/local/bin/global_var_fun.sh"
 
