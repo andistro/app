@@ -22,6 +22,15 @@
 |      **↳** [**Desativando o monitor de processos fantasmas pelo Termux**](#desativando-o-monitor-de-processos-fantasmas-pelo-termux---)|
 |  **↳** [**Desabilitando o Phantom Process no Android 14 e 15**](#desabilitando-o-phantom-process-no-android-14-e-15---)|
 ||
+|[**Problemas do Firefox**](#problemas-do-firefox---)|
+|  **↳** [**Repositório**](#repositório---)|
+|  **↳** [**Erro de inicialização do Firefox**](#erro-de-inicialização-do-firefox---)|
+|    **↳** [**Método 1 - pelo `about:config`**](#método-1---pelo-aboutconfig---)|
+|    **↳** [**Método 2 - pelo terminal**](#método-2---pelo-terminal---)|
+||
+|[**Lista de fontes `apt`**](#lista-de-fontes-apt---)|
+|  **↳** [**Debian**](#debian---)|
+
 
 <!--
 h1
@@ -189,3 +198,50 @@ adb shell "/system/bin/device_config get activity_manager max_phantom_processes"
 
 >[!NOTE]
 > Diferente do `adb`, este necessita que as `opções do desenvolvedor` se mantenham ativada.
+
+
+# Problemas do Firefox [[ ↑ ]](#)
+
+## Repositório [[ ↑ ]](#)
+
+O Firefox, assim como outros, estão adotando o repositório `snap` que não funciona no Termux. Uma alternativa é adicionar repositórios deb de forma manual.
+
+O código para adicionar o repositório deb do Firefox:
+
+```bash
+sudo apt install wget -y
+sudo install -d -m 0755 /etc/apt/keyrings
+wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list
+echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla
+sudo apt update
+sudo apt install firefox
+```
+
+## Erro de inicialização do Firefox [[ ↑ ]](#)
+
+O Firefox demostrou apresentar alguns problemas ao ser iniciado pela primeira vez em servidores VNC, mas é um problema que pode ser contornado.
+
+### Método 1 - pelo `about:config` [[ ↑ ]](#)
+
+Apesar do problema evitar que o Firefox consiga inicializar corretamente, o `about:config` ainda pode ser usado. Nesse caso, poderá digitar o endereço na barra de URL no navegador, clicar no enter. O navegador apresentará uma mensagem de confirmação de acesso por ser se tratar de configurações avançadas do navegador. Autorize e procure pelo `security.sandbox.content.level` e troque o valor por `0`.
+
+### Método 2 - pelo terminal [[ ↑ ]](#)
+
+Uma outra solução é pelo terminal. Aqui no AnDistro esse método já é usado de forma automática, então o problema não deverá ser apresentado a menos que haja algum erro de instalação ou caso seja feita a reinstalação do Firefox. O código usado é esse abaixo:
+
+```bash
+firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID # Inicia o Firefox e finaliza de forma automática, para que seja gerado os releases
+sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js # Substitui o valor do security.sandbox.content.level por 0
+echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js # Caso o security.sandbox.content.level não exista, será criado.
+```
+
+# Lista de fontes `apt` [[ ↑ ]](#)
+
+## Debian [[ ↑ ]](#)
+
+```bash
+echo 'deb http://deb.debian.org/debian <codinome> main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security <codinome>-security main contrib non-free
+deb http://deb.debian.org/debian <codinome>-updates main contrib non-free' >> /etc/apt/sources.list
+```
