@@ -119,8 +119,8 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
-cd \$(dirname \$0)
-#cd \$HOME
+#cd \$(dirname \$0)
+cd \$HOME
 
 pulseaudio --start
 
@@ -135,14 +135,14 @@ command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
-#command+=" -b /data"
-#command+=" -b /proc/meminfo:/proc/meminfo"
+command+=" -b /data"
+command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
-#command+=" -b /proc/self/fd/2:/dev/stderr"
-#command+=" -b /proc/self/fd/1:/dev/stdout"
-#command+=" -b /proc/self/fd/0:/dev/stdin"
-#command+=" -b /dev/urandom:/dev/random"
-#command+=" -b /proc/self/fd:/dev/fd"
+command+=" -b /proc/self/fd/2:/dev/stderr"
+command+=" -b /proc/self/fd/1:/dev/stdout"
+command+=" -b /proc/self/fd/0:/dev/stdin"
+command+=" -b /dev/urandom:/dev/random"
+command+=" -b /proc/self/fd:/dev/fd"
 ## Descomente a linha a seguir para ter acesso ao diretório raiz do termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
@@ -158,7 +158,6 @@ command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
-command+=" /usr/local/bin/startvncserver"
 com="\$@"
 if [ -z "\$1" ]; then
     exec \$command
@@ -166,8 +165,6 @@ else
     \$command -c "\$com"
 fi
 EOM
-
-sed -i '\|command+=" /bin/bash --login"|a ' $bin
 
 chmod +x $bin
 
@@ -177,13 +174,12 @@ chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
-echo "nameserver 8.8.8.8
-nameserver 1.1.1.1" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
-#meminfo=$(cat /proc/meminfo)
-#echo "$meminfo" >> $folder/proc/meminfo
+meminfo=$(cat /proc/meminfo)
+echo "$meminfo" >> $folder/proc/meminfo
 
 # Se não existir, será criado
 mkdir -p $folder/proc/fakethings
@@ -233,7 +229,7 @@ OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
 		 2 "${MENU_environments_select_light} (LXDE)"
 		 3 "${MENU_environments_select_null}") 
 
-CHOICE=$(dialog --no-shadow --clear \
+CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU_environments_select" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -267,11 +263,9 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
-export LANGUAGE=$language_transformed.UTF-8
 
 groupadd storage
 groupadd wheel
-#groupadd video
 
 source "/usr/local/bin/global_var_fun.sh"
 
@@ -331,13 +325,6 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
-if ! dpkg -l | grep -qw locales; then
-    apt install locales --no-install-recommends -y > /dev/null 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando locales"
-sleep 0.5
-
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
@@ -345,13 +332,34 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
+if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
+	bash ~/locale_\$system_icu_locale_code.sh
+	else
+	show_progress_dialog "wget" "\${label_language_download}" 1 -P "/root/" "\${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+	sleep 2
+	bash ~/system-config.sh
+fi
+
 bash ~/locale_\$system_icu_locale_code.sh
 
-bash ~/system-config.sh
+if [ -e "~/system-config.sh" ];then
+	bash ~/system-config.sh
+	else
+	show_progress_dialog "wget" "\${label_progress}" 1 -O "~/system-config.sh" "\${extralink}/config/package-manager-setups/apt/system-config.sh"
 
-bash ~/config-environment.sh
+	sleep 2
+	bash ~/system-config.sh
+fi
+
+if [ -e "~/config-environment.sh" ];then
+	bash ~/config-environment.sh
+fi
 
 mkdir -p "/root/Desktop"
+
+if [ -e "~/start-environment.sh" ];then
+	bash ~/start-environment.sh
+fi
 
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
@@ -363,15 +371,9 @@ rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
 EOM
 
-{
- for i in {1..50}; do
-   sleep 0.1
-   echo $((i * 2))
- done
-} | dialog --no-shadow --gauge "Olá" 10 60 0
 
 # Cria uma gui de inicialização
-#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 bash $bin
 
 if [ -e "$HOME/start-distro.sh" ];then
