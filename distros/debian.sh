@@ -275,7 +275,7 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
-export LC_ALL=$language_transformed.UTF-8
+#export LC_ALL=$language_transformed.UTF-8
 export LANGUAGE=$language_transformed.UTF-8
 
 groupadd storage
