@@ -119,14 +119,6 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
-## Define a DPI do dispositivo
-device_dpi=\$(getprop ro.sf.lcd_density 2>/dev/null)
-#echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
-
-## Copia o meminfo atual para dentro do ambiente proot
-meminfo=\$(cat /proc/meminfo)
-echo "\$meminfo" >> $folder/proc/meminfo
-
 cd \$(dirname \$0)
 #cd \$HOME
 
@@ -143,14 +135,14 @@ command+=" -r $folder"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
-command+=" -b /data"
-command+=" -b /proc/meminfo:/proc/meminfo"
+#command+=" -b /data"
+#command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
-command+=" -b /proc/self/fd/2:/dev/stderr"
-command+=" -b /proc/self/fd/1:/dev/stdout"
-command+=" -b /proc/self/fd/0:/dev/stdin"
-command+=" -b /dev/urandom:/dev/random"
-command+=" -b /proc/self/fd:/dev/fd"
+#command+=" -b /proc/self/fd/2:/dev/stderr"
+#command+=" -b /proc/self/fd/1:/dev/stdout"
+#command+=" -b /proc/self/fd/0:/dev/stdin"
+#command+=" -b /dev/urandom:/dev/random"
+#command+=" -b /proc/self/fd:/dev/fd"
 ## Descomente a linha a seguir para ter acesso ao diretório raiz do termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
@@ -275,7 +267,6 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
-#export LC_ALL=$language_transformed.UTF-8
 export LANGUAGE=$language_transformed.UTF-8
 
 groupadd storage
