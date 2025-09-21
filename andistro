@@ -137,7 +137,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$( --no-shadow --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
