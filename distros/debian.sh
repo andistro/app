@@ -190,8 +190,8 @@ nameserver 1.1.1.1" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
-meminfo=$(cat /proc/meminfo)
-echo "$meminfo" >> $folder/proc/meminfo
+#meminfo=$(cat /proc/meminfo)
+#echo "$meminfo" >> $folder/proc/meminfo
 
 # Se não existir, será criado
 mkdir -p $folder/proc/fakethings
