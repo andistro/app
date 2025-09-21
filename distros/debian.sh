@@ -121,15 +121,15 @@ fi
 
 ## Define a DPI do dispositivo
 device_dpi=\$(getprop ro.sf.lcd_density 2>/dev/null)
-mkdir -p $folder/.Xresources
-echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
+#mkdir -p $folder/.Xresources
+#echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
 
 ## Copia o meminfo atual para dentro do ambiente proot
 meminfo=\$(cat /proc/meminfo)
 echo "\$meminfo" >> $folder/proc/meminfo
 
-#cd \$(dirname \$0)
-cd \$HOME
+cd \$(dirname \$0)
+#cd \$HOME
 
 pulseaudio --start
 
@@ -183,7 +183,8 @@ chmod +x $folder/root/locale_${language_selected}.sh
 
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "nameserver 8.8.8.8
+nameserver 1.1.1.1" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
@@ -272,6 +273,8 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
+export LC_ALL=$language_transformed.UTF-8
+export LANGUAGE=$language_transformed.UTF-8
 
 groupadd storage
 groupadd wheel
@@ -335,6 +338,13 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
+if ! dpkg -l | grep -qw locales; then
+    apt install locales --no-install-recommends -y > /dev/null 2>&1
+fi
+((current_step++))
+update_progress "\$current_step" "\$total_steps" "Instalando locales"
+sleep 0.5
+
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
@@ -342,24 +352,9 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
-if [ -e "~/locale_\${system_icu_locale_code}.sh" ];then
-	bash ~/locale_\$system_icu_locale_code.sh
-	else
-	show_progress_dialog "wget" "${label_language_download}" 1 -P "/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
-	sleep 2
-	bash ~/system-config.sh
-fi
-
 bash ~/locale_\$system_icu_locale_code.sh
 
-if [ -e "~/system-config.sh" ];then
-	bash ~/system-config.sh
-	else
-	show_progress_dialog "wget" "${label_progress}" 1 -O "~/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh"
-
-	sleep 2
-	bash ~/system-config.sh
-fi
+bash ~/system-config.sh
 
 if [ -e "~/config-environment.sh" ];then
 	bash ~/config-environment.sh
