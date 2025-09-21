@@ -121,7 +121,6 @@ fi
 
 ## Define a DPI do dispositivo
 device_dpi=\$(getprop ro.sf.lcd_density 2>/dev/null)
-#mkdir -p $folder/.Xresources
 #echo "Xft.dpi: \$device_dpi" > $folder/.Xresources
 
 ## Copia o meminfo atual para dentro do ambiente proot
