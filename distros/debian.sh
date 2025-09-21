@@ -245,6 +245,12 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
+source "/usr/local/bin/global_var_fun.sh"
+
+echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
+
+echo "alias ls='ls --color=auto'" >> ~/.bashrc
+
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security $codinome-security main contrib non-free
 #deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
