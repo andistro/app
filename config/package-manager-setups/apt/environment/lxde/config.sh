@@ -1,7 +1,7 @@
 #!/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/lxde_config_${timestamp}.txt"
-exec > >(tee -a "$LOGFILE") 2>&1
+#exec > >(tee -a "$LOGFILE") 2>&1
 #LXDE config environment
 source "/usr/local/bin/global"
 

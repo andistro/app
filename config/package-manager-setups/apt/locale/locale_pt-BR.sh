@@ -1,7 +1,7 @@
 #!/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/locale_pt-BR_${timestamp}.txt"
-exec > >(tee -a "$LOGFILE") 2>&1
+#exec > >(tee -a "$LOGFILE") 2>&1
 
 # Mudar o idioma para o Português Brasileiro [pt_BR]
 

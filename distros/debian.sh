@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/debian_${timestamp}.txt"
-exec > >(tee -a "$LOGFILE") 2>&1
+#exec > >(tee -a "$LOGFILE") 2>&1
 
 # Variáveis de configuração
 export distro_name="debian"
@@ -264,7 +264,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 timestamp=\$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/${distro_name}_bash_profiles_\${timestamp}.txt"
-exec > >(tee -a "\$LOGFILE") 2>&1
+#exec > >(tee -a "\$LOGFILE") 2>&1
 
 # Define o LANG como $language_transformed durante a execução.
 export LANG=$language_transformed.UTF-8

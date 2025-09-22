@@ -2,7 +2,6 @@
 #rm -rf * && rm -rf "$PREFIX/var/lib/andistro/" && rm -rf "$PREFIX/bin/andistro"
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 timestamp=$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
 
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
@@ -14,7 +13,7 @@ fi
 
 
 # Redireciona a saída padrão e de erro para o arquivo de log
-exec > >(tee -a "$LOGFILE") 2>&1
+##exec > >(tee -a "$LOGFILE") 2>&1
 
 # Cria os diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/" ];then
@@ -39,8 +38,8 @@ fi
 if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
     rm -rf "$HOME/andistro"
-    andistro -u
-    andistro
+    andistro -u 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+    andistro 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
 fi
 
 # Configurações do Termux
@@ -63,7 +62,7 @@ if [ -z "$1" ]; then
     if [ -s "$PREFIX/var/lib/andistro/lib/share/global" ]; then
         source "$PREFIX/var/lib/andistro/lib/share/global"
     else
-        andistro -u
+        andistro -u 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
     fi
 
     HEIGHT=0
@@ -101,14 +100,14 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro  -i debian
+                    andistro  -i debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 2)
-                    andistro -i ubuntu
+                    andistro -i ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 3)
                     clear
-                    andistro -i
+                    andistro -i 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
             esac
         ;;
@@ -127,14 +126,14 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro -s debian
+                    andistro -s debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 2)
-                    andistro -s ubuntu
+                    andistro -s ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 3)
                     clear
-                    andistro -s
+                    andistro -s 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
             esac
         ;;
@@ -160,14 +159,14 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro -d debian
+                    andistro -d debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 2)
-                    andistro -d ubuntu
+                    andistro -d ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 3)
                     clear
-                    andistro -d
+                    andistro -d 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
             esac
         ;;
@@ -175,7 +174,7 @@ if [ -z "$1" ]; then
         5)
             # Ver como terminal
             clear
-            andistro terminal
+            andistro terminal 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
         ;;
     esac
 fi
@@ -207,137 +206,137 @@ case "$1" in
 
         {
             #1 Atualiza os repositórios
-            pkg update > /dev/null 2>&1
+            pkg update >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #2 Instala o bash
-            pkg install --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+            pkg install --option=Dpkg::Options::="--force-confold" bash -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #3 Instala o openssl
-            pkg install --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
+            pkg install --option=Dpkg::Options::="--force-confold" openssl -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #4 Instala o apt
-            pkg install --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
+            pkg install --option=Dpkg::Options::="--force-confold" apt -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #5 Atualiza os pacotes
-            pkg upgrade -y > /dev/null 2>&1
+            pkg upgrade -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #6 Verifica se o termux-exec está instalado
             if ! dpkg -l | grep -qw termux-exec; then
-                pkg install termux-exec -y > /dev/null 2>&1
+                pkg install termux-exec -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #7 Verifica se o proot está instalado
             if ! dpkg -l | grep -qw proot; then
-                pkg install proot -y > /dev/null 2>&1
+                pkg install proot -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #8 Verifica se o x11-repo está instalado
             if ! dpkg -l | grep -qw x11-repo; then
-                pkg install x11-repo -y > /dev/null 2>&1
+                pkg install x11-repo -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #9 Verifica se o termux-x11-nightly está instalado
             if ! dpkg -l | grep -qw termux-x11-nightly; then
-                pkg install termux-x11-nightly -y > /dev/null 2>&1
+                pkg install termux-x11-nightly -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #10 Verifica se o pulseaudio está instalado
             if ! dpkg -l | grep -qw pulseaudio; then
-                pkg install pulseaudio -y > /dev/null 2>&1
+                pkg install pulseaudio -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #11 Verifica se o wget está instalado
             if ! dpkg -l | grep -qw wget; then
-                pkg install wget -y > /dev/null 2>&1
+                pkg install wget -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #12 Verifica se o dialog está instalado
             if ! dpkg -l | grep -qw dialog; then
-                pkg install dialog -y > /dev/null 2>&1
+                pkg install dialog -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #13 Verifica se o tar está instalado
             if ! dpkg -l | grep -qw tar; then
-                pkg install tar -y > /dev/null 2>&1
+                pkg install tar -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #14 Verifica se o curl está instalado
             if ! dpkg -l | grep -qw curl; then
-                pkg install curl -y > /dev/null 2>&1
+                pkg install curl -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #15 Verifica se o unzip está instalado
             if ! dpkg -l | grep -qw unzip; then
-                pkg install unzip -y > /dev/null 2>&1
+                pkg install unzip -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #16 Verifica se o xz-utils está instalado
             if ! dpkg -l | grep -qw xz-utils; then
-                pkg install xz-utils -y > /dev/null 2>&1
+                pkg install xz-utils -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #17 Verifica se o debootstrap está instalado
             if ! dpkg -l | grep -qw debootstrap; then
-                pkg install debootstrap -y > /dev/null 2>&1
+                pkg install debootstrap -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #18 Verifica se o dbus está instalado
             if ! dpkg -l | grep -qw dbus; then
-                pkg install dbus -y > /dev/null 2>&1
+                pkg install dbus -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #19 Verifica se o pv está instalado
             if ! dpkg -l | grep -qw pv; then
-                pkg install pv -y > /dev/null 2>&1
+                pkg install pv -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #20 Verifica e baixa global
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/global_var_fun_${timestamp}.txt" 2>&1
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #21 Verifica e atualiza o global_var_fun
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/global_var_fun_${timestamp}.txt" 2>&1
+            curl -s -o "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
 
             if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" ]; then
                 if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/global" "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check"; then
@@ -353,13 +352,13 @@ case "$1" in
 
             #22 Verifica e baixa l10n_${locale}.sh
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/l10n_${system_icu_locale_code}_${timestamp}.txt" 2>&1
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #23 Verifica e atualiza o l10n_${locale}.sh
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/l10n_${system_icu_locale_code}_${timestamp}.txt" 2>&1
+            curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
 
             if [ -f "$PREFIX/var/lib/andistro/lib/share/locale/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" ]; then
                 if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check"; then
@@ -383,7 +382,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #25 Verifica e atualiza o andistro
-            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" >> "/sdcard/termux/andistro/logs/andistro_${timestamp}.txt" 2>&1
+            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
                 if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
@@ -433,7 +432,7 @@ case "$1" in
             andistro alerta-timezone
             show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
-            bash $PREFIX/var/lib/andistro/boot/install-debian.sh >> "/sdcard/termux/andistro/logs/bash_${timestamp}.txt"
+            bash $PREFIX/var/lib/andistro/boot/install-debian.sh
             rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh
         elif [ "$2" == "ubuntu" ]; then
             # Instalação do Ubuntu
@@ -470,17 +469,14 @@ case "$1" in
 
         if [ "$2" == "total" ]; then
             # Desinstalação total
-            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_total_${timestamp}.txt"
-            eexec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             andistro -d debian
-            andistro -d ubuntu
+            andistro -d debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+            andistro -d ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
             rm -rf $PREFIX/var/lib/andistro/
             rm -rf $PREFIX/bin/andistro
         elif [ "$2" == "debian" ]; then
             # Desinstalação do Debian
-            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_debian_${timestamp}.txt"
-            exec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             rm -rf $PREFIX/var/lib/andistro/boot/debian/
             rm -rf $PREFIX/var/lib/andistro/boot/debian/*
@@ -503,8 +499,6 @@ case "$1" in
             echo "Desinstalação concluída!"
         elif [ "$2" == "ubuntu" ]; then
             # Desinstalação do Ubuntu
-            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_ubuntu_${timestamp}.txt"
-            exec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/*
