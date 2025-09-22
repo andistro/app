@@ -11,18 +11,18 @@ export NEWT_COLORS="window=,white border=black,white title=black,white textbox=b
 # detector de gerenciadores de pacotes
 # Detecta o gerenciador de pacotes do sistema e executa comandos específicos
 for cmd in apt apk pacman dnf zypper; do
-    if command -v $cmd >"$LOGFFILE" 2>&1; then
+    if command -v $cmd >"$LOGFILE" 2>&1; then
         #echo "Detectado: $cmd"
-        echo "COD_G000001" >> "$LOGFFILE"
+        echo "COD_G000001" >> "$LOGFILE"
         pkg_cmd="$cmd"
     fi
 done
 
 
 detect_package_manager() {
-    if command -v apt >"$LOGFFILE" 2>&1; then
+    if command -v apt >"$LOGFILE" 2>&1; then
         echo "apt"
-    elif command -v apk >"$LOGFFILE" 2>&1; then
+    elif command -v apk >"$LOGFILE" 2>&1; then
         echo "apk"
     else
         echo "unknown"
@@ -59,11 +59,11 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
 if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
-    echo "COD_G000004" >> "$LOGFFILE"
+    echo "COD_G000004" >> "$LOGFILE"
     chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
     source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
 elif [ -f "/usr/local/bin/l10n_${system_icu_locale_code}.sh" ]; then
-    echo "COD_G000004-1" >> "$LOGFFILE"
+    echo "COD_G000004-1" >> "$LOGFILE"
     chmod +x "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
     source "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
 else
@@ -84,7 +84,7 @@ LANG_CODES["en-US"]="English (en-US)"
 # Sistema de identificação pacotes instalados ==================================================================================
 
 check_packages_installed() {
-    echo "COD_G000005" >> "$LOGFFILE"
+    echo "COD_G000005" >> "$LOGFILE"
     local missing=()
     for pkg in "$@"; do
         if dpkg -s "$pkg" &> /dev/null; then
@@ -115,7 +115,7 @@ check_packages_installed() {
 # update_progress() ================================================================================
 # Função para exibir e registrar uma barra de progresso customizada, mostrando o avanço (%) no terminal e gravando cada etapa em arquivo de log.
 update_progress() {
-    echo "COD_G000006" >> "$LOGFFILE"
+    echo "COD_G000006" >> "$LOGFILE"
     local current_step=$1
     local total_steps=$2
     local percent=$((current_step * 100 / total_steps))
@@ -143,7 +143,7 @@ update_progress() {
 # DIALOG Progress ==================================================================================
 # Função para ter uma barra de progresso usando o dialog em diversas tarefas
 show_progress_dialog() {
-    echo "COD_G000007" >> "$LOGFFILE"
+    echo "COD_G000007" >> "$LOGFILE"
     local mode="$1"
     shift
 
@@ -152,7 +152,7 @@ show_progress_dialog() {
         steps-one-label)
             # Ex: show_progress_dialog steps-one "${label_etapa}" total_comandos \
             #     'comando1' 'comando2' 'comando3'
-            echo "COD_G000007-1" >> "$LOGFFILE"
+            echo "COD_G000007-1" >> "$LOGFILE"
             local label="$1"
             local total="$2"
             shift 2
@@ -182,7 +182,7 @@ show_progress_dialog() {
             # Ex: show_progress_dialog steps 2 \
             #     "${label_step1}" 'comando1' \
             #     "${label_step2}" 'comando2'
-            echo "COD_G000007-2" >> "$LOGFFILE"
+            echo "COD_G000007-2" >> "$LOGFILE"
             local steps="$1"
             #local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
@@ -196,7 +196,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$lbl"
                     echo "XXX"
-                    bash -c "$cmd"  >> "$LOGFFILE" 2>&1
+                    bash -c "$cmd"  >> "$LOGFILE" 2>&1
                     step=$((step + 1))
                     shift 2
                 done
@@ -212,11 +212,11 @@ show_progress_dialog() {
             # Ex: show_progress_dialog wget "${label}" -O arquivo URL
             # Ex: show_progress_dialog wget "${label_download}" \
             #     -O "$HOME/arquivo.tar.xz" "${url_do_arquivo}"
-            echo "COD_G000007-3" >> "$LOGFFILE"
+            echo "COD_G000007-3" >> "$LOGFILE"
             local label="$1"
             shift
             {
-                wget "$@" >> "$LOGFFILE" 2>&1
+                wget "$@" >> "$LOGFILE" 2>&1
                 local pid=$!
                 local percent=0
                 while kill -0 "$pid" 2>/dev/null; do
@@ -235,7 +235,7 @@ show_progress_dialog() {
         ;;
 
         wget-labeled)
-            echo "COD_G000007-4" >> "$LOGFFILE"
+            echo "COD_G000007-4" >> "$LOGFILE"
             local label="$1"
             local total="$2"
             shift 2
@@ -258,7 +258,7 @@ show_progress_dialog() {
 
                     echo -e "XXX\n$((count * 100 / total))\n${current_label}\nXXX"
 
-                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" >> "$LOGFFILE" 2>&1
+                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" >> "$LOGFILE" 2>&1
                     stdbuf -oL grep --line-buffered "%" |
                     stdbuf -oL sed -u -e "s,\.,,g" | awk -v count="$count" -v total="$total" -v label="$current_label" '
                         {
@@ -280,7 +280,7 @@ show_progress_dialog() {
         ;;
         
         extract)
-            echo "COD_G000007-5" >> "$LOGFFILE"
+            echo "COD_G000007-5" >> "$LOGFILE"
             local label="$1"
             local file="$2"
             local dest="$3"
@@ -322,13 +322,13 @@ show_progress_dialog() {
 
             set +m
             (
-                "${cmd[@]}" >> "$LOGFFILE" 2>&1
+                "${cmd[@]}" >> "$LOGFILE" 2>&1
             ) & disown
             pid=$!
 
             {
                 i=0
-                while kill -0 "$pid" >> "$LOGFFILE" 2>&1; do
+                while kill -0 "$pid" >> "$LOGFILE" 2>&1; do
                     echo $i
                     sleep 0.2
                     i=$((i + 2))
@@ -343,7 +343,7 @@ show_progress_dialog() {
         check-packages)
             # Exemplo de uso:
             # show_progress_dialog check-packages "Verificando" pacote1 pacote2 ...
-            echo "COD_G000007-6" >> "$LOGFFILE"
+            echo "COD_G000007-6" >> "$LOGFILE"
             local title="$1"
             shift
             local packages=("$@")
@@ -361,9 +361,9 @@ show_progress_dialog() {
                     case "$pkg_manager" in
                         apt)
                             if dpkg -s "$pkg" &>/dev/null; then
-                                echo "$index [✓] $pkg está instalado." >> "$LOGFFILE" 2>&1
+                                echo "$index [✓] $pkg está instalado." >> "$LOGFILE" 2>&1
                             else
-                                echo "$index [✗] $pkg NÃO está instalado." >> "$LOGFFILE" 2>&1
+                                echo "$index [✗] $pkg NÃO está instalado." >> "$LOGFILE" 2>&1
                             fi
                             ;;
                         apk)
