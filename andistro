@@ -452,7 +452,6 @@ case "$1" in
         ;;
     -d)
         # Desinstalação das distribuições
-        source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
         if [ -z "$2" ]; then
             # Mostra a descrição
             echo "$distro_desc_line_1"
@@ -472,8 +471,8 @@ case "$1" in
 
         if [ "$2" == "total" ]; then
             # Desinstalação total
-            UNISTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_total_${timestamp}.txt"
-            exec >> "$UNISTALL_LOGFILE" 2>&1
+            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_total_${timestamp}.txt"
+            eexec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             andistro -d debian
             andistro -d ubuntu
@@ -481,8 +480,8 @@ case "$1" in
             rm -rf $PREFIX/bin/andistro
         elif [ "$2" == "debian" ]; then
             # Desinstalação do Debian
-            UNISTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_debian_${timestamp}.txt"
-            exec >> "$UNISTALL_LOGFILE" 2>&1
+            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_debian_${timestamp}.txt"
+            exec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             rm -rf $PREFIX/var/lib/andistro/boot/debian/
             rm -rf $PREFIX/var/lib/andistro/boot/debian/*
@@ -505,8 +504,8 @@ case "$1" in
             echo "Desinstalação concluída!"
         elif [ "$2" == "ubuntu" ]; then
             # Desinstalação do Ubuntu
-            UNISTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_ubuntu_${timestamp}.txt"
-            exec >> "$UNISTALL_LOGFILE" 2>&1
+            UNINSTALL_LOGFILE="/sdcard/termux/andistro/logs/uninstall_ubuntu_${timestamp}.txt"
+            exec > >(tee -a "$UNINSTALL_LOGFILE") 2>&1
             echo "$distro_wait"
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/*
@@ -533,7 +532,6 @@ case "$1" in
         ;;
     -s)
         # Descrição e inicialização das distribuições
-        source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
         if [ -z "$2" ]; then
             # Mostra a descrição
             echo "$distro_desc_line_1"
@@ -578,7 +576,6 @@ case "$1" in
 
         terminal)
             # Descrição na versão terminal
-            source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
             echo ""
             echo "$distro_desc_line_1"
             echo ""
@@ -604,7 +601,6 @@ case "$1" in
 
         alerta-timezone)
             # Mostra o alerta de timezone detectado
-            source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
             {
                 for i in {1..50}; do
                     sleep 0.1
