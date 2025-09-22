@@ -12,6 +12,7 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir -p "$HOME/storage/shared/termux/andistro/logs"
 fi
 
+
 # Redireciona a saída padrão e de erro para o arquivo de log
 exec > >(tee -a "$LOGFILE") 2>&1
 
@@ -21,6 +22,10 @@ if [ ! -d "$PREFIX/var/lib/andistro/" ];then
 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
 	mkdir -p "$PREFIX/var/lib/andistro/boot/"
+fi
+
+if [ -f "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh" ]; then
+    source $PREFIX/var/lib/andistro/lib/share/global_var_fun.sh
 fi
 
 # Detecta o idioma do sistema
@@ -180,6 +185,8 @@ fi
 
 case "$1" in
     -u)
+        echo -e "\n$distro_wait"
+
         # Atualização, instalação e manutenção do Andistro e Termux
         update_progress() {
             current_step=$1
