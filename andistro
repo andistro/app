@@ -2,6 +2,7 @@
 #rm -rf * && rm -rf "$PREFIX/var/lib/andistro/" && rm -rf "$PREFIX/bin/andistro"
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/andistro_${timestamp}.txt"
 
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
@@ -24,23 +25,27 @@ if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
 fi
 
 # Detecta o idioma do sistema
+echo "COD_AnD00001" >> "$LOGFFILE"
 system_icu_locale_code=$(getprop persist.sys.locale)
 
+echo "COD_AnD000002" >> "$LOGFFILE"
 if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
 fi
 
 #Verifica se o andistro está em $HOME
+echo "COD_AnD000003" >> "$LOGFFILE"
 if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
     rm -rf "$HOME/andistro"
-    andistro -u 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
-    andistro 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+    andistro -u 2>&1 | tee -a "$LOGFILE"
+    andistro 2>&1 | tee -a "$LOGFILE"
 fi
 
 # Configurações do Termux
 # Verifica se a configuração já foi aplicada
 # Adiciona a configuração de teclas extras se não estiver presente
+echo "COD_AnD000004" >> "$LOGFFILE"
 if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
     # Aplica os sed
     sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','SCROLL','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
@@ -55,10 +60,13 @@ fi
 #=============================================================================================
 if [ -z "$1" ]; then
     # Verifica e baixa global
+    echo "COD_AnD000005" >> "$LOGFFILE"
     if [ -s "$PREFIX/var/lib/andistro/lib/share/global" ]; then
+        echo "COD_AnD000006-1" >> "$LOGFFILE"
         source "$PREFIX/var/lib/andistro/lib/share/global"
     else
-        andistro -u 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+        echo "COD_AnD000006-2" >> "$LOGFFILE"
+        andistro -u
     fi
 
     HEIGHT=0
@@ -66,12 +74,14 @@ if [ -z "$1" ]; then
     CHOICE_HEIGHT=5
     export PORT=1
 
+    echo "COD_AnD000007" >> "$LOGFFILE"
     OPTIONS=(1 "Instalar"
             2 "Iniciar"
             3 "Atualizar"
             4 "Desinstalar"
             5 "Ver como terminal")
 
+    echo "COD_AnD000008" >> "$LOGFFILE"
     CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
         --menu "Escolha uma das opções:" \
@@ -83,6 +93,7 @@ if [ -z "$1" ]; then
     case $CHOICE in
         1)	
             # Instalação
+            echo "COD_AnD000009" >> "$LOGFFILE"
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -96,20 +107,23 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    echo "Instalar debian" 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
-                    andistro  -i debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000009-1" >> "$LOGFFILE"
+                    andistro  -i debian 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 2)
-                    andistro -i ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000009-2" >> "$LOGFFILE"
+                    andistro -i ubuntu 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 3)
+                    echo "COD_AnD000009-3" >> "$LOGFFILE"
                     clear
-                    andistro -i 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    andistro -i 2>&1 | tee -a "$LOGFFILE"
                 ;;
             esac
         ;;
         2)	
             # Iniciar
+            echo "COD_AnD000010" >> "$LOGFFILE"
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -123,26 +137,31 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro -s debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000010-1" >> "$LOGFFILE"
+                    andistro -s debian 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 2)
-                    andistro -s ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000010-2" >> "$LOGFFILE"
+                    andistro -s ubuntu 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 3)
+                    echo "COD_AnD000010-3" >> "$LOGFFILE"
                     clear
-                    andistro -s 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    andistro -s 2>&1 | tee -a "$LOGFFILE"
                 ;;
             esac
         ;;
 
         3)
             # Atualização
+            echo "COD_AnD000011" >> "$LOGFFILE"
             clear
             andistro -u
         ;;
 
         4)
             # Desinstalação
+            echo "COD_AnD000012" >> "$LOGFFILE"
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -156,22 +175,26 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    andistro -d debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000012-1" >> "$LOGFFILE"
+                    andistro -d debian 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 2)
-                    andistro -d ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "COD_AnD000012-2" >> "$LOGFFILE"
+                    andistro -d ubuntu 2>&1 | tee -a "$LOGFFILE"
                 ;;
                 3)
+                    echo "COD_AnD000012-3" >> "$LOGFFILE"
                     clear
-                    andistro -d 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    andistro -d 2>&1 | tee -a "$LOGFFILE"
                 ;;
             esac
         ;;
 
         5)
             # Ver como terminal
+            echo "COD_AnD000013" >> "$LOGFFILE"
             clear
-            andistro terminal 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+            andistro terminal 2>&1 | tee -a "$LOGFFILE"
         ;;
     esac
 fi
@@ -181,7 +204,7 @@ fi
 case "$1" in
     -u)
         echo -e "\n$distro_wait"
-
+        echo "COD_AnD000000" >> "$LOGFFILE"
         # Atualização, instalação e manutenção do Andistro e Termux
         update_progress() {
             current_step=$1
@@ -203,137 +226,158 @@ case "$1" in
 
         {
             #1 Atualiza os repositórios
-            pkg update >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-1" >> "$LOGFFILE"
+            pkg update >> "$LOGFFILE" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #2 Instala o bash
-            pkg install --option=Dpkg::Options::="--force-confold" bash -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-2" >> "$LOGFFILE"
+            pkg install --option=Dpkg::Options::="--force-confold" bash -y >> "$LOGFFILE" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #3 Instala o openssl
-            pkg install --option=Dpkg::Options::="--force-confold" openssl -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-3" >> "$LOGFFILE"
+            pkg install --option=Dpkg::Options::="--force-confold" openssl -y >> "$LOGFFILE" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #4 Instala o apt
-            pkg install --option=Dpkg::Options::="--force-confold" apt -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-4" >> "$LOGFFILE"
+            pkg install --option=Dpkg::Options::="--force-confold" apt -y >> "$LOGFFILE" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #5 Atualiza os pacotes
-            pkg upgrade -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-5" >> "$LOGFFILE"
+            pkg upgrade -y >> "$LOGFFILE" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #6 Verifica se o termux-exec está instalado
+            echo "COD_AnD000000-6" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw termux-exec; then
-                pkg install termux-exec -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install termux-exec -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #7 Verifica se o proot está instalado
+            echo "COD_AnD000000-7" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw proot; then
-                pkg install proot -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install proot -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #8 Verifica se o x11-repo está instalado
+            echo "COD_AnD000000-8" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw x11-repo; then
-                pkg install x11-repo -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install x11-repo -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #9 Verifica se o termux-x11-nightly está instalado
+            echo "COD_AnD000000-9" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw termux-x11-nightly; then
-                pkg install termux-x11-nightly -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install termux-x11-nightly -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #10 Verifica se o pulseaudio está instalado
+            echo "COD_AnD000000-10" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw pulseaudio; then
-                pkg install pulseaudio -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install pulseaudio -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #11 Verifica se o wget está instalado
+            echo "COD_AnD000000-11" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw wget; then
-                pkg install wget -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install wget -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #12 Verifica se o dialog está instalado
+            echo "COD_AnD000000-12" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw dialog; then
-                pkg install dialog -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install dialog -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #13 Verifica se o tar está instalado
+            echo "COD_AnD000000-13" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw tar; then
-                pkg install tar -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install tar -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #14 Verifica se o curl está instalado
+            echo "COD_AnD000000-14" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw curl; then
-                pkg install curl -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install curl -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #15 Verifica se o unzip está instalado
+            echo "COD_AnD000000-15" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw unzip; then
-                pkg install unzip -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install unzip -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #16 Verifica se o xz-utils está instalado
+            echo "COD_AnD000000-16" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw xz-utils; then
-                pkg install xz-utils -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install xz-utils -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #17 Verifica se o debootstrap está instalado
+            echo "COD_AnD000000-17" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw debootstrap; then
-                pkg install debootstrap -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install debootstrap -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #18 Verifica se o dbus está instalado
+            echo "COD_AnD000000-18" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw dbus; then
-                pkg install dbus -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install dbus -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #19 Verifica se o pv está instalado
+            echo "COD_AnD000000-19" >> "$LOGFFILE"
             if ! dpkg -l | grep -qw pv; then
-                pkg install pv -y >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                pkg install pv -y >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #20 Verifica e baixa global
+            echo "COD_AnD000000-20" >> "$LOGFFILE"
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #21 Verifica e atualiza o global_var_fun
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" "${extralink}/config/global" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-21" >> "$LOGFFILE"
+            curl -s -o "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" "${extralink}/config/global" >> "$LOGFFILE" 2>&1
 
             if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check" ]; then
                 if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/global" "$PREFIX/var/lib/andistro/lib/share/global_var_fun.check"; then
@@ -348,14 +392,16 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #22 Verifica e baixa l10n_${locale}.sh
+            echo "COD_AnD000000-22" >> "$LOGFFILE"
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "$LOGFFILE" 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #23 Verifica e atualiza o l10n_${locale}.sh
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-23" >> "$LOGFFILE"
+            curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" >> "$LOGFFILE" 2>&1
 
             if [ -f "$PREFIX/var/lib/andistro/lib/share/locale/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" ]; then
                 if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check"; then
@@ -370,6 +416,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #24 Verifica se o andistro está em $HOME
+            echo "COD_AnD000000-24" >> "$LOGFFILE"
             if [ -f "$HOME/andistro" ]; then
                 mv "$HOME/andistro" "$PREFIX/bin/andistro"
                 rm -rf "$HOME/andistro"
@@ -379,7 +426,8 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #25 Verifica e atualiza o andistro
-            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" >> "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt" 2>&1
+            echo "COD_AnD000000-25" >> "$LOGFFILE"
+            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" >> "$LOGFFILE" 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
                 if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
@@ -396,16 +444,18 @@ case "$1" in
             echo  # pular linha no fim
         }
 
+        echo "COD_AnD000014" >> "$LOGFFILE"
         chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
         source "$PREFIX/var/lib/andistro/lib/share/global"
 
-        echo -e "$label_update_finish"
+        echo -e "$label_update_finish" | tee -a "$LOGFFILE"
         exit 1
         ;;
 
     -i)
         # Descrição e instalação das distribuições
+        echo "COD_AnD000015" >> "$LOGFFILE"
         source "$PREFIX/var/lib/andistro/lib/share/global"
         if [ -z "$2" ]; then
             # Mostra a descrição
@@ -424,24 +474,31 @@ case "$1" in
         fi
 
         if [ "$2" == "debian" ]; then
+            echo "COD_AnD000015-1" >> "$LOGFFILE"
             # Instalação do Debian
-            echo "$distro_wait"
-            andistro alerta-timezone
+            echo "$distro_wait" | tee -a "$LOGFFILE" | tee -a "$LOGFFILE"
+            echo "COD_AnD000015-1.1" >> "$LOGFFILE"
+            andistro alerta-timezone 2>&1 | tee -a "$LOGFFILE"
+            echo "COD_AnD000015-1.2" >> "$LOGFFILE"
             show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
+            echo "COD_AnD000015-1.3" >> "$LOGFFILE"
             bash $PREFIX/var/lib/andistro/boot/install-debian.sh
             rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh
         elif [ "$2" == "ubuntu" ]; then
             # Instalação do Ubuntu
-            echo "$distro_wait"
-            andistro alerta-timezone
+            echo "$distro_wait"| tee -a "$LOGFFILE"
+            echo "COD_AnD000015-2.1" >> "$LOGFFILE"
+            andistro alerta-timezone 2>&1 | tee -a "$LOGFFILE"
+            echo "COD_AnD000015-2.2" >> "$LOGFFILE"
             show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" "${extralink}/distros/ubuntu.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
+            echo "COD_AnD000015-2.3" >> "$LOGFFILE"
             bash $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
             rm -rf $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
         else
             # Não reconhecido
-            echo "Distribuição não reconhecida: $2"
+            echo "Distribuição não reconhecida: $2" | tee -a "$LOGFFILE"
             exit 1
         fi
         ;;
@@ -449,6 +506,7 @@ case "$1" in
         # Desinstalação das distribuições
         if [ -z "$2" ]; then
             # Mostra a descrição
+            echo "COD_AnD000016" >> "$LOGFFILE"
             echo "$distro_desc_line_1"
             echo ""
             echo "$distro_desc_line_4"
@@ -466,15 +524,17 @@ case "$1" in
 
         if [ "$2" == "total" ]; then
             # Desinstalação total
-            echo "$distro_wait"
-            andistro -d debian
-            andistro -d debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
-            andistro -d ubuntu 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+            echo "$distro_wait" | tee -a "$LOGFFILE"
+            echo "COD_AnD000016-1.1" >> "$LOGFFILE"
+            andistro -d debian 2>&1 | tee -a "$LOGFFILE"
+            echo "COD_AnD000016-1.2" >> "$LOGFFILE"
+            andistro -d ubuntu 2>&1 | tee -a "$LOGFFILE"
             rm -rf $PREFIX/var/lib/andistro/
             rm -rf $PREFIX/bin/andistro
         elif [ "$2" == "debian" ]; then
             # Desinstalação do Debian
-            echo "$distro_wait"
+            echo "$distro_wait" | tee -a "$LOGFFILE"
+            echo "COD_AnD000016-2.1" >> "$LOGFFILE"
             rm -rf $PREFIX/var/lib/andistro/boot/debian/
             rm -rf $PREFIX/var/lib/andistro/boot/debian/*
             rm -rf $PREFIX/var/lib/andistro/boot/start-debian*
@@ -493,10 +553,11 @@ case "$1" in
             rm -rf system_bus_socket
             rm -rf /sdcard/termux/andistro/debian
             rm -rf /sdcard/termux/andistro/boot/debian            
-            echo "Desinstalação concluída!"
+            echo "Desinstalação concluída!" | tee -a "$LOGFFILE"
         elif [ "$2" == "ubuntu" ]; then
             # Desinstalação do Ubuntu
-            echo "$distro_wait"
+            echo "$distro_wait" | tee -a "$LOGFFILE"
+            echo "COD_AnD000016-2.1" >> "$LOGFFILE"
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/
             rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/*
             rm -rf $PREFIX/var/lib/andistro/boot/start-ubuntu*
@@ -513,15 +574,16 @@ case "$1" in
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
             rm -rf /sdcard/termux/andistro/boot/ubuntu
-            echo "Desinstalação concluída!"
+            echo "Desinstalação concluída!" | tee -a "$LOGFFILE"
         else
             # Não reconhecido
-            echo "Distribuição não reconhecida: $2"
+            echo "Distribuição não reconhecida: $2"  | tee -a "$LOGFFILE"
             exit 1
         fi
         ;;
     -s)
         # Descrição e inicialização das distribuições
+        echo "COD_AnD000017" >> "$LOGFFILE"
         if [ -z "$2" ]; then
             # Mostra a descrição
             echo "$distro_desc_line_1"
@@ -540,32 +602,35 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             # Inicia o Debian
-            echo "$distro_wait"
+            echo "$distro_wait" | tee -a "$LOGFFILE"
+            echo "COD_AnD000017-1.1" >> "$LOGFFILE"
             if [ -e "$PREFIX/var/lib/andistro/boot/start-debian" ];then
 	            bash $PREFIX/var/lib/andistro/boot/start-debian
             else
-                echo "$distro_command_not_found $1"
-                echo -e "$label_update_finish"
+                echo "$distro_command_not_found $1"  | tee -a "$LOGFFILE"
+                echo -e "$label_update_finish"  | tee -a "$LOGFFILE"
             fi
             
         elif [ "$2" == "ubuntu" ]; then
             # Inicia o Ubuntu
-            echo "$distro_wait"
+            echo "$distro_wait" | tee -a "$LOGFFILE"
+            echo "COD_AnD000017-2.1" >> "$LOGFFILE"
             if [ -e "$PREFIX/var/lib/andistro/boot/start-ubuntu" ];then
 	            bash $PREFIX/var/lib/andistro/boot/start-ubuntu
             else
-                echo "$distro_command_not_found $1"
-                echo -e "$label_update_finish"
+                echo "$distro_command_not_found $1" | tee -a "$LOGFFILE"
+                echo -e "$label_update_finish" | tee -a "$LOGFFILE"
             fi  
         else
             # Não reconhecido
-            echo "Distribuição não reconhecida: $2"
+            echo "Distribuição não reconhecida: $2" | tee -a "$LOGFFILE"
             exit 1
         fi
         ;;
 
         terminal)
             # Descrição na versão terminal
+            echo "COD_AnD000018" >> "$LOGFFILE"
             echo ""
             echo "$distro_desc_line_1"
             echo ""
@@ -591,6 +656,7 @@ case "$1" in
 
         alerta-timezone)
             # Mostra o alerta de timezone detectado
+            echo "COD_AnD000019" >> "$LOGFFILE"
             {
                 for i in {1..50}; do
                     sleep 0.1
@@ -601,12 +667,14 @@ case "$1" in
 
         --set-edit)
             # Edita o código base do andistro
+            echo "COD_AnD000020" >> "$LOGFFILE"
             nano $PREFIX/bin/andistro
         ;;
 
     *)
         # Comando não reconhecido
-        echo "$distro_command_not_found $1"
+        echo "$distro_command_not_found $1" | tee -a "$LOGFFILE"
+        echo "COD_AnD000021" >> "$LOGFFILE"
         andistro terminal
         exit 1
         ;;
