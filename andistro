@@ -1,4 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
+
+# rm -rf * && rm -rf $PREFIX/var/lib/andistro/ && rm -rf $PREFIX/bin/andistro
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 
 # Log de erros
@@ -34,7 +36,6 @@ if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
     rm -rf "$HOME/andistro"
     andistro -u 
-    andistro
 fi
 
 # Configurações do Termux
@@ -66,7 +67,7 @@ if [ -z "$1" ]; then
             4 "Desinstalar"
             5 "Ver como terminal")
 
-    CHOICE=$(dialog --clear \
+    CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
         --menu "Escolha uma das opções:" \
         $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -80,7 +81,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -104,7 +105,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -133,7 +134,7 @@ if [ -z "$1" ]; then
                     2 "Ubuntu"
                     3 "Ver como terminal")
 
-            CHOICE=$(dialog --clear \
+            CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
                 --menu "Escolha uma das opções:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
