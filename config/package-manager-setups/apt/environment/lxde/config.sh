@@ -3,7 +3,7 @@ timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/lxde_config_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 #LXDE config environment
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
      'sudo apt install lxde-core --no-install-recommends -y' \

@@ -12,7 +12,7 @@ folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
 
 # Fonte modular configuração global
-source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
+source "$PREFIX/var/lib/andistro/lib/share/global"
 
 # Verificar e criar diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
@@ -129,7 +129,7 @@ cat > $bin <<- EOM
 timestamp=\$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/proot_log_\${timestamp}.txt"
 
-source "\$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
+source "\$PREFIX/var/lib/andistro/lib/share/global"
 #sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
@@ -190,7 +190,7 @@ mkdir -p "$folder/usr/local/bin/locales/"
 show_progress_dialog wget-labeled "${label_progress}" 11 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
 	"${label_progress}" -P "$folder/usr/local/bin/locales" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
@@ -206,7 +206,7 @@ chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+chmod +x "$folder/usr/local/bin/global"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
@@ -270,7 +270,7 @@ exec > >(tee -a "\$LOGFILE") 2>&1
 export LANG=$language_transformed.UTF-8
 
 # Fonte modular configuração global
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 # Mensagem de inicialização
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
@@ -285,7 +285,7 @@ echo "alias ls='ls --color=auto'" >> ~/.bashrc
 #deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
 
 #======================================================================================================
-# global_var_fun.sh == update_progress() {}
+# global == update_progress() {}
 
 update_progress() {
     local current_step=\$1

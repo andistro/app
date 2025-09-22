@@ -5,7 +5,7 @@ exec > >(tee -a "$LOGFILE") 2>&1
 
 # Mudar o idioma para o Português Brasileiro [pt_BR]
 
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 error_code="LG002br"
 show_progress_dialog steps-one-label "${label_system_language}" 10 \

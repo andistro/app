@@ -10,7 +10,7 @@ fi
 # Para qualquer inicialização anterior
 stopvnc
 
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 HEIGHT=0
 WIDTH=0

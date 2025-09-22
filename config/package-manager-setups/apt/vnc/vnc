@@ -3,7 +3,7 @@ timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/vnc_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 WLAN_IP="$wlan_ip_localhost"
 #LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 vncserver -localhost no -depth 24 -name remote-desktop $GEO :$PORT

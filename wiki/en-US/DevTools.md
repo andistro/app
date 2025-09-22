@@ -17,7 +17,7 @@
 |[**Refactoring `update_progress()`**](#refactoring-update_progress---)|
 |  **↳** [**Usage example**](#usage-example---)|
 |    **↳** [**Direct use**](#direct-use---)|
-|    **↳** [**Using `global_var_fun.sh`**](#using-global_var_funsh---)|
+|    **↳** [**Using `global`**](#using-global_var_funsh---)|
 ||
 |[**Refactoring `show_progress_dialog()`**](#refactoring-show_progress_dialog---)|
 |  **↳** [**Usage pattern 1**](#usage-pattern-1---)|
@@ -83,7 +83,7 @@ echo    # line break at the end so as not to overwrite the prompt
 
 ## Usage example [[ ↑ ]](#)
 
-There are two options, one is calling `update_progress()` from the `global_var_fun.sh` module and the other is using it directly in the code.
+There are two options, one is calling `update_progress()` from the `global` module and the other is using it directly in the code.
 
 ### Direct use [[ ↑ ]](#)
 
@@ -140,10 +140,10 @@ sleep 0.5
 echo    # line break at the end so as not to overwrite the prompt
 ```
 
-### Using `global_var_fun.sh`:
+### Using `global`:
 
 ```bash
-source global_var_fun.sh
+source global
 
 total_steps=5  # Total number of steps you want to monitor
 current_step=0
@@ -183,11 +183,11 @@ echo    # line break at the end so as not to overwrite the prompt
 ```
 
 > [!IMPORTANT]
-> Replace `source global_var_fun.sh` with the correct path. Default paths will be documented below
+> Replace `source global` with the correct path. Default paths will be documented below
 
 # Refactoring `show_progress_dialog()` [[ ↑ ]](#)
 
-Modular function from `global_var_fun.sh` to use the `dialog` progress bar while executing tasks.
+Modular function from `global` to use the `dialog` progress bar while executing tasks.
 
 > [!IMPORTANT]
 > Currently, `show_progress_dialog()` only works on Debian-based distributions. It will be updated as soon as the developer of this repository adds support for new distributions or there is collaboration from external developers.

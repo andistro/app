@@ -3,7 +3,7 @@ timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/ubuntu_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
-source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
+source "$PREFIX/var/lib/andistro/lib/share/global"
 distro_name="ubuntu"
 codinome="noble"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
@@ -315,7 +315,7 @@ mkdir -p "$folder/root/.vnc/"
 
 show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
@@ -330,7 +330,7 @@ chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/usr/local/bin/global_var_fun.sh"
+chmod +x "$folder/usr/local/bin/global"
 chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
@@ -381,7 +381,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 groupadd -g 3003 group3003
 groupadd -g 9997 group9997
@@ -394,7 +394,7 @@ echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #======================================================================================================
-# global_var_fun.sh == update_progress() {}
+# global == update_progress() {}
 update_progress() {
     local current_step=\$1
     local total_steps=\$2

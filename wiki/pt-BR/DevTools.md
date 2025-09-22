@@ -14,7 +14,7 @@
 |[**Refatoração do `update_progress()`**](#refatoração-do-update_progress---)|
 |  **↳** [**Exemplo de uso**](#exemplo-de-uso---)|
 |    **↳** [**Uso direto**](#uso-direto---)|
-|    **↳** [**Usando o `global_var_fun.sh`**](#usando-o-global_var_funsh---)|
+|    **↳** [**Usando o `global`**](#usando-o-global_var_funsh---)|
 ||
 |[**Refatoração do `show_progress_dialog()`**](#refatoração-do-show_progress_dialog---)|
 |  **↳** [**Padrão  de uso 1**](#padrão-de-uso-1---)|
@@ -83,7 +83,7 @@ echo    # quebra de linha ao final para não sobrepor prompt
 ```
 
 ## Exemplo de uso [[ ↑ ]](#)
-Existe duas opções, uma será chamando o `update_progress()` pelo módulo `global_var_fun.sh` e a outra é usando diretamente no código.
+Existe duas opções, uma será chamando o `update_progress()` pelo módulo `global` e a outra é usando diretamente no código.
 
 ### Uso direto [[ ↑ ]](#)
 ```bash
@@ -141,10 +141,10 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 ```
 
-### Usando o `global_var_fun.sh` [[ ↑ ]](#)
+### Usando o `global` [[ ↑ ]](#)
 
 ```bash
-source global_var_fun.sh
+source global
 
 total_steps=5  # Número total de etapas que você quer monitorar
 current_step=0
@@ -183,11 +183,11 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 ```
 > [!IMPORTANT]
-> Troque o `source global_var_fun.sh` pelo caminho correto. Os caminhos padrões estarão documentados abaixo
+> Troque o `source global` pelo caminho correto. Os caminhos padrões estarão documentados abaixo
 
 
 # Refatoração do `show_progress_dialog()` [[ ↑ ]](#)
-Função modular do `global_var_fun.sh` para usar a barra de progresso do `dialog` enquanto executa as tarefas. 
+Função modular do `global` para usar a barra de progresso do `dialog` enquanto executa as tarefas. 
 
 > [!IMPORTANT]
 > No momento, o  `show_progress_dialog()` só funciona em distribuições baseadas no Debian. Será atualizado assim que o desenvolvedor deste repositório adicionar suporte a novas distribuições ou houver a colaboração de desenvolvedores externos.<br>

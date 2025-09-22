@@ -4,7 +4,7 @@ LOGFILE="/sdcard/termux/andistro/logs/locale_en-US_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
 # Mudar o idioma para o Inglês dos Estados Unidos [en_US]
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 error_code="LG002en"
 show_progress_dialog steps-one-label "${label_system_language}" 10 \

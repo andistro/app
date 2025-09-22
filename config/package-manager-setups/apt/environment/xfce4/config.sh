@@ -4,7 +4,7 @@ LOGFILE="/sdcard/termux/andistro/logs/xfce4_config_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
 #XFCE4 config environment
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13 \
      'sleep 2' \

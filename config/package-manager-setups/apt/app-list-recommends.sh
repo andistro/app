@@ -3,7 +3,7 @@ timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/app_list_recommends_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
-source "/usr/local/bin/global_var_fun.sh"
+source "/usr/local/bin/global"
 # Define os programas para seleção
 PROGS=(
     "brave-browser"   "Brave Browser"      off
