@@ -14,7 +14,8 @@ fi
 
 # Redireciona a saída padrão e de erro para o arquivo de log
 #exec >> "$LOGFILE" 2>&1
-exec >> "$LOGFILE"
+#exec >> "$LOGFILE"
+exec > >(tee -a "$LOGFILE") 2>&1
 
 # Cria os diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/" ];then
