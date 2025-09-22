@@ -11,19 +11,18 @@ export NEWT_COLORS="window=,white border=black,white title=black,white textbox=b
 # detector de gerenciadores de pacotes
 # Detecta o gerenciador de pacotes do sistema e executa comandos específicos
 for cmd in apt apk pacman dnf zypper; do
-    echo "COD_G000001" >> "$LOGFFILE"
-    if command -v $cmd >"/sdcard/termux/andistro/logs/global_${timestamp}.txt" 2>&1; then
+    if command -v $cmd >"$LOGFFILE" 2>&1; then
         #echo "Detectado: $cmd"
+        echo "COD_G000001" >> "$LOGFFILE"
         pkg_cmd="$cmd"
     fi
 done
 
 
 detect_package_manager() {
-    echo "COD_G000002" >> "$LOGFFILE"
-    if command -v apt >"/sdcard/termux/andistro/logs/global_${timestamp}.txt" 2>&1; then
+    if command -v apt >"$LOGFFILE" 2>&1; then
         echo "apt"
-    elif command -v apk >"/sdcard/termux/andistro/logs/global_${timestamp}.txt" 2>&1; then
+    elif command -v apk >"$LOGFFILE" 2>&1; then
         echo "apk"
     else
         echo "unknown"
@@ -36,7 +35,6 @@ GMT_date=$(date +"%Z":00)
 # VERIFICADOR DO GETPROP ==================================================================================
 # Verifica se o comando getprop existe antes de executar
 if command -v getprop > /dev/null 2>&1; then
-    echo "COD_G000003" >> "$LOGFFILE"
     android_version=$(getprop ro.build.version.release 2>/dev/null)         # Versão do Android
     android_architecture=$(getprop ro.product.cpu.abi 2>/dev/null)         # Arquitetura do aparelho
     device_manufacturer=$(getprop ro.product.manufacturer 2>/dev/null)     # Fabricante
