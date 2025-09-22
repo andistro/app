@@ -1,4 +1,8 @@
 #!/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/vnc_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
 source "/usr/local/bin/global_var_fun.sh"
 
 WLAN_IP="$wlan_ip_localhost"

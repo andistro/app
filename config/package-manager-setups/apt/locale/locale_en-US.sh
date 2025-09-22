@@ -1,4 +1,8 @@
 #!/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/locale_en-US_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
 # Mudar o idioma para o Inglês dos Estados Unidos [en_US]
 source "/usr/local/bin/global_var_fun.sh"
 

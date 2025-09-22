@@ -1,11 +1,18 @@
 #!/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/vncpasswd_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
+# Verifica e baixa o Dialog
 if ! dpkg -l | grep -qw dialog; then
     apt install dialog -y > /dev/null 2>&1
 fi
+
+# Fonte modular configuração global
 source "/usr/local/bin/global_var_fun.sh"
 
 while true; do
-    dialog --no-shadow --msgbox "$label_vnc_password_input_alert" 10 50
+    dialog --no-shadow --msgbox "$label_vnc_password_input_alert" 10 50 # Aviso antes de ser solicitado para digitar a senha
     msgbox_status=$?
 
     if [ "$msgbox_status" -eq 0 ]; then

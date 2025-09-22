@@ -1,6 +1,10 @@
 #!/bin/bash
-source "/usr/local/bin/global_var_fun.sh"
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/stopvnc_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
 
+source "/usr/local/bin/global_var_fun.sh"
+echo "olá 1"
 USER=$(whoami)
 
 # Buscar arquivos PID relacionados ao usuário
@@ -17,8 +21,6 @@ PORTA=$(echo "$PID_FILES" | head -n1 | cut -d':' -f2 | cut -d'.' -f1)
 
 echo "$label_vncserver_kill"
 echo "$label_vncserver_killed: $PORTA"
-
-xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
 
 # Parar o servidor VNC
 vncserver -kill :$PORTA

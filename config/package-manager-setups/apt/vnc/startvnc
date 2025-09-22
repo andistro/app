@@ -1,4 +1,9 @@
 #!/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/startvnc_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
+
 source "/usr/local/bin/global_var_fun.sh"
 if ! dpkg -l | grep -qw dialog; then
     apt install dialog -y > /dev/null 2>&1

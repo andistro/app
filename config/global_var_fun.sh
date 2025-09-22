@@ -1,5 +1,13 @@
 #!/bin/bash
+# Fonte modular configuração global
+
+export timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/global_var_fun_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
+# Link base para downloads
 export extralink="https://raw.githubusercontent.com/andistro/app/main"
+
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
 # detector de gerenciadores de pacotes
@@ -21,18 +29,8 @@ detect_package_manager() {
     fi
 }
 
-
-exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
-  if [ $? -ne 0 ]; then
-    echo "Erro na execução. Abortando instalação. Código ${error_code}"
-    exit 1
-  fi
-}
-
-
 #Formato GMT
 GMT_date=$(date +"%Z":00)
-
 
 # VERIFICADOR DO GETPROP ==================================================================================
 # Verifica se o comando getprop existe antes de executar
@@ -51,24 +49,21 @@ if command -v getprop > /dev/null 2>&1; then
 
     device_dpi=$(getprop ro.sf.lcd_density 2>/dev/null)                     # DPI
 else
-    system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/')
-    apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
+    system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/') # Locale
     system_architecture=$(dpkg --print-architecture)
 fi
 
-wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
 
+wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede. Necessita do pacote net-tools
 
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
-if [ -f "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh" ]; then
-    #echo "Solicitando a fonte $PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh"
-    chmod +x "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh"
-    source "$PREFIX/var/lib/andistro/l10n_${system_icu_locale_code}.sh"
+if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
+    chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
+    source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
 elif [ -f "/usr/local/bin/l10n_${system_icu_locale_code}.sh" ]; then
-    #echo "Solicitando a fonte /usr/local/bin/l10n_${system_icu_locale_code}.sh"
-    chmod +x "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
-    source "/usr/local/bin/l10n_${system_icu_locale_code}.sh"
+    chmod +x "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
+    source "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
 else
     echo "$label_system_icu_locale_code_file_error $system_icu_locale_code"
 fi
@@ -115,9 +110,8 @@ check_packages_installed() {
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////
 # ==================================================================================================
-# update_progress() ===========================================================================================
-# ==================================================================================================
-# //////////////////////////////////////////////////////////////////////////////////////////////////
+# update_progress() ================================================================================
+# Função para exibir e registrar uma barra de progresso customizada, mostrando o avanço (%) no terminal e gravando cada etapa em arquivo de log.
 update_progress() {
     local current_step=$1
     local total_steps=$2
@@ -132,7 +126,7 @@ update_progress() {
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
     # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" >> "/sdcard/termux/andistro/logs/update_progress_${timestamp}.txt" 2>&1
 }
 
 # total_steps=2  # Número total de etapas que você quer monitorar
@@ -142,16 +136,6 @@ update_progress() {
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # ==================================================================================================
 # DIALOG ===========================================================================================
-# ==================================================================================================
-# //////////////////////////////////////////////////////////////////////////////////////////////////
-
-# DIALOG menu ==================================================================================
-export USER=$(whoami)
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-
 
 # DIALOG Progress ==================================================================================
 # Função para ter uma barra de progresso usando o dialog em diversas tarefas
@@ -195,7 +179,7 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
-            local timestamp=$(date +'%d%m%Y-%H%M%S')
+            #local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 local percent step=0
@@ -227,7 +211,7 @@ show_progress_dialog() {
             local label="$1"
             shift
             {
-                wget "$@" &>/dev/null &
+                wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1
                 local pid=$!
                 local percent=0
                 while kill -0 "$pid" 2>/dev/null; do
@@ -268,7 +252,7 @@ show_progress_dialog() {
 
                     echo -e "XXX\n$((count * 100 / total))\n${current_label}\nXXX"
 
-                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" 2>&1 |
+                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" >> "/sdcard/termux/andistro/logs/wget-labeled-download_${timestamp}.txt" 2>&1
                     stdbuf -oL grep --line-buffered "%" |
                     stdbuf -oL sed -u -e "s,\.,,g" | awk -v count="$count" -v total="$total" -v label="$current_label" '
                         {
@@ -331,13 +315,13 @@ show_progress_dialog() {
 
             set +m
             (
-                "${cmd[@]}" >/dev/null 2>&1
+                "${cmd[@]}" >> "/sdcard/termux/andistro/logs/extract_pid_${timestamp}.txt" 2>&1
             ) & disown
             pid=$!
 
             {
                 i=0
-                while kill -0 "$pid" 2>/dev/null; do
+                while kill -0 "$pid" >> "/sdcard/termux/andistro/logs/extract${timestamp}.txt" 2>&1; do
                     echo $i
                     sleep 0.2
                     i=$((i + 2))
@@ -357,8 +341,8 @@ show_progress_dialog() {
             shift
             local packages=("$@")
             local total="${#packages[@]}"
-            local timestamp=$(date +'%d%m%Y-%H%M%S')
-            local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
+            #local timestamp=$(date +'%d%m%Y-%H%M%S')
+            #local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
             local pkg_manager=$(detect_package_manager)
             : > "$log_file"
 
@@ -370,9 +354,9 @@ show_progress_dialog() {
                     case "$pkg_manager" in
                         apt)
                             if dpkg -s "$pkg" &>/dev/null; then
-                                echo "$index [✓] $pkg está instalado." >> "$log_file"
+                                echo "$index [✓] $pkg está instalado." >> "/sdcard/termux/andistro/logs/check-packages_${timestamp}.txt" 2>&1
                             else
-                                echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
+                                echo "$index [✗] $pkg NÃO está instalado." >> "/sdcard/termux/andistro/logs/check-packages_${timestamp}.txt" 2>&1
                             fi
                             ;;
                         apk)

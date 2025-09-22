@@ -1,5 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
-source "$PREFIX/var/lib/andistro/global_var_fun.sh"
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/ubuntu_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
+source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
 distro_name="ubuntu"
 codinome="noble"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"

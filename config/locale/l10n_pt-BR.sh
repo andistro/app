@@ -6,7 +6,6 @@ fi
 
 # Exclui o arquivo ~/.bashrc vazio
 
-
 #=====================================================================================================
 distro_wait="aguarde"
 distro_del="desinstalar"

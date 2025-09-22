@@ -1,4 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/debian_${timestamp}.txt"
+exec >> "$LOGFILE" 2>&1
+
+# Variáveis de configuração
 export distro_name="debian"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
@@ -6,8 +11,10 @@ bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
 
-source "$PREFIX/var/lib/andistro/global_var_fun.sh"
+# Fonte modular configuração global
+source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
 
+# Verificar e criar diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
     mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 fi
@@ -80,7 +87,7 @@ if [ -d "$folder" ]; then
 fi
 
 sleep 2
-# Baixa
+# Baixar
 if [ "$first" != 1 ];then
 	case `dpkg --print-architecture` in
 	aarch64)
@@ -91,30 +98,35 @@ if [ "$first" != 1 ];then
 		echo "unknown architecture"; exit 1 ;;
 	esac
 	# Alternativa para baixar o debian usando o debootstrap
+	# Temporariamente desativado por problemas de download
 	# {
 	# 	for i in {1..50}; do
 	# 		sleep 0.1
 	# 		echo $((i * 2))
 	# 	done
-	# } | dialog --gauge "$label_debian_download_start" 10 60 0
-	# debootstrap --arch=$archurl stable $folder http://ftp.debian.org/debian/  2>&1 | dialog --title "${label_debian_download}" --progressbox 20 70
+	# } | dialog --gauge "$label_distro_download_start" 10 60 0
+	# debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --title "${label_distro_download}" --progressbox 20 70
 	# sleep 2
 	# {
 	# 	for i in {1..50}; do
 	# 		sleep 0.1
 	# 		echo $((i * 2))
 	# 	done
-	# } | dialog --gauge "$label_debian_download_finish" 10 60 0
+	# } | dialog --gauge "$label_distro_download_finish" 10 60 0
+	
+	# Baixa a imagem do sistema
 	show_progress_dialog wget "${label_distro_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
+	# Extrai a imagem do sistema
 	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
 	sleep 2
 fi
-
-echo "${label_start_script}"
+# =============================================================================================
+# Criar o script de inicialização
 cat > $bin <<- EOM
 #!/bin/bash
-source "\$PREFIX/var/lib/andistro/global_var_fun.sh"
+export use_shadow=OFF
+source "\$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
 #sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
 #cd \$(dirname \$0)
@@ -150,15 +162,15 @@ else
     \$command -c "\$com"
 fi
 EOM
-
 chmod +x $bin
 
-sed -i "s|command+=\" LANG=C.UTF-8\"|command+=\" LANG=${language_transformed}.UTF-8\"|" "$bin"
-
+# Configurações pós-instalação
+# Baixa scripts de configuração de idioma
 show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
+# Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
 
 echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
@@ -166,16 +178,17 @@ echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 # Se não existir, será criado
-
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
-mkdir -p $folder/root/.vnc/
+mkdir -p "$folder/root/.vnc/"
+mkdir -p "$folder/usr/local/bin/locales/"
 
+# Baixa as configurações, scripts do vnc e wallpapers adicionais
 show_progress_dialog wget-labeled "${label_progress}" 11 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global_var_fun.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin/locales" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
@@ -203,6 +216,7 @@ sleep 2
 # 	EOF
 # fi
 
+# Escolher o ambiente gráfico
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=5
@@ -220,16 +234,17 @@ CHOICE=$(dialog --no-shadow --clear \
                 2>&1 >/dev/tty)
 case $CHOICE in
 	1)	
-		echo "XFCE UI"
+		# XFCE
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 		sleep 2
 		;;
 	2)	
-		echo "LXDE UI"
+		# LXDE
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
 		sleep 2
 	;;
 	3)
+		# Nenhum escolhido
 		rm -rf "$folder/root/system-config.sh"
 		sleep 2
 	;;
@@ -241,22 +256,34 @@ sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 
+# Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
+timestamp=\$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/${distro_name}_bash_profiles_\${timestamp}.txt"
+exec >> "\$LOGFILE" 2>&1
+
+# Define o LANG como $language_transformed durante a execução.
 export LANG=$language_transformed.UTF-8
 
+# Fonte modular configuração global
 source "/usr/local/bin/global_var_fun.sh"
 
+# Mensagem de inicialização
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 
+
+# Este alias faz com que o comando 'ls' mostre arquivos e diretórios coloridos automaticamente
 echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
+# Adiciona uma lista de fontes apt caso seja necessário
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
 #deb http://security.debian.org/debian-security $codinome-security main contrib non-free
 #deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
 
 #======================================================================================================
 # global_var_fun.sh == update_progress() {}
+
 update_progress() {
     local current_step=\$1
     local total_steps=\$2
@@ -274,14 +301,16 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
 }
 
-total_steps=4
+total_steps=5
 current_step=0
 
+# Atualiza a lista de repositórios
 apt update -qq -y > /dev/null 2>&1
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
+# Verifica e baixa o sudo
 if ! dpkg -l | grep -qw sudo; then
     apt install sudo --no-install-recommends -y > /dev/null 2>&1
 fi
@@ -289,6 +318,7 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando sudo"
 sleep 0.5
 
+# Verifica e baixa o wget
 if ! dpkg -l | grep -qw wget; then
     apt install wget --no-install-recommends -y > /dev/null 2>&1
 fi
@@ -296,7 +326,16 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
+# Verifica e baixa o dialog
 if ! dpkg -l | grep -qw dialog; then
+    apt install dialog --no-install-recommends -y > /dev/null 2>&1
+fi
+((current_step++))
+update_progress "\$current_step" "\$total_steps" "Instalando dialog"
+sleep 0.5
+
+# Verifica e baixa o locale
+if ! dpkg -l | grep -qw locale; then
     apt install dialog --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
@@ -306,12 +345,16 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
+# Variável de timezone
 etc_timezone=\$(cat /etc/timezone)
 
+# Define o timezone
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
+# Executa as configurações de idioma
 bash ~/locale_\$system_icu_locale_code.sh
 
+# Seletor de tema
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=5
@@ -337,10 +380,13 @@ case \$CHOICE in
 	;;
 esac
 
-
+# Executa as configurações base do sistema
 bash ~/system-config.sh
+
+# Configurações da inteface escolhida
 bash ~/config-environment.sh
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
+
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
@@ -356,8 +402,11 @@ EOM
  done
 } | dialog --no-shadow --gauge "Olá 1" 10 60 0
 
-# Cria uma gui de inicialização
+# Cria um dialog de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+
+# Inicia o sistema
 bash $bin
-rm -rf $HOME/distrolinux-install.sh
-rm -rf $HOME/start-distro.sh
+
+# Remove o arquivo de instalação e configuração
+rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh
