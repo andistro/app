@@ -3,7 +3,7 @@
 
 export timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/global_var_fun_${timestamp}.txt"
-exec >> "$LOGFILE" 2>&1
+exec > >(tee -a "$LOGFILE") 2>&1
 
 # Link base para downloads
 export extralink="https://raw.githubusercontent.com/andistro/app/main"

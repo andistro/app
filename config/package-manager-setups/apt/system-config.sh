@@ -1,7 +1,7 @@
 #!/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/system_config_${timestamp}.txt"
-exec >> "$LOGFILE" 2>&1
+exec > >(tee -a "$LOGFILE") 2>&1
 
 # Fonte modular configuração global
 source "/usr/local/bin/global_var_fun.sh"

@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/ubuntu_${timestamp}.txt"
-exec >> "$LOGFILE" 2>&1
+exec > >(tee -a "$LOGFILE") 2>&1
 
 source "$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
 distro_name="ubuntu"
