@@ -1,7 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/bash
-timestamp=$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/debian_${timestamp}.txt"
-#exec > >(tee -a "$LOGFILE") 2>&1
 
 # Variáveis de configuração
 export distro_name="debian"
@@ -125,10 +122,6 @@ fi
 # Criar o script de inicialização
 cat > $bin <<- EOM
 #!/bin/bash
-
-timestamp=\$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/proot_log_\${timestamp}.txt"
-
 source "\$PREFIX/var/lib/andistro/lib/share/global"
 #sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
@@ -160,9 +153,9 @@ command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
 com="\$@"
 if [ -z "\$1" ]; then
-    exec \$command > >(tee -a "\$LOGFILE") 2>&1
+    exec \$command | tee -a "/sdcard/termux/andistro/logs/proot_\${timestamp}.txt"
 else
-    \$command -c "\$com" > >(tee -a "\$LOGFILE") 2>&1
+    \$command -c "\$com" | tee -a "/sdcard/termux/andistro/logs/proot_\${timestamp}.txt"
 fi
 EOM
 chmod +x $bin
@@ -174,11 +167,11 @@ sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
-echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
+echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
-echo "$system_timezone" | tee $folder/etc/timezone >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
+echo "$system_timezone" | tee $folder/etc/timezone | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
 # Se não existir, será criado
 mkdir -p "$folder/usr/share/backgrounds/"
@@ -262,10 +255,6 @@ touch $folder/root/.hushlogin
 # Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
-timestamp=\$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/${distro_name}_bash_profiles_\${timestamp}.txt"
-#exec > >(tee -a "\$LOGFILE") 2>&1
-
 # Define o LANG como $language_transformed durante a execução.
 export LANG=$language_transformed.UTF-8
 
@@ -308,14 +297,14 @@ total_steps=5
 current_step=0
 
 # Atualiza a lista de repositórios
-apt update -qq -y > /dev/null 2>&1
+apt update -qq -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
 # Verifica e baixa o sudo
 if ! dpkg -l | grep -qw sudo; then
-    apt install sudo --no-install-recommends -y > /dev/null 2>&1
+    apt install sudo --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando sudo"
@@ -323,7 +312,7 @@ sleep 0.5
 
 # Verifica e baixa o wget
 if ! dpkg -l | grep -qw wget; then
-    apt install wget --no-install-recommends -y > /dev/null 2>&1
+    apt install wget --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando wget"
@@ -331,7 +320,7 @@ sleep 0.5
 
 # Verifica e baixa o dialog
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog --no-install-recommends -y > /dev/null 2>&1
+    apt install dialog --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
@@ -339,7 +328,7 @@ sleep 0.5
 
 # Verifica e baixa o locale
 if ! dpkg -l | grep -qw locale; then
-    apt install dialog --no-install-recommends -y > /dev/null 2>&1
+    apt install dialog --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"

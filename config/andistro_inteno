@@ -1,6 +1,5 @@
 #!/bin/bash
-timestamp=$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/andistro_usr_local_bin_${timestamp}.txt"
+
 #exec > >(tee -a "$LOGFILE") 2>&1
 # Cores
 CYAN='\033[1;36m'

@@ -1,8 +1,4 @@
 #!/bin/bash
-timestamp=$(date +'%d%m%Y-%H%M%S')
-LOGFILE="/sdcard/termux/andistro/logs/xfce4_config_${timestamp}.txt"
-#exec > >(tee -a "$LOGFILE") 2>&1
-
 #XFCE4 config environment
 source "/usr/local/bin/global"
 
