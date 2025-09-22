@@ -97,16 +97,16 @@ if [ -z "$1" ]; then
             case $CHOICE in
                 1)
                     echo "COD_AnD000009-1" >> "$AndLOGFILE"
-                    andistro  -i debian 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro  -i debian 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 2)
                     echo "COD_AnD000009-2" >> "$AndLOGFILE"
-                    andistro -i ubuntu 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -i ubuntu 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 3)
                     echo "COD_AnD000009-3" >> "$AndLOGFILE"
                     clear
-                    andistro -i 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -i 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
             esac
         ;;
@@ -127,16 +127,16 @@ if [ -z "$1" ]; then
             case $CHOICE in
                 1)
                     echo "COD_AnD000010-1" >> "$AndLOGFILE"
-                    andistro -s debian 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -s debian 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 2)
                     echo "COD_AnD000010-2" >> "$AndLOGFILE"
-                    andistro -s ubuntu 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -s ubuntu 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 3)
                     echo "COD_AnD000010-3" >> "$AndLOGFILE"
                     clear
-                    andistro -s 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -s 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
             esac
         ;;
@@ -145,7 +145,7 @@ if [ -z "$1" ]; then
             # Atualização
             echo "COD_AnD000011" >> "$AndLOGFILE"
             clear
-            andistro -u
+            command='andistro -u'
         ;;
 
         4)
@@ -165,16 +165,16 @@ if [ -z "$1" ]; then
             case $CHOICE in
                 1)
                     echo "COD_AnD000012-1" >> "$AndLOGFILE"
-                    andistro -d debian 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -d debian 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 2)
                     echo "COD_AnD000012-2" >> "$AndLOGFILE"
-                    andistro -d ubuntu 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -d ubuntu 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
                 3)
                     echo "COD_AnD000012-3" >> "$AndLOGFILE"
                     clear
-                    andistro -d 2>&1 | tee -a "$AndLOGFILE"
+                    command='andistro -d 2>&1 | tee -a "$AndLOGFILE"'
                 ;;
             esac
         ;;
@@ -183,12 +183,13 @@ if [ -z "$1" ]; then
             # Ver como terminal
             echo "COD_AnD000013" >> "$AndLOGFILE"
             clear
-            andistro terminal 2>&1 | tee -a "$AndLOGFILE"
+            command='andistro terminal 2>&1 | tee -a "$AndLOGFILE"'
         ;;
     esac
+exit 0
 fi
 
-
+exec $command
 
 case "$1" in
     -u)
