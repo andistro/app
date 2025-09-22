@@ -153,9 +153,9 @@ command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
 com="\$@"
 if [ -z "\$1" ]; then
-    exec \$command | tee -a "/sdcard/termux/andistro/logs/proot_\${timestamp}.txt"
+    exec \$command
 else
-    \$command -c "\$com" | tee -a "/sdcard/termux/andistro/logs/proot_\${timestamp}.txt"
+    \$command -c "\$com"
 fi
 EOM
 chmod +x $bin
@@ -167,11 +167,9 @@ sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
-echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
-
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
-
-echo "$system_timezone" | tee $folder/etc/timezone | tee -a "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
+echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf 
+echo "$system_timezone" | tee $folder/etc/timezone
 
 # Se não existir, será criado
 mkdir -p "$folder/usr/share/backgrounds/"
@@ -275,7 +273,6 @@ echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #======================================================================================================
 # global == update_progress() {}
-
 update_progress() {
     local current_step=\$1
     local total_steps=\$2
@@ -290,45 +287,33 @@ update_progress() {
     empty_bar=\$(printf "%\${empty_length}s" | tr " " " ")
 
     # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
+    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
 }
 
-total_steps=5
+total_steps=4
 current_step=0
 
-# Atualiza a lista de repositórios
-apt update -qq -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
+apt update -qq -y > /dev/null 2>&1
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
 sleep 0.5
 
-# Verifica e baixa o sudo
 if ! dpkg -l | grep -qw sudo; then
-    apt install sudo --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
+    apt install sudo --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando sudo"
 sleep 0.5
 
-# Verifica e baixa o wget
 if ! dpkg -l | grep -qw wget; then
-    apt install wget --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
+    apt install wget --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando wget"
 sleep 0.5
 
-# Verifica e baixa o dialog
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando dialog"
-sleep 0.5
-
-# Verifica e baixa o locale
-if ! dpkg -l | grep -qw locale; then
-    apt install dialog --no-install-recommends -y >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
+    apt install dialog --no-install-recommends -y > /dev/null 2>&1
 fi
 ((current_step++))
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
@@ -337,11 +322,9 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
-# Variável de timezone
-etc_timezone=\$(cat /etc/timezone) 
+etc_timezone=\$(cat /etc/timezone)
 
-# Define o timezone
-sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime >> "/sdcard/termux/andistro/logs/${distro_name}_etc_\${timestamp}.txt" 2>&1
+sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
 bash ~/locale_\$system_icu_locale_code.sh
