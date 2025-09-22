@@ -196,7 +196,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$lbl"
                     echo "XXX"
-                    bash -c "$cmd"  >> "/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt" 2>&1
+                    bash -c "$cmd"  >> "$LOGFFILE" 2>&1
                     step=$((step + 1))
                     shift 2
                 done
@@ -216,7 +216,7 @@ show_progress_dialog() {
             local label="$1"
             shift
             {
-                wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1
+                wget "$@" >> "$LOGFFILE" 2>&1
                 local pid=$!
                 local percent=0
                 while kill -0 "$pid" 2>/dev/null; do
@@ -258,7 +258,7 @@ show_progress_dialog() {
 
                     echo -e "XXX\n$((count * 100 / total))\n${current_label}\nXXX"
 
-                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" >> "/sdcard/termux/andistro/logs/wget-labeled-download_${timestamp}.txt" 2>&1
+                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" >> "$LOGFFILE" 2>&1
                     stdbuf -oL grep --line-buffered "%" |
                     stdbuf -oL sed -u -e "s,\.,,g" | awk -v count="$count" -v total="$total" -v label="$current_label" '
                         {
@@ -322,13 +322,13 @@ show_progress_dialog() {
 
             set +m
             (
-                "${cmd[@]}" >> "/sdcard/termux/andistro/logs/extract_pid_${timestamp}.txt" 2>&1
+                "${cmd[@]}" >> "$LOGFFILE" 2>&1
             ) & disown
             pid=$!
 
             {
                 i=0
-                while kill -0 "$pid" >> "/sdcard/termux/andistro/logs/extract${timestamp}.txt" 2>&1; do
+                while kill -0 "$pid" >> "$LOGFFILE" 2>&1; do
                     echo $i
                     sleep 0.2
                     i=$((i + 2))
@@ -361,9 +361,9 @@ show_progress_dialog() {
                     case "$pkg_manager" in
                         apt)
                             if dpkg -s "$pkg" &>/dev/null; then
-                                echo "$index [✓] $pkg está instalado." >> "/sdcard/termux/andistro/logs/check-packages_${timestamp}.txt" 2>&1
+                                echo "$index [✓] $pkg está instalado." >> "$LOGFFILE" 2>&1
                             else
-                                echo "$index [✗] $pkg NÃO está instalado." >> "/sdcard/termux/andistro/logs/check-packages_${timestamp}.txt" 2>&1
+                                echo "$index [✗] $pkg NÃO está instalado." >> "$LOGFFILE" 2>&1
                             fi
                             ;;
                         apk)
