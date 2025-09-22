@@ -31,7 +31,7 @@ GMT_date=$(date +"%Z":00)
 
 # VERIFICADOR DO GETPROP ==================================================================================
 # Verifica se o comando getprop existe antes de executar
-if command -v getprop; then
+if command -v getprop > /dev/null 2>&1; then
     android_version=$(getprop ro.build.version.release 2>/dev/null)         # Versão do Android
     android_architecture=$(getprop ro.product.cpu.abi 2>/dev/null)         # Arquitetura do aparelho
     device_manufacturer=$(getprop ro.product.manufacturer 2>/dev/null)     # Fabricante
