@@ -19,9 +19,6 @@ fi
 
 if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
     source $PREFIX/var/lib/andistro/lib/share/global
-
-    else
-        andistro -u
 fi
 
 
