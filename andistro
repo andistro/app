@@ -13,7 +13,8 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
 fi
 
 # Redireciona a saída padrão e de erro para o arquivo de log
-exec >> "$LOGFILE" 2>&1
+#exec >> "$LOGFILE" 2>&1
+exec >> "$LOGFILE"
 
 # Cria os diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/" ];then
