@@ -432,7 +432,7 @@ case "$1" in
             echo  # pular linha no fim
         }
 
-        echo "COD_AnD000014" >> "$AndLOGFILE"
+        echo "COD_AnD000000-26" >> "$AndLOGFILE"
         chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
         source "$PREFIX/var/lib/andistro/lib/share/global"
