@@ -5,7 +5,7 @@ exec > >(tee -a "$LOGFILE") 2>&1
 
 # Verifica e baixa o Dialog
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y > /dev/null 2>&1
+    apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_dialog_${timestamp}.txt" 2>&1
 fi
 
 # Fonte modular configuração global

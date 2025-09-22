@@ -4,8 +4,6 @@ LOGFILE="/sdcard/termux/andistro/logs/stopvnc_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
 source "/usr/local/bin/global_var_fun.sh"
-echo "olá 1"
-USER=$(whoami)
 
 # Buscar arquivos PID relacionados ao usuário
 PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)

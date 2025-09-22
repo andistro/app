@@ -6,8 +6,10 @@ exec > >(tee -a "$LOGFILE") 2>&1
 
 source "/usr/local/bin/global_var_fun.sh"
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y > /dev/null 2>&1
+    apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_dialog_${timestamp}.txt" 2>&1
 fi
+
+# Para qualquer inicialização anterior
 stopvnc
 
 HEIGHT=0

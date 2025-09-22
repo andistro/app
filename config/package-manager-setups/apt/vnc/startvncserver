@@ -4,9 +4,10 @@ LOGFILE="/sdcard/termux/andistro/logs/startvncserver_${timestamp}.txt"
 exec > >(tee -a "$LOGFILE") 2>&1
 
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y > /dev/null 2>&1
+    apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_dialog_${timestamp}.txt" 2>&1
 fi
-ec
+
+# Para qualquer inicialização anterior
 stopvnc
 
 source "/usr/local/bin/global_var_fun.sh"

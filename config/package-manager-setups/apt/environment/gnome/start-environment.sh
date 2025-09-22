@@ -1,7 +1,7 @@
 #!/bin/bash
 #Gnome Start enviroment
 source "/usr/local/bin/global_var_fun.sh"
-source /etc/profile
+
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
 	'touch ~/.Xauthority' \

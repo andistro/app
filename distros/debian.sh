@@ -125,7 +125,10 @@ fi
 # Criar o script de inicialização
 cat > $bin <<- EOM
 #!/bin/bash
-export use_shadow=OFF
+
+timestamp=\$(date +'%d%m%Y-%H%M%S')
+LOGFILE="/sdcard/termux/andistro/logs/proot_log_\${timestamp}.txt"
+
 source "\$PREFIX/var/lib/andistro/lib/share/global_var_fun.sh"
 #sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
 
@@ -157,9 +160,9 @@ command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
 com="\$@"
 if [ -z "\$1" ]; then
-    exec \$command
+    exec \$command > >(tee -a "\$LOGFILE") 2>&1
 else
-    \$command -c "\$com"
+    \$command -c "\$com" > >(tee -a "\$LOGFILE") 2>&1
 fi
 EOM
 chmod +x $bin
@@ -171,11 +174,11 @@ sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
-echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
+echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
-echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+echo "$system_timezone" | tee $folder/etc/timezone >> "/sdcard/termux/andistro/logs/${distro_name}_etc_${timestamp}.txt" 2>&1
 
 # Se não existir, será criado
 mkdir -p "$folder/usr/share/backgrounds/"
@@ -261,7 +264,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 timestamp=\$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/${distro_name}_bash_profiles_\${timestamp}.txt"
-exec >> "\$LOGFILE" 2>&1
+exec > >(tee -a "\$LOGFILE") 2>&1
 
 # Define o LANG como $language_transformed durante a execução.
 export LANG=$language_transformed.UTF-8
@@ -298,7 +301,7 @@ update_progress() {
     empty_bar=\$(printf "%\${empty_length}s" | tr " " " ")
 
     # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
+    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" >> "/sdcard/termux/andistro/logs/update_progress_\${timestamp}.txt" 2>&1
 }
 
 total_steps=5
@@ -346,10 +349,10 @@ echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
 # Variável de timezone
-etc_timezone=\$(cat /etc/timezone)
+etc_timezone=\$(cat /etc/timezone) 
 
 # Define o timezone
-sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
+sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime >> "/sdcard/termux/andistro/logs/${distro_name}_etc_\${timestamp}.txt" 2>&1
 
 # Executa as configurações de idioma
 bash ~/locale_\$system_icu_locale_code.sh

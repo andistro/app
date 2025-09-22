@@ -47,6 +47,8 @@ vncpasswd
 
 sleep 2
 
+source /etc/profile
+
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   "vncserver -name remote-desktop -geometry 1920x1080 :1" \
   "sleep 10" \
