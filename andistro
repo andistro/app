@@ -122,7 +122,7 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 1)
-                    echo "Instalar debian" | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
+                    echo "Instalar debian" 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                     andistro -s debian 2>&1 | tee -a "/sdcard/termux/andistro/logs/andistro_log_${timestamp}.txt"
                 ;;
                 2)
