@@ -1,5 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/bash
-#rm -rf * && rm -rf "$PREFIX/var/lib/andistro/" && rm -rf "$PREFIX/bin/andistro"
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 timestamp=$(date +'%d%m%Y-%H%M%S')
 LOGFILE="/sdcard/termux/andistro/logs/andistro_${timestamp}.txt"
