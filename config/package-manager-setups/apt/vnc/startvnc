@@ -55,7 +55,7 @@ case $CHOICE in
             [[ -n "$falta_msg" ]] && mensagem_erro="${label_vncserver_chose_resolution_custom_alert_error}:\n$falta_msg"
         fi
 
-        cabecalho="Configuração do VNC Server"
+        cabecalho="$label_vnc_setup"
         if [[ -n "$mensagem_erro" ]]; then
             titulo="$dialog_msgbox\n----------------\n$mensagem_erro\n\n${label_numbers_only}"
         else
@@ -74,7 +74,7 @@ case $CHOICE in
         exec 3>&-
 
         if [[ $dialog_exit_status -eq 1 || $dialog_exit_status -eq 255 || -z "$result" ]]; then
-            echo "Cancelado. Use o comando startvnc para selecionar outra resolução"
+            echo "$label_vncserver_chose_resolution_canceled"
             clear
             startvnc
             break

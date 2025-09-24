@@ -87,6 +87,7 @@ label_system_icu_locale_code_file_error="Localization file not found:"
 label_vnc_setup="VNC Setup"
 label_vnc_password_input="Enter the new password for the VNC server: "
 label_vnc_password_input_alert="Tap the button to open the keyboard (⌨). If you don't do this, the next step will fail. Then press OK."
+label_vnc_password_input_alert_important="It is necessary to set a password!"
 label_startvnc_desc="VNC server started. Default password is the account password "
 label_vncserver_localhost="Local:"
 label_vncserver_password_forgot="Forgot your password? Use the 'vncpasswd' command to reset the VNC password."
@@ -112,6 +113,7 @@ label_vncserver_chose_resolution_custom_desc_port="Enter the port number. Exampl
 label_vncserver_chose_resolution_custom_alert="Attention: Do not press ENTER (↲) before filling in all fields. Click on the text to select and be able to type."
 label_vncserver_chose_resolution_custom_alert_caption="Legend: the field in blue is the one selected for typing. Use the ↑ and ↓ keys to change the selection. You can click on the names to select."
 label_vncserver_chose_resolution_custom_alert_error="Missing or invalid values in the fields below:\n"
+label_vncserver_chose_resolution_canceled="Cancelled. Use the startvnc command to select another resolution" # Translated by Perplexity
 
 # About downloads
 label_install_script_download="Downloading installation script..."

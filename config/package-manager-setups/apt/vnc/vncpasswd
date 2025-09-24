@@ -17,7 +17,7 @@ while true; do
         if [ $? -eq 0 ]; then
             # Valida senha não vazia
             if [ -z "$PASSWORD" ]; then
-                dialog --no-shadow --title "$label_error" --msgbox "Você deve inserir uma senha!" 10 50
+                dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_input_alert_important" 10 50
                 continue
             fi
             break

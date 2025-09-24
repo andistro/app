@@ -4,19 +4,30 @@ if [ "$system_country" = "Brazil" ]; then
   system_country="Brasil"
 fi
 
-# Exclui o arquivo ~/.bashrc vazio
+#=====================================================================================================
+
+
+
+
+
+
+
+
+
+
+label_detected="[Detectado]"
+label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
+label_distro_alert_timezone_detected="Fuso horário detectado: "
+label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
+label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
+label_keyboard_setup="Iniciando as configurações do teclado, $distro_wait...."
+label_tzdata_setup="Iniciando as configurações de fuso horário e data, $distro_wait...."
 
 #=====================================================================================================
-distro_wait="aguarde"
-distro_del="desinstalar"
-distro_instaled="instalado"
-distro_install="instalar"
-distro_update="atualizar"
-distro_start="iniciar"
-distro_notinstaled="não instalado"
+# Andistro
 distro_command="<comando>"
 distro_command_not_found="Comando não encontrado:"
-distro_option="<opção>"
+distro_del="desinstalar"
 distro_desc_line_1="Use: andistro <comando> <opção> para seja feito a tarefa desejada."
 distro_desc_line_2="Exemplo de comando que permite a instalação:"
 distro_desc_line_3="   andistro -i debian"
@@ -30,14 +41,13 @@ distro_desc_line_10="    -i  instala a opção escolhida."
 distro_desc_line_11="    -d  desinstala a opção escolhida."
 distro_desc_line_12="    -s  inicializa a versão escolhida."
 distro_desc_line_13="Opções:"
-label_detected="[Detectado]"
-label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
-label_distro_alert_timezone_detected="Fuso horário detectado: "
-label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
-label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
-label_keyboard_setup="Iniciando as configurações do teclado, $distro_wait...."
-label_tzdata_setup="Iniciando as configurações de fuso horário e data, $distro_wait...."
-
+distro_instaled="instalado"
+distro_install="instalar"
+distro_notinstaled="não instalado"
+distro_option="<opção>"
+distro_start="iniciar"
+distro_update="atualizar"
+distro_wait="aguarde"
 #=====================================================================================================
 
 label_distro_stable="Estável"
@@ -92,11 +102,16 @@ label_system_icu_locale_code_file_error="Arquivo de localização não encontrad
 
 #VNC
 label_vnc_setup="Configuração do VNC"
+
+# VNC Passwd
 label_vnc_password_input="Digite a nova senha para o servidor VNC: "
 label_vnc_password_input_alert="Toque no botão para abrir o teclado (⌨). Caso não faça isso, a próxima etapa terá erro. Depois pressione OK."
+label_vnc_password_input_alert_important="É necessário definir uma senha!"
+label_vncserver_password_forgot="Esqueceu a senha? Use o comando 'vncpasswd' para redefinir a senha do VNC."
+
+
 label_startvnc_desc="O servidor VNC foi iniciado. A senha padrão é a senha da conta "
 label_vncserver_localhost="Local:"
-label_vncserver_password_forgot="Esqueceu a senha? Use o comando 'vncpasswd' para redefinir a senha do VNC."
 label_vncserver_kill="Desligando o servidor VNC..."
 label_vncserver_kill_port="Digite o número da porta que deseja fechar (exemplo: 1): "
 label_vncserver_killed="Desligando o VNC da porta"
@@ -119,6 +134,7 @@ label_vncserver_chose_resolution_custom_desc_port="Insira o número da porta. Ex
 label_vncserver_chose_resolution_custom_alert="Atenção: Não tecle ENTER (↲) antes de preencher todos os campos. Clique no texto para selecionar e poder digitar."
 label_vncserver_chose_resolution_custom_alert_caption="Legenda: o campo em azul é o que está selecionado para digitar. Use as teclas ↑ e ↓ para trocar a seleção. Pode clicar nos nomes para selecionar."
 label_vncserver_chose_resolution_custom_alert_error="Faltam ou há valores inválidos nos campos abaixo:\n"
+label_vncserver_chose_resolution_canceled="Cancelado. Use o comando startvnc para selecionar outra resolução"
 
 
 # Sobre downloads
