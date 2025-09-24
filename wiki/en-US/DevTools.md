@@ -17,7 +17,7 @@
 |[**Refactoring `update_progress()`**](#refactoring-update_progress---)|
 |  **↳** [**Usage example**](#usage-example---)|
 |    **↳** [**Direct use**](#direct-use---)|
-|    **↳** [**Using `global`**](#using-global_var_funsh---)|
+|    **↳** [**Using `global`**](#using-globalsh---)|
 ||
 |[**Refactoring `show_progress_dialog()`**](#refactoring-show_progress_dialog---)|
 |  **↳** [**Usage pattern 1**](#usage-pattern-1---)|

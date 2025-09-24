@@ -14,7 +14,7 @@
 |[**Refatoração do `update_progress()`**](#refatoração-do-update_progress---)|
 |  **↳** [**Exemplo de uso**](#exemplo-de-uso---)|
 |    **↳** [**Uso direto**](#uso-direto---)|
-|    **↳** [**Usando o `global`**](#usando-o-global_var_funsh---)|
+|    **↳** [**Usando o `global`**](#usando-o-globalsh---)|
 ||
 |[**Refatoração do `show_progress_dialog()`**](#refatoração-do-show_progress_dialog---)|
 |  **↳** [**Padrão  de uso 1**](#padrão-de-uso-1---)|
