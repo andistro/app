@@ -122,8 +122,9 @@ fi
 # Criar o script de inicialização
 cat > $bin <<- EOM
 #!/bin/bash
-source "\$PREFIX/var/lib/andistro/lib/share/global"
-#sed -i "s|WLAN_IP=\\\"localhost\\\"|WLAN_IP=\\\"\$wlan_ip_localhost\\\"|g" "$folder/usr/local/bin/vnc"
+if [ ! -d "\$HOME/storage" ];then
+    termux-setup-storage
+fi
 
 #cd \$(dirname \$0)
 cd \$HOME
@@ -135,6 +136,11 @@ command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
 command+=" -r $folder"
+if [ -n "\$(ls -A $binds)" ]; then
+    for f in $binds/* ;do
+      . \$f
+    done
+fi
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /proc/meminfo:/proc/meminfo"
@@ -145,6 +151,7 @@ command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
+command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"

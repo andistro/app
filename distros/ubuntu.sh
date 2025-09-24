@@ -1,13 +1,17 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-source "$PREFIX/var/lib/andistro/lib/share/global"
-distro_name="ubuntu"
+# Variáveis de configuração
+export distro_name="ubuntu"
 codinome="noble"
+andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
-andistro_files="$PREFIX/var/lib/andistro"
-binds="$distro_name/binds"
+binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
 
+# Fonte modular configuração global
+source "$PREFIX/var/lib/andistro/lib/share/global"
+
+# Verificar e criar diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
     mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 fi
@@ -18,6 +22,8 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];t
     mkdir -p "$HOME/storage/shared/termux/andistro/boot"
     mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
 fi
+
+mkdir -p $binds
 
 # Idioma
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
@@ -95,12 +101,13 @@ if [ "$first" != 1 ];then
 	sleep 2
 	show_progress_dialog extract "${label_ubuntu_download_extract}" "$folder.tar.xz"
 	sleep 2
+	rm -rf $folder.tar.xz # remove o arquivo
 fi
 
-mkdir -p $binds
-mkdir -p ${folder}/proc/fakethings
 
 echo "${label_start_script}"
+
+mkdir -p "${folder}/proc/fakethings"
 
 if [ ! -f "${folder}/proc/fakethings/stat" ]; then
 	cat <<- EOF > "${folder}/proc/fakethings/stat"
@@ -123,12 +130,12 @@ softirq 175407567 14659158 51739474 28359 5901272 8879590 0 11988166 46104015 0 
 	EOF
 fi
 
-KERNEL_VERSON=$(uname -r)
-if [ ! -f "${folder}/proc/fakethings/version" ]; then
-	cat <<- EOF > "${folder}/proc/fakethings/version"
-	$KERNEL_VERSION (FakeAndroid)
-	EOF
-fi
+# KERNEL_VERSON=$(uname -r)
+# if [ ! -f "${folder}/proc/fakethings/version" ]; then
+# 	cat <<- EOF > "${folder}/proc/fakethings/version"
+# 	$KERNEL_VERSION (FakeAndroid)
+# 	EOF
+# fi
 
 if [ ! -f "${folder}/proc/fakethings/vmstat" ]; then
 	cat <<- EOF > "${folder}/proc/fakethings/vmstat"
@@ -294,26 +301,29 @@ else
 fi
 EOM
 
-chmod +x $binshow_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
+# Configurações pós-instalação
+# Baixa scripts de configuração de idioma
+show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
 sleep 2
 chmod +x $folder/root/locale_${language_selected}.sh
 
-echo "127.0.0.1 localhost localhost" > $folder/etc/hosts
-
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
-
-echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+# Adicionar entradas em hosts, resolv.conf e timezone
+echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf 
+echo "$system_timezone" | tee $folder/etc/timezone
 
 # Se não existir, será criado
-
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
+mkdir -p "$folder/usr/local/bin/locales/"
 
-show_progress_dialog wget-labeled "${label_progress}" 10 \
+# Baixa as configurações, scripts do vnc e wallpapers adicionais
+show_progress_dialog wget-labeled "${label_progress}" 11 \
 	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/locale/l10n_${language_selected}.sh" \
+	"${label_progress}" -P "$folder/usr/local/bin/locales" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
@@ -322,17 +332,26 @@ show_progress_dialog wget-labeled "${label_progress}" 10 \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
 	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
 
+chmod +x $folder/usr/local/bin/andistro
 chmod +x $folder/usr/local/bin/vnc
 chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global"
-chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
+chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
 
-export USER=$(whoami)
+# KERNEL_VERSON=$(uname -r)
+
+# if [ ! -f "${folder}/proc/fakethings/version" ]; then
+# 	cat <<- EOF > "${folder}/proc/fakethings/version"
+# 	$KERNEL_VERSION (FakeAndroid)
+# 	EOF
+# fi
+
+# Escolher o ambiente gráfico
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=5
@@ -342,7 +361,7 @@ OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
 		 2 "${MENU_environments_select_light} (LXDE)"
 		 3 "${MENU_environments_select_null}") 
 
-CHOICE=$(dialog --clear \
+CHOICE=$(dialog --no-shadow --clear \
                 --title "$TITLE" \
                 --menu "$MENU_environments_select" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
@@ -350,25 +369,24 @@ CHOICE=$(dialog --clear \
                 2>&1 >/dev/tty)
 case $CHOICE in
 	1)	
-		
-		echo "XFCE UI"
+		# XFCE
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
 		sleep 2
 		;;
 	2)	
-		echo "LXDE UI"
+		# LXDE
 		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
 		sleep 2
 	;;
 	3)
-		echo "Nenhum ambiente de área de trabalho selecionado"
+		# Nenhum escolhido
 		rm -rf "$folder/root/system-config.sh"
 		sleep 2
 	;;
 esac
 clear
 chmod +x $folder/root/config-environment.sh
-
+clear
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
@@ -445,31 +463,40 @@ etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
-if [ -e "~/locale_\$system_icu_locale_code.sh" ];then
-	bash ~/locale_\$system_icu_locale_code.sh
-	else
-	show_progress_dialog "wget" "\${label_language_download}" 1 -P "/root/" "\${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
-	sleep 2
-	bash ~/system-config.sh
-fi
-
+# Executa as configurações de idioma
 bash ~/locale_\$system_icu_locale_code.sh
 
-if [ -e "~/system-config.sh" ];then
-	bash ~/system-config.sh
-	else
-	show_progress_dialog "wget" "\${label_progress}" 1 -O "~/system-config.sh" "\${extralink}/config/package-manager-setups/apt/system-config.sh"
+# Seletor de tema
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
 
-	sleep 2
-	bash ~/system-config.sh
-fi
+OPTIONS=(1 "\${MENU_theme_select_light}"
+		 2 "\${MENU_theme_select_dark}")
 
-mkdir -p "/root/Desktop"
+CHOICE=\$(dialog --no-shadow --clear \
+                --title "\$TITLE" \
+                --menu "\$MENU_theme_select" \
+                \$HEIGHT \$WIDTH \$CHOICE_HEIGHT \
+                "\${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+case \$CHOICE in
+	1)	
+		echo "Light Theme"
+		export distro_theme="Light"
+	;;
+	2)	
+		echo "Dark Theme"
+		export distro_theme="Dark"
+	;;
+esac
 
-if [ -e "~/start-environment.sh" ];then
-	bash ~/start-environment.sh
-fi
+# Executa as configurações base do sistema
+bash ~/system-config.sh
 
+# Configurações da inteface escolhida
+bash ~/config-environment.sh
 sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
 rm -rf ~/locale*.sh
@@ -480,9 +507,11 @@ rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
 EOM
 
+# Cria um dialog de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+
+# Inicia o sistema
 bash $bin
 
-if [ -e "$HOME/start-distro.sh" ];then
-	rm -rf $HOME/start-distro.sh
-fi
+# Remove o arquivo de instalação e configuração
+rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh
