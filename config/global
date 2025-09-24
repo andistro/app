@@ -64,7 +64,7 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '
 if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
     chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
     source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
-elif [ -f "/usr/local/bin/localesl10n_${system_icu_locale_code}.sh" ]; then
+elif [ -f "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh" ]; then
     chmod +x "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
     source "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
 else
