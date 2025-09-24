@@ -1,7 +1,6 @@
 #!/bin/bash
 export extralink="https://raw.githubusercontent.com/andistro/app/main"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
-timestamp=$(date +'%d%m%Y-%H%M%S')
 
 # detector de gerenciadores de pacotes
 # Detecta o gerenciador de pacotes do sistema e executa comandos específicos
@@ -165,6 +164,7 @@ show_progress_dialog() {
             #     'comando1' 'comando2' 'comando3'
             local label="$1"
             local total="$2"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift 2
 
             {
@@ -194,6 +194,7 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 local percent step=0
@@ -223,6 +224,7 @@ show_progress_dialog() {
             #     -O "$HOME/arquivo.tar.xz" "${url_do_arquivo}"
 
             local label="$1"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1
@@ -246,6 +248,7 @@ show_progress_dialog() {
         wget-labeled)
             local label="$1"
             local total="$2"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift 2
 
             {
@@ -291,6 +294,7 @@ show_progress_dialog() {
             local label="$1"
             local file="$2"
             local dest="$3"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
 
             # Se não passar destino, cria pasta com o mesmo nome do arquivo (sem extensão)
             if [ -z "$dest" ]; then
