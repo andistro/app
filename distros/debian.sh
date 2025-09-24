@@ -198,7 +198,7 @@ chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global"
-chmod +x "$folder/usr/local/bin/l10n_${language_selected}.sh"
+chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 sleep 2
 
