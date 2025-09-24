@@ -1,30 +1,52 @@
 #!/bin/bash
 source "/usr/local/bin/global"
-# Define os programas para seleção
+
 PROGS=(
-    "brave-browser"   "Brave Browser"      off
-    "inkscape"  "Inkscape" off
-    "libreoffice"  "LibreOffice" off
+    "brave-browser"   "Brave Browser"  off
+    "figma-linux"     "Figma Linux"    off
+    "inkscape"        "Inkscape"       off
+    "libreoffice"     "LibreOffice"    off
 )
 
-# Mostra o checklist e coleta seleção
-CHOICES=$(dialog --separate-output \
+CHOICES=$(dialog --no-shadow --separate-output \
     --checklist "Selecione os programas para instalar:" 10 50 7 \
     "${PROGS[@]}" \
     2>&1 >/dev/tty)
 
-# Conta etapas selecionadas
-NUM_ETAPAS=$(echo "$CHOICES" | wc -l)
+# Conta etapas
+NUM_ETAPAS=0
+ETAPAS=()
 
-# Monta comandos de instalação para cada selecionado
-COMANDOS=()
-for escolha in $CHOICES; do
-    COMANDOS+=("sudo apt install $escolha --no-install-recommends -y")
+for chr in $CHOICES; do
+    case "$chr" in
+        "figma-linux")
+            ETAPAS+=(
+                "Instalando dependência libgconf-2-4" "sudo apt install libgconf-2-4 --no-install-recommends -y"
+                "Baixando Figma-Linux (.deb)" "wget -O /tmp/figma-linux.deb https://github.com/Figma-Linux/figma-linux/releases/download/v0.11.5/figma-linux_0.11.5_linux_arm64.deb"
+                "Instalando Figma-Linux" "sudo dpkg -i /tmp/figma-linux.deb ; sudo apt install -f -y"
+                "Ajustando atalho Figma" "sudo sed -i 's|Exec=/usr/share/figma-linux/figma-linux|Exec=/usr/share/figma-linux/figma-linux --no-sandbox|' /usr/share/applications/figma-linux.desktop"
+            )
+            NUM_ETAPAS=$((NUM_ETAPAS + 4))
+            ;;
+        "brave-browser")
+            ETAPAS+=(
+                "Instalando Brave Browser" "sudo apt install brave-browser --no-install-recommends -y"
+                "Ajustando atalho Brave" "sudo sed -i 's|Exec=/usr/bin/brave-browser-stable|Exec=/usr/bin/brave-browser-stable --no-sandbox|' /usr/share/applications/brave-browser.desktop"
+                "Ajustando atalho Brave 2" "sudo sed -i 's|Exec=/usr/bin/brave-browser-stable|Exec=/usr/bin/brave-browser-stable --no-sandbox|' /usr/share/applications/com.brave.Browser.desktop"
+            )
+            NUM_ETAPAS=$((NUM_ETAPAS + 3))
+            ;;
+        *)
+            ETAPAS+=(
+                "Instalando $chr" "sudo apt install $chr --no-install-recommends -y"
+            )
+            NUM_ETAPAS=$((NUM_ETAPAS + 1))
+            ;;
+    esac
 done
 
-# Executa o show_progress_dialog somente se houve seleção
 if [ "$NUM_ETAPAS" -gt 0 ]; then
-    show_progress_dialog steps-one-label "Instalando pacotes selecionados" "$NUM_ETAPAS" "${COMANDOS[@]}"
+    show_progress_dialog steps-multi-label "$NUM_ETAPAS" "${ETAPAS[@]}"
 else
     dialog --msgbox "Nenhum pacote selecionado." 8 40
 fi
