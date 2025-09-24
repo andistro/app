@@ -224,7 +224,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #8 Verifica se o x11-repo está instalado
-            echo "COD_AnD000000-8" >> "$AndLOGFILE"
+    
             if ! dpkg -l | grep -qw x11-repo; then
                 pkg install x11-repo -y > /dev/null 2>&1
             fi
@@ -232,7 +232,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #9 Verifica se o termux-x11-nightly está instalado
-            echo "COD_AnD000000-9" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw termux-x11-nightly; then
                 pkg install termux-x11-nightly -y > /dev/null 2>&1
             fi
@@ -240,7 +239,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #10 Verifica se o pulseaudio está instalado
-            echo "COD_AnD000000-10" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw pulseaudio; then
                 pkg install pulseaudio -y > /dev/null 2>&1
             fi
@@ -248,7 +246,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #11 Verifica se o wget está instalado
-            echo "COD_AnD000000-11" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw wget; then
                 pkg install wget -y > /dev/null 2>&1
             fi
@@ -256,7 +253,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #12 Verifica se o dialog está instalado
-            echo "COD_AnD000000-12" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw dialog; then
                 pkg install dialog -y > /dev/null 2>&1
             fi
@@ -264,7 +260,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #13 Verifica se o tar está instalado
-            echo "COD_AnD000000-13" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw tar; then
                 pkg install tar -y > /dev/null 2>&1
             fi
@@ -272,7 +267,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #14 Verifica se o curl está instalado
-            echo "COD_AnD000000-14" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw curl; then
                 pkg install curl -y > /dev/null 2>&1
             fi
@@ -280,7 +274,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #15 Verifica se o unzip está instalado
-            echo "COD_AnD000000-15" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw unzip; then
                 pkg install unzip -y > /dev/null 2>&1
             fi
@@ -288,7 +281,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #16 Verifica se o xz-utils está instalado
-            echo "COD_AnD000000-16" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw xz-utils; then
                 pkg install xz-utils -y > /dev/null 2>&1
             fi
@@ -296,7 +288,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #17 Verifica se o debootstrap está instalado
-            echo "COD_AnD000000-17" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw debootstrap; then
                 pkg install debootstrap -y > /dev/null 2>&1
             fi
@@ -304,7 +295,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #18 Verifica se o dbus está instalado
-            echo "COD_AnD000000-18" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw dbus; then
                 pkg install dbus -y > /dev/null 2>&1
             fi
@@ -312,7 +302,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #19 Verifica se o pv está instalado
-            echo "COD_AnD000000-19" >> "$AndLOGFILE"
             if ! dpkg -l | grep -qw pv; then
                 pkg install pv -y > /dev/null 2>&1
             fi
