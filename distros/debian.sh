@@ -245,6 +245,7 @@ case $CHOICE in
 esac
 clear
 chmod +x $folder/root/config-environment.sh
+clear
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
@@ -369,13 +370,6 @@ rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
 EOM
-
-{
- for i in {1..50}; do
-   sleep 0.1
-   echo $((i * 2))
- done
-} | dialog --no-shadow --gauge "Olá 1" 10 60 0
 
 # Cria um dialog de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
