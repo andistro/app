@@ -128,8 +128,11 @@ fi
 
 #cd \$(dirname \$0)
 cd \$HOME
-## unset LD_PRELOAD in case termux-exec is installed
 
+#Start termux-x11
+#termux-x11 :1
+
+## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
 command="proot"
 command+=" --kill-on-exit"
@@ -143,6 +146,7 @@ if [ -n "\$(ls -A $binds)" ]; then
 fi
 command+=" -b /dev"
 command+=" -b /proc"
+command+=" -b \$TMPDIR:/tmp"
 command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
@@ -153,6 +157,7 @@ command+=" -w /root"
 command+=" /usr/bin/env -i"
 command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
+command+=" DISPLAY=:1"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
