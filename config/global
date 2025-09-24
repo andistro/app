@@ -227,7 +227,7 @@ show_progress_dialog() {
             local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
-                wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1
+                wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1 &
                 local pid=$!
                 local percent=0
                 while kill -0 "$pid" 2>/dev/null; do
