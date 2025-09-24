@@ -110,7 +110,7 @@ if [ "$first" != 1 ];then
 	# } | dialog --gauge "$label_distro_download_finish" 10 60 0
 	
 	# Baixa a imagem do sistema
-	show_progress_dialog wget "${label_distro_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
+	show_progress_dialog wget "${label_distro_download}" -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
 	# Extrai a imagem do sistema
 	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
