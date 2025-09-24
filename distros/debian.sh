@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
+# Fonte modular configuração global
+source "$PREFIX/var/lib/andistro/lib/share/global"
 # Variáveis de configuração
 export distro_name="debian"
 codinome="trixie"
@@ -7,9 +8,6 @@ andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
-
-# Fonte modular configuração global
-source "$PREFIX/var/lib/andistro/lib/share/global"
 
 # Verificar e criar diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
