@@ -427,9 +427,6 @@ case "$1" in
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        chmod +x $HOME/start-distro.sh
-        bash $HOME/start-distro.sh
-        rm -rf $HOME/start-distro.sh
         ;;
     -d)
         if [ -z "$2" ]; then
