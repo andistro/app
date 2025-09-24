@@ -1,10 +1,7 @@
 #!/bin/bash
-# Fonte modular configuração global\
-
-export timestamp=$(date +'%d%m%Y-%H%M%S')
-
 export extralink="https://raw.githubusercontent.com/andistro/app/main"
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
+timestamp=$(date +'%d%m%Y-%H%M%S')
 
 # detector de gerenciadores de pacotes
 # Detecta o gerenciador de pacotes do sistema e executa comandos específicos
@@ -52,6 +49,8 @@ if command -v getprop > /dev/null 2>&1; then
     system_country_iso=$(getprop ro.csc.countryiso_code 2>/dev/null)       # Abreviação do País
     system_icu_locale_code=$(getprop persist.sys.locale 2>/dev/null)       # Locale
     system_timezone=$(getprop persist.sys.timezone 2>/dev/null)            # Timezone
+
+    device_dpi=$(getprop ro.sf.lcd_density 2>/dev/null)                     # DPI
 else
     system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/')
     apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
@@ -64,13 +63,9 @@ wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
 if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
-    #echo "Solicitando a fonte $PREFIX/bin/andistro_files/l10n_${system_icu_locale_code}.sh"
-    clear
     chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
     source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
-elif [ -f "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh" ]; then
-    #echo "Solicitando a fonte /usr/local/bin/l10n_${system_icu_locale_code}.sh"
-    clear
+elif [ -f "/usr/local/bin/localesl10n_${system_icu_locale_code}.sh" ]; then
     chmod +x "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
     source "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh"
 else
@@ -150,15 +145,12 @@ update_progress() {
 # //////////////////////////////////////////////////////////////////////////////////////////////////
 
 # DIALOG menu ==================================================================================
-# export USER=$(whoami)
-# HEIGHT=0
-# WIDTH=100
-# CHOICE_HEIGHT=5
-# export PORT=1
+export USER=$(whoami)
+HEIGHT=0
+WIDTH=100
+CHOICE_HEIGHT=5
+export PORT=1
 
-# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-# ==================================================================================================
-# DIALOG ===========================================================================================
 
 # DIALOG Progress ==================================================================================
 # Função para ter uma barra de progresso usando o dialog em diversas tarefas
@@ -202,7 +194,6 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
-            #local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
             {
                 local percent step=0
@@ -230,6 +221,7 @@ show_progress_dialog() {
             # Ex: show_progress_dialog wget "${label}" -O arquivo URL
             # Ex: show_progress_dialog wget "${label_download}" \
             #     -O "$HOME/arquivo.tar.xz" "${url_do_arquivo}"
+
             local label="$1"
             shift
             {
@@ -274,7 +266,7 @@ show_progress_dialog() {
 
                     echo -e "XXX\n$((count * 100 / total))\n${current_label}\nXXX"
 
-                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" 2>&1 |
+                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" 2>&1 | tee -a "/sdcard/termux/andistro/logs/wget-labeled_${timestamp}.txt" |
                     stdbuf -oL grep --line-buffered "%" |
                     stdbuf -oL sed -u -e "s,\.,,g" | awk -v count="$count" -v total="$total" -v label="$current_label" '
                         {
@@ -337,7 +329,7 @@ show_progress_dialog() {
 
             set +m
             (
-                "${cmd[@]}" >/dev/null 2>&1
+                "${cmd[@]}" >> "/sdcard/termux/andistro/logs/extract_${timestamp}.txt" 2>&1
             ) & disown
             pid=$!
 
@@ -358,11 +350,12 @@ show_progress_dialog() {
         check-packages)
             # Exemplo de uso:
             # show_progress_dialog check-packages "Verificando" pacote1 pacote2 ...
+
             local title="$1"
             shift
             local packages=("$@")
             local total="${#packages[@]}"
-            #local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
             local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
             local pkg_manager=$(detect_package_manager)
             : > "$log_file"
@@ -375,9 +368,9 @@ show_progress_dialog() {
                     case "$pkg_manager" in
                         apt)
                             if dpkg -s "$pkg" &>/dev/null; then
-                                echo "$index [✓] $pkg está instalado." >> "$log_file" 2>&1
+                                echo "$index [✓] $pkg está instalado." >> "$log_file"
                             else
-                                echo "$index [✗] $pkg NÃO está instalado." >> "$log_file" 2>&1
+                                echo "$index [✗] $pkg NÃO está instalado." >> "$log_file"
                             fi
                             ;;
                         apk)
@@ -404,7 +397,7 @@ show_progress_dialog() {
             ;;
 
         *)
-            echo "Modo desconhecido para show_progress_dialog: $mode" >&2 | tee -a "$log_file"
+            echo "Modo desconhecido para show_progress_dialog: $mode" >&2
             return 1
         ;;
     esac
