@@ -115,6 +115,7 @@ if [ "$first" != 1 ];then
 	# Extrai a imagem do sistema
 	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
 	sleep 2
+	rm -rf $folder.tar.xz # remove o arquivo
 fi
 # =============================================================================================
 # Criar o script de inicialização
