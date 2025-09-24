@@ -180,7 +180,7 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=21  # Número total de etapas que você quer monitorar
+        total_steps=25  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
@@ -330,14 +330,14 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #18 Verifica e baixa l10n_${locale}.sh
+            #22 Verifica e baixa l10n_${locale}.sh
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
                 curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #19 Verifica e atualiza o l10n_${locale}.sh
+            #23 Verifica e atualiza o l10n_${locale}.sh
             curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
                     
             if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" ]; then
@@ -352,7 +352,7 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #20 Verifica se o andistro está em $HOME
+            #24 Verifica se o andistro está em $HOME
             if [ -f "$HOME/andistro" ]; then
                 mv "$HOME/andistro" "$PREFIX/bin/andistro"
                 rm -rf "$HOME/andistro"
@@ -361,7 +361,7 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            # 21 Verifica e atualiza o andistro
+            # 25 Verifica e atualiza o andistro
             curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
