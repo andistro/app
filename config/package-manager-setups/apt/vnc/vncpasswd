@@ -1,7 +1,8 @@
 #!/bin/bash
 # Verifica e baixa o Dialog
 if ! dpkg -l | grep -qw dialog; then
-    apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_dialog_${timestamp}.txt" 2>&1
+    timestamp=$(date +'%d%m%Y-%H%M%S')
+    apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_vncpasswd_dialog_${timestamp}.txt" 2>&1
 fi
 
 # Fonte modular configuração global
