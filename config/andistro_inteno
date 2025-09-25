@@ -198,6 +198,7 @@ case "$1" in
         #24 Verifica se o andistro está em $HOME
         if [ -f "$HOME/andistro" ]; then
             mv "$HOME/andistro" "/usr/local/bin/andistro"
+            chmod +x "/usr/local/bin/andistro"
             rm -rf "$HOME/andistro"
         fi
         chmod +x "/usr/local/bin/andistro"
