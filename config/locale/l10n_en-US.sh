@@ -151,4 +151,4 @@ MENU_theme_select_dark="Dark"
 
 
 # Lista de recomendações
-label_apps_select_install="Select system apps \nSee below some selected apps to get you started. \nClick on the ones you want to install and press enter (↲) or click <Accept>. \nIf you don't want any of the listed apps, leave them unselected, press enter (↲) or click accept to skip this step."
+label_apps_select_install="Select system apps \nSee below some selected apps to get you started. \n\nClick on the ones you want to install and press enter (↲) or click <Accept>. \n\nIf you don't want any of the listed apps, leave them unselected, press enter (↲) or click accept to skip this step. \n\n\nThe enter key (↲) does not have a selection function, only a confirmation function."

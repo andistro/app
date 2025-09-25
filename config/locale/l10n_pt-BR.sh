@@ -175,4 +175,4 @@ MENU_theme_select_dark="Escuro"
 
 # Lista de recomendações
 
-label_apps_select_install="Selecione apps o sistema \nVeja abaixo alguns apps selecionados para você começar. \nClique naqueles que deseja instalar e tecle enter (↲) ou clique em <Aceitar>. \nCaso não queira nenhum dos listados, mantenha sem selecionar, tecle enter (↲) ou clique em aceitar para pular esta etapa."
+label_apps_select_install="Selecione apps o sistema \nVeja abaixo alguns apps selecionados para você começar. \n\nClique naqueles que deseja instalar e tecle enter (↲) ou clique em <Aceitar>. \n\nCaso não queira nenhum dos listados, mantenha sem selecionar, tecle enter (↲) ou clique em aceitar para pular esta etapa. \n\n\nA tecla enter (↲) não tem função de seleção, somente de confirmação."
