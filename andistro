@@ -504,7 +504,7 @@ case "$1" in
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-    ;;
+        ;;
 
     terminal)
         echo "$distro_desc_line_1"
@@ -527,7 +527,7 @@ case "$1" in
         echo "$distro_desc_line_13"
         echo "   debian"
         echo "   ubuntu"
-    ;;
+        ;;
 
     alerta)
         {
@@ -536,7 +536,7 @@ case "$1" in
                 echo $((i * 2))
             done
         } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
-    ;;
+        ;;
     --set-edit)
         # Comando interno para iniciar a edição direta do código
         if [ -z "$2" ]; then
@@ -567,7 +567,7 @@ case "$1" in
                     ;;
             esac
         fi
-    ;;
+        ;;
 
     *)
         echo "$distro_command_not_found $1"
