@@ -196,26 +196,67 @@ show_progress_dialog() {
             local steps="$1"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
-            {
-                local percent step=0
-                while [ "$#" -gt 1 ]; do
-                    local lbl="$1"
-                    local cmd="$2"
+            local step=0
+            local label_done="Finalizado!"
+
+            while [ "$#" -gt 1 ]; do
+                local lbl="$1"
+                local cmd="$2"
+                local log_file="/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt"
+                
+                # Progresso real: wget/curl
+                if [[ "$cmd" == *wget* ]]; then
+                    eval "$cmd" 2>&1 | \
+                    grep --line-buffered "%" | \
+                    sed -u 's/.* \([0-9]*\)% .*/\1/' | \
+                    while read percent; do
+                        echo "XXX"
+                        echo "$percent"
+                        echo "$lbl"
+                        echo "XXX"
+                    done | dialog --no-shadow --gauge "$lbl" 10 50 0
+                elif [[ "$cmd" == *curl* ]]; then
+                    eval "$cmd" 2>&1 | \
+                    grep --line-buffered "%" | \
+                    sed -u 's/.* \([0-9]*\)% .*/\1/' | \
+                    while read percent; do
+                        echo "XXX"
+                        echo "$percent"
+                        echo "$lbl"
+                        echo "XXX"
+                    done | dialog --no-shadow --gauge "$lbl" 10 50 0
+                else
+                    # Fake animada para comandos longos
+                    (
+                        bash -c "$cmd" >> "$log_file" 2>&1
+                    ) &
+                    CMDPID=$!
+                    percent=0
+                    while kill -0 $CMDPID 2>/dev/null; do
+                        echo "XXX"
+                        echo "$percent"
+                        echo "$lbl"
+                        echo "XXX"
+                        percent=$((percent + 6))
+                        [ $percent -ge 94 ] && percent=94
+                        sleep 0.3
+                    done | dialog --no-shadow --gauge "$lbl" 10 50 0
+                    wait $CMDPID
                     echo "XXX"
-                    percent=$(( step * 100 / steps ))
-                    echo "$percent"
+                    echo "100"
                     echo "$lbl"
-                    echo "XXX"
-                    bash -c "$cmd"  >> "/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt" 2>&1
-                    step=$((step + 1))
-                    shift 2
-                done
-                echo "XXX"
-                echo "100"
-                echo "${label_done}"
-                echo "XXX"
-                sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --no-shadow --gauge "$title_progress" 10 50 0
+                    echo "XXX" | dialog --no-shadow --gauge "$lbl" 10 50 0
+                fi
+
+                step=$((step + 1))
+                shift 2
+            done
+
+            echo "XXX"
+            echo "100"
+            echo "${label_done}"
+            echo "XXX" | dialog --no-shadow --gauge "${label_done}" 10 50 0
+            sleep 1
         ;;
 
         wget)
