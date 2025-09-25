@@ -504,43 +504,70 @@ case "$1" in
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
-        ;;
+    ;;
 
-        terminal)
-            echo "$distro_desc_line_1"
-            echo ""
-            echo "$distro_desc_line_2"
-            echo "$distro_desc_line_3"
-            echo " "
-            echo "$distro_desc_line_4"
-            echo "$distro_desc_line_5"
-            echo " "
-            echo "$distro_desc_line_6"
-            echo "$distro_desc_line_7"
-            echo " "
-            echo "$distro_desc_line_8"
-            echo "$distro_desc_line_9"
-            echo "$distro_desc_line_10"
-            echo "$distro_desc_line_11"
-            echo "$distro_desc_line_12"
-            echo " "
-            echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
-        ;;
+    terminal)
+        echo "$distro_desc_line_1"
+        echo ""
+        echo "$distro_desc_line_2"
+        echo "$distro_desc_line_3"
+        echo " "
+        echo "$distro_desc_line_4"
+        echo "$distro_desc_line_5"
+        echo " "
+        echo "$distro_desc_line_6"
+        echo "$distro_desc_line_7"
+        echo " "
+        echo "$distro_desc_line_8"
+        echo "$distro_desc_line_9"
+        echo "$distro_desc_line_10"
+        echo "$distro_desc_line_11"
+        echo "$distro_desc_line_12"
+        echo " "
+        echo "$distro_desc_line_13"
+        echo "   debian"
+        echo "   ubuntu"
+    ;;
 
-        alerta)
-            {
-                for i in {1..50}; do
-                    sleep 0.1
-                    echo $((i * 2))
-                done
-            } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
-        ;;
-        --set-edit)
-            # Edita o código base do andistro
-            nano $PREFIX/bin/andistro
-        ;;
+    alerta)
+        {
+            for i in {1..50}; do
+                sleep 0.1
+                echo $((i * 2))
+            done
+        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+    ;;
+    --set-edit)
+        # Comando interno para iniciar a edição direta do código
+        if [ -z "$2" ]; then
+            # Não foi passado subcomando, comportamento padrão
+            nano "$PREFIX/bin/andistro"
+        else
+            case "$2" in
+                debian)
+                    nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
+                    ;;
+                start-debian)
+                    nano "$PREFIX/var/lib/andistro/boot/start-debian.sh"
+                    ;;
+                ubuntu)
+                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
+                    ;;
+                start-ubuntu)
+                    nano "$PREFIX/var/lib/andistro/boot/start-ubuntu.sh"
+                    ;;
+                module-global)
+                    nano "$PREFIX/var/lib/andistro/lib/share/global"
+                    ;;
+                module-locale)
+                    nano "$PREFIX/var/lib/andistro/lib/share/locales_${system_icu_locale_code}.sh"
+                    ;;
+                *)
+                    echo "Subcomando desconhecido: $2"
+                    ;;
+            esac
+        fi
+    ;;
 
     *)
         echo "$distro_command_not_found $1"
