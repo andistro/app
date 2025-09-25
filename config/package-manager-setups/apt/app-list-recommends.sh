@@ -8,7 +8,7 @@ PROGS=(
  "libreoffice" "LibreOffice" off
 )
 CHOICES=$(dialog --no-shadow --separate-output \
- --checklist "Selecione os programas para instalar:" 50 50 7 \
+ --checklist "${label_apps_select_install}" 50 50 7 \
  "${PROGS[@]}" \
  2>&1 >/dev/tty)
 
