@@ -130,7 +130,12 @@ fi
 cd \$HOME
 
 #Start termux-x11
-#termux-x11 :1
+#termux-x11 :1 &
+
+pulseaudio --start --exit-idle-time=-1
+PA_PID=\$(pgrep pulseaudio)
+pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+pacmd load-module module-aaudio-sink
 
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
@@ -168,6 +173,9 @@ if [ -z "\$1" ]; then
     exec \$command
 else
     \$command -c "\$com"
+fi
+if [ -n "\$PA_PID" ]; then
+  kill \$PA_PID
 fi
 EOM
 chmod +x $bin
