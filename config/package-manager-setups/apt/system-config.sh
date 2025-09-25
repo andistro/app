@@ -35,6 +35,7 @@ show_progress_dialog steps-multi-label 62 \
   "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
   "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
   "${label_install_script_download}\n\n → pulseaudio" 'sudo apt install pulseaudio --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → pavucontrol" 'sudo apt install pavucontrol --no-install-recommends -y' \
   "${label_install_script_download}\n\n → firefox" 'sudo install -d -m 0755 /etc/apt/keyrings' \
   "${label_install_script_download}\n\n → firefox" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
   "${label_install_script_download}\n\n → firefox" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
@@ -56,10 +57,10 @@ show_progress_dialog steps-multi-label 62 \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
-  "${label_system_setup}\n\n → ${label_themes}zorin-desktop-themes" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
-  "${label_system_setup}\n\n → ${label_themes}zorin-desktop-themes" 'mv zorin-desktop-themes/Zorin*/ /usr/share/themes/' \
-  "${label_system_setup}\n\n → ${label_icons}zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
-  "${label_system_setup}\n\n → ${label_icons}zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
+  "${label_system_setup}\n\n → ${label_themes}: zorin-desktop-themes" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
+  "${label_system_setup}\n\n → ${label_themes}: zorin-desktop-themes" 'mv zorin-desktop-themes/Zorin*/ /usr/share/themes/' \
+  "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
+  "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
   "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
   "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
