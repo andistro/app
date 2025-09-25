@@ -182,7 +182,7 @@ case "$1" in
         update_progress "$current_step" "$total_steps"; sleep 0.1
 
         #23 Verifica e atualiza o l10n_${locale}.sh
-        curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
+        curl -s -o "/usr/local/bin/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
                 
         if [ -f "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" ]; then
             if ! cmp -s "/usr/local/bin/locales/l10n_${system_icu_locale_code}.sh" "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check"; then
