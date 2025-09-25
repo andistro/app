@@ -6,6 +6,7 @@ CYAN='\033[1;36m'
 WHITE='\033[1;37m'
 NC='\033[0m' # Reset
 
+source /usr/local/bin/global
 
 if [ -z "$1" ]; then
     echo "Use o comando --system-info para exibir informações do sistema."
