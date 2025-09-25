@@ -82,6 +82,8 @@ label_themes="Themes"
 label_icons="Icons"
 label_update_finish="Update completed! \nUse the 'andistro' command to start."
 label_system_icu_locale_code_file_error="Localization file not found:"
+label_installing="Installing"
+label_setting_up="Setting Up"
 
 #VNC
 label_vnc_setup="VNC Setup"

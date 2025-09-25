@@ -99,6 +99,8 @@ label_themes="Temas"
 label_icons="Ícones"
 label_update_finish="Atualização concluída! \nUse o comando 'andistro' para iniciar."
 label_system_icu_locale_code_file_error="Arquivo de localização não encontrado:"
+label_installing="Instalando"
+label_setting_up="Configurando"
 
 #VNC
 label_vnc_setup="Configuração do VNC"
