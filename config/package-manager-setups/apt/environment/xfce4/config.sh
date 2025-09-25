@@ -45,13 +45,15 @@ sleep 2
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
   "vncserver -name remote-desktop -geometry 1920x1080 :1" \
   "sleep 10" \
   "sleep 4" \
   "dbus-launch xfconf-query -c xsettings -p /Net/ThemeName -s ZorinBlue-${distro_theme}" \
+  "xfconf-query -c xsettings -p /Net/ThemeName -s ZorinBlue-${distro_theme}" \
   "sleep 4" \
   "dbus-launch xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}" \
+  "xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}" \
   "sleep 4" \
   'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg"' \
   'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2"  -O ~/xfce4-panel.tar.bz2 > /dev/null 2>&1' \
