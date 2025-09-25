@@ -148,3 +148,7 @@ MENU_environments_select_null="None"
 MENU_theme_select="Choose a theme: "
 MENU_theme_select_light="Light"
 MENU_theme_select_dark="Dark"
+
+
+# Lista de recomendações
+label_apps_select_install="Select system apps \nSee below some selected apps to get you started. \nClick on the ones you want to install and press enter (↲) or click <Accept>. \nIf you don't want any of the listed apps, leave them unselected, press enter (↲) or click accept to skip this step."
