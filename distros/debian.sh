@@ -168,8 +168,6 @@ command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
-command+=" -b /usr/local/bin/stopvnc"
-command+=" -b /usr/local/bin/startvncserver"
 com="\$@"
 if [ -z "\$1" ]; then
     exec \$command
@@ -392,16 +390,16 @@ bash ~/system-config.sh
 bash ~/config-environment.sh
 
 rm -rf ~/locale*.sh
-rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
+rm -rf ~/.bash_profile
 EOM
 
 # Cria um dialog de inicialização
 #sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/stopvnc"' $bin
-#sed -i '\|command+=" -b /usr/local/bin/stopvnc"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+sed -i '\|command+=" -b /usr/local/bin/stopvnc"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 # Inicia o sistema
 bash $bin
