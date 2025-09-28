@@ -196,6 +196,36 @@ show_progress_dialog() {
             local steps="$1"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
             shift
+            {
+                local percent step=0
+                while [ "$#" -gt 1 ]; do
+                    local lbl="$1"
+                    local cmd="$2"
+                    echo "XXX"
+                    percent=$(( step * 100 / steps ))
+                    echo "$percent"
+                    echo "$lbl"
+                    echo "XXX"
+                    bash -c "$cmd"  >> "/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt" 2>&1
+                    step=$((step + 1))
+                    shift 2
+                done
+                echo "XXX"
+                echo "100"
+                echo "${label_done}"
+                echo "XXX"
+                sleep 1  # <–– aqui o label final aparece por pelo menos 1s
+            } | dialog --no-shadow --gauge "$title_progress" 10 50 0
+        ;;
+        
+        steps-multi-label-alt)
+            # Ex: show_progress_dialog steps 2 \
+            #     "${label_step1}" 'comando1' \
+            #     "${label_step2}" 'comando2'
+
+            local steps="$1"
+            local timestamp=$(date +'%d%m%Y-%H%M%S')
+            shift
             local step=0
             local label_done="Finalizado!"
 

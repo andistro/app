@@ -47,7 +47,7 @@ for chr in $CHOICES; do
  esac
 done
 if [ "$NUM_ETAPAS" -gt 0 ]; then
-  show_progress_dialog steps-multi-label "$NUM_ETAPAS" "${ETAPAS[@]}"
+  show_progress_dialog steps-multi-label-alt "$NUM_ETAPAS" "${ETAPAS[@]}"
   {
   for i in {1..50}; do
     sleep 0.1
