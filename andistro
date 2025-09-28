@@ -32,7 +32,10 @@ system_icu_locale_code=$(getprop persist.sys.locale)
 if [ -f "$HOME/andistro" ]; then
     mv "$HOME/andistro" "$PREFIX/bin/andistro"
     rm -rf "$HOME/andistro"
-    andistro -u 
+    curl -s -o "$HOME/termos.sh" "${extralink}/termos.sh" > /dev/null 2>&1
+    chmod +x "$HOME/termos.sh"
+    bash "$HOME/termos.sh"
+    andistro -u
 fi
 
 # Configurações do Termux
@@ -161,6 +164,7 @@ fi
 
 case "$1" in
     -u)
+
         echo -e "\n$distro_wait"
         update_progress() {
             current_step=$1
@@ -177,7 +181,7 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=25  # Número total de etapas que você quer monitorar
+        total_steps=26  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
@@ -370,6 +374,11 @@ case "$1" in
                     rm "$HOME/andistro.check"
                 fi
             fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #20 Verifica e baixa global
+            
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
             
