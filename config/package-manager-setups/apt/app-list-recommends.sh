@@ -25,7 +25,7 @@ for chr in $CHOICES; do
         "${label_installing}\n\n → Figma Linux" "sudo apt install libgconf-2-4 --no-install-recommends -y >> $log_file 2>&1"
         "${label_installing}\n\n → Figma Linux" "wget -O /tmp/figma-linux.deb https://github.com/Figma-Linux/figma-linux/releases/download/v0.11.5/figma-linux_0.11.5_linux_arm64.deb >> $log_file 2>&1"
         "${label_installing}\n\n → Figma Linux" "sudo dpkg -i /tmp/figma-linux.deb ; sudo apt install -f -y >> $log_file 2>&1"
-        "${label_setting_up}\n\n → Figma Linux" "sudo sed -i 's|Exec=/usr/share/figma-linux/figma-linux|Exec=/usr/share/figma-linux/figma-linux --no-sandbox|' /usr/share/applications/figma-linux.desktop >> $log_file 2>&1"
+        "${label_setting_up}\n\n → Figma Linux" "sudo sed -i 's|Exec=/opt/figma-linux/figma-linux|Exec=/opt/figma-linux/figma-linux --no-sandbox|' /usr/share/applications/figma-linux.desktop >> $log_file 2>&1"
       )
       NUM_ETAPAS=$((NUM_ETAPAS + 4))
       ;;
