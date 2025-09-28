@@ -407,7 +407,7 @@ case "$1" in
             show_progress_dialog "wget" "${label_progress}" -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
             bash $PREFIX/var/lib/andistro/boot/install-debian.sh
-            #rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh
+            rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh
             clear
 
         elif [ "$2" == "ubuntu" ]; then
@@ -417,7 +417,7 @@ case "$1" in
             show_progress_dialog "wget" "${label_progress}" -O "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" "${extralink}/distros/ubuntu.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
             bash $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
-            #rm -rf $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
+            rm -rf $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
             clear
 
         else

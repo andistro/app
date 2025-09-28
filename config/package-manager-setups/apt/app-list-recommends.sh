@@ -2,7 +2,6 @@
 source "/usr/local/bin/global"
 PROGS=(
   "brave-browser" "Brave Browser" off
-  "code" "Visual Studio Code" off
   "figma-linux" "Figma Linux" off
   "inkscape" "Inkscape" off
   "libreoffice" "LibreOffice" off
@@ -38,14 +37,6 @@ for chr in $CHOICES; do
       )
       NUM_ETAPAS=$((NUM_ETAPAS + 3))
       ;;
-      "code")
-      log_file="/sdcard/termux/andistro/logs/app-recommends-code_${timestamp}.txt"
-      ETAPAS+=(
-        "${label_installing}" "sudo apt install code --no-install-recommends -y >> $log_file 2>&1"
-        "${label_setting_up}" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop >> $log_file 2>&1"
-      )
-      NUM_ETAPAS=$((NUM_ETAPAS + 2))
-      ;;
     *)
       log_file="/sdcard/termux/andistro/logs/app-recommends-${chr}_${timestamp}.txt"
       ETAPAS+=(
@@ -67,3 +58,5 @@ if [ "$NUM_ETAPAS" -gt 0 ]; then
 else
   dialog --msgbox "Nenhum pacote selecionado." 8 40
 fi
+
+rm -rf app-list-recommends.sh

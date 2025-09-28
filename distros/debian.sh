@@ -201,18 +201,18 @@ mkdir -p "$folder/root/.vnc/"
 mkdir -p "$folder/usr/local/bin/locales/"
 
 # Baixa as configurações, scripts do vnc e wallpapers adicionais
-show_progress_dialog wget-labeled "${label_progress}" 11 \
-	"${label_progress}" -O "$folder/root/system-config.sh" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+show_progress_dialog wget-labeled "${label_progress}" 12 \
+	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
+	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
+	"${label_progress}" -O "$folder/root/wallpapers.sh" "${extralink}/config/wallpapers/config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
 	"${label_progress}" -P "$folder/usr/local/bin/locales" "${extralink}/config/locale/l10n_${language_selected}.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver" \
-	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/john-towner-JgOeRuGD_Y4.jpg" \
-	"${label_wallpaper_download}" -P "$folder/usr/share/backgrounds" "${extralink}/config/wallpapers/unsplash/wai-hsuen-chan-DnmMLipPktY.jpg"
+	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver"
 
 chmod +x $folder/usr/local/bin/andistro
 chmod +x $folder/usr/local/bin/vnc
@@ -223,6 +223,8 @@ chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/usr/local/bin/global"
 chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
+chmod +x "$folder/root/app-list-recommends.sh"
+chmod +x "$folder/root/wallpapers.sh"
 sleep 2
 
 # KERNEL_VERSON=$(uname -r)
@@ -380,12 +382,14 @@ case \$CHOICE in
 	;;
 esac
 
+# Baixa os wallpapers adicionais
+bash ~/wallpapers.sh
+
 # Executa as configurações base do sistema
 bash ~/system-config.sh
 
 # Configurações da inteface escolhida
 bash ~/config-environment.sh
-sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
 
 rm -rf ~/locale*.sh
 rm -rf ~/.bash_profile

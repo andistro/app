@@ -21,13 +21,11 @@ Comment=Editar preferências de teclado
 Exec=xfce4-keyboard-settings
 Icon=preferences-desktop-keyboard
 Categories=Settings;DesktopSettings;X-XFCE;GTK;
-
 EOF
 "' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
-export LANG
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 echo $$ > /tmp/xsession.pid

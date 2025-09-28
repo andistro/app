@@ -12,7 +12,6 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
 #!/bin/bash
 [ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
 export PULSE_SERVER=127.0.0.1
-export LANG
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r \$HOME/.Xresources ] && xrdb \$HOME/.Xresources
 echo \$\$ > /tmp/xsession.pid
