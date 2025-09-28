@@ -133,10 +133,8 @@ cd \$HOME
 #termux-x11 :1 &
 
 pulseaudio --start --exit-idle-time=20
-PA_PID=\$(pgrep pulseaudio)
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
 pacmd load-module module-aaudio-sink
-
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
 command="proot"
@@ -153,6 +151,8 @@ command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b \$TMPDIR:/tmp"
 command+=" -b /proc/meminfo:/proc/meminfo"
+command+=" -b /sys"
+command+=" -b /data"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
@@ -174,6 +174,7 @@ if [ -z "\$1" ]; then
 else
     \$command -c "\$com"
 fi
+PA_PID=\$(pgrep pulseaudio)
 if [ -n "\$PA_PID" ]; then
   kill \$PA_PID
 fi
@@ -279,6 +280,7 @@ export LANG=$language_transformed.UTF-8
 
 # Fonte modular configuração global
 source "/usr/local/bin/global"
+echo "source \"/usr/local/bin/global\"" >> ~/.bashrc
 
 # Mensagem de inicialização
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"

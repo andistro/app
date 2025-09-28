@@ -251,8 +251,13 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
+pulseaudio --start --exit-idle-time=20
+pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+pacmd load-module module-aaudio-sink
+
 #cd \$(dirname \$0)
-cd $HOME
+cd \$HOME
+
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
 command="proot"
@@ -268,11 +273,12 @@ fi
 command+=" -b /dev"
 command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
 command+=" -b /proc"
-command+=" -b /data/data/com.termux/files/usr/tmp:/tmp"
+command+=" -b \$TMPDIR:/tmp"
+command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b /sys"
 command+=" -b /data"
-command+=" -b \$TMPDIR:/tmp"
 command+=" -b $folder/root:/dev/shm"
+## Exclusivo Ubuntu
 command+=" -b /proc/self/fd/2:/dev/stderr"
 command+=" -b /proc/self/fd/1:/dev/stdout"
 command+=" -b /proc/self/fd/0:/dev/stdin"
@@ -300,6 +306,10 @@ if [ -z "\$1" ];then
     exec \$command
 else
     \$command -c "\$com"
+fi
+PA_PID=\$(pgrep pulseaudio)
+if [ -n "\$PA_PID" ]; then
+  kill \$PA_PID
 fi
 EOM
 
@@ -408,6 +418,7 @@ groupadd -g 1079 group1079
 
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 
+echo "source \"/usr/local/bin/global\"" >> ~/.bashrc
 echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #======================================================================================================
