@@ -28,6 +28,12 @@ vncpasswd
 
 source /etc/profile
 
+if [ "$distro_theme" = "Light" ]; then
+    wallpaper="mikehindle-BXvcjmM6dH8.jpg"
+elif [ "$distro_theme" = "Black" ]; then
+    wallpaper="mikehindle-CjV322K-pdA.jpg"
+fi
+
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   'vncserver -name remote-desktop -geometry 1920x1080 :1' \
   'sleep 10' \
@@ -41,7 +47,7 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
   "echo -e '@lxpanel --profile LXDE\n@pcmanfm --desktop --profile LXDE\n@xscreensaver -no-splash' > \$HOME/.config/lxsession/LXDE/autostart" \
   "echo -e '[Session]\nwindow_manager=openbox-lxde\ndisable_autostart=no\npolkit/command=\nclipboard/command=lxclipboard\nxsettings_manager/command=build-in\nproxy_manager/command=build-in\nkeyring/command=ssh-agent\nquit_manager/command=stopvnc\nlock_manager/command=stopvnc\nterminal_manager/command=lxterminal\nquit_manager/image=/usr/share/lxde/images/logout-banner.png\nquit_manager/layout=top\n\n[GTK]\nsNet/ThemeName=ZorinBlue-${distro_theme}\nsNet/IconThemeName=Zorin\nsGtk/FontName=Sans 10\niGtk/ToolbarStyle=3\niGtk/ButtonImages=1\niGtk/MenuImages=1\niGtk/CursorThemeSize=18\niXft/Antialias=1\niXft/Hinting=1\nsXft/HintStyle=hintslight\nsXft/RGBA=rgb\niNet/EnableEventSounds=1\niNet/EnableInputFeedbackSounds=1\nsGtk/ColorScheme=\niGtk/ToolbarIconSize=3\nsGtk/CursorThemeName=DMZ-White\n\n[Mouse]\nAccFactor=20\nAccThreshold=10\nLeftHanded=0\n\n[Keyboard]\nDelay=500\nInterval=30\nBeep=1\n\n[State]\nguess_default=true\n\n[Dbus]\nlxde=true\n\n[Environment]\nmenu_prefix=lxde-' > \$HOME/.config/lxsession/LXDE/desktop.conf" \
   "echo -e '[Settings]\ngtk-theme-name=ZorinBlue-${distro_theme}\ngtk-icon-theme-name=Zorin\ngtk-font-name=Sans 10\ngtk-cursor-theme-size=18\n gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ\n gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR\n gtk-button-images=1\n gtk-menu-images=1\n gtk-enable-event-sounds=1\n gtk-enable-input-feedback-sounds=1\n gtk-xft-antialias=1\n gtk-xft-hinting=1\n gtk-xft-hintstyle=hintslight\n gtk-xft-rgba=rgb' > \$HOME/.config/gtk-3.0/settings.ini" \
-  "sed -i 's|wallpaper=/etc/alternatives/desktop-background|wallpaper=/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg|' ~/.config/pcmanfm/LXDE/desktop-items-0.conf" \
+  "sed -i 's|wallpaper=/etc/alternatives/desktop-background|wallpaper=/usr/share/backgrounds/${wallpaper}|' ~/.config/pcmanfm/LXDE/desktop-items-0.conf" \
     'firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID' \
   "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
   'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \

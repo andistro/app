@@ -41,6 +41,13 @@ vncpasswd
 
 sleep 2
 
+if [ "$distro_theme" = "Light" ]; then
+    wallpaper="mikehindle-BXvcjmM6dH8.jpg"
+elif [ "$distro_theme" = "Black" ]; then
+    wallpaper="mikehindle-CjV322K-pdA.jpg"
+fi
+
+
 source /etc/profile
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
@@ -53,7 +60,7 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 23 \
   "dbus-launch xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}" \
   "xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}" \
   "sleep 4" \
-  'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/wai-hsuen-chan-DnmMLipPktY.jpg"' \
+  "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set \"/usr/share/backgrounds/${wallpaper}\"" \
   'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2"  -O ~/xfce4-panel.tar.bz2 > /dev/null 2>&1' \
   "chmod +x ~/xfce4-panel.tar.bz2" \
   "dbus-launch --exit-with-session xfce4-panel-profiles load xfce4-panel.tar.bz2" \
