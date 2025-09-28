@@ -548,10 +548,10 @@ case "$1" in
                     nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
                     ;;
                 start-debian)
-                    nano "$PREFIX/var/lib/andistro/boot/start-debian.sh"
+                    nano "$PREFIX/var/lib/andistro/boot/start-debian"
                     ;;
                 ubuntu)
-                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
+                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu"
                     ;;
                 start-ubuntu)
                     nano "$PREFIX/var/lib/andistro/boot/start-ubuntu.sh"
