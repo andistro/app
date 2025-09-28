@@ -169,7 +169,7 @@ command+=" TERM=\$TERM"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
 command+=" -b /usr/local/bin/stopvnc"
-command+=" -b /usr/local/bin/startvnc"
+command+=" -b /usr/local/bin/startvncserver"
 com="\$@"
 if [ -z "\$1" ]; then
     exec \$command
