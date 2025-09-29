@@ -3,7 +3,8 @@
 # rm -rf * && rm -rf $PREFIX/var/lib/andistro/ && rm -rf $PREFIX/bin/andistro
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 
-termux-setup-storage -y > /dev/null 2>&1
+rm -rf /storage
+termux-setup-storage > /dev/null 2>&1
 
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
@@ -159,8 +160,6 @@ if [ -z "$1" ]; then
     esac
 exit 0
 fi
-
-
 
 case "$1" in
     -u)
@@ -413,7 +412,7 @@ case "$1" in
             echo "$distro_wait"
             #andistro ${distro_update} 2>&1
             andistro alerta
-            show_progress_dialog "wget" "${label_progress}" -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
+            show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
             bash $PREFIX/var/lib/andistro/boot/install-debian.sh
             rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh

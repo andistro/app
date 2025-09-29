@@ -289,7 +289,8 @@ echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 
 
 # Este alias faz com que o comando 'ls' mostre arquivos e diretórios coloridos automaticamente
-echo "alias ls='ls --color=auto'" >> ~/.bashrc
+sed -i "s/^# export LS_OPTIONS='--color=auto'/export LS_OPTIONS='--color=auto'/" ~/.bashrc
+#echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 # Adiciona uma lista de fontes apt caso seja necessário
 #echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
@@ -398,8 +399,9 @@ rm -rf ~/.bash_profile
 EOM
 
 # Cria um dialog de inicialização
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 #sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/stopvnc"' $bin
-sed -i '\|command+=" -b /usr/local/bin/stopvnc"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+#sed -i '\|command+=" -b /usr/local/bin/stopvnc"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 # Inicia o sistema
 bash $bin
