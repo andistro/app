@@ -387,6 +387,8 @@ bash ~/wallpapers.sh
 # Executa as configurações base do sistema
 bash ~/system-config.sh
 
+bash ~/app-list-recommends.sh
+
 # Configurações da inteface escolhida
 bash ~/config-environment.sh
 
