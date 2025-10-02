@@ -93,14 +93,17 @@ label_width="Largura"
 label_height="Altura"
 label_scale="Escala"
 label_port="Porta"
+label_localhost="Local:"
 label_confirm="Confirmar"
 label_cancel="Cancelar"
 label_themes="Temas"
 label_icons="Ícones"
+label_resolution_default="Resolução $current_resolution definida como padrão!"
 label_update_finish="Atualização concluída! \nUse o comando 'andistro' para iniciar."
 label_system_icu_locale_code_file_error="Arquivo de localização não encontrado:"
 label_installing="Instalando"
 label_setting_up="Configurando"
+label_resoluciondefault="definida como padrão!"
 
 #VNC
 label_vnc_setup="Configuração do VNC"
@@ -113,7 +116,6 @@ label_vncserver_password_forgot="Esqueceu a senha? Use o comando 'vncpasswd' par
 
 
 label_startvnc_desc="O servidor VNC foi iniciado. A senha padrão é a senha da conta "
-label_vncserver_localhost="Local:"
 label_vncserver_kill="Desligando o servidor VNC..."
 label_vncserver_kill_port="Digite o número da porta que deseja fechar (exemplo: 1): "
 label_vncserver_killed="Desligando o VNC da porta"
@@ -141,6 +143,11 @@ label_vncserver_chose_resolution_custom_alert="Atenção: Não tecle ENTER (↲)
 label_vncserver_chose_resolution_custom_alert_caption="Legenda: o campo em azul é o que está selecionado para digitar. Use as teclas ↑ e ↓ para trocar a seleção. Pode clicar nos nomes para selecionar."
 label_vncserver_chose_resolution_custom_alert_error="Faltam ou há valores inválidos nos campos abaixo:\n"
 label_vncserver_chose_resolution_canceled="Cancelado. Use o comando startvnc para selecionar outra resolução"
+
+label_vncserver_remove_default_title="Deseja remover a resolução padrão?"
+#label_vncserver_remove_default_desc="Deseja remover a resolução padrão?"
+label_vncserver_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
+label_vncserver_remove_default_sucess="Resolução padrão removida com sucesso."
 
 
 # Sobre downloads

@@ -76,6 +76,7 @@ label_width="Width"
 label_height="Height"
 label_scale="Scale"
 label_port="Port"
+label_localhost="Local:"
 label_confirm="Confirm"
 label_cancel="Cancel"
 label_themes="Themes"
@@ -91,7 +92,7 @@ label_vnc_password_input="Enter the new password for the VNC server: "
 label_vnc_password_input_alert="Tap the button to open the keyboard (⌨). If you don't do this, the next step will fail. Then press OK."
 label_vnc_password_input_alert_important="It is necessary to set a password!"
 label_startvnc_desc="VNC server started. Default password is the account password "
-label_vncserver_localhost="Local:"
+
 label_vncserver_password_forgot="Forgot your password? Use the 'vncpasswd' command to reset the VNC password."
 label_vncserver_kill="Shutting down VNC server..."
 label_vncserver_kill_port="Enter the port number you want to close (example: 1): "
@@ -105,10 +106,18 @@ label_vncserver_resolution_option_fhd="Start vncserver in Full-HD resolution"
 label_vncserver_resolution_option_hd="Start vncserver in HD resolution"
 label_vncserver_resolution_option_custom="Set resolution, port and scale manually"
 
+label_vncserver_resolution_default="Resolução padrão"
+label_vncserver_resolution_default_desc="Ao confirmar, irá usar definida como padrão: \n\n Resolução: $RESOLUTION \nPorta: ${PORT:-1}, \nEscala: ${SCALE:-1})\n\nSelecione 'Não' para escolher outra resolução."
+label_vncserver_resolution_frequent_desc_title="Resolução Frequente Detectada"
+label_vncserver_resolution_frequent_desc="Você tem usado a resolução %s frequentemente.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
+
 label_vncserver_chose_resolution_uwhd="You chose Ultra Wide HD resolution"
 label_vncserver_chose_resolution_qdhd="You chose Quad-HD resolution"
 label_vncserver_chose_resolution_fhd="You chose Full HD resolution"
 label_vncserver_chose_resolution_hd="You chose HD resolution"
+
+label_vncserver_chose_resolution_default="Você escolheu usar a resolução padrão"
+
 label_vncserver_chose_resolution_custom="You chose to set resolution and port manually"
 label_vncserver_chose_resolution_custom_desc="Enter custom resolution in WIDTHxHEIGHT format. Example: 1920x1200"
 label_vncserver_chose_resolution_custom_desc_port="Enter the port number. Example: 2. Default port is 1"
@@ -116,6 +125,14 @@ label_vncserver_chose_resolution_custom_alert="Attention: Do not press ENTER (�
 label_vncserver_chose_resolution_custom_alert_caption="Legend: the field in blue is the one selected for typing. Use the ↑ and ↓ keys to change the selection. You can click on the names to select."
 label_vncserver_chose_resolution_custom_alert_error="Missing or invalid values in the fields below:\n"
 label_vncserver_chose_resolution_canceled="Cancelled. Use the startvnc command to select another resolution" # Translated by Perplexity
+
+label_vncserver_remove_default_title="Deseja remover a resolução padrão?"
+label_vncserver_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
+label_vncserver_remove_default_sucess="Resolução padrão removida com sucesso."
+
+
+label_resolution_default="Resolução $current_resolution definida como padrão!"
+
 
 # About downloads
 label_install_script_download="Downloading installation script..."
