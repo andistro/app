@@ -125,7 +125,10 @@ label_vncserver_resolution_option_qdhd="Iniciar o vncserver na resolução Quad-
 label_vncserver_resolution_option_fhd="Iniciar o vncserver na resolução Full-HD"
 label_vncserver_resolution_option_hd="Iniciar o vncserver na resolução HD"
 label_vncserver_resolution_option_custom="Definir resolução, porta e escala manualmente"
-
+label_vncserver_resolution_default="Resolução padrão"
+label_vncserver_resolution_default_desc="Ao confirmar, irá usar definida como padrão: \n\n Resolução: $RESOLUTION \nPorta: ${PORT:-1}, \nEscala: ${SCALE:-1})\n\nSelecione 'Não' para escolher outra resolução."
+label_vncserver_resolution_frequent_desc_title="Resolução Frequente Detectada"
+label_vncserver_resolution_frequent_desc="Você tem usado a resolução %s frequentemente.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
 label_vncserver_chose_resolution_uwhd="Você escolheu a resolução Ultra Wide HD"
 label_vncserver_chose_resolution_qdhd="Você escolheu a resolução Quad-HD"
 label_vncserver_chose_resolution_fhd="Você escolheu a resolução Full HD"
