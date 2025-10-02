@@ -133,6 +133,7 @@ label_vncserver_chose_resolution_uwhd="Você escolheu a resolução Ultra Wide H
 label_vncserver_chose_resolution_qdhd="Você escolheu a resolução Quad-HD"
 label_vncserver_chose_resolution_fhd="Você escolheu a resolução Full HD"
 label_vncserver_chose_resolution_hd="Você escolheu a resolução HD"
+label_vncserver_chose_resolution_default="Você escolheu usar a resolução padrão"
 label_vncserver_chose_resolution_custom="Você escolheu definir a resolução e porta manualmente"
 label_vncserver_chose_resolution_custom_desc="Insira a resolução personalizada no formato LARGURAxALTURA. Exemplo: 1920x1200"
 label_vncserver_chose_resolution_custom_desc_port="Insira o número da porta. Exemplo: 2. A porta padrão é 1"
