@@ -251,7 +251,7 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
-pulseaudio --start --exit-idle-time=20
+pulseaudio --start --exit-idle-time=-1
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
 pacmd load-module module-aaudio-sink
 
