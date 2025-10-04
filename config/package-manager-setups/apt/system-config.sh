@@ -65,8 +65,8 @@ show_progress_dialog steps-multi-label 64 \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
   "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
-  "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinBlue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
-  "${label_system_setup}" "echo 'gtk-theme-name=\"ZorinBlue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
+  "${label_system_setup}" "echo -e '[Settings]\\ngtk-theme-name=ZorinGray-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
+  "${label_system_setup}" "echo 'gtk-theme-name=\"ZorinGray-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
   "${label_system_setup}" 'sudo apt-get clean' \
   "${label_system_setup}" 'sudo dpkg --configure -a ' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
