@@ -373,7 +373,7 @@ WIDTH=100
 CHOICE_HEIGHT=5
 export PORT=1
 
-OPTIONS=(1 "${MENU_environments_select_default} (XFCE)"
+OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
 		 2 "${MENU_environments_select_light} (LXDE)"
 		 3 "${MENU_environments_select_null}") 
 
