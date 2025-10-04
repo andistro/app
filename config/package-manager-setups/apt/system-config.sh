@@ -4,13 +4,12 @@ source "/usr/local/bin/global"
 
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 65 \
+show_progress_dialog steps-multi-label 64 \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
   "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata --no-install-recommends -y" \
   "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration --no-install-recommends -y" \
-  "${label_install_script_download}\n\n → andistro" "wget -O \"/usr/local/bin/andistro\" \"${extralink}/config/andistro_inteno\"" \
   "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
   "${label_install_script_download}\n\n → wget" 'sudo apt install wget --no-install-recommends -y' \
   "${label_install_script_download}\n\n → curl" 'sudo apt install curl --no-install-recommends -y' \
