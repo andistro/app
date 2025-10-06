@@ -3,8 +3,8 @@
 # rm -rf * && rm -rf $PREFIX/var/lib/andistro/ && rm -rf $PREFIX/bin/andistro
 extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 
-rm -rf /storage
-termux-setup-storage > /dev/null 2>&1
+rm -rf storage
+termux-setup-storage
 
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
