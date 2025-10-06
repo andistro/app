@@ -56,7 +56,7 @@ if [ "$NUM_ETAPAS" -gt 0 ]; then
   } | dialog --no-shadow --gauge "$label_done" 10 60 0
   clear
 else
-  dialog --msgbox "Nenhum pacote selecionado." 8 40
+  dialog --no-shadow --msgbox "Nenhum pacote selecionado." 8 40
 fi
 
 rm -rf app-list-recommends.sh
