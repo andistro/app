@@ -43,9 +43,9 @@ vncpasswd
 sleep 2
 
 if [ "$distro_theme" = "Light" ]; then
-    wallpaper="mikehindle-BXvcjmM6dH8.jpg"
+    wallpaper="tiagojose-OhLxeq6DKvI.jpg"
 elif [ "$distro_theme" = "Dark" ]; then
-    wallpaper="mikehindle-CjV322K-pdA.jpg"
+    wallpaper="tiagojose-RiTmt0xGYnA.jpg"
 fi
 
 
