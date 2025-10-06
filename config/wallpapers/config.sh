@@ -3,6 +3,10 @@
 source "/usr/local/bin/global"
 
 show_progress_dialog steps-multi-label 17 \
+    "${label_wallpaper_download}\n\n → AnDistro" 'mkdir -p /usr/share/backgrounds/andistro'\
+    "${label_wallpaper_download}\n\n → AnDistro" 'wget -P "/usr/share/backgrounds/andistro" "${extralink}/config/wallpapers/AnDistro/0.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro" 'wget -P "/usr/share/backgrounds/andistro" "${extralink}/config/wallpapers/AnDistro/1.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro" 'wget -P "/usr/share/backgrounds/andistro" "${extralink}/config/wallpapers/AnDistro/2.jpg"' \
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/vertical'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/horizontal'\
