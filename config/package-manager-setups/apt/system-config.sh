@@ -59,7 +59,7 @@ show_progress_dialog steps-multi-label 66 \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'chmod +x /usr/local/bin/andistro' \
-  "${label_system_setup}" 'echo -e "file:/// raiz\nfile:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
+  "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
   "${label_system_setup}\n\n → ${label_themes}: zorin-desktop-themes" 'git clone https://github.com/ZorinOS/zorin-desktop-themes.git' \
