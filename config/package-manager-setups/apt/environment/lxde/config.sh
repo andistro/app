@@ -1,5 +1,5 @@
 #!/bin/bash
-
+distro_theme="$1"
 #LXDE config environment
 source "/usr/local/bin/global"
 
@@ -29,9 +29,9 @@ vncpasswd
 source /etc/profile
 
 if [ "$distro_theme" = "Light" ]; then
-    wallpaper="mikehindle-BXvcjmM6dH8.jpg"
+    wallpaper="unsplash/square/tiagojose-OhLxeq6DKvI.jpg"
 elif [ "$distro_theme" = "Dark" ]; then
-    wallpaper="mikehindle-CjV322K-pdA.jpg"
+    wallpaper="unsplash/square/tiagojose-RiTmt0xGYnA.jpg"
 fi
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
