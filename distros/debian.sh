@@ -385,18 +385,20 @@ esac
 bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
-bash ~/system-config.sh
-
-bash ~/app-list-recommends.sh
+bash ~/system-config.sh "$distro_theme"
 
 # Configurações da inteface escolhida
-bash ~/config-environment.sh
+bash ~/config-environment.sh "$distro_theme"
+
+bash ~/app-list-recommends.sh
 
 rm -rf ~/locale*.sh
 rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
+rm -rf ~/wallpapers.sh
+rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
 EOM
 

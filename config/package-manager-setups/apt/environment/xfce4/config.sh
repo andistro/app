@@ -1,6 +1,7 @@
 #!/bin/bash
 #XFCE4 config environment
 source "/usr/local/bin/global"
+distro_theme="$1"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13 \
      'sleep 2' \
