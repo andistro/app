@@ -184,6 +184,11 @@ case "$1" in
         current_step=0
 
         {
+            #0 Atualiza os repositórios
+            sleep 1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
             #1 Atualiza os repositórios
             pkg update > /dev/null 2>&1
             ((current_step++))
@@ -373,11 +378,6 @@ case "$1" in
                     rm "$HOME/andistro.check"
                 fi
             fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
-
-            #20 Verifica e baixa global
-            
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
             
