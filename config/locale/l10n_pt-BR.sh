@@ -109,7 +109,7 @@ label_resoluciondefault="definida como padrão!"
 label_vnc_setup="Configuração do VNC"
 
 # VNC Passwd
-label_vnc_password_input="Digite a nova senha para o servidor VNC: "
+label_vnc_password_input="Digite a nova senha para o servidor VNC \nCaso necessário toque no botão para abrir o teclado (⌨)"
 label_vnc_password_input_alert="Toque no botão para abrir o teclado (⌨). Caso não faça isso, a próxima etapa terá erro. Depois pressione OK."
 label_vnc_password_input_alert_important="É necessário definir uma senha!"
 label_vncserver_password_forgot="Esqueceu a senha? Use o comando 'vncpasswd' para redefinir a senha do VNC."
