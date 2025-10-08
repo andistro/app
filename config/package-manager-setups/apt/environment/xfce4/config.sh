@@ -3,8 +3,8 @@ distro_theme="$1"
 #XFCE4 config environment
 source "/usr/local/bin/global"
 
-
-show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 12 \
+     'echo "${label_config_environment_gui}"' \
      'sleep 2' \
      'sleep 4' \
      'sleep 6' \
@@ -13,18 +13,6 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13
      'sudo apt install xfce4-terminal --no-install-recommends -y' \
      'sudo apt install xfce4-settings --no-install-recommends -y' \
      'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
-     'sudo apt sudo apt-mark manual ristretto mousepad xfce4-* lib*' \
-     'bash -c "cat > $HOME/.local/share/applications/xfce4-keyboard-settings.desktop <<EOF
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Teclado
-Comment=Editar preferências de teclado
-Exec=xfce4-keyboard-settings
-Icon=preferences-desktop-keyboard
-Categories=Settings;DesktopSettings;X-XFCE;GTK;
-EOF
-"' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
@@ -52,8 +40,11 @@ fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 24 \
+     'echo "${label_config_environment_gui}"' \
      "sleep 4" \
+     'echo "Default Theme: ${distro_theme}"' \
+     'echo "Default Wallpaper: /usr/share/backgrounds/${wallpaper}"' \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
      "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/IconThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \

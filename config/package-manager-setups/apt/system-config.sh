@@ -1,10 +1,12 @@
 #!/bin/bash
+distro_theme="$1"
 # Fonte modular configuração global
 source "/usr/local/bin/global"
-distro_theme="$1"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 64 \
+show_progress_dialog steps-multi-label 68 \
+  'echo "system-config"' \
+  "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -37,6 +39,8 @@ show_progress_dialog steps-multi-label 64 \
   "${label_install_script_download}\n\n → pavucontrol" 'sudo apt install pavucontrol --no-install-recommends -y' \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
+  "${label_install_script_download}" 'sudo dpkg --configure -a' \
+  "${label_install_script_download}" 'sudo apt --fix-broken install -y' \
   "${label_install_script_download}\n\n → firefox" 'sudo install -d -m 0755 /etc/apt/keyrings' \
   "${label_install_script_download}\n\n → firefox" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
   "${label_install_script_download}\n\n → firefox" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
@@ -67,7 +71,7 @@ show_progress_dialog steps-multi-label 64 \
   "${label_system_setup}" "echo -e '[Settings]\ngtk-theme-name=AnDistro-Majorelle-Blue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
   "${label_system_setup}" "echo 'gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
   "${label_system_setup}" 'sudo apt-get clean' \
-  "${label_system_setup}" 'sudo dpkg --configure -a ' \
+  "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
 sleep 2
 
@@ -82,3 +86,5 @@ sudo dpkg-reconfigure keyboard-configuration
 
 # Remove o arquivo do sistema
 rm -rf system-config.sh
+
+#"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
