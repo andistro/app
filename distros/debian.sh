@@ -385,10 +385,10 @@ esac
 bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
-bash ~/system-config.sh "$distro_theme"
+bash ~/system-config.sh "\$distro_theme"
 
 # Configurações da inteface escolhida
-bash ~/config-environment.sh "$distro_theme"
+bash ~/config-environment.sh "\$distro_theme"
 
 bash ~/app-list-recommends.sh
 
