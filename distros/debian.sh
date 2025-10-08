@@ -348,6 +348,8 @@ sleep 0.5
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
+sudo dpkg --configure -a
+
 etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
