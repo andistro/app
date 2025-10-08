@@ -52,7 +52,7 @@ fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 22 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 21 \
      "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
      "sleep 4" \
