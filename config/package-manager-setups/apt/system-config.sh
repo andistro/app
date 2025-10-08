@@ -4,9 +4,8 @@ distro_theme="$1"
 source "/usr/local/bin/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 68 \
+show_progress_dialog steps-multi-label 67 \
   'echo "system-config"' \
-  "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
