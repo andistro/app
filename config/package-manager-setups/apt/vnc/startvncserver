@@ -100,8 +100,7 @@ case $CHOICE in
         echo "Resolução definida: ${largura_default}x${altura_default}, Escala: ${escala_default}, Porta: ${porta_default}"
     fi
 
-    GEO="-geometry ${largura_default}x${altura_default}" PORT=$porta_default vnc
-    xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s $escala_default
+    GEO="-geometry ${largura_default}x${altura_default}" PORT=$porta_default ESCALA=$escala_default vnc
 ;;
 2)
     echo "${label_vncserver_chose_resolution_uwhd}"

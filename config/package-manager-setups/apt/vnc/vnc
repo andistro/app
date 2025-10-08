@@ -6,7 +6,7 @@ WLAN_IP="$wlan_ip_localhost"
 vncserver -localhost no -depth 24 -name remote-desktop $GEO :$PORT
 
 if pgrep -x "xfce4-session" > /dev/null; then
-    xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s $escala_default
+    xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s $ESCALA
 fi
 
 echo -e "\n${label_startvnc_desc} $USER\n\n
