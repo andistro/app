@@ -180,55 +180,55 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=26  # Número total de etapas que você quer monitorar
+        total_steps=24  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
-            #0 Atualiza os repositórios
+            #1 Atualiza os repositórios
             sleep 1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #1 Atualiza os repositórios
+            #2 Atualiza os repositórios
             pkg update > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #2 Instala o bash
+            #3 Instala o bash
             pkg install --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #3 Instala o openssl
+            #4 Instala o openssl
             pkg install --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #4 Instala o apt
+            #5 Instala o apt
             pkg install --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #5 Atualiza os pacotes
+            #6 Atualiza os pacotes
             pkg upgrade -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #6 Verifica se o termux-exec está instalado
+            #7 Verifica se o termux-exec está instalado
             if ! dpkg -l | grep -qw termux-exec; then
                 pkg install termux-exec -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #7 Verifica se o proot está instalado
+            #8 Verifica se o proot está instalado
             if ! dpkg -l | grep -qw proot; then
                 pkg install proot -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #8 Verifica se o x11-repo está instalado
+            #9 Verifica se o x11-repo está instalado
     
             if ! dpkg -l | grep -qw x11-repo; then
                 pkg install x11-repo -y > /dev/null 2>&1
@@ -236,128 +236,123 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #9 Verifica se o termux-x11-nightly está instalado
+            #10 Verifica se o termux-x11-nightly está instalado
             if ! dpkg -l | grep -qw termux-x11-nightly; then
                 pkg install termux-x11-nightly -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #10 Verifica se o pulseaudio está instalado
+            #11 Verifica se o pulseaudio está instalado
             if ! dpkg -l | grep -qw pulseaudio; then
                 pkg install pulseaudio -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #11 Verifica se o wget está instalado
+            #12 Verifica se o wget está instalado
             if ! dpkg -l | grep -qw wget; then
                 pkg install wget -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #12 Verifica se o dialog está instalado
+            #13 Verifica se o dialog está instalado
             if ! dpkg -l | grep -qw dialog; then
                 pkg install dialog -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #13 Verifica se o tar está instalado
+            #14 Verifica se o tar está instalado
             if ! dpkg -l | grep -qw tar; then
                 pkg install tar -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #14 Verifica se o curl está instalado
+            #15 Verifica se o curl está instalado
             if ! dpkg -l | grep -qw curl; then
                 pkg install curl -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #15 Verifica se o unzip está instalado
+            #16 Verifica se o unzip está instalado
             if ! dpkg -l | grep -qw unzip; then
                 pkg install unzip -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #16 Verifica se o xz-utils está instalado
+            #17 Verifica se o xz-utils está instalado
             if ! dpkg -l | grep -qw xz-utils; then
                 pkg install xz-utils -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #17 Verifica se o debootstrap está instalado
+            #18 Verifica se o debootstrap está instalado
             if ! dpkg -l | grep -qw debootstrap; then
                 pkg install debootstrap -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #18 Verifica se o dbus está instalado
+            #19 Verifica se o dbus está instalado
             if ! dpkg -l | grep -qw dbus; then
                 pkg install dbus -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #19 Verifica se o pv está instalado
+            #20 Verifica se o pv está instalado
             if ! dpkg -l | grep -qw pv; then
                 pkg install pv -y > /dev/null 2>&1
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #20 Verifica e baixa global
+            #21 Verifica e baixa global
             if [ ! -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
                 curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
-
-            #21 Verifica e atualiza o global
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/global.check" "${extralink}/config/global" 2>&1
-
-            if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/global.check" ]; then
-                if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/global" "$PREFIX/var/lib/andistro/lib/share/global.check"; then
-                    rm "$PREFIX/var/lib/andistro/lib/share/global"
-                    mv "$PREFIX/var/lib/andistro/lib/share/global.check" "$PREFIX/var/lib/andistro/lib/share/global"
-                    chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
                 else
-                    rm "$PREFIX/var/lib/andistro/lib/share/global.check"
+                # Verifica e atualiza o global
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global.check" "${extralink}/config/global" 2>&1
+                if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/global.check" ]; then
+                    if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/global" "$PREFIX/var/lib/andistro/lib/share/global.check"; then
+                        rm "$PREFIX/var/lib/andistro/lib/share/global"
+                        mv "$PREFIX/var/lib/andistro/lib/share/global.check" "$PREFIX/var/lib/andistro/lib/share/global"
+                        chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+                    else
+                        rm "$PREFIX/var/lib/andistro/lib/share/global.check"
+                    fi
                 fi
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #22 Verifica e baixa l10n_${locale}.sh
-            if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
-
-            #23 Verifica e atualiza o l10n_${locale}.sh
-            curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "${extralink}/config/locale/l10n_${system_icu_locale_code}.sh" 2>&1
-                    
-            if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" ]; then
-                if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh" "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check"; then
-                    rm "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
-                    mv "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check" "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
-                    chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.sh"
+            #22 Verifica, instala e atualiza o pacote de idiomas.sh
+            if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" ]; then
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" "${extralink}/config/locale/install.sh" 2>&1
+                chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
                 else
-                    rm "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${system_icu_locale_code}.check"
+                # Verifica e atualiza o global
+                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" "${extralink}/config/locale/install.sh" 2>&1
+                if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" ]; then
+                    if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check"; then
+                        rm "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
+                        mv "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
+                        chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
+                    else
+                        rm "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check"
+                    fi
                 fi
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #24 Verifica se o andistro está em $HOME
+            #23 Verifica se o andistro está em $HOME
             if [ -f "$HOME/andistro" ]; then
                 mv "$HOME/andistro" "$PREFIX/bin/andistro"
                 rm -rf "$HOME/andistro"
@@ -366,7 +361,7 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            # 25 Verifica e atualiza o andistro
+            #24 Verifica e atualiza o andistro
             curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
 
             if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
@@ -385,6 +380,8 @@ case "$1" in
         }
 
         clear
+
+        bash $PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh
 
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
         source "$PREFIX/var/lib/andistro/lib/share/global"
