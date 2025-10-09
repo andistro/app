@@ -17,3 +17,5 @@ fi
 show_progress_dialog "wget" "${label_language_download}" 1 \
     -P "$path" "${extralink}/config/package-manager-setups/apt/locale/locale_en-US.sh" \
     -P "$path" "${extralink}/config/package-manager-setups/apt/locale/locale_pt-BR.sh"
+
+chmod +x "$path/locale_*.sh"
