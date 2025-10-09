@@ -202,6 +202,7 @@ mkdir -p "$folder/usr/local/bin/locales/"
 show_progress_dialog wget-labeled "${label_progress}" 12 \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
+	"${label_progress}" -O "$folder/root/config-locale.sh" "${extralink}/config/locale/install.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -O "$folder/root/wallpapers.sh" "${extralink}/config/wallpapers/config.sh" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
@@ -223,6 +224,7 @@ chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 chmod +x "$folder/root/app-list-recommends.sh"
 chmod +x "$folder/root/wallpapers.sh"
+chmod +x "$folder/root/config-locale.sh"
 sleep 2
 
 # KERNEL_VERSON=$(uname -r)
@@ -355,6 +357,7 @@ etc_timezone=\$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
+bash ~/config-locale.sh
 bash ~/locale_\$system_icu_locale_code.sh
 
 # Seletor de tema
