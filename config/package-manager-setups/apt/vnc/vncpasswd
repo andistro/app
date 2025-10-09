@@ -8,27 +8,21 @@ fi
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
-while true; do
-    dialog --no-shadow --msgbox "$label_vnc_password_input_alert" 10 50 # Aviso antes de ser solicitado para digitar a senha
-    msgbox_status=$?
+while true; do # Loop até obter uma senha válida ou o usuário cancelar
 
-    if [ "$msgbox_status" -eq 0 ]; then
-        PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_vnc_password_input" 10 50 3>&1 1>&2 2>&3)
-        if [ $? -eq 0 ]; then
-            # Valida senha não vazia
-            if [ -z "$PASSWORD" ]; then
-                dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_input_alert_important" 10 50
-                continue
-            fi
-            break
-        else
-            echo "${label_entry_canceled}"
-            exit 1
-        fi
-    else
-        echo "$label_retry (status=$msgbox_status)"
-        sleep 0.5
+PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_vnc_password_input" 10 50 3>&1 1>&2 2>&3)
+if [ $? -eq 0 ]; then
+    # Valida senha não vazia
+    if [ -z "$PASSWORD" ]; then
+        dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_input_alert_important" 10 50
+        continue
     fi
+    break
+else
+    echo "${label_entry_canceled}"
+    exit 1
+fi
+
 done
 
 # Salvar a senha no arquivo apropriado

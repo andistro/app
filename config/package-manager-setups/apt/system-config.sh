@@ -4,7 +4,7 @@ distro_theme="$1"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 67 \
+show_progress_dialog steps-multi-label 65 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
@@ -46,13 +46,11 @@ show_progress_dialog steps-multi-label 67 \
   "${label_install_script_download}\n\n → firefox" 'echo -e "\nPackage: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | sudo tee /etc/apt/preferences.d/mozilla' \
   "${label_install_script_download}\n\n → firefox" 'sudo apt update && sleep 2' \
   "${label_install_script_download}\n\n → firefox" 'sudo apt install firefox --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → code" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
-  "${label_install_script_download}\n\n → code" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
-  "${label_install_script_download}\n\n → code" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
-  "${label_install_script_download}\n\n → code" 'rm -f packages.microsoft.gpg' \
-  "${label_install_script_download}\n\n → code" 'sudo apt update && sleep 2' \
-  "${label_install_script_download}\n\n → code" 'sudo apt install code --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → code" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
+  "${label_install_script_download}" 'wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg' \
+  "${label_install_script_download}" 'sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg' \
+  "${label_install_script_download}" "echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
+  "${label_install_script_download}" 'rm -f packages.microsoft.gpg' \
+  "${label_install_script_download}" "sudo sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|' /usr/share/applications/code*.desktop" \
   "${label_install_script_download}" 'sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg' \
   "${label_install_script_download}" 'echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list' \
   "${label_install_script_download}" 'sudo apt update && sleep 2' \
@@ -73,6 +71,8 @@ show_progress_dialog steps-multi-label 67 \
   "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y'
 sleep 2
+
+#show_progress_dialog check-packages "Verificando" tzdata xz-utils keyboard-configuration wget curl gpg git python3 tar unzip zip apt-utils lsb-release exo-utils tigervnc-standalone-server tigervnc-common tigervnc-tools dbus-x11 nano inetutils-tools net-tools font-manager synaptic gvfs-backends bleachbit pulseaudio pavucontrol make tumbler firefox code
 
 # Tempo de 10s antes de inicializar as configurações do teclado
 {

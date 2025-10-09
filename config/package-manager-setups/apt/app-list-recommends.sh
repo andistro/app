@@ -5,6 +5,7 @@ PROGS=(
   "figma-linux" "Figma Linux" off
   "inkscape" "Inkscape" off
   "libreoffice" "LibreOffice" off
+  "code" "Visual Studio Code" off
 )
 CHOICES=$(dialog --no-shadow --separate-output \
           --checklist "${label_apps_select_install}" 50 50 7 \

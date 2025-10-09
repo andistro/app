@@ -3,7 +3,7 @@ distro_theme="$1"
 #XFCE4 config environment
 source "/usr/local/bin/andistro/global"
 
-show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 12 \
+show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13 \
      'echo "${label_config_environment_gui}"' \
      'sleep 2' \
      'sleep 4' \
@@ -22,6 +22,29 @@ echo $$ > /tmp/xsession.pid
 dbus-launch --exit-with-session /usr/bin/startxfce4
 EOF
 "' \
+     'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
+/* Remove highlight completo e mantém cor branca em todos os estados */
+XfdesktopIconView.view .label,
+XfdesktopIconView.view .label:backdrop,
+XfdesktopIconView.view .label:selected,
+XfdesktopIconView.view .label:selected:backdrop {
+    background-color: transparent;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Remove seleção visual dos ícones */
+.xfdesktop-icon-view .cell:selected:backdrop,
+.xfdesktop-icon-view .cell:selected,
+.xfdesktop-icon-view .cell:backdrop {
+    background-color: transparent;
+}
+
+/* Garante que o texto não mude cor no estado desfocado */
+XfdesktopIconView.view {
+    color: #ffffff !important;
+}
+EOF' \
      'chmod +x ~/.vnc/xstartup' \
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
      'sudo apt --fix-broken install -y'

@@ -78,10 +78,7 @@ LANG_CODES["pt-BR"]="Português do Brasil (pt-BR)"
 LANG_CODES["en-US"]="English (en-US)"
 
 
-# TERMINAL Progress  ==================================================================================
-# A barra de progresso aparece no terminal sem caixa de dialogo
-# Função para atualizar a barra de progresso
-# update_progress() precisa ser definido antes de ser usado
+
 
 # Sistema de identificação pacotes instalados ==================================================================================
 
@@ -113,9 +110,13 @@ check_packages_installed() {
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////
 # ==================================================================================================
-# update_progress() ===========================================================================================
+# update_progress() ================================================================================
+# A barra de progresso aparece no terminal sem caixa de dialogo
+# Função para atualizar a barra de progresso
+# update_progress() precisa ser definido antes de ser usado
 # ==================================================================================================
 # //////////////////////////////////////////////////////////////////////////////////////////////////
+
 update_progress() {
     local current_step=$1
     local total_steps=$2
