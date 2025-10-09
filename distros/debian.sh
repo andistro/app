@@ -200,7 +200,7 @@ mkdir -p "$folder/root/.vnc/"
 mkdir -p "$folder/usr/local/bin/locales/"
 
 # Baixa as configurações, scripts do vnc e wallpapers adicionais
-show_progress_dialog wget-labeled "${label_progress}" 12 \
+show_progress_dialog wget-labeled "${label_progress}" 9 \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
@@ -220,7 +220,6 @@ chmod +x $folder/usr/local/bin/startvncserver
 chmod +x "$folder/root/system-config.sh"
 chmod +x "$folder/root/app-list-recommends.sh"
 chmod +x "$folder/root/wallpapers.sh"
-chmod +x "$folder/root/config-locale.sh"
 sleep 2
 
 # KERNEL_VERSON=$(uname -r)
