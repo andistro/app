@@ -6,15 +6,6 @@ fi
 
 #=====================================================================================================
 
-
-
-
-
-
-
-
-
-
 label_detected="[Detectado]"
 label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
 label_distro_alert_timezone_detected="Fuso horário detectado: "
@@ -66,7 +57,7 @@ label_system_icu_locale_code="Código do idioma"
 label_system_timezone="Fuso horário"
 desc_system_info="Use o comando ./sys-info para poder ver essas informações novamente."
 label_progress="Em andamento..."
-label_language_download="Baixando as configurações do seu idioma..."
+label_language_download="Baixando o pacote de idiomas..."
 label_create_boot="Criando a inicialização..."
 label_alert_autoupdate_for_u="Estou me atualizando para que o sistema fique bom para você."
 label_find_update="Procurando atualizações..."
