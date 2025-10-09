@@ -351,15 +351,17 @@ sleep 0.5
 
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
+sudo dpkg --configure -a > /dev/null 2>&1
+sudo apt --fix-broken install -y > /dev/null 2>&1
 
-sudo dpkg --configure -a
+# Baixa os wallpapers adicionais
+bash ~/wallpapers.sh
 
 etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
-bash ~/config-locale.sh
 bash ~/locale_\$system_icu_locale_code.sh
 
 # Seletor de tema
@@ -387,9 +389,6 @@ case \$CHOICE in
 		export distro_theme="Dark"
 	;;
 esac
-
-# Baixa os wallpapers adicionais
-bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
 bash ~/system-config.sh "\$distro_theme"
