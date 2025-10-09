@@ -313,7 +313,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
 }
 
-total_steps=4
+total_steps=5
 current_step=0
 
 apt update -qq -y > /dev/null 2>&1
