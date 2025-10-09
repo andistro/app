@@ -15,7 +15,7 @@ update_progress() {
     filled_bar=$(printf "%${filled_length}s" | tr " " "=")
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" 
 }
 
 total_steps=3  # Número total de etapas que você quer monitorar
@@ -29,9 +29,9 @@ current_step=0
     #2 English US
     l10n="en-US"
     if [ ! -f "$path/l10n_$l10n.sh" ]; then
-        wget -P "$path" "${extralink}/config/locale/l10n_$l10n.sh" 2>&1
+        wget -P "$path" "${extralink}/config/locale/l10n_$l10n.sh" > /dev/null 2>&1
         else
-        wget -O "$path/l10n_$l10n.check" "${extralink}/config/locale/l10n_$l10n.sh" 2>&1
+        wget -O "$path/l10n_$l10n.check" "${extralink}/config/locale/l10n_$l10n.sh" > /dev/null 2>&1
 
         if [ -f "$path/l10n_$l10n.sh" ] && [ -f "$path/l10n_$l10n.check" ]; then
             if ! cmp -s "$path/l10n_$l10n.sh" "$path/l10n_$l10n.check"; then
@@ -49,9 +49,9 @@ current_step=0
     #3 Portuguese BR
     l10n="pt-BR"
     if [ ! -f "$path/l10n_$l10n.sh" ]; then
-        wget -P "$path" "${extralink}/config/locale/l10n_$l10n.sh" 2>&1
+        wget -P "$path" "${extralink}/config/locale/l10n_$l10n.sh" > /dev/null 2>&1
         else
-        wget -O "$path/l10n_$l10n.check" "${extralink}/config/locale/l10n_$l10n.sh" 2>&1
+        wget -O "$path/l10n_$l10n.check" "${extralink}/config/locale/l10n_$l10n.sh" > /dev/null 2>&1
 
         if [ -f "$path/l10n_$l10n.sh" ] && [ -f "$path/l10n_$l10n.check" ]; then
             if ! cmp -s "$path/l10n_$l10n.sh" "$path/l10n_$l10n.check"; then
