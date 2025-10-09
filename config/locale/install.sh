@@ -15,7 +15,7 @@ update_progress() {
     filled_bar=$(printf "%${filled_length}s" | tr " " "=")
     empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
 total_steps=3  # Número total de etapas que você quer monitorar
