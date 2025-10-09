@@ -352,7 +352,7 @@ chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/usr/local/bin/global"
+chmod +x "$folder/usr/local/bin/andistro/global"
 chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 chmod +x "$folder/root/app-list-recommends.sh"
@@ -412,7 +412,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 groupadd -g 3003 group3003
 groupadd -g 9997 group9997
@@ -422,7 +422,7 @@ groupadd -g 1079 group1079
 
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
 
-echo "source \"/usr/local/bin/global\"" >> ~/.bashrc
+echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc
 echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
 #======================================================================================================

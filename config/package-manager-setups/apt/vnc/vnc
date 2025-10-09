@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 WLAN_IP="$wlan_ip_localhost"
 #LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 vncserver -localhost no -depth 24 -name remote-desktop $GEO :$PORT

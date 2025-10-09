@@ -1,7 +1,7 @@
 #!/bin/bash
 distro_theme="$1"
 # Fonte modular configuração global
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
 show_progress_dialog steps-multi-label 67 \

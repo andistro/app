@@ -6,7 +6,7 @@ CYAN='\033[1;36m'
 WHITE='\033[1;37m'
 NC='\033[0m' # Reset
 
-source /usr/local/bin/global
+source /usr/local/bin/andistro/global
 
 if [ -z "$1" ]; then
     echo "Use o comando --system-info para exibir informações do sistema."
@@ -153,8 +153,8 @@ case "$1" in
         update_progress "$current_step" "$total_steps"; sleep 0.1
 
         #20 Verifica e baixa global
-        if [ ! -f "/usr/local/bin/global" ]; then
-            curl -s -o "/usr/local/bin/global" "${extralink}/config/global" > /dev/null 2>&1
+        if [ ! -f "/usr/local/bin/andistro/global" ]; then
+            curl -s -o "/usr/local/bin/andistro/global" "${extralink}/config/global" > /dev/null 2>&1
         fi
         ((current_step++))
         update_progress "$current_step" "$total_steps"; sleep 0.1
@@ -167,9 +167,9 @@ case "$1" in
         update_progress "$current_step" "$total_steps"; sleep 0.1
 
         #21 Verifica e atualiza o global
-        rm -rf "/usr/local/bin/global"
-        wget -O "/usr/local/bin/global" "${extralink}/config/global" > /dev/null 2>&1
-        chmod +x "/usr/local/bin/global"
+        rm -rf "/usr/local/bin/andistro/global"
+        wget -O "/usr/local/bin/andistro/global" "${extralink}/config/global" > /dev/null 2>&1
+        chmod +x "/usr/local/bin/andistro/global"
         ((current_step++))
         update_progress "$current_step" "$total_steps"; sleep 0.1
 

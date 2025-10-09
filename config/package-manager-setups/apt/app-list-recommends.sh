@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 PROGS=(
   "brave-browser" "Brave Browser" off
   "figma-linux" "Figma Linux" off

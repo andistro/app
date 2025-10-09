@@ -204,10 +204,8 @@ mkdir -p "$folder/usr/local/bin/locales/"
 show_progress_dialog wget-labeled "${label_progress}" 12 \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
 	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
-	"${label_progress}" -O "$folder/root/config-locale.sh" "${extralink}/config/locale/install.sh" \
 	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
 	"${label_progress}" -O "$folder/root/wallpapers.sh" "${extralink}/config/wallpapers/config.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
 	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
@@ -220,8 +218,6 @@ chmod +x $folder/usr/local/bin/vncpasswd
 chmod +x $folder/usr/local/bin/startvnc
 chmod +x $folder/usr/local/bin/stopvnc
 chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/usr/local/bin/global"
-chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
 chmod +x "$folder/root/system-config.sh"
 chmod +x "$folder/root/app-list-recommends.sh"
 chmod +x "$folder/root/wallpapers.sh"
@@ -284,8 +280,8 @@ cat > $folder/root/.bash_profile <<- EOM
 export LANG=$language_transformed.UTF-8
 
 # Fonte modular configuração global
-source "/usr/local/bin/global"
-echo "source \"/usr/local/bin/global\"" >> ~/.bashrc
+source "/usr/local/bin/andistro/global"
+echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc
 
 # Mensagem de inicialização
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"

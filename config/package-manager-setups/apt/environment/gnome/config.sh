@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 # GNOME Config
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 21 \
 	'sleep 1' \

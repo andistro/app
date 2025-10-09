@@ -1,6 +1,6 @@
 #!/bin/bash
 #Gnome Start enviroment
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \

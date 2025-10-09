@@ -1,7 +1,7 @@
 #!/bin/bash
 # Mudar o idioma para o Português Brasileiro [pt_BR]
 
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 error_code="LG002br"
 show_progress_dialog steps-one-label "${label_system_language}" 10 \

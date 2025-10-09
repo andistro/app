@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 # Buscar arquivos PID relacionados ao usuário
 PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)

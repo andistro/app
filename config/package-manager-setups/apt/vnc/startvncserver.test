@@ -7,7 +7,7 @@ fi
 # Para qualquer inicialização anterior
 stopvnc
 
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 HEIGHT=0
 WIDTH=0

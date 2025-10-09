@@ -6,7 +6,7 @@ if ! dpkg -l | grep -qw dialog; then
 fi
 
 # Fonte modular configuração global
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 while true; do
     dialog --no-shadow --msgbox "$label_vnc_password_input_alert" 10 50 # Aviso antes de ser solicitado para digitar a senha

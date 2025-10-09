@@ -1,6 +1,6 @@
 #!/bin/bash
 # Fonte modular configuração global
-source "/usr/local/bin/global"
+source "/usr/local/bin/andistro/global"
 
 show_progress_dialog steps-multi-label 21 \
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash'\
