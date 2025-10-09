@@ -342,6 +342,13 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
+if ! dpkg -l | grep -qw nano; then
+    apt install nano --no-install-recommends -y > /dev/null 2>&1
+fi
+((current_step++))
+update_progress "\$current_step" "\$total_steps" "Instalando nano"
+sleep 0.5
+
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
 
