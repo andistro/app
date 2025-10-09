@@ -5,7 +5,7 @@ source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
 show_progress_dialog steps-multi-label 67 \
-  'echo "system-config"' \
+  "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
