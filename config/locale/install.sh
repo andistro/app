@@ -9,7 +9,7 @@ elif [ -f "/usr/local/bin/global" ]; then
     chmod +x "/usr/local/bin/global"
     source "/usr/local/bin/global"
     mkdir -p "/usr/local/bin/locales"
-    path="$folder/usr/local/bin/locales"
+    path="/usr/local/bin/locales"
 else
     echo "Erro: arquivo global de configuração não encontrado."
 fi
