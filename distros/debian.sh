@@ -274,25 +274,13 @@ touch $folder/root/.hushlogin
 # Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
-# Define o LANG como $language_transformed durante a execução.
 export LANG=$language_transformed.UTF-8
 
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
-echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc
 
 # Mensagem de inicialização
 echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
-
-
-# Este alias faz com que o comando 'ls' mostre arquivos e diretórios coloridos automaticamente
-sed -i "s/^# export LS_OPTIONS='--color=auto'/export LS_OPTIONS='--color=auto'/" ~/.bashrc
-#echo "alias ls='ls --color=auto'" >> ~/.bashrc
-
-# Adiciona uma lista de fontes apt caso seja necessário
-#echo 'deb http://deb.debian.org/debian $codinome main contrib non-free non-free-firmware
-#deb http://security.debian.org/debian-security $codinome-security main contrib non-free
-#deb http://deb.debian.org/debian $codinome-updates main contrib non-free' >> /etc/apt/sources.list
 
 #======================================================================================================
 # global == update_progress() {}
@@ -408,10 +396,7 @@ rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
 EOM
 
-# Cria um dialog de inicialização
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/stopvnc"' $bin
-#sed -i '\|command+=" -b /usr/local/bin/stopvnc"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 # Inicia o sistema
 bash $bin
