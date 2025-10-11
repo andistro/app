@@ -2,7 +2,14 @@
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
-show_progress_dialog steps-multi-label 21 \
+show_progress_dialog steps-multi-label 25 \
+    "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro'\
+    "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/portrait'\
+    "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/landscape'\
+    "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/square'\
+    "${label_wallpaper_download}\n\n → AnDistro: Light" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-light.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/light.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Medium" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-medium.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/medium.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Dark" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-dark.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/dark.jpg"' \
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/portrait'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/landscape'\
@@ -19,9 +26,6 @@ show_progress_dialog steps-multi-label 21 \
     "${label_wallpaper_download}\n\n → Unsplash: heysupersimi--TJ_dqai1QE" 'wget -O "/usr/share/backgrounds/unsplash/portrait/heysupersimi--TJ_dqai1QE.jpg" "https://unsplash.com/photos/-TJ_dqai1QE/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: heysupersimi-lI06Ce8Tam0" 'wget -O "/usr/share/backgrounds/unsplash/portrait/heysupersimi-lI06Ce8Tam0.jpg" "https://unsplash.com/photos/lI06Ce8Tam0/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: kevinmueller-NdK8Ed-Qx3U" 'wget -O "/usr/share/backgrounds/unsplash/portrait/kevinmueller-NdK8Ed-Qx3U.jpg" "https://unsplash.com/photos/NdK8Ed-Qx3U/download"' \
-    "${label_wallpaper_download}\n\n → Unsplash: tiagojose-RiTmt0xGYnA" 'wget -O "/usr/share/backgrounds/unsplash/square/tiagojose-RiTmt0xGYnA.jpg" "https://unsplash.com/photos/RiTmt0xGYnA/download"' \
-    "${label_wallpaper_download}\n\n → Unsplash: tiagojose-bfXB07XADAU" 'wget -O "/usr/share/backgrounds/unsplash/square/tiagojose-bfXB07XADAU.jpg" "https://unsplash.com/photos/bfXB07XADAU/download"' \
-    "${label_wallpaper_download}\n\n → Unsplash: tiagojose-OhLxeq6DKvI" 'wget -O "/usr/share/backgrounds/unsplash/square/tiagojose-OhLxeq6DKvI.jpg" "https://unsplash.com/photos/OhLxeq6DKvI/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: mikehindle-BXvcjmM6dH8" 'wget -O "/usr/share/backgrounds/unsplash/square/mikehindle-BXvcjmM6dH8.jpg" "https://unsplash.com/photos/BXvcjmM6dH8/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: mikehindle-CjV322K-pdA" 'wget -O "/usr/share/backgrounds/unsplash/square/mikehindle-CjV322K-pdA.jpg" "https://unsplash.com/photos/CjV322K-pdA/download"'
 
