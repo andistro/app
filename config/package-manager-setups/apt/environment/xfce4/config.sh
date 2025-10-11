@@ -35,7 +35,8 @@ XfdesktopIconView.view .label:selected:backdrop {
 XfdesktopIconView.view {
     color: #ffffff !important;
 }
-EOF' \
+EOF
+"' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
