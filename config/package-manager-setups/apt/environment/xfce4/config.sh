@@ -72,7 +72,7 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
      'echo "Default Wallpaper: /usr/share/backgrounds/${wallpaper}"' \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
      "sleep 4" \
-     'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/IconThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
+     'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}' \
      "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/${wallpaper}"' \
      'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2"  -O ~/xfce4-panel.tar.bz2' \
