@@ -386,8 +386,6 @@ bash ~/system-config.sh "\$distro_theme"
 # Configurações da inteface escolhida
 bash ~/config-environment.sh "\$distro_theme"
 
-bash ~/app-list-recommends.sh
-
 rm -rf ~/locale*.sh
 rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
