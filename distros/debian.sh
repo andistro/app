@@ -394,6 +394,7 @@ rm -rf ~/start-environment.sh
 rm -rf ~/wallpapers.sh
 rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
+stopvnc
 EOM
 
 sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
