@@ -64,7 +64,7 @@ fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 24 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
      'echo "${label_config_environment_gui}"' \
      "sleep 4" \
      'echo "Default Theme: ${distro_theme}"' \
@@ -80,7 +80,11 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 24 \
      "sleep 4" \
      "vncserver -name remote-desktop -geometry 1920x1080 :1" \
      "sleep 10" \
-     "dbus-launch --exit-with-session firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID" \
+     'xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
+     'xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}' \
+     'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/${wallpaper}"' \
+     "xfce4-panel-profiles load xfce4-panel.tar.bz2" \
+     "firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID" \
      "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
      'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \
      "sudo apt-get clean" \
