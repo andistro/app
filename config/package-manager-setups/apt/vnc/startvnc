@@ -104,19 +104,19 @@ case $CHOICE in
 ;;
 2)
     echo "${label_vncserver_chose_resolution_uwhd}"
-    GEO="-geometry 2560x1080" vnc
+    GEO="-geometry 2560x1080" ESCALA="1" vnc
 ;;
 3)
     echo "${label_vncserver_chose_resolution_qdhd}"
-    GEO="-geometry 2560x1440" vnc
+    GEO="-geometry 2560x1440" ESCALA="1" vnc
 ;;
 4)
     echo "${label_vncserver_chose_resolution_fhd}"
-    GEO="-geometry 1920x1080" vnc
+    GEO="-geometry 1920x1080" ESCALA="1" vnc
 ;;
 5)
     echo "${label_vncserver_chose_resolution_hd}"
-    GEO="-geometry 1280x720" vnc
+    GEO="-geometry 1280x720" ESCALA="1" vnc
 ;;
 
 esac
