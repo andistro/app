@@ -76,7 +76,6 @@ show_progress_dialog steps-multi-label 71 \
   "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y' \
   "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
-  "${label_system_setup}" "sed -i \"s/^# export LS_OPTIONS='--color=auto'/export LS_OPTIONS='--color=auto'/\" ~/.bashrc" \
   "${label_system_setup}" 'echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc'
 
 sleep 2
