@@ -1,5 +1,5 @@
 #!/bin/bash
-distro_theme="$1"
+export distro_theme="$1"
 #XFCE4 config environment
 source "/usr/local/bin/andistro/global"
 
