@@ -283,7 +283,7 @@ export LANG=$language_transformed.UTF-8
 source "/usr/local/bin/andistro/global"
 
 # Mensagem de inicialização
-echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
+echo -e "\n ${distro_wait}\n"
 
 #======================================================================================================
 # global == update_progress() {}
