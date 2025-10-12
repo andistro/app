@@ -13,30 +13,6 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 13
      'sudo apt install xfce4-terminal --no-install-recommends -y' \
      'sudo apt install xfce4-settings --no-install-recommends -y' \
      'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
-     'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
-/* Remove highlight completo e mantém cor branca em todos os estados */
-XfdesktopIconView.view .label,
-XfdesktopIconView.view .label:backdrop,
-XfdesktopIconView.view .label:selected,
-XfdesktopIconView.view .label:selected:backdrop {
-    background-color: transparent;
-    color: #ffffff !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Remove seleção visual dos ícones */
-.xfdesktop-icon-view .cell:selected:backdrop,
-.xfdesktop-icon-view .cell:selected,
-.xfdesktop-icon-view .cell:backdrop {
-    background-color: transparent;
-}
-
-/* Garante que o texto não mude cor no estado desfocado */
-XfdesktopIconView.view {
-    color: #ffffff !important;
-}
-EOF
-"' \
      'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
@@ -50,6 +26,31 @@ EOF
      "echo 'export DISPLAY=":1"' >> /etc/profile" \
      'sudo apt --fix-broken install -y'
 sleep 2
+
+#      'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
+# /* Remove highlight completo e mantém cor branca em todos os estados */
+# XfdesktopIconView.view .label,
+# XfdesktopIconView.view .label:backdrop,
+# XfdesktopIconView.view .label:selected,
+# XfdesktopIconView.view .label:selected:backdrop {
+#     background-color: transparent;
+#     color: #ffffff !important;
+#     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+# }
+
+# /* Remove seleção visual dos ícones */
+# .xfdesktop-icon-view .cell:selected:backdrop,
+# .xfdesktop-icon-view .cell:selected,
+# .xfdesktop-icon-view .cell:backdrop {
+#     background-color: transparent;
+# }
+
+# /* Garante que o texto não mude cor no estado desfocado */
+# XfdesktopIconView.view {
+#     color: #ffffff !important;
+# }
+# EOF
+# "' \
 
 vncpasswd
 
@@ -70,6 +71,8 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
      'echo "Default Theme: ${distro_theme}"' \
      "export DISPLAY=:1" \
      'echo "Default Wallpaper: /usr/share/backgrounds/${wallpaper}"' \
+     'dbus-launch --exit-with-session xfconf-query -c xfwm4 -p /general/use_compositing -s false' \
+     'dbus-launch --exit-with-session xfconf-query -c xfwm4 -p /general/theme -s AnDistro-Majorelle-Blue-${distro_theme}' \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
      "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}' \

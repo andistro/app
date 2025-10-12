@@ -36,6 +36,7 @@ show_progress_dialog steps-multi-label 71 \
   "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
   "${label_install_script_download}\n\n → pulseaudio" 'sudo apt install pulseaudio --no-install-recommends -y' \
   "${label_install_script_download}\n\n → pavucontrol" 'sudo apt install pavucontrol --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → at-spi2-core" 'sudo apt install at-spi2-core --no-install-recommends -y' \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo dpkg --configure -a' \
@@ -63,6 +64,7 @@ show_progress_dialog steps-multi-label 71 \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
+  "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
