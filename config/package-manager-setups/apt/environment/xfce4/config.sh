@@ -65,36 +65,35 @@ fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 28 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 31 \
      'echo "${label_config_environment_gui}"' \
      "sleep 4" \
      'echo "Default Theme: ${distro_theme}"' \
      "export DISPLAY=:1" \
      'echo "Default Wallpaper: /usr/share/backgrounds/${wallpaper}"' \
-     'dbus-launch xfconf-query -c xfwm4 -p /general/use_compositing --create -t bool -s false' \
-     'dbus-launch --exit-with-session xfconf-query -c xfwm4 -p /general/use_compositing -s false' \
-     'dbus-launch --exit-with-session xfconf-query -c xfwm4 -p /general/theme -s AnDistro-Majorelle-Blue-${distro_theme}' \
-     'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/ThemeName -s AnDistro-Majorelle-Blue-${distro_theme}' \
      "sleep 4" \
-     'dbus-launch --exit-with-session xfconf-query -c xsettings -p /Net/IconThemeName -s ZorinBlue-${distro_theme}' \
+     'dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/use_compositing --create -t bool -s false' \
+     "sleep 4" \
+     'dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/use_compositing --set false' \
+     "sleep 4" \
+     'dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/theme --set AnDistro-Majorelle-Blue-${distro_theme}' \
+     "sleep 4" \
+     'dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/ThemeName --set AnDistro-Majorelle-Blue-${distro_theme}' \
+     "sleep 4" \
+     'dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/IconThemeName --set ZorinBlue-${distro_theme}' \
      "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/${wallpaper}"' \
+     "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set "/usr/share/backgrounds/${wallpaper}"' \
+     "sleep 4" \
      'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set "/usr/share/backgrounds/${wallpaper}"' \
-     'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2"  -O ~/xfce4-panel.tar.bz2' \
+     "sleep 4" \
+     'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2" -O ~/xfce4-panel.tar.bz2' \
+     "sleep 4" \
      "chmod +x ~/xfce4-panel.tar.bz2" \
+     "sleep 4" \
      "dbus-launch --exit-with-session xfce4-panel-profiles load xfce4-panel.tar.bz2" \
      "sleep 4" \
-     "xfdesktop --reload" \
-     "xfce4-panel --restart" \
-     "vncserver -name remote-desktop -geometry 1920x1080 :1" \
-     "sleep 10" \
-     "firefox > /dev/null 2>&1 & PID=$!; sleep 5; kill $PID" \
-     "sed -i '/security.sandbox.content.level/d' ~/.mozilla/firefox/*.default-release/prefs.js" \
-     'echo "user_pref(\"security.sandbox.content.level\", 0);" >> ~/.mozilla/firefox/*.default-release/prefs.js' \
-     "sudo apt-get clean" \
-     "vncserver -kill :1" \
-     "rm -rf /tmp/.X*-lock" \
-     "rm -rf /tmp/.X11-unix/X*" \
-     "rm -rf ~/start-environment.sh" \
+     "dbus-launch --exit-with-session xfdesktop --reload" \
+     "dbus-launch --exit-with-session xfce4-panel --restart" \
      "rm -rf ~/xfce4-panel.tar.bz2"
