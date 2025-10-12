@@ -395,6 +395,7 @@ rm -rf ~/start-environment.sh
 rm -rf ~/wallpapers.sh
 rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
+exit
 EOM
 
 #sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
@@ -404,3 +405,5 @@ bash $bin
 
 # Remove o arquivo de instalação e configuração
 rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh
+
+andistro -s debian
