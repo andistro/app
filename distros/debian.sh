@@ -160,6 +160,7 @@ command+=" -b $folder/root:/dev/shm"
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
+command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -394,10 +395,9 @@ rm -rf ~/start-environment.sh
 rm -rf ~/wallpapers.sh
 rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
-stopvnc
 EOM
 
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
+#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 # Inicia o sistema
 bash $bin
