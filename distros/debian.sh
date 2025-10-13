@@ -405,5 +405,3 @@ bash $bin
 
 # Remove o arquivo de instalação e configuração
 rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh
-
-andistro -s debian
