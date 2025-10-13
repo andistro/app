@@ -506,7 +506,7 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            bash $PREFIX/var/lib/andistro/boot/start-ubuntu startvcn
+            bash $PREFIX/var/lib/andistro/boot/start-ubuntu startvnc
             clear
 
         else
