@@ -4,7 +4,7 @@ export distro_theme="$1"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 71 \
+show_progress_dialog steps-multi-label 73 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
@@ -39,6 +39,7 @@ show_progress_dialog steps-multi-label 71 \
   "${label_install_script_download}\n\n → at-spi2-core" 'sudo apt install at-spi2-core --no-install-recommends -y' \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → xdg-user-dirs" 'sudo apt install xdg-user-dirs --no-install-recommends -y' \
   "${label_install_script_download}" 'sudo dpkg --configure -a' \
   "${label_install_script_download}" 'sudo apt --fix-broken install -y' \
   "${label_install_script_download}\n\n → firefox" 'sudo install -d -m 0755 /etc/apt/keyrings' \
@@ -69,14 +70,15 @@ show_progress_dialog steps-multi-label 71 \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
   "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
+  "${label_system_setup}\n\n → ${label_xdg_user_dirs_setup}" "xdg-user-dirs-update" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
   "${label_system_setup}" "echo -e '[Settings]\ngtk-theme-name=AnDistro-Majorelle-Blue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
   "${label_system_setup}" "echo 'gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
-  "${label_system_setup}" 'sudo apt-get clean' \
   "${label_system_setup}" 'sudo dpkg --configure -a' \
   "${label_system_setup}" 'sudo apt --fix-broken install -y' \
   "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
-  "${label_system_setup}" 'echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc'
+  "${label_system_setup}" 'echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc'\
+  "${label_system_setup}" 'sudo apt-get clean'
 
 sleep 2
 
