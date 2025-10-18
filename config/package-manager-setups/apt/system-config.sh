@@ -97,6 +97,6 @@ sudo dpkg-reconfigure keyboard-configuration
 # Remove o arquivo do sistema
 rm -rf system-config.sh
 
-bash ~/app-list-recommends.sh
+#bash ~/app-list-recommends.sh
 
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
