@@ -6,6 +6,7 @@ andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
+storage_root="$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
 
 # Fonte modular configuração global
 source "$PREFIX/var/lib/andistro/lib/share/global"
@@ -57,7 +58,6 @@ CHOICE=$(dialog --no-shadow --clear \
     2>&1 1>&3)
 exec 3>&-
 
-clear
 
 # Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
@@ -158,6 +158,7 @@ command+=" -b /data"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
+#command+=" -b $storage_root:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
@@ -401,6 +402,7 @@ EOM
 
 #sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
+cp -r "$folder/root" "$storage_root"
 # Inicia o sistema
 bash $bin
 
