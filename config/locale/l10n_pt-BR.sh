@@ -95,6 +95,7 @@ label_system_icu_locale_code_file_error="Arquivo de localização não encontrad
 label_installing="Instalando"
 label_setting_up="Configurando"
 label_resoluciondefault="definida como padrão!"
+label_xdg_user_dirs_setup="Configurando as pastas padrões para o sistema..."
 
 #VNC
 label_vnc_setup="Configuração do VNC"
