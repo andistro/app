@@ -65,7 +65,7 @@ fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 31 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 34 \
      'echo "${label_config_environment_gui}"' \
      "sleep 4" \
      'echo "Default Theme: ${distro_theme}"' \
@@ -96,4 +96,7 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 31 \
      "sleep 4" \
      "dbus-launch --exit-with-session xfdesktop --reload" \
      "dbus-launch --exit-with-session xfce4-panel --restart" \
+     'grep -q "<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" && grep -q "<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" && sed -i -e "s|<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/\"/>|<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/'"${wallpaper}""'\"/>|g" -e "s|<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/\"/>|<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/'"${wallpaper}""'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"' \
+     'grep -q "<property name=\"ThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"ThemeName\" type=\"empty\"/>|<property name=\"ThemeName\" type=\"string\" value=\"AnDistro-Majorelle-Blue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"' \
+     'grep -q "<property name=\"IconThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"IconThemeName\" type=\"empty\"/>|<property name=\"IconThemeName\" type=\"string\" value=\"ZorinBlue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"' \
      "rm -rf ~/xfce4-panel.tar.bz2"
