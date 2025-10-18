@@ -12,6 +12,7 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir -p "$HOME/storage/shared/termux/andistro"
     mkdir -p "$HOME/storage/shared/termux/andistro/distros"
     mkdir -p "$HOME/storage/shared/termux/andistro/logs"
+        touch "$HOME/storage/shared/termux/andistro/logs/.nomedia"
 fi
 
 # Cria os diretórios necessários
