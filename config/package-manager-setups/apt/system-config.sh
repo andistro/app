@@ -4,7 +4,7 @@ export distro_theme="$1"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 73 \
+show_progress_dialog steps-multi-label 74 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
@@ -72,6 +72,7 @@ show_progress_dialog steps-multi-label 73 \
   "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
   "${label_system_setup}\n\n → ${label_xdg_user_dirs_setup}" "xdg-user-dirs-update" \
   "${label_system_setup}" 'rm -rf zorin-*-themes/' \
+  "${label_system_setup}" 'rm -rf themes/' \
   "${label_system_setup}" "echo -e '[Settings]\ngtk-theme-name=AnDistro-Majorelle-Blue-${distro_theme}' | sudo tee $HOME/.config/gtk-3.0/settings.ini" \
   "${label_system_setup}" "echo 'gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
   "${label_system_setup}" 'sudo dpkg --configure -a' \
