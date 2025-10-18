@@ -61,7 +61,7 @@ elif [ "$system_lang_code" = "pt-BR" ]; then
 fi
 
 
-dialog --title "$label_term" --yes-label "$label_accept" --no-label "$label_reject" \
+dialog --no-shadow --title "$label_term" --yes-label "$label_accept" --no-label "$label_reject" \
        --yesno "$(cat $TERMO)" 20 70
 
 resposta=$?
@@ -74,7 +74,7 @@ if [ $resposta -eq 0 ]; then
     # aqui é onde você coloca o que já seria feito
 elif [ $resposta -eq 1 ]; then
     # Usuário recusou
-    dialog --msgbox "$label_u_rejected" 10 60
+    dialog --no-shadow --msgbox "$label_u_rejected" 10 60
     andistro -d total
 fi
 
