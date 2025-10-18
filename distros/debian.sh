@@ -158,7 +158,7 @@ command+=" -b /data"
 command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
-#command+=" -b $storage_root:/root"
+#command+=" -b $storage_root/root:/root"
 command+=" -b /data/data/com.termux/files/home:/termux-home"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
