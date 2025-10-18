@@ -502,12 +502,12 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            bash $PREFIX/var/lib/andistro/boot/start-debian startvnc
+            bash $PREFIX/var/lib/andistro/boot/start-debian
             clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            bash $PREFIX/var/lib/andistro/boot/start-ubuntu startvnc
+            bash $PREFIX/var/lib/andistro/boot/start-ubuntu
             clear
 
         else
