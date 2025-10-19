@@ -384,7 +384,8 @@ case \$CHOICE in
 esac
 
 # Executa as configurações base do sistema
-bash ~/system-config.sh "\$distro_theme"
+export distro_id="$distro_name"
+bash ~/system-config.sh "\$distro_theme" "\$distro_id"
 
 # Configurações da inteface escolhida
 bash ~/config-environment.sh "\$distro_theme"

@@ -1,5 +1,6 @@
 #!/bin/bash
 export distro_theme="$1"
+export distro_id="$2"
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
@@ -100,3 +101,6 @@ rm -rf system-config.sh
 #bash ~/app-list-recommends.sh
 
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
+
+# Define um iniciador automático para o VNC Server
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"' /usr/local/bin/andistro/boot/start-debian
