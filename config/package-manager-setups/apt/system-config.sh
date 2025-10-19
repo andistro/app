@@ -101,4 +101,4 @@ rm -rf system-config.sh
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
 
 # Define um iniciador automático para o VNC Server
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvnc"' /usr/local/bin/andistro/boot/start-debian
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/bin/andistro/boot/start-debian
