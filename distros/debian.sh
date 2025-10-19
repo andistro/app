@@ -401,9 +401,6 @@ rm -rf ~/.bash_profile
 exit
 EOM
 
-#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
-
-cp -r "$folder/root" "$storage_root"
 # Inicia o sistema
 bash $bin
 
