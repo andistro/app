@@ -5,7 +5,7 @@ export distro_id="$2"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 75 \
+show_progress_dialog steps-multi-label 73 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
@@ -41,8 +41,6 @@ show_progress_dialog steps-multi-label 75 \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
   "${label_install_script_download}\n\n → xdg-user-dirs" 'sudo apt install xdg-user-dirs --no-install-recommends -y' \
-  "${label_install_script_download}" 'sudo dpkg --configure -a' \
-  "${label_install_script_download}" 'sudo apt --fix-broken install -y' \
   "${label_install_script_download}\n\n → firefox" 'sudo install -d -m 0755 /etc/apt/keyrings' \
   "${label_install_script_download}\n\n → firefox" 'wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null' \
   "${label_install_script_download}\n\n → firefox" 'echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list' \
