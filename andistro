@@ -380,8 +380,6 @@ case "$1" in
             echo  # pular linha no fim
         }
 
-        clear
-
         bash $PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh
 
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
@@ -467,7 +465,6 @@ case "$1" in
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
             echo "Desinstalação concluída!"
-            clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
@@ -477,7 +474,6 @@ case "$1" in
             rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
             rm -rf system_bus_socket
             echo "Desinstalação concluída!"
-            clear
 
         else
             echo "Distribuição não reconhecida: $2"
@@ -503,12 +499,10 @@ case "$1" in
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
             bash $PREFIX/var/lib/andistro/boot/start-debian
-            clear
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
             bash $PREFIX/var/lib/andistro/boot/start-ubuntu
-            clear
 
         else
             echo "Distribuição não reconhecida: $2"
