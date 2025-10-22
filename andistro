@@ -15,6 +15,7 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     touch "$HOME/storage/shared/termux/andistro/logs/.nomedia"
 fi
 
+ANDISTRO_LOG="$HOME/storage/shared/termux/andistro/logs"
 # Cria os diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/" ];then
 	mkdir -p "$PREFIX/var/lib/andistro/"
@@ -247,6 +248,18 @@ case "$1" in
             #11 Verifica se o pulseaudio está instalado
             if ! dpkg -l | grep -qw pulseaudio; then
                 pkg install pulseaudio -y > /dev/null 2>&1
+            fi
+            pulseaudio --start --exit-idle-time=-1 2>&1 | tee $ANDISTRO_LOG/pa.txt
+            # Verifica o erro no log
+            if grep -q "Daemon startup failed" $ANDISTRO_LOG/pa.txt; then
+                echo "Erro detectado: Daemon startup failed. Reinstalando pulseaudio."
+
+                apt autoremove --purge pulseaudio -y > /dev/null 2>&1
+                echo "Reinstalação concluída. Tente iniciar novamente com:"
+                echo "pulseaudio --start --exit-idle-time=-1"
+            else
+                echo "PulseAudio iniciou sem erros críticos."
+                pulseaudio --kill
             fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
