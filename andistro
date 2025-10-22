@@ -251,13 +251,8 @@ case "$1" in
             pulseaudio --start --exit-idle-time=-1 2>&1 | tee $ANDISTRO_LOG/pa.txt
             # Verifica o erro no log
             if grep -q "Daemon startup failed" $ANDISTRO_LOG/pa.txt; then
-                echo "Erro detectado: Daemon startup failed. Reinstalando pulseaudio."
-
                 apt autoremove --purge pulseaudio -y > /dev/null 2>&1
-                echo "Reinstalação concluída. Tente iniciar novamente com:"
-                echo "pulseaudio --start --exit-idle-time=-1"
             else
-                echo "PulseAudio iniciou sem erros críticos."
                 pulseaudio --kill
             fi
             ((current_step++))
