@@ -406,7 +406,8 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            #andistro ${distro_update} 2>&1
+            andistro -u
+            clear
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
@@ -419,7 +420,8 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            #andistro ${distro_update} 2>&1
+            andistro -u
+            clear
             andistro alerta
             show_progress_dialog "wget" "${label_progress}" -O "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" "${extralink}/distros/ubuntu.sh"
             chmod +x $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
