@@ -231,7 +231,6 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #9 Verifica se o x11-repo está instalado
-    
             if ! dpkg -l | grep -qw x11-repo; then
                 apt install x11-repo -y > /dev/null 2>&1
             fi
