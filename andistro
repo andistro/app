@@ -248,13 +248,6 @@ case "$1" in
             if ! dpkg -l | grep -qw pulseaudio; then
                 apt install pulseaudio -y > /dev/null 2>&1
             fi
-            pulseaudio --start --exit-idle-time=-1 2>&1 | tee $ANDISTRO_LOG/pa.txt
-            # Verifica o erro no log
-            if grep -q "Daemon startup failed" $ANDISTRO_LOG/pa.txt; then
-                apt autoremove --purge pulseaudio -y > /dev/null 2>&1
-            else
-                pulseaudio --kill
-            fi
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
