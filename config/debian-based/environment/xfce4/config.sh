@@ -61,7 +61,6 @@ elif [ "$distro_theme" = "Dark" ]; then
     wallpaper="andistro/square/andistro-dark.jpg"
 fi
 
-
 source /etc/profile
 
 show_progress_dialog steps-one-label "${label_config_environment_gui}" 33 \
@@ -70,10 +69,6 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 33 \
     'echo "Default Theme: ${distro_theme}"' \
     "export DISPLAY=:1" \
     'echo "Default Wallpaper: /usr/share/backgrounds/${wallpaper}"' \
-    "sleep 4" \
-    'wget --tries=20 "${extralink}/config/package-manager-setups/apt/environment/xfce4/xfce4-panel.tar.bz2" -O ~/xfce4-panel.tar.bz2' \
-    "sleep 4" \
-    "chmod +x ~/xfce4-panel.tar.bz2" \
     "sleep 4" \
     "dbus-launch --exit-with-session xfce4-panel-profiles load xfce4-panel.tar.bz2" \
     "sleep 4" \

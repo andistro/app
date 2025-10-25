@@ -28,5 +28,3 @@ show_progress_dialog steps-multi-label 25 \
     "${label_wallpaper_download}\n\n → Unsplash: kevinmueller-NdK8Ed-Qx3U" 'wget -O "/usr/share/backgrounds/unsplash/portrait/kevinmueller-NdK8Ed-Qx3U.jpg" "https://unsplash.com/photos/NdK8Ed-Qx3U/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: mikehindle-BXvcjmM6dH8" 'wget -O "/usr/share/backgrounds/unsplash/square/mikehindle-BXvcjmM6dH8.jpg" "https://unsplash.com/photos/BXvcjmM6dH8/download"' \
     "${label_wallpaper_download}\n\n → Unsplash: mikehindle-CjV322K-pdA" 'wget -O "/usr/share/backgrounds/unsplash/square/mikehindle-CjV322K-pdA.jpg" "https://unsplash.com/photos/CjV322K-pdA/download"'
-
-rm -rf wallpapers.sh

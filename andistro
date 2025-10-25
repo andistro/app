@@ -4,7 +4,7 @@
 
 # am start --user 0 -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux" este comando abre as informaçoes do termux nas configurações do Android
 
-extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
+#extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
 
 rm -rf storage
 termux-setup-storage
@@ -35,14 +35,6 @@ fi
 system_icu_locale_code=$(getprop persist.sys.locale)
 
 #Verifica se o andistro está em $HOME
-if [ -f "$HOME/andistro" ]; then
-    mv "$HOME/andistro" "$PREFIX/bin/andistro"
-    rm -rf "$HOME/andistro"
-    curl -s -o "$HOME/termos.sh" "${extralink}/termos.sh" > /dev/null 2>&1
-    chmod +x "$HOME/termos.sh"
-    bash "$HOME/termos.sh"
-    andistro -u
-fi
 
 # Configurações do Termux
 # Verifica se a configuração já foi aplicada
@@ -185,7 +177,7 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=24  # Número total de etapas que você quer monitorar
+        total_steps=28  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
@@ -317,70 +309,59 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #21 Verifica e baixa global
-            if [ ! -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global" "${extralink}/config/global" > /dev/null 2>&1
-                else
-                # Verifica e atualiza o global
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/global.check" "${extralink}/config/global" 2>&1
-                if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/global.check" ]; then
-                    if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/global" "$PREFIX/var/lib/andistro/lib/share/global.check"; then
-                        rm "$PREFIX/var/lib/andistro/lib/share/global"
-                        mv "$PREFIX/var/lib/andistro/lib/share/global.check" "$PREFIX/var/lib/andistro/lib/share/global"
-                        chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
-                    else
-                        rm "$PREFIX/var/lib/andistro/lib/share/global.check"
-                    fi
-                fi
-            fi
+            #21 Todo o pacote de instalação
+            curl -O "https://github.com/andistro/app/releases/download/andistro/andistro_setup.zip" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #22 Verifica, instala e atualiza o pacote de idiomas.sh
-            if [ ! -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" ]; then
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" "${extralink}/config/locale/install.sh" 2>&1
-                chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
-                else
-                # Verifica e atualiza o global
-                curl -s -o "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" "${extralink}/config/locale/install.sh" 2>&1
-                if [ -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" ] && [ -f "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" ]; then
-                    if ! cmp -s "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh" "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check"; then
-                        rm "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
-                        mv "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check" "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
-                        chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh"
-                    else
-                        rm "$PREFIX/var/lib/andistro/lib/share/locales/config-locale.check"
-                    fi
-                fi
-            fi
+            #22 Extrai o pacote de instalação
+            unzip andistro_setup.zip -d "$HOME" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #23 Verifica se o andistro está em $HOME
-            if [ -f "$HOME/andistro" ]; then
-                mv "$HOME/andistro" "$PREFIX/bin/andistro"
-                rm -rf "$HOME/andistro"
-            fi
-            chmod +x "$PREFIX/bin/andistro"
+            #23 Mover o Andistro
+            mv "$HOME/andistro_setup/andistro" "$PREFIX/bin/andistro" 2>&1
+            chmod +x "$PREFIX/bin/andistro" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #24 Verifica e atualiza o andistro
-            curl -s -o "$HOME/andistro.check" "${extralink}/andistro" 2>&1
-
-            if [ -f "$PREFIX/bin/andistro" ] && [ -f "$HOME/andistro.check" ]; then
-                if ! cmp -s "$PREFIX/bin/andistro" "$HOME/andistro.check"; then
-                    rm "$PREFIX/bin/andistro"
-                    mv "$HOME/andistro.check" "$PREFIX/bin/andistro"
-                    chmod +x "$PREFIX/bin/andistro"
-                else
-                    rm "$HOME/andistro.check"
-                fi
-            fi
+            #24 Mover os arquivos necessários
+            mv "$HOME/andistro_setup/config/global" "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
-            
-            echo  # pular linha no fim
+
+            #25 Mover os arquivos de localização
+            mv "$HOME/andistro_setup/config/locale/l10n_"* "$PREFIX/var/lib/andistro/lib/share/locales/" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/"* 2>&1
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+            ((current_step++))
+
+            #26 Mover os scripts de instalação das distros
+            mv "$HOME/andistro_setup/distros/debian.sh" "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
+            mv "$HOME/andistro_setup/distros/ubuntu.sh" "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            #27 Mover os arquivos de configuração das distros baseadas no debian
+            mv "$HOME/andistro_setup/configs/debian-based/system-config.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/system-config.sh" 2>&1
+            mv "$HOME/andistro_setup/configs/debian-based/app-list-recommends.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/app-list-recommends.sh" 2>&1
+            mv "$HOME/andistro_setup/configs/debian-based/environment/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/" 2>&1
+            mv "$HOME/andistro_setup/configs/debian-based/vnc/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/" 2>&1
+            mv "$HOME/andistro_setup/configs/debian-based/locale/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/"* 2>&1
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+            ((current_step++))
+
+            #28 Mover os wallpapers
+            mv "$HOME/andistro_setup/wallpapers/config.sh" "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
+            chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
+            echo
         }
 
         bash $PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh
@@ -411,8 +392,6 @@ case "$1" in
             andistro -u
             clear
             andistro alerta
-            show_progress_dialog "wget" "${label_progress}" 1 -O "$PREFIX/var/lib/andistro/boot/install-debian.sh" "${extralink}/distros/debian.sh"
-            chmod +x $PREFIX/var/lib/andistro/boot/install-debian.sh
             bash $PREFIX/var/lib/andistro/boot/install-debian.sh
             clear
             andistro -s
@@ -425,8 +404,6 @@ case "$1" in
             andistro -u
             clear
             andistro alerta
-            show_progress_dialog "wget" "${label_progress}" -O "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" "${extralink}/distros/ubuntu.sh"
-            chmod +x $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
             bash $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
             clear
             andistro -s

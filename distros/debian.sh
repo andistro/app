@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
+config_file="$PREFIX/var/lib/andistro/boot/.config/debian-based/"
 export distro_name="debian"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
@@ -188,10 +189,12 @@ EOM
 chmod +x $bin
 
 # Configurações pós-instalação
-# Baixa scripts de configuração de idioma
-show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
-sleep 2
-chmod +x $folder/root/locale_${language_selected}.sh
+# copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
+cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
+
+cp $config_file/system-config.sh $folder/root/system-config.sh
+cp $config_file/app-list-recommends.sh $folder/root/app-list-recommends.sh
+cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -202,30 +205,6 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
-mkdir -p "$folder/usr/local/bin/locales/"
-
-# Baixa as configurações, scripts do vnc e wallpapers adicionais
-show_progress_dialog wget-labeled "${label_progress}" 9 \
-	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
-	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
-	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
-	"${label_progress}" -O "$folder/root/wallpapers.sh" "${extralink}/config/wallpapers/config.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver"
-
-chmod +x $folder/usr/local/bin/andistro
-chmod +x $folder/usr/local/bin/vnc
-chmod +x $folder/usr/local/bin/vncpasswd
-chmod +x $folder/usr/local/bin/startvnc
-chmod +x $folder/usr/local/bin/stopvnc
-chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/root/system-config.sh"
-chmod +x "$folder/root/app-list-recommends.sh"
-chmod +x "$folder/root/wallpapers.sh"
-sleep 2
 
 # KERNEL_VERSON=$(uname -r)
 
@@ -254,12 +233,13 @@ CHOICE=$(dialog --no-shadow --clear \
 case $CHOICE in
 	1)	
 		# XFCE
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		cp $config_file/environment/xfce4/config.sh $folder/root/config-environment.sh
+		cp $config_file/environment/xfce4/xfce4-panel.tar.bz2 $folder/root/xfce4-panel.tar.bz2
 		sleep 2
 		;;
 	2)	
 		# LXDE
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
+		cp $config_file/environment/lxde/config.sh $folder/root/config-environment.sh
 		sleep 2
 	;;
 	3)
@@ -268,8 +248,6 @@ case $CHOICE in
 		sleep 2
 	;;
 esac
-clear
-chmod +x $folder/root/config-environment.sh
 clear
 
 sleep 4
@@ -352,7 +330,7 @@ etc_timezone=\$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
-bash ~/locale_\$system_icu_locale_code.sh
+bash ~/locale_$language_selected.sh
 
 # Baixa os wallpapers adicionais
 bash ~/wallpapers.sh
@@ -403,6 +381,3 @@ EOM
 
 # Inicia o sistema
 bash $bin
-
-# Remove o arquivo de instalação e configuração
-rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh

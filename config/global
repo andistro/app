@@ -21,14 +21,12 @@ detect_package_manager() {
     fi
 }
 
-
 exit_erro() { # ao usar esse comando, o sistema encerra caso haja erro
   if [ $? -ne 0 ]; then
     echo "Erro na execução. Abortando instalação. Código ${error_code}"
     exit 1
   fi
 }
-
 
 #Formato GMT
 GMT_date=$(date +"%Z":00)
@@ -76,8 +74,6 @@ fi
 declare -A LANG_CODES
 LANG_CODES["pt-BR"]="Português do Brasil (pt-BR)"
 LANG_CODES["en-US"]="English (en-US)"
-
-
 
 
 # Sistema de identificação pacotes instalados ==================================================================================
