@@ -7,9 +7,9 @@ show_progress_dialog steps-multi-label 25 \
     "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/portrait'\
     "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/landscape'\
     "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro/square'\
-    "${label_wallpaper_download}\n\n → AnDistro: Light" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-light.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/light.jpg"' \
-    "${label_wallpaper_download}\n\n → AnDistro: Medium" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-medium.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/medium.jpg"' \
-    "${label_wallpaper_download}\n\n → AnDistro: Dark" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-dark.jpg" "https://raw.githubusercontent.com/andistro/wallpapers/main/dark.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Light" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-light.jpg" "https://github.com/andistro/wallpapers/releases/download/wallpapers/light.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Medium" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-medium.jpg" "https://github.com/andistro/wallpapers/releases/download/wallpapers/medium.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Dark" 'wget -O "/usr/share/backgrounds/andistro/square/andistro-dark.jpg" "https://github.com/andistro/wallpapers/releases/download/wallpapers/dark.jpg"' \
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/portrait'\
     "${label_wallpaper_download}\n\n → Unsplash: " 'mkdir -p /usr/share/backgrounds/unsplash/landscape'\
