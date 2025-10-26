@@ -524,6 +524,46 @@ case "$1" in
             done
         } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
         ;;
+    --setup)
+        # Comando interno para iniciar a edição direta do código
+        if [ -z "$2" ]; then
+            # Não foi passado subcomando, comportamento padrão
+            echo "Não foi especificado o subcomando para --setup"
+        else
+            case "$2" in
+                storage)
+                    if [ -d "$HOME/storage/shared" ]; then
+                        if ls "$HOME/storage/shared" &>/dev/null; then
+                            # Acesso ao armazenamento OK!
+                            echo "Acesso ao armazenamento."
+                        else
+                            # A pasta existe, mas sem permissão de acesso.
+                            dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
+                        --msgbox "Sem permissão de acesso." 8 50
+                        rm -rf storage
+                        termux-setup-storage
+                        fi
+                    else
+                        termux-setup-storage
+                    fi
+                    ;;
+                battery)
+                    dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
+                        --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 8 50
+                    am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+                    ;;
+                termux-details-settings)
+                    dialog --no-shadow --title "Informação" \
+                        --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 8 50
+                    am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
+                    ;;
+ 
+                *)
+                    echo "Subcomando desconhecido: $2"
+                    ;;
+            esac
+        fi
+        ;;
     --set-edit)
         # Comando interno para iniciar a edição direta do código
         if [ -z "$2" ]; then
