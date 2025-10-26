@@ -310,7 +310,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #21 Todo o pacote de instalação
-            curl -O "https://github.com/andistro/app/releases/download/andistro/andistro_setup.zip" 2>&1
+            curl -L -O "https://github.com/andistro/app/archive/refs/tags/andistro_setup.zip" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -320,52 +320,51 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #23 Mover o Andistro
-            mv "$HOME/andistro_setup/andistro" "$PREFIX/bin/andistro" 2>&1
+            chmod +x "$HOME/app-andistro_setup/termos.sh" 2>&1
+            mv "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro" 2>&1
             chmod +x "$PREFIX/bin/andistro" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #24 Mover os arquivos necessários
-            mv "$HOME/andistro_setup/config/global" "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
+            mv "$HOME/app-andistro_setup/config/global" "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #25 Mover os arquivos de localização
-            mv "$HOME/andistro_setup/config/locale/l10n_"* "$PREFIX/var/lib/andistro/lib/share/locales/" 2>&1
+            mv "$HOME/app-andistro_setup/config/locale/l10n_"* "$PREFIX/var/lib/andistro/lib/share/locales/" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/"* 2>&1
             update_progress "$current_step" "$total_steps"; sleep 0.1
             ((current_step++))
 
             #26 Mover os scripts de instalação das distros
-            mv "$HOME/andistro_setup/distros/debian.sh" "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
-            mv "$HOME/andistro_setup/distros/ubuntu.sh" "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
+            mv "$HOME/app-andistro_setup/distros/debian.sh" "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
+            mv "$HOME/app-andistro_setup/distros/ubuntu.sh" "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #27 Mover os arquivos de configuração das distros baseadas no debian
-            mv "$HOME/andistro_setup/configs/debian-based/system-config.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/system-config.sh" 2>&1
-            mv "$HOME/andistro_setup/configs/debian-based/app-list-recommends.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/app-list-recommends.sh" 2>&1
-            mv "$HOME/andistro_setup/configs/debian-based/environment/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/" 2>&1
-            mv "$HOME/andistro_setup/configs/debian-based/vnc/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/" 2>&1
-            mv "$HOME/andistro_setup/configs/debian-based/locale/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/" 2>&1
+            mv "$HOME/app-andistro_setup/configs/debian-based/system-config.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/system-config.sh" 2>&1
+            mv "$HOME/app-andistro_setup/configs/debian-based/app-list-recommends.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/app-list-recommends.sh" 2>&1
+            mv "$HOME/app-andistro_setup/configs/debian-based/environment/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/" 2>&1
+            mv "$HOME/app-andistro_setup/configs/debian-based/vnc/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/" 2>&1
+            mv "$HOME/app-andistro_setup/configs/debian-based/locale/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/"* 2>&1
             update_progress "$current_step" "$total_steps"; sleep 0.1
             ((current_step++))
 
             #28 Mover os wallpapers
-            mv "$HOME/andistro_setup/wallpapers/config.sh" "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
+            mv "$HOME/app-andistro_setup/wallpapers/config.sh" "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
             chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             echo
         }
-
-        bash $PREFIX/var/lib/andistro/lib/share/locales/config-locale.sh
-
+        
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
         source "$PREFIX/var/lib/andistro/lib/share/global"
         echo -e "$label_update_finish"
