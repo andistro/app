@@ -161,7 +161,7 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #21 Todo o pacote de instalação
-    curl -O "https://github.com/andistro/app/releases/download/andistro/andistro_setup.zip" 2>&1
+    curl -O "https://github.com/andistro/app/archive/refs/tags/andistro_setup.zip" 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
