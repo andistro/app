@@ -220,3 +220,5 @@ bash "$HOME/andistro_setup/termos.sh"
 
 #rm -rf "$HOME/andistro_setup"
 #rm andistro_setup.zip
+
+andistro --setup storage
