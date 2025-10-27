@@ -1,17 +1,17 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-# 	mkdir -p "$PREFIX/var/lib/andistro/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/"
-#     mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/wallpapers/"
-# fi
+if [ ! -d "$PREFIX/var/lib/andistro/" ];then
+	mkdir -p "$PREFIX/var/lib/andistro/"
+	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
+	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
+	mkdir -p "$PREFIX/var/lib/andistro/boot/"
+	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/"
+	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/"
+	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/"
+    mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/"
+	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/"
+	mkdir -p "$PREFIX/var/lib/andistro/wallpapers/"
+fi
 
 update_progress() {
     current_step=$1
@@ -180,10 +180,10 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #24 Extrai o pacote de instalação
+    rm -rf $HOME/app-andistro_setup/.git > /dev/null 2>&1
+    rm -rf $HOME/app-andistro_setup/setup > /dev/null 2>&1
     mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro > /dev/null 2>&1
-    mv $HOME/app-andistro_setup/lib $PREFIX/var/lib/andistro/lib > /dev/null 2>&1
-    mv $HOME/app-andistro_setup/boot $PREFIX/var/lib/andistro/boot > /dev/null 2>&1
-    mv $HOME/app-andistro_setup/.config $PREFIX/var/lib/andistro/.config > /dev/null 2>&1
+    mv $HOME/app-andistro_setup/ $PREFIX/var/lib/andistro/ > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
