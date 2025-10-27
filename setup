@@ -173,6 +173,8 @@ current_step=0
     #23 Mover o Andistro
     chmod +x "$HOME/app-andistro_setup/termos.sh" 2>&1
     mv "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro" 2>&1
+
+    cp "$HOME/app-alpha/setup" "$HOME/andistro_setup"
     chmod +x "$PREFIX/bin/andistro" 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
@@ -216,9 +218,16 @@ current_step=0
     echo
 }
 
+rm -rf "$HOME/app-andistro_setup"
+rm -rf andistro_setup.zip
+rm -rf "$HOME/andistro_setup"
+
 bash "$HOME/app-andistro_setup/termos.sh"
 
 #rm -rf "$HOME/app-andistro_setup"
 #rm -rf andistro_setup.zip
 
 andistro --setup storage
+chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+source "$PREFIX/var/lib/andistro/lib/share/global"
+echo -e "$label_update_finish"

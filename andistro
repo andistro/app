@@ -364,6 +364,9 @@ case "$1" in
 
             echo
         }
+        rm -rf "$HOME/app-andistro_setup"
+        rm -rf andistro_setup.zip
+        rm -rf "$HOME/andistro_setup"
         
         chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
         source "$PREFIX/var/lib/andistro/lib/share/global"
@@ -388,7 +391,6 @@ case "$1" in
 
         if [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            andistro -u
             clear
             andistro alerta
             bash $PREFIX/var/lib/andistro/boot/install-debian.sh
@@ -400,7 +402,6 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            andistro -u
             clear
             andistro alerta
             bash $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
