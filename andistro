@@ -207,7 +207,7 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #6 Atualiza os pacotes
-            pkg upgrade -y > /dev/null 2>&1
+            apt upgrade -y > /dev/null 2>&1
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
