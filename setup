@@ -180,7 +180,7 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #24 Extrai o pacote de instalação
-    mv $HOME/app-andistro_setup/andistro $PREFIX/var/lib/andistro > /dev/null 2>&1
+    mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro > /dev/null 2>&1
     mv $HOME/app-andistro_setup/lib $PREFIX/var/lib/andistro/ > /dev/null 2>&1
     mv $HOME/app-andistro_setup/boot $PREFIX/var/lib/andistro/ > /dev/null 2>&1
     mv $HOME/app-andistro_setup/.config $PREFIX/var/lib/andistro/ > /dev/null 2>&1
