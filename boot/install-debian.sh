@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
-config_file="$PREFIX/var/lib/andistro/boot/.config/debian-based/"
+config_file="$PREFIX/var/lib/andistro/boot/.config/debian-based"
 export distro_name="debian"
 codinome="trixie"
 andistro_files="$PREFIX/var/lib/andistro"
@@ -193,7 +193,6 @@ chmod +x $bin
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
 
 cp $config_file/system-config.sh $folder/root/system-config.sh
-cp $config_file/app-list-recommends.sh $folder/root/app-list-recommends.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
@@ -233,13 +232,13 @@ CHOICE=$(dialog --no-shadow --clear \
 case $CHOICE in
 	1)	
 		# XFCE
-		cp $config_file/environment/xfce4/config.sh $folder/root/config-environment.sh
+		cp $config_file/environment/xfce4/config-environment.sh $folder/root/config-environment.sh
 		cp $config_file/environment/xfce4/xfce4-panel.tar.bz2 $folder/root/xfce4-panel.tar.bz2
 		sleep 2
 		;;
 	2)	
 		# LXDE
-		cp $config_file/environment/lxde/config.sh $folder/root/config-environment.sh
+		cp $config_file/environment/lxde/config-environment.sh $folder/root/config-environment.sh
 		sleep 2
 	;;
 	3)

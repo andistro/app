@@ -1,17 +1,17 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-	mkdir -p "$PREFIX/var/lib/andistro/"
-	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/"
-    mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/"
-	mkdir -p "$PREFIX/var/lib/andistro/wallpapers/"
-fi
+# if [ ! -d "$PREFIX/var/lib/andistro/" ];then
+# 	mkdir -p "$PREFIX/var/lib/andistro/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/boot/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/"
+#     mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/"
+# 	mkdir -p "$PREFIX/var/lib/andistro/wallpapers/"
+# fi
 
 update_progress() {
     current_step=$1
@@ -28,7 +28,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
 
-total_steps=28  # Número total de etapas que você quer monitorar
+total_steps=24  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
@@ -160,67 +160,48 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #21 Todo o pacote de instalação
-    curl -L -O "https://github.com/andistro/app/archive/refs/tags/andistro_setup.zip" 2>&1
+    #21 Verifica se o git está instalado
+    if ! dpkg -l | grep -qw git; then
+        apt install git -y > /dev/null 2>&1
+    fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #22 Extrai o pacote de instalação
-    unzip andistro_setup.zip -d "$HOME" 2>&1
+    #22 Verifica se o inxi está instalado
+    if ! dpkg -l | grep -qw inxi; then
+        apt install inxi -y > /dev/null 2>&1
+    fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #23 Mover o Andistro
+    #23 Todo o pacote de instalação
+    git clone -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #24 Extrai o pacote de instalação
+    mv $HOME/app-andistro_setup/andistro $PREFIX/var/lib/andistro/ > /dev/null 2>&1
+    mv $HOME/app-andistro_setup/lib $PREFIX/var/lib/andistro/ > /dev/null 2>&1
+    mv $HOME/app-andistro_setup/boot $PREFIX/var/lib/andistro/ > /dev/null 2>&1
+    mv $HOME/app-andistro_setup/.config $PREFIX/var/lib/andistro/ > /dev/null 2>&1
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #25 Mover o Andistro
+    find $PREFIX/var/lib/andistro/lib -type f -exec chmod +x {} \; 
+    find $PREFIX/var/lib/andistro/boot -type f -exec chmod +x {} \;
+    find $PREFIX/var/lib/andistro/.config -type f -exec chmod +x {} \;
     chmod +x "$HOME/app-andistro_setup/termos.sh" 2>&1
-    mv "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro" 2>&1
-
-    cp "$HOME/app-alpha/setup" "$HOME/andistro_setup"
     chmod +x "$PREFIX/bin/andistro" 2>&1
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    #24 Mover os arquivos necessários
-    mv "$HOME/app-andistro_setup/config/global" "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/lib/share/global" 2>&1
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    #25 Mover os arquivos de localização
-    mv "$HOME/app-andistro_setup/config/locale/l10n_"* "$PREFIX/var/lib/andistro/lib/share/locales/" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/"* 2>&1
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-    ((current_step++))
-
-    #26 Mover os scripts de instalação das distros
-    mv "$HOME/app-andistro_setup/distros/debian.sh" "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
-    mv "$HOME/app-andistro_setup/distros/ubuntu.sh" "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/boot/install-debian.sh" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh" 2>&1
-    ((current_step++))
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-
-    #27 Mover os arquivos de configuração das distros baseadas no debian
-    mv "$HOME/app-andistro_setup/configs/debian-based/system-config.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/system-config.sh" 2>&1
-    mv "$HOME/app-andistro_setup/configs/debian-based/app-list-recommends.sh"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/app-list-recommends.sh" 2>&1
-    mv "$HOME/app-andistro_setup/configs/debian-based/environment/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/" 2>&1
-    mv "$HOME/app-andistro_setup/configs/debian-based/vnc/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/" 2>&1
-    mv "$HOME/app-andistro_setup/configs/debian-based/locale/"* "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/"* 2>&1
-    update_progress "$current_step" "$total_steps"; sleep 0.1
-    ((current_step++))
-
-    #28 Mover os wallpapers
-    mv "$HOME/app-andistro_setup/wallpapers/config.sh" "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
-    chmod +x "$PREFIX/var/lib/andistro/boot/.config/debian-based/wallpapers.sh" 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     echo
 }
 
-rm -rf "$HOME/app-andistro_setup"
-rm -rf andistro_setup.zip
-rm -rf "$HOME/andistro_setup"
+#rm -rf "$HOME/app-andistro_setup"
+#rm -rf andistro_setup.zip
+#rm -rf "$HOME/andistro_setup"
 
 bash "$HOME/app-andistro_setup/termos.sh"
 
@@ -231,3 +212,19 @@ andistro --setup storage
 chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
 source "$PREFIX/var/lib/andistro/lib/share/global"
 echo -e "$label_update_finish"
+
+
+
+# 78%cp: cannot stat '/data/data/com.termux/files/home/app-alpha/setup': No such file or directory
+# [===========================   ]  92%mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/configs/debian-based/system-config.sh*': No such file or directory
+# mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/configs/debian-based/app-list-recommends.sh*': No such file or directory
+# mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/configs/debian-based/environment/*': No such file or directory
+# mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/configs/debian-based/vnc/*': No such file or directory
+# mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/configs/debian-based/locale/*': No such file or directory
+# [===========================   ]  92%mv: cannot stat '/data/data/com.termux/files/home/app-andistro_setup/wallpapers/config.sh': No such file or directory
+# chmod: cannot access '/data/data/com.termux/files/usr/var/lib/andistro/boot/.config/debian-based/wallpapers.sh': No such file or directory
+# [==============================] 100%
+# bash: /data/data/com.termux/files/home/app-andistro_setup/termos.sh: No such file or directory
+# Acesso ao armazenamento.
+# Atualização concluída!
+# Use o comando 'andistro' para iniciar o Andistro.
