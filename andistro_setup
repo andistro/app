@@ -202,14 +202,11 @@ current_step=0
     echo
 }
 
-#rm -rf "$HOME/app-andistro_setup"
-#rm -rf andistro_setup.zip
-#rm -rf "$HOME/andistro_setup"
+rm -rf "$HOME/app-andistro_setup"
+rm -rf andistro_setup.zip
+rm -rf "$HOME/andistro_setup"
 
 bash "$HOME/termos.sh"
-
-#rm -rf "$HOME/app-andistro_setup"
-#rm -rf andistro_setup.zip
 
 andistro --setup storage
 chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
