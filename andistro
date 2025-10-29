@@ -567,6 +567,7 @@ case "$1" in
                     export language_selected
                     export language_transformed
                     }
+                    alerta_lang
                     ;;
                 arquitetura)
                     case `dpkg --print-architecture` in
