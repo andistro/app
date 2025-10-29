@@ -183,8 +183,7 @@ touch $folder/root/.hushlogin
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
-source "/usr/local/bin/andistro/locales/l10n_${language_selected}.sh"
-
+source "/usr/local/bin/andistro/global"
 
 echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
 deb http://security.debian.org/debian-security stable-security main contrib non-free
