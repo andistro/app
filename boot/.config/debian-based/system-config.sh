@@ -5,7 +5,7 @@ export distro_id="$2"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 68 \
+show_progress_dialog steps-multi-label 67 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
@@ -59,7 +59,6 @@ show_progress_dialog steps-multi-label 68 \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
-  "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
   "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
   "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
