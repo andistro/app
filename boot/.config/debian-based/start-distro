@@ -56,13 +56,13 @@ command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
-com="\$@"
-if [ -z "\$1" ];then
-    exec \$command
+com="$@"
+if [ -z "$1" ];then
+    exec $command
 else
-    \$command -c "\$com"
+    $command -c "$com"
 fi
-PA_PID=\$(pgrep pulseaudio)
-if [ -n "\$PA_PID" ]; then
-  kill \$PA_PID
+PA_PID=$(pgrep pulseaudio)
+if [ -n "$PA_PID" ]; then
+  kill $PA_PID
 fi
