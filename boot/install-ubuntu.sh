@@ -1,17 +1,17 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # Variáveis de configuração
-export config_file="$1"
-export andistro_files="$2"
-export distro_name="$3"
-export bin="$4"
-export folder="$5"
-export binds="$6"
-export language_selected="$7"
-export language_transformed="$8"
-export archurl="$9"
+config_file="$1"
+andistro_files="$2"
+distro_name="$3"
+bin="$4"
+folder="$5"
+binds="$6"
+language_selected="$7"
+language_transformed="$8"
+archurl="$9"
+config_environment="${10}"
 
-# Fonte modular configuração global
 source "$PREFIX/var/lib/andistro/lib/share/global"
 
 #=============================================================================================
@@ -23,15 +23,25 @@ fi
 
 sleep 2
 # Baixa
-# Baixar
+label_distro_download=$(printf "$label_distro_download" "$distro_name")
+label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
+label_distro_download_extract=$(printf "$label_distro_download_extract" "$distro_name")
+label_distro_download_finish=$(printf "$label_distro_download_finish" "$distro_name")
+
 if [ "$first" != 1 ];then
 	{
 		for i in {1..50}; do
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --title "${label_distro_download}" --progressbox 20 70
+	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano stable $folder http://port.${distro_name}.com/${distro_name}-ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	{
+		for i in {1..50}; do
+			sleep 0.1
+			echo $((i * 2))
+		done
+	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60 0
 fi
 
 cat > $bin <<- EOM
@@ -104,15 +114,18 @@ if [ -n "\$PA_PID" ]; then
   kill \$PA_PID
 fi
 EOM
-
 chmod +x $bin
 
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
-
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
+cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
+if [ "$config_environment" = "xfce4" ]; then
+    # Coloque aqui o comando que você quer executar quando for XFCE4
+	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
+fi
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -123,41 +136,6 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
-# Escolher o ambiente gráfico
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-
-OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
-		 2 "${MENU_environments_select_light} (LXDE)"
-		 3 "${MENU_environments_select_null}") 
-
-CHOICE=$(dialog --no-shadow --clear \
-                --title "$TITLE" \
-                --menu "$MENU_environments_select" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-case $CHOICE in
-	1)	
-		# XFCE
-		cp "$config_file/environment/xfce4/config-environment.sh" "$folder/root/config-environment.sh"
-		cp "$config_file/environment/xfce4/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
-		sleep 2
-		;;
-	2)	
-		# LXDE
-		cp "$config_file/environment/lxde/config-environment.sh" "$folder/root/config-environment.sh"
-		sleep 2
-	;;
-	3)
-		# Nenhum escolhido
-		rm -rf "$folder/root/system-config.sh"
-		sleep 2
-	;;
-esac
-clear
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
