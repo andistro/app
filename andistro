@@ -14,7 +14,7 @@ if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
     mkdir -p "$HOME/storage/shared/termux/andistro/logs"
     touch "$HOME/storage/shared/termux/andistro/logs/.nomedia"
 fi
-
+andistro_files="$PREFIX/var/lib/andistro"
 ANDISTRO_LOG="$HOME/storage/shared/termux/andistro/logs"
 # Cria os diretórios necessários
 if [ ! -d "$PREFIX/var/lib/andistro/" ];then
@@ -174,7 +174,7 @@ case "$1" in
             printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
         }
 
-        total_steps=28  # Número total de etapas que você quer monitorar
+        total_steps=25  # Número total de etapas que você quer monitorar
         current_step=0
 
         {
@@ -368,8 +368,6 @@ case "$1" in
             echo "   ubuntu"
             exit 1
         fi
-
-        andistro_files="$PREFIX/var/lib/andistro"
     
         if [ "$2" == "debian" ]; then
             distro_name="debian"
