@@ -1,80 +1,18 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
-config_file="$PREFIX/var/lib/andistro/boot/.config/debian-based"
-export distro_name="debian"
-codinome="trixie"
-andistro_files="$PREFIX/var/lib/andistro"
-bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
-folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
-binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
-storage_root="$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
+# "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
+export config_file="$1"
+export andistro_files="$2"
+export distro_name="$3"
+export bin="$4"
+export folder="$5"
+export binds="$6"
+export language_selected="$7"
+export language_transformed="$8"
+export archurl="$9"
 
 # Fonte modular configuração global
 source "$PREFIX/var/lib/andistro/lib/share/global"
-
-# Verificar e criar diretórios necessários
-if [ ! -d "$PREFIX/var/lib/andistro/boot/$distro_name" ];then
-    mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
-fi
-
-if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
-    mkdir -p "$HOME/storage/shared/termux/"
-    mkdir -p "$HOME/storage/shared/termux/andistro"
-    mkdir -p "$HOME/storage/shared/termux/andistro/boot"
-    mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
-fi
-
-mkdir -p $binds
-
-# Verificar se o idioma do sistema está no mapa, senão usar en-US
-if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
-    system_lang_code="$system_icu_locale_code"
-else
-    system_lang_code="en-US"
-fi
-
-# Montar opções do menu
-OPTIONS=()
-OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
-OPTIONS+=("SEP" "────────────")  # Separador visual seguro
-
-# Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
-for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
-    [[ "$code" == "$system_lang_code" ]] && continue
-    OPTIONS+=("$code" "${LANG_CODES[$code]}")
-done
-
-# Tamanho da janela do dialog
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=10
-
-# Mostrar menu com redirecionamento seguro
-exec 3>&1
-CHOICE=$(dialog --no-shadow --clear \
-    --title "$MENU_language_select" \
-    --menu "$MENU_language_select" \
-    $HEIGHT $WIDTH $CHOICE_HEIGHT \
-    "${OPTIONS[@]}" \
-    2>&1 1>&3)
-exec 3>&-
-
-
-# Determinar idioma selecionado
-if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
-    language_selected="$system_lang_code"
-elif [[ "$CHOICE" == "SEP" ]]; then
-    exit 0  # ignorar separador
-else
-    language_selected="$CHOICE"
-fi
-
-# Converter de pt-BR para pt_BR
-language_transformed="${language_selected//-/_}"
-
-# Exportar, se necessário
-export language_selected
-export language_transformed
 
 #=============================================================================================
 # Caso a versão já tenha sido baixada, não baixar novamente
@@ -86,38 +24,13 @@ fi
 sleep 2
 # Baixar
 if [ "$first" != 1 ];then
-	case `dpkg --print-architecture` in
-	aarch64)
-		archurl="arm64" ;;
-	arm)
-		archurl="armhf" ;;
-	*)
-		echo "unknown architecture"; exit 1 ;;
-	esac
-	# Alternativa para baixar o debian usando o debootstrap
-	# Temporariamente desativado por problemas de download
-	# {
-	# 	for i in {1..50}; do
-	# 		sleep 0.1
-	# 		echo $((i * 2))
-	# 	done
-	# } | dialog --gauge "$label_distro_download_start" 10 60 0
-	# debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --title "${label_distro_download}" --progressbox 20 70
-	# sleep 2
-	# {
-	# 	for i in {1..50}; do
-	# 		sleep 0.1
-	# 		echo $((i * 2))
-	# 	done
-	# } | dialog --gauge "$label_distro_download_finish" 10 60 0
-	
-	# Baixa a imagem do sistema
-	show_progress_dialog wget "${label_distro_download}" -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
-	sleep 2
-	# Extrai a imagem do sistema
-	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
-	sleep 2
-	rm -rf $folder.tar.xz # remove o arquivo
+	{
+		for i in {1..50}; do
+			sleep 0.1
+			echo $((i * 2))
+		done
+	} | dialog --gauge "$label_distro_download_start" 10 60 0
+	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --title "${label_distro_download}" --progressbox 20 70
 fi
 # =============================================================================================
 # Criar o script de inicialização
@@ -158,14 +71,15 @@ command+=" -b /proc/meminfo:/proc/meminfo"
 command+=" -b /sys"
 command+=" -b /data"
 command+=" -b $folder/root:/dev/shm"
+command+=" -b $config_file/proc/fakethings/stat:/proc/stat"
+command+=" -b $config_file/proc/fakethings/vmstat:/proc/vmstat"
+#command+=" -b $config_file/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
-#command+=" -b /data/data/com.termux/files/home:/root"
-#command+=" -b $storage_root/root:/root"
 command+=" -b /data/data/com.termux/files/home:/termux/home"
-command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
-command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
-command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot/.config/debian-based/bin:/usr/local/bin/"
-command+=" -b /data/data/com.termux/files/usr/bin/andistro:/usr/local/bin/andistro/bin/andistro"
+command+=" -b $andistro_files/lib/share:/usr/local/bin/andistro"
+command+=" -b $andistro_files/boot:/usr/local/bin/andistro/boot"
+command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
+command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -193,7 +107,6 @@ chmod +x $bin
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
-
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 

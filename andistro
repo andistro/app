@@ -369,32 +369,41 @@ case "$1" in
             exit 1
         fi
 
+        andistro_files="$PREFIX/var/lib/andistro"
+    
         if [ "$2" == "debian" ]; then
-            echo "$distro_wait"
-            clear
-            andistro alerta
-            bash $PREFIX/var/lib/andistro/boot/install-debian.sh
-            clear
-            andistro -s
-            andistro -s debian
-            #rm -rf $PREFIX/var/lib/andistro/boot/install-debian.sh
-            clear
+            distro_name="debian"
+            
 
         elif [ "$2" == "ubuntu" ]; then
-            echo "$distro_wait"
-            clear
-            andistro alerta
-            bash $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
-            clear
-            andistro -s
-            andistro -s ubuntu
-            #rm -rf $PREFIX/var/lib/andistro/boot/install-ubuntu.sh
-            clear
-
+            distro_name="ubuntu"
+            bin="$andistro_files/boot/start-$distro_name"
+            folder="$andistro_files/boot/$distro_name"
+            binds="$andistro_files/boot/$distro_name/binds"
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
+        echo "$distro_wait"
+        config_file="$andistro_files/boot/.config/$distro_name-based"
+        bin="$andistro_files/boot/start-$distro_name"
+        folder="$andistro_files/boot/$distro_name"
+        binds="$andistro_files/boot/$distro_name/binds"
+        andistro alerta timezone
+        andistro alerta lang
+        andistro alerta arquitetura
+        mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
+        if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
+            mkdir -p "$HOME/storage/shared/termux/"
+            mkdir -p "$HOME/storage/shared/termux/andistro"
+            mkdir -p "$HOME/storage/shared/termux/andistro/boot"
+            mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
+        fi
+        mkdir -p $binds
+        bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
+        clear
+        andistro -s
+        andistro -s $distro_name
         ;;
     -d)
         if [ -z "$2" ]; then
@@ -497,12 +506,89 @@ case "$1" in
         ;;
 
     alerta)
-        {
-            for i in {1..50}; do
-                sleep 0.1
-                echo $((i * 2))
-            done
-        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+        if [ -z "$2" ]; then
+            # Não foi passado subcomando, comportamento padrão
+            echo "Não foi especificado o subcomando para alerta"
+        else
+            case "$2" in
+                timezone)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+                    ;;
+                lang)
+                   # Verificar se o idioma do sistema está no mapa, senão usar en-US
+                    if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
+                        system_lang_code="$system_icu_locale_code"
+                    else
+                        system_lang_code="en-US"
+                    fi
+
+                    # Montar opções do menu
+                    OPTIONS=()
+                    OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+                    OPTIONS+=("SEP" "────────────")  # Separador visual seguro
+
+                    # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
+                    for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
+                        [[ "$code" == "$system_lang_code" ]] && continue
+                        OPTIONS+=("$code" "${LANG_CODES[$code]}")
+                    done
+
+                    # Tamanho da janela do dialog
+                    HEIGHT=0
+                    WIDTH=100
+                    CHOICE_HEIGHT=10
+
+                    # Mostrar menu com redirecionamento seguro
+                    exec 3>&1
+                    CHOICE=$(dialog --no-shadow --clear \
+                        --title "$MENU_language_select" \
+                        --menu "$MENU_language_select" \
+                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                        "${OPTIONS[@]}" \
+                        2>&1 1>&3)
+                    exec 3>&-
+
+
+                    # Determinar idioma selecionado
+                    if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
+                        language_selected="$system_lang_code"
+                    elif [[ "$CHOICE" == "SEP" ]]; then
+                        exit 0  # ignorar separador
+                    else
+                        language_selected="$CHOICE"
+                    fi
+
+                    # Converter de pt-BR para pt_BR
+                    language_transformed="${language_selected//-/_}"
+
+                    # Exportar, se necessário
+                    export language_selected
+                    export language_transformed
+                    ;;
+                arquitetura)
+                    case `dpkg --print-architecture` in
+                    aarch64)
+                        export archurl="arm64" ;;
+                    arm)
+                        export archurl="armhf" ;;
+                    *)
+                        echo "unknown architecture"; exit 1 ;;
+                    esac
+                    ;;
+
+                *)
+                    echo "Subcomando desconhecido: $2"
+                    ;;
+            esac
+        fi
+
+
+        
         ;;
     --setup)
         # Comando interno para iniciar a edição direta do código
