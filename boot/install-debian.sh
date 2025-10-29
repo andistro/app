@@ -29,8 +29,14 @@ if [ "$first" != 1 ];then
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --title "${label_distro_download}" --progressbox 20 70
+	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
+	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	{
+		for i in {1..50}; do
+			sleep 0.1
+			echo $((i * 2))
+		done
+	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60 0
 fi
 # =============================================================================================
 # Criar o script de inicialização
