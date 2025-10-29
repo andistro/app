@@ -326,10 +326,13 @@ case "$1" in
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #24 Extrai o pacote de instalação
-            rm -rf $HOME/app-andistro_setup/.git > /dev/null 2>&1
-            rm -rf $HOME/app-andistro_setup/setup > /dev/null 2>&1
-            mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro > /dev/null 2>&1
-            mv $HOME/app-andistro_setup/ $PREFIX/var/lib/andistro/ > /dev/null 2>&1
+            rm -rf $andistro_files
+            rm -rf $HOME/app-andistro_setup/.git
+            rm -rf $HOME/app-andistro_setup/setup
+            rm -rf $HOME/app-andistro_setup/README.md
+            mv "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"
+            mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro 
+            mv $HOME/app-andistro_setup/ $PREFIX/var/lib/andistro/
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -337,8 +340,8 @@ case "$1" in
             find $PREFIX/var/lib/andistro/lib -type f -exec chmod +x {} \; 
             find $PREFIX/var/lib/andistro/boot -type f -exec chmod +x {} \;
             find $PREFIX/var/lib/andistro/boot/.config -type f -exec chmod +x {} \;
-            chmod +x "$HOME/app-andistro_setup/termos.sh" 2>&1
-            chmod +x "$PREFIX/bin/andistro" 2>&1
+            chmod +x "$HOME/termos.sh"
+            chmod +x "$PREFIX/bin/andistro"
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
