@@ -35,7 +35,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl stable $folder --include=sudo,wget,dialog http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
