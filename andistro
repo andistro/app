@@ -328,7 +328,7 @@ case "$1" in
             #24 Extrai o pacote de instalação
             rm -rf $andistro_files
             rm -rf "$HOME/app-andistro_setup/.git"
-            rm -rf "$HOME/app-andistro_setup/setup"
+            rm -rf "$HOME/app-andistro_setup/andistro_setup"
             rm -rf "$HOME/app-andistro_setup/README.md"
             rm -rf "$HOME/app-andistro_setup/termos.sh"
             mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro 
