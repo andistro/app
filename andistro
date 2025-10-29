@@ -634,10 +634,10 @@ case "$1" in
                     nano "$PREFIX/var/lib/andistro/boot/start-debian"
                     ;;
                 ubuntu)
-                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu"
+                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
                     ;;
                 start-ubuntu)
-                    nano "$PREFIX/var/lib/andistro/boot/start-ubuntu.sh"
+                    nano "$PREFIX/var/lib/andistro/boot/start-ubuntu"
                     ;;
                 module-global)
                     nano "$PREFIX/var/lib/andistro/lib/share/global"
