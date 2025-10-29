@@ -119,6 +119,9 @@ fi
 cp "$config_file/start-distro" $bin
 chmod +x $bin
 
+cp "$config_file/.bash_profile" $folder/root/.bash_profile
+chmod +x $folder/root/.bash_profile
+
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
@@ -127,6 +130,8 @@ if [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 fi
+
+
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
