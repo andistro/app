@@ -459,10 +459,6 @@ case "$1" in
             *)
                 echo "unknown architecture"; exit 1 ;;
         esac
-        echo "Selecionado: $language_selected"
-        echo "Transformado: $language_transformed"
-        echo "Arquitetura: $archurl"
-        sleep 10
         mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
         if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
             mkdir -p "$HOME/storage/shared/termux/"
