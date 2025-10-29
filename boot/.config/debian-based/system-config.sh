@@ -5,15 +5,13 @@ export distro_id="$2"
 source "/usr/local/bin/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 73 \
+show_progress_dialog steps-multi-label 68 \
   "${label_progress}" 'echo "system-config"' \
   "${label_progress}" 'sudo apt clean' \
   "${label_find_update}" 'sudo apt update' \
   "${label_upgrade}" 'sudo apt full-upgrade -y' \
-  "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata --no-install-recommends -y" \
   "${label_install_script_download}" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration --no-install-recommends -y" \
   "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → wget" 'sudo apt install wget --no-install-recommends -y' \
   "${label_install_script_download}\n\n → curl" 'sudo apt install curl --no-install-recommends -y' \
   "${label_install_script_download}\n\n → gpg" 'sudo apt install gpg --no-install-recommends -y' \
   "${label_install_script_download}\n\n → git" 'sudo apt install git --no-install-recommends -y' \
@@ -28,14 +26,12 @@ show_progress_dialog steps-multi-label 73 \
   "${label_install_script_download}\n\n → tigervnc-common" 'sudo apt install tigervnc-common --no-install-recommends -y' \
   "${label_install_script_download}\n\n → tigervnc-tools" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
   "${label_install_script_download}\n\n → dbus-x11" 'sudo apt install dbus-x11 --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → nano" 'sudo apt install nano --no-install-recommends -y' \
   "${label_install_script_download}\n\n → inetutils-tools" 'sudo apt install inetutils-tools --no-install-recommends -y' \
   "${label_install_script_download}\n\n → net-tools" 'sudo apt install net-tools --no-install-recommends -y' \
   "${label_install_script_download}\n\n → font-manager" 'sudo apt install font-manager --no-install-recommends -y' \
   "${label_install_script_download}\n\n → synaptic" 'sudo apt install synaptic --no-install-recommends -y' \
   "${label_install_script_download}\n\n → gvfs-backends" 'sudo apt install gvfs-backends --no-install-recommends -y' \
   "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
-  "${label_install_script_download}\n\n → pulseaudio" 'sudo apt install pulseaudio --no-install-recommends -y' \
   "${label_install_script_download}\n\n → pavucontrol" 'sudo apt install pavucontrol --no-install-recommends -y' \
   "${label_install_script_download}\n\n → at-spi2-core" 'sudo apt install at-spi2-core --no-install-recommends -y' \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
@@ -59,7 +55,6 @@ show_progress_dialog steps-multi-label 73 \
   "${label_install_script_download}" 'echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list' \
   "${label_install_script_download}" 'sudo apt update && sleep 2' \
   "${label_install_script_download}" 'sleep 5' \
-  "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds/"' \
   "${label_system_setup}" 'mkdir -p "/usr/share/icons/"' \
   "${label_system_setup}" 'mkdir -p "$HOME/.config/gtk-3.0"' \
   "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | sudo tee $HOME/.config/gtk-3.0/bookmarks' \
