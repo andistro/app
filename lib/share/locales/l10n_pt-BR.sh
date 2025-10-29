@@ -157,16 +157,11 @@ label_wallpaper_download="Baixando wallpaper..."
 label_gnome_download_setup="Baixando as configurações necessárias para o Gnome..."
 
 #Download do sistema
-label_distro_download="Baixando o $distro_name..."
-label_distro_download_extract="Extraindo o $distro_name para o armazenamento..."
+label_distro_download="Baixando o %s..."
+label_distro_download_start="Em breve será baixado a ultima versão do %s para o armazenamento..."
+label_distro_download_extract="Extraindo o %s para o armazenamento..."
+label_distro_download_finish="A ultima versão do %s foi baixada com sucesso."
 
-label_ubuntu_download="Baixando o Ubuntu..."
-label_ubuntu_download_extract="Extraindo o Ubuntu para o armazenamento..."
-
-label_debian_download_start="Preparando para baixar a ultima versão do Debian... \nIsso pode levar alguns minutos, $distro_wait..."
-label_debian_download="Baixando a ultima versão do Debian..."
-label_debian_download_finish="A ultima versão do Debian foi baixada com sucesso."
-label_debian_download_extract="Extraindo o Debian para o armazenamento..."
 
 #TITULO DO MENU DE DIALOGO
 MENU_operating_system_select="Escolha o sistema operacional que será instalado: "

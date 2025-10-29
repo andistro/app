@@ -1,18 +1,29 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
 # "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
-export config_file="$1"
-export andistro_files="$2"
-export distro_name="$3"
-export bin="$4"
-export folder="$5"
-export binds="$6"
-export language_selected="$7"
-export language_transformed="$8"
-export archurl="$9"
+config_file="$1"
+andistro_files="$2"
+distro_name="$3"
+bin="$4"
+folder="$5"
+binds="$6"
+language_selected="$7"
+language_transformed="$8"
+archurl="$9"
 
-# Fonte modular configuração global
+echo "$config_file"
+echo "$andistro_files"
+echo "$distro_name"
+echo "$bin"
+echo "$folder"
+echo "$binds"
+echo "$language_selected"
+echo "$language_transformed"
+echo "$archurl"
+sleep 10
+
 source "$PREFIX/var/lib/andistro/lib/share/global"
+# Fonte modular configuração global
 
 #=============================================================================================
 # Caso a versão já tenha sido baixada, não baixar novamente
@@ -23,6 +34,11 @@ fi
 
 sleep 2
 # Baixar
+label_distro_download=$(printf "$label_distro_download" "$distro_name")
+label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
+label_distro_download_extract=$(printf "$label_distro_download_extract" "$distro_name")
+label_distro_download_finish=$(printf "$label_distro_download_finish" "$distro_name")
+
 if [ "$first" != 1 ];then
 	{
 		for i in {1..50}; do
