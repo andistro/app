@@ -35,7 +35,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget stable $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -69,11 +69,6 @@ command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
 command+=" -r $folder"
-if [ -n "\$(ls -A $binds)" ]; then
-    for f in $binds/* ;do
-      . \$f
-    done
-fi
 command+=" -b /dev"
 command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
 command+=" -b /proc"
