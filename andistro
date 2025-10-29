@@ -385,7 +385,7 @@ case "$1" in
         echo "$distro_wait"
         config_file="$andistro_files/boot/.config/$distro_name-based"
         bin="$andistro_files/boot/start-$distro_name"
-        folder="$andistro_files/boot/$distro_name"
+        folder="$andistro_files/boot/$distro_name/stable"
         binds="$andistro_files/boot/$distro_name/binds"
         andistro alerta timezone
         andistro alerta lang
