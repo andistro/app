@@ -117,7 +117,7 @@ cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
-if [ "$config_enviroment" = "xfce4" ]; then
+if [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 fi
