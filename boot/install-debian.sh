@@ -185,6 +185,11 @@ cat > $folder/root/.bash_profile <<- EOM
 export LANG=$language_transformed.UTF-8
 source "/usr/local/bin/andistro/locales/l10n_${language_selected}.sh"
 
+
+echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security stable-security main contrib non-free
+deb http://deb.debian.org/debian stable-updates main contrib non-free' >> /etc/apt/sources.list
+
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
 
