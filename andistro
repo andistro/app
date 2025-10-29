@@ -353,6 +353,88 @@ case "$1" in
         echo -e "$label_update_finish"
         ;;
 
+    alerta)
+        if [ -z "$2" ]; then
+            # Não foi passado subcomando, comportamento padrão
+            echo "Não foi especificado o subcomando para alerta"
+        else
+            case "$2" in
+                timezone)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+                    ;;
+                lang)
+                   # Verificar se o idioma do sistema está no mapa, senão usar en-US
+                    if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
+                        system_lang_code="$system_icu_locale_code"
+                    else
+                        system_lang_code="en-US"
+                    fi
+
+                    # Montar opções do menu
+                    OPTIONS=()
+                    OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+                    OPTIONS+=("SEP" "────────────")  # Separador visual seguro
+
+                    # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
+                    for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
+                        [[ "$code" == "$system_lang_code" ]] && continue
+                        OPTIONS+=("$code" "${LANG_CODES[$code]}")
+                    done
+
+                    # Tamanho da janela do dialog
+                    HEIGHT=0
+                    WIDTH=100
+                    CHOICE_HEIGHT=10
+
+                    # Mostrar menu com redirecionamento seguro
+                    exec 3>&1
+                    CHOICE=$(dialog --no-shadow --clear \
+                        --title "$MENU_language_select" \
+                        --menu "$MENU_language_select" \
+                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                        "${OPTIONS[@]}" \
+                        2>&1 1>&3)
+                    exec 3>&-
+
+
+                    # Determinar idioma selecionado
+                    if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
+                        language_selected="$system_lang_code"
+                    elif [[ "$CHOICE" == "SEP" ]]; then
+                        exit 0  # ignorar separador
+                    else
+                        language_selected="$CHOICE"
+                    fi
+
+                    # Converter de pt-BR para pt_BR
+                    language_transformed="${language_selected//-/_}"
+
+                    # Exportar, se necessário
+                    export language_selected
+                    export language_transformed
+                    ;;
+                arquitetura)
+                    case `dpkg --print-architecture` in
+                    aarch64)
+                        archurl="arm64" ;;
+                    arm)
+                        archurl="armhf" ;;
+                    *)
+                        echo "unknown architecture"; exit 1 ;;
+                    esac
+                    ;;
+                *)
+                    echo "Subcomando desconhecido: $2"
+                    ;;
+            esac
+        fi
+        ;;
+    
     -i)
         if [ -z "$2" ]; then
             echo "$distro_desc_line_1"
@@ -386,11 +468,9 @@ case "$1" in
         binds="$andistro_files/boot/$distro_name/binds"
         andistro alerta timezone
         andistro alerta lang
-        alerta_lang
         echo "Selecionado: $language_selected"
         echo "Transformado: $language_transformed"
         andistro alerta arquitetura
-        alerta_arquitetura
         echo "Arquitetura: $archurl"
         sleep 10
         mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
@@ -496,103 +576,6 @@ case "$1" in
         echo "$distro_desc_line_13"
         echo "   debian"
         echo "   ubuntu"
-        ;;
-
-    alerta)
-        if [ -z "$2" ]; then
-            # Não foi passado subcomando, comportamento padrão
-            echo "Não foi especificado o subcomando para alerta"
-        else
-            case "$2" in
-                timezone)
-                    {
-                        for i in {1..50}; do
-                            sleep 0.1
-                            echo $((i * 2))
-                        done
-                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
-                    ;;
-                lang)
-                   # Verificar se o idioma do sistema está no mapa, senão usar en-US
-                    if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
-                        system_lang_code="$system_icu_locale_code"
-                    else
-                        system_lang_code="en-US"
-                    fi
-
-                    # Montar opções do menu
-                    OPTIONS=()
-                    OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
-                    OPTIONS+=("SEP" "────────────")  # Separador visual seguro
-
-                    # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
-                    for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
-                        [[ "$code" == "$system_lang_code" ]] && continue
-                        OPTIONS+=("$code" "${LANG_CODES[$code]}")
-                    done
-
-                    # Tamanho da janela do dialog
-                    HEIGHT=0
-                    WIDTH=100
-                    CHOICE_HEIGHT=10
-
-                    # Mostrar menu com redirecionamento seguro
-                    exec 3>&1
-                    CHOICE=$(dialog --no-shadow --clear \
-                        --title "$MENU_language_select" \
-                        --menu "$MENU_language_select" \
-                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                        "${OPTIONS[@]}" \
-                        2>&1 1>&3)
-                    exec 3>&-
-
-
-                    # Determinar idioma selecionado
-                    if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
-                        language_selected="$system_lang_code"
-                    elif [[ "$CHOICE" == "SEP" ]]; then
-                        exit 0  # ignorar separador
-                    else
-                        language_selected="$CHOICE"
-                    fi
-
-                    # Converter de pt-BR para pt_BR
-                    language_transformed="${language_selected//-/_}"
-
-                    # Exportar, se necessário
-                    export language_selected
-                    export language_transformed
-                    alerta_lang() {
-                    # ...toda a lógica de seleção e atribuição...
-                    export language_selected
-                    export language_transformed
-                    }
-                    alerta_lang
-                    ;;
-                arquitetura)
-                    case `dpkg --print-architecture` in
-                    aarch64)
-                        archurl="arm64" ;;
-                    arm)
-                        archurl="armhf" ;;
-                    *)
-                        echo "unknown architecture"; exit 1 ;;
-                    esac
-
-                    alerta_arquitetura() {
-                    # ...toda a lógica de seleção e atribuição...
-                    export archurl
-                    }
-                    ;;
-
-                *)
-                    echo "Subcomando desconhecido: $2"
-                    ;;
-            esac
-        fi
-
-
-        
         ;;
     --setup)
         # Comando interno para iniciar a edição direta do código
