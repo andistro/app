@@ -35,7 +35,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --include=sudo,wget,dialog stable $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl stable $folder http://ftp.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -90,7 +90,7 @@ command+=" -b /data/data/com.termux/files/home:/termux/home"
 command+=" -b $andistro_files/lib/share:/usr/local/bin/andistro"
 command+=" -b $andistro_files/boot:/usr/local/bin/andistro/boot"
 command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
-#command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
+command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -117,9 +117,9 @@ chmod +x $bin
 
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
-cp "${config_file}/locale_setup/locale_${language_selected}.sh" "${folder}/root/locale_${language_selected}.sh"
-cp "${config_file}/system-config.sh" "${folder}/root/system-config.sh"
-cp "${config_file}/wallpapers.sh" "${folder}/root/wallpapers.sh"
+cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
+cp $config_file/system-config.sh $folder/root/system-config.sh
+cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -184,6 +184,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
+# Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
 # Mensagem de inicialização
