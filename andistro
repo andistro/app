@@ -378,9 +378,6 @@ case "$1" in
 
         elif [ "$2" == "ubuntu" ]; then
             distro_name="ubuntu"
-            bin="$andistro_files/boot/start-$distro_name"
-            folder="$andistro_files/boot/$distro_name"
-            binds="$andistro_files/boot/$distro_name/binds"
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
@@ -425,33 +422,25 @@ case "$1" in
         if [ "$2" == "total" ]; then
             # Desinstalação total
             echo "$distro_wait"
-            rm -rf $PREFIX/var/lib/andistro
+            rm -rf $andistro_files
             rm -rf $PREFIX/bin/andistro
-            rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
-            rm -rf system_bus_socket
             
         elif [ "$2" == "debian" ]; then
             echo "$distro_wait"
-            rm -rf $PREFIX/var/lib/andistro/boot/debian/
-            rm -rf $PREFIX/var/lib/andistro/boot/debian/*
-            rm -rf $PREFIX/var/lib/andistro/boot/start-debian*
-            rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
-            rm -rf system_bus_socket
-            echo "Desinstalação concluída!"
+            distro_name="debian"
 
         elif [ "$2" == "ubuntu" ]; then
             echo "$distro_wait"
-            rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/
-            rm -rf $PREFIX/var/lib/andistro/boot/ubuntu/*
-            rm -rf $PREFIX/var/lib/andistro/boot/start-ubuntu*
-            rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
-            rm -rf system_bus_socket
-            echo "Desinstalação concluída!"
-
+            distro_name="ubuntu"
         else
             echo "Distribuição não reconhecida: $2"
             exit 1
         fi
+        rm -rf $andistro_files/boot/$distro_name
+        rm -rf $andistro_files/boot/start-$distro_name
+        #rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
+        #rm -rf system_bus_socket
+        echo "Desinstalação concluída!"
         ;;
     -s)
         if [ -z "$2" ]; then
