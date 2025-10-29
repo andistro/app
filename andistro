@@ -385,11 +385,10 @@ case "$1" in
         folder="$andistro_files/boot/$distro_name/stable"
         binds="$andistro_files/boot/$distro_name/binds"
         andistro alerta timezone
-        
         andistro alerta lang
-
-        language_selected="${language_selected}"
-        language_transformed="${language_transformed}"
+        alerta_lang
+        echo "Selecionado: $language_selected"
+        echo "Transformado: $language_transformed"
         andistro alerta arquitetura
         mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
         if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
