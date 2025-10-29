@@ -390,12 +390,15 @@ case "$1" in
         echo "Selecionado: $language_selected"
         echo "Transformado: $language_transformed"
         andistro alerta arquitetura
+        alerta_arquitetura
+        echo "Arquitetura: $archurl"
+        sleep 10
         mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
-        if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome" ];then
+        if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
             mkdir -p "$HOME/storage/shared/termux/"
             mkdir -p "$HOME/storage/shared/termux/andistro"
             mkdir -p "$HOME/storage/shared/termux/andistro/boot"
-            mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
+            mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
         fi
         mkdir -p $binds
         bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
@@ -568,12 +571,17 @@ case "$1" in
                 arquitetura)
                     case `dpkg --print-architecture` in
                     aarch64)
-                        export archurl="arm64" ;;
+                        archurl="arm64" ;;
                     arm)
-                        export archurl="armhf" ;;
+                        archurl="armhf" ;;
                     *)
                         echo "unknown architecture"; exit 1 ;;
                     esac
+
+                    alerta_arquitetura() {
+                    # ...toda a lógica de seleção e atribuição...
+                    export archurl
+                    }
                     ;;
 
                 *)
