@@ -11,17 +11,6 @@ language_selected="$7"
 language_transformed="$8"
 archurl="$9"
 
-echo -e "caminho do boot: \n$config_file"
-echo -e "caminho do andistro: \n$andistro_files"
-echo -e "distro: \n$distro_name"
-echo -e "iniciador: \n$bin"
-echo -e "pasta do iniciador: \n$folder"
-echo -e "binds: \n$binds"
-echo -e "seletor de idioma: \n$language_selected"
-echo -e "seletor alternativo de idioma: \n$language_transformed"
-echo -e "arquitetura: \n$archurl"
-sleep 10
-
 source "$PREFIX/var/lib/andistro/lib/share/global"
 # Fonte modular configuração global
 
