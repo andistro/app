@@ -126,6 +126,10 @@ echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
 echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf 
 echo "$system_timezone" | tee $folder/etc/timezone
 
+echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security stable-security main contrib non-free
+deb http://deb.debian.org/debian stable-updates main contrib non-free' >> $folder/etc/apt/sources.list
+
 # Se não existir, será criado
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
@@ -184,10 +188,6 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 source "/usr/local/bin/andistro/global"
-
-echo 'deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security stable-security main contrib non-free
-deb http://deb.debian.org/debian stable-updates main contrib non-free' >> /etc/apt/sources.list
 
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
