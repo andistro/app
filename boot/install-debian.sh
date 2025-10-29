@@ -10,6 +10,7 @@ binds="$6"
 language_selected="$7"
 language_transformed="$8"
 archurl="$9"
+config_environment="${10}"
 
 source "$PREFIX/var/lib/andistro/lib/share/global"
 # Fonte modular configuração global
@@ -115,6 +116,11 @@ chmod +x $bin
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
+cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
+if [ "$config_enviroment" = "xfce4" ]; then
+    # Coloque aqui o comando que você quer executar quando for XFCE4
+	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
+fi
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -135,40 +141,6 @@ mkdir -p "$folder/root/.vnc/"
 # fi
 
 # Escolher o ambiente gráfico
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-
-OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
-		 2 "${MENU_environments_select_light} (LXDE)"
-		 3 "${MENU_environments_select_null}") 
-
-CHOICE=$(dialog --no-shadow --clear \
-                --title "$TITLE" \
-                --menu "$MENU_environments_select" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-case $CHOICE in
-	1)	
-		# XFCE
-		cp "$config_file/environment/xfce4/config-environment.sh" "$folder/root/config-environment.sh"
-		cp "$config_file/environment/xfce4/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
-		sleep 2
-		;;
-	2)	
-		# LXDE
-		cp "$config_file/environment/lxde/config-environment.sh" "$folder/root/config-environment.sh"
-		sleep 2
-	;;
-	3)
-		# Nenhum escolhido
-		rm -rf "$folder/root/system-config.sh"
-		sleep 2
-	;;
-esac
-clear
 
 sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count

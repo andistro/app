@@ -459,6 +459,33 @@ case "$1" in
             *)
                 echo "unknown architecture"; exit 1 ;;
         esac
+
+        OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
+                2 "${MENU_environments_select_light} (LXDE)"
+                3 "${MENU_environments_select_null}") 
+
+        CHOICE=$(dialog --no-shadow --clear \
+                    --title "$TITLE" \
+                    --menu "$MENU_environments_select" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+        case $CHOICE in
+        1)	
+            # XFCE
+            config_environment="xfce4"
+        
+            ;;
+        2)	
+            # LXDE
+            config_environment="lxde"
+        ;;
+        3)
+            # Nenhum escolhido
+            rm -rf "$folder/root/system-config.sh"
+            sleep 2
+        ;;
+        esac
         mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
         if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
             mkdir -p "$HOME/storage/shared/termux/"
@@ -467,7 +494,7 @@ case "$1" in
             mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
         fi
         mkdir -p $binds
-        bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
+        bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl" "$config_environment"
         clear
         andistro -s
         andistro -s $distro_name
