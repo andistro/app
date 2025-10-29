@@ -1,0 +1,100 @@
+#!/bin/bash
+# Variáveis de configuração
+distro_name="$1"
+distro_theme="$2"
+language_selected="$3"
+language_transformed="$4"
+
+export LANG=$language_transformed.UTF-8
+export distro_id="$distro_name"
+export distro_theme="$distro_theme"
+# Fonte modular configuração global
+source "/usr/local/bin/andistro/global"
+
+# Mensagem de inicialização
+echo -e "\n ${distro_wait}\n"
+
+#======================================================================================================
+# global == update_progress() {}
+update_progress() {
+    local current_step=$1
+    local total_steps=$2
+    local percent=$((current_step * 100 / total_steps))
+    local bar_length=30
+    local filled_length=$((percent * bar_length / 100))
+    local empty_length=$((bar_length - filled_length))
+
+    local filled_bar
+    local empty_bar
+    filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+    empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+
+    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
+    printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
+}
+
+total_steps=6
+current_step=0
+
+sed -i 's/^# *\($language_transformed.UTF-8\)/\1/' /etc/locale.gen > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Atualizando repositórios"
+sleep 0.5
+
+locale-gen > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando sudo"
+sleep 0.5
+
+echo 'LANG=$language_transformed.UTF-8' > /etc/locale.conf > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando wget"
+sleep 0.5
+
+echo 'export LANG=$language_transformed.UTF-8' >> ~/.bashrc > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando dialog"
+sleep 0.5
+
+echo 'export LANGUAGE=$language_transformed.UTF-8' >> ~/.bashrc > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando nano"
+sleep 0.5
+
+apt update > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Instalando nano"
+sleep 0.5
+
+#echo 'export VISUAL=nano' >> ~/.bashrc
+#echo 'export EDITOR=nano' >> ~/.bashrc
+#======================================================================================================
+sudo dpkg --configure -a > /dev/null 2>&1
+sudo apt --fix-broken install -y > /dev/null 2>&1
+
+etc_timezone=$(cat /etc/timezone)
+
+sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
+
+# Executa as configurações de idioma
+#bash ~/locale_$language_selected.sh
+
+# Baixa os wallpapers adicionais
+bash ~/wallpapers.sh
+
+# Executa as configurações base do sistema
+
+bash ~/system-config.sh "$distro_theme" "$distro_id"
+
+# Configurações da inteface escolhida
+bash ~/config-environment.sh "$distro_theme"
+
+rm -rf ~/locale*.sh
+rm -rf ~/.hushlogin
+rm -rf ~/system-config.sh
+rm -rf ~/config-environment.sh
+rm -rf ~/start-environment.sh
+rm -rf ~/wallpapers.sh
+rm -rf ~/app-list-recommends.sh
+rm -rf ~/.bash_profile
+exit
