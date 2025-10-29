@@ -385,7 +385,9 @@ case "$1" in
         folder="$andistro_files/boot/$distro_name/stable"
         binds="$andistro_files/boot/$distro_name/binds"
         andistro alerta timezone
+        
         andistro alerta lang
+
         language_selected="${language_selected}"
         language_transformed="${language_transformed}"
         andistro alerta arquitetura
@@ -558,6 +560,11 @@ case "$1" in
                     # Exportar, se necessário
                     export language_selected
                     export language_transformed
+                    alerta_lang() {
+                    # ...toda a lógica de seleção e atribuição...
+                    export language_selected
+                    export language_transformed
+                    }
                     ;;
                 arquitetura)
                     case `dpkg --print-architecture` in
