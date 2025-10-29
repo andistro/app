@@ -1,12 +1,14 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # Variáveis de configuração
+config_file="$PREFIX/var/lib/andistro/boot/.config/debian-based"
 export distro_name="ubuntu"
 codinome="noble"
 andistro_files="$PREFIX/var/lib/andistro"
 bin="$PREFIX/var/lib/andistro/boot/start-$distro_name"
 folder="$PREFIX/var/lib/andistro/boot/$distro_name/$codinome"
 binds="$PREFIX/var/lib/andistro/boot/$distro_name/binds"
+storage_root="$HOME/storage/shared/termux/andistro/boot/$distro_name/$codinome"
 
 # Fonte modular configuração global
 source "$PREFIX/var/lib/andistro/lib/share/global"
@@ -25,7 +27,6 @@ fi
 
 mkdir -p $binds
 
-# Idioma
 # Verificar se o idioma do sistema está no mapa, senão usar en-US
 if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
     system_lang_code="$system_icu_locale_code"
@@ -59,6 +60,7 @@ CHOICE=$(dialog --no-shadow --clear \
     2>&1 1>&3)
 exec 3>&-
 
+
 # Determinar idioma selecionado
 if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
     language_selected="$system_lang_code"
@@ -67,9 +69,6 @@ elif [[ "$CHOICE" == "SEP" ]]; then
 else
     language_selected="$CHOICE"
 fi
-
-# Mostrar idioma escolhido
-#dialog --msgbox "$MENU_language_selected $language_selected" 10 70
 
 # Converter de pt-BR para pt_BR
 language_transformed="${language_selected//-/_}"
@@ -97,15 +96,13 @@ if [ "$first" != 1 ];then
 		echo "unknown architecture"; exit 1 ;;
 	esac
 
-	show_progress_dialog wget "${label_ubuntu_download}" 1 -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
+	show_progress_dialog wget "${label_distro_download}" -O $folder.tar.xz "https://github.com/andistro/app/releases/download/${distro_name}_${codinome}/installer-${archurl}.tar.xz"
 	sleep 2
-	show_progress_dialog extract "${label_ubuntu_download_extract}" "$folder.tar.xz"
+	# Extrai a imagem do sistema
+	show_progress_dialog extract "${label_distro_download_extract}" "$folder.tar.xz"
 	sleep 2
 	rm -rf $folder.tar.xz # remove o arquivo
 fi
-
-
-echo "${label_start_script}"
 
 mkdir -p "${folder}/proc/fakethings"
 
@@ -129,13 +126,6 @@ procs_blocked 0
 softirq 175407567 14659158 51739474 28359 5901272 8879590 0 11988166 46104015 0 36107533
 	EOF
 fi
-
-# KERNEL_VERSON=$(uname -r)
-# if [ ! -f "${folder}/proc/fakethings/version" ]; then
-# 	cat <<- EOF > "${folder}/proc/fakethings/version"
-# 	$KERNEL_VERSION (FakeAndroid)
-# 	EOF
-# fi
 
 if [ ! -f "${folder}/proc/fakethings/vmstat" ]; then
 	cat <<- EOF > "${folder}/proc/fakethings/vmstat"
@@ -251,12 +241,12 @@ if [ ! -d "\$HOME/storage" ];then
     termux-setup-storage
 fi
 
+#cd \$(dirname \$0)
+cd \$HOME
+
 pulseaudio --start --exit-idle-time=-1
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
 pacmd load-module module-aaudio-sink
-
-#cd \$(dirname \$0)
-cd \$HOME
 
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
@@ -288,8 +278,11 @@ command+=" -b $folder/proc/fakethings/stat:/proc/stat"
 command+=" -b $folder/proc/fakethings/vmstat:/proc/vmstat"
 command+=" -b $folder/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
-#command+=" -b /data/data/com.termux/files/home:/root"
-command+=" -b /data/data/com.termux/files/home:/termux-home"
+command+=" -b /data/data/com.termux/files/home:/termux/home"
+command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
+command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
+command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot/.config/debian-based/bin:/usr/local/bin/"
+command+=" -b /data/data/com.termux/files/usr/bin/andistro:/usr/local/bin/andistro/bin/andistro"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -301,8 +294,6 @@ command+=" TERM=\$TERM"
 #command+=" LANG=C.UTF-8"
 command+=" LANG=$language_transformed.UTF-8"
 command+=" /bin/bash --login"
-command+=" -b /usr/local/bin/stopvnc"
-command+=" -b /usr/local/bin/startvncserver"
 com="\$@"
 if [ -z "\$1" ];then
     exec \$command
@@ -315,11 +306,14 @@ if [ -n "\$PA_PID" ]; then
 fi
 EOM
 
+chmod +x $bin
+
 # Configurações pós-instalação
-# Baixa scripts de configuração de idioma
-show_progress_dialog "wget" "${label_language_download}" 1 -P "$folder/root/" "${extralink}/config/package-manager-setups/apt/locale/locale_${language_selected}.sh"
-sleep 2
-chmod +x $folder/root/locale_${language_selected}.sh
+# copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
+cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
+
+cp $config_file/system-config.sh $folder/root/system-config.sh
+cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -330,43 +324,6 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
-mkdir -p "$folder/usr/local/bin/locales/"
-
-# Baixa as configurações, scripts do vnc e wallpapers adicionais
-show_progress_dialog wget-labeled "${label_progress}" 12 \
-	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/system-config.sh" \
-	"${label_progress}" -P "$folder/root" "${extralink}/config/package-manager-setups/apt/app-list-recommends.sh" \
-	"${label_progress}" -O "$folder/usr/local/bin/andistro" "${extralink}/config/andistro_interno" \
-	"${label_progress}" -O "$folder/root/wallpapers.sh" "${extralink}/config/wallpapers/config.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/global" \
-	"${label_progress}" -P "$folder/usr/local/bin/locales" "${extralink}/config/locale/l10n_${language_selected}.sh" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/vncpasswd" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/stopvnc" \
-	"${label_progress}" -P "$folder/usr/local/bin" "${extralink}/config/package-manager-setups/apt/vnc/startvncserver"
-
-chmod +x $folder/usr/local/bin/andistro
-chmod +x $folder/usr/local/bin/vnc
-chmod +x $folder/usr/local/bin/vncpasswd
-chmod +x $folder/usr/local/bin/startvnc
-chmod +x $folder/usr/local/bin/stopvnc
-chmod +x $folder/usr/local/bin/startvncserver
-chmod +x "$folder/usr/local/bin/andistro/global"
-chmod +x "$folder/usr/local/bin/locales/l10n_${language_selected}.sh"
-chmod +x "$folder/root/system-config.sh"
-chmod +x "$folder/root/app-list-recommends.sh"
-chmod +x "$folder/root/wallpapers.sh"
-sleep 2
-
-# KERNEL_VERSON=$(uname -r)
-
-# if [ ! -f "${folder}/proc/fakethings/version" ]; then
-# 	cat <<- EOF > "${folder}/proc/fakethings/version"
-# 	$KERNEL_VERSION (FakeAndroid)
-# 	EOF
-# fi
-
 # Escolher o ambiente gráfico
 HEIGHT=0
 WIDTH=100
@@ -386,12 +343,13 @@ CHOICE=$(dialog --no-shadow --clear \
 case $CHOICE in
 	1)	
 		# XFCE
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/xfce4/config.sh"
+		cp "$config_file/environment/xfce4/config-environment.sh" "$folder/root/config-environment.sh"
+		cp "$config_file/environment/xfce4/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 		sleep 2
 		;;
 	2)	
 		# LXDE
-		show_progress_dialog "wget" "${label_config_environment_gui}" 1 -O "$folder/root/config-environment.sh" "${extralink}/config/package-manager-setups/apt/environment/lxde/config.sh"
+		cp "$config_file/environment/lxde/config-environment.sh" "$folder/root/config-environment.sh"
 		sleep 2
 	;;
 	3)
@@ -400,8 +358,6 @@ case $CHOICE in
 		sleep 2
 	;;
 esac
-clear
-chmod +x $folder/root/config-environment.sh
 clear
 
 sleep 4
@@ -420,11 +376,8 @@ groupadd -g 20457 group20457
 groupadd -g 50457 group50457
 groupadd -g 1079 group1079
 
-echo -e "\n\n${label_alert_autoupdate_for_u}\n\n"
-
-echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc
-echo "alias ls='ls --color=auto'" >> ~/.bashrc
-
+# Mensagem de inicialização
+echo -e "\n ${distro_wait}\n"
 #======================================================================================================
 # global == update_progress() {}
 update_progress() {
@@ -444,7 +397,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
 }
 
-total_steps=4
+total_steps=5
 current_step=0
 
 apt update -qq -y > /dev/null 2>&1
@@ -473,15 +426,27 @@ fi
 update_progress "\$current_step" "\$total_steps" "Instalando dialog"
 sleep 0.5
 
+if ! dpkg -l | grep -qw nano; then
+    apt install nano --no-install-recommends -y > /dev/null 2>&1
+fi
+((current_step++))
+update_progress "\$current_step" "\$total_steps" "Instalando nano"
+sleep 0.5
+
 echo    # quebra de linha ao final para não sobrepor prompt
 #======================================================================================================
+sudo dpkg --configure -a > /dev/null 2>&1
+sudo apt --fix-broken install -y > /dev/null 2>&1
 
 etc_timezone=\$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
-bash ~/locale_\$system_icu_locale_code.sh
+bash ~/locale_$language_selected.sh
+
+# Baixa os wallpapers adicionais
+bash ~/wallpapers.sh
 
 # Seletor de tema
 HEIGHT=0
@@ -509,29 +474,23 @@ case \$CHOICE in
 	;;
 esac
 
-# Baixa os wallpapers adicionais
-bash ~/wallpapers.sh
-
 # Executa as configurações base do sistema
-bash ~/system-config.sh
+export distro_id="$distro_name"
+bash ~/system-config.sh "\$distro_theme" "\$distro_id"
 
 # Configurações da inteface escolhida
-bash ~/config-environment.sh
-sed -i '\|export LANG|a LANG=$language_transformed.UTF-8|' ~/.vnc/xstartup
+bash ~/config-environment.sh "\$distro_theme"
 
 rm -rf ~/locale*.sh
-rm -rf ~/.bash_profile
 rm -rf ~/.hushlogin
 rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
+rm -rf ~/wallpapers.sh
+rm -rf ~/app-list-recommends.sh
+rm -rf ~/.bash_profile
+exit
 EOM
-
-# Cria um dialog de inicialização
-#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' $bin
 
 # Inicia o sistema
 bash $bin
-
-# Remove o arquivo de instalação e configuração
-rm -rf $PREFIX/var/lib/andistro/boot/install-$distro_name.sh

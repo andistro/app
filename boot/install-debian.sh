@@ -77,7 +77,7 @@ export language_selected
 export language_transformed
 
 #=============================================================================================
-# Caso a versão do debian já tenha sido baixada, não baixar novamente
+# Caso a versão já tenha sido baixada, não baixar novamente
 if [ -d "$folder" ]; then
 	first=1
 	echo "${label_skip_download}"
@@ -151,6 +151,7 @@ if [ -n "\$(ls -A $binds)" ]; then
     done
 fi
 command+=" -b /dev"
+command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
 command+=" -b /proc"
 command+=" -b \$TMPDIR:/tmp"
 command+=" -b /proc/meminfo:/proc/meminfo"
@@ -160,7 +161,7 @@ command+=" -b $folder/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 #command+=" -b $storage_root/root:/root"
-command+=" -b /data/data/com.termux/files/home:/termux-home"
+command+=" -b /data/data/com.termux/files/home:/termux/home"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/lib/share:/usr/local/bin/andistro"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot:/usr/local/bin/andistro/boot"
 command+=" -b /data/data/com.termux/files/usr/var/lib/andistro/boot/.config/debian-based/bin:/usr/local/bin/"
@@ -233,13 +234,13 @@ CHOICE=$(dialog --no-shadow --clear \
 case $CHOICE in
 	1)	
 		# XFCE
-		cp $config_file/environment/xfce4/config-environment.sh $folder/root/config-environment.sh
-		cp $config_file/environment/xfce4/xfce4-panel.tar.bz2 $folder/root/xfce4-panel.tar.bz2
+		cp "$config_file/environment/xfce4/config-environment.sh" "$folder/root/config-environment.sh"
+		cp "$config_file/environment/xfce4/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 		sleep 2
 		;;
 	2)	
 		# LXDE
-		cp $config_file/environment/lxde/config-environment.sh $folder/root/config-environment.sh
+		cp "$config_file/environment/lxde/config-environment.sh" "$folder/root/config-environment.sh"
 		sleep 2
 	;;
 	3)
