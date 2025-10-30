@@ -337,13 +337,15 @@ case "$1" in
             rm -rf "$HOME/app-andistro_setup/README.md"
             rm -rf "$HOME/app-andistro_setup/termos.sh"
             mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
-            cp -raf "$HOME/app-andistro_setup/." "$PREFIX/var/lib/andistro/"
+            shopt -s dotglob
+            mv -f "$HOME/app-andistro_setup/"* "$PREFIX/var/lib/andistro/"
+            shopt -u dotglob
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
             #25 Mover o Andistro
-            find $PREFIX/var/lib/andistro -type f -exec chmod +x {} \; 
             chmod +x "$PREFIX/bin/andistro"
+            chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
