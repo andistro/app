@@ -687,6 +687,39 @@ case "$1" in
             esac
         fi
         ;;
+    --boot)
+            if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+                shift
+                while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    display)
+                    DISPLAY_VALUE="$2"
+                    echo "Display set to $DISPLAY_VALUE"
+                    shift 2
+                    ;;
+                    scale)
+                    SCALE_VALUE="$2"
+                    echo "Scale set to $SCALE_VALUE"
+                    shift 2
+                    ;;
+                    port)
+                    PORT_VALUE="$2"
+                    echo "Port set to $PORT_VALUE"
+                    shift 2
+                    ;;
+                    *)
+                    echo "Comando ou parâmetro desconhecido: $1"
+                    shift
+                    ;;
+                esac
+                done
+            elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+                echo "$label_command_not_available"
+            else
+                echo "$label_system_not_found"
+            fi
+        ;;
+
     *)
         echo "$distro_command_not_found $1"
         andistro terminal
