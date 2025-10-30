@@ -130,8 +130,14 @@ sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$lang
 
 chmod +x $bin
 
-cp "$config_file/.bash_profile" $folder/root/.bash_profile
-chmod +x $folder/root/.bash_profile
+
+rm -rf $folder/root/.bash_profiles
+cp "$config_file/.bash_profiles" $folder/root/.bash_profiles
+chmod +x $folder/root/.bash_profiles
+
+sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profiles
+sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profiles
+sed -i "s|language_selected=\"\$3\"|language_selected=\"$language_selected\"|g" $folder/root/.bash_profiles
 
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
 cp $config_file/system-config.sh $folder/root/system-config.sh
@@ -141,8 +147,6 @@ if [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 fi
-
-
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
@@ -174,4 +178,4 @@ touch $folder/root/.hushlogin
 # Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 
 # Inicia o sistema
-bash $bin ./bash_profile "$distro_name" "$distro_theme" "$language_selected" "$language_transformed"
+bash $bin ./bash_profiles "$distro_name" "$distro_theme" "$language_selected" "$language_transformed"
