@@ -25,6 +25,7 @@ show_progress_dialog steps-multi-label 48 \
   "${label_install_script_download}\n\n → font-manager" 'sudo apt install font-manager --no-install-recommends -y' \
   "${label_install_script_download}\n\n → git" 'sudo apt install git --no-install-recommends -y' \
   "${label_install_script_download}\n\n → inetutils-tools" 'sudo apt install inetutils-tools --no-install-recommends -y' \
+  "${label_install_script_download}\n\n → inxi" 'sudo apt install inxi --no-install-recommends -y' \
   "${label_install_script_download}\n\n → lsb-release" 'sudo apt install lsb-release --no-install-recommends -y' \
   "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
   "${label_install_script_download}\n\n → net-tools" 'sudo apt install net-tools --no-install-recommends -y' \
