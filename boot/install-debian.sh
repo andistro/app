@@ -37,7 +37,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales stable $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl stable $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -153,6 +153,9 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
+mkdir -p "$folder/root/.config/gtk-3.0"
+
+echo -e "file:///sdcard sdcard" | sudo tee $folder/root/.config/gtk-3.0/bookmarks
 
 # KERNEL_VERSON=$(uname -r)
 
