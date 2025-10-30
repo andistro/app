@@ -1,18 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-# 	mkdir -p "$PREFIX/var/lib/andistro/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/bin/"
-#     mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/environment/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/boot/.config/debian-based/locale_setup/"
-# 	mkdir -p "$PREFIX/var/lib/andistro/wallpapers/"
-# fi
-
 update_progress() {
     current_step=$1
     total_steps=$2
