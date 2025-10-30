@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
+#oi
 # rm -rf * && rm -rf $PREFIX/var/lib/andistro/ && rm -rf $PREFIX/bin/andistro
 
 # am start --user 0 -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux" este comando abre as informaçoes do termux nas configurações do Android
