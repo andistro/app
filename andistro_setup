@@ -30,17 +30,17 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #3 Instala o bash
-    pkg install --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #4 Instala o openssl
-    pkg install --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #5 Instala o apt
-    pkg install --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -51,112 +51,112 @@ current_step=0
 
     #7 Verifica se o termux-exec está instalado
     if ! dpkg -l | grep -qw termux-exec; then
-        pkg install termux-exec -y > /dev/null 2>&1
+        pkg install --no-install-recommends termux-exec -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #8 Verifica se o proot está instalado
     if ! dpkg -l | grep -qw proot; then
-        pkg install proot -y > /dev/null 2>&1
+        pkg install --no-install-recommends proot -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #9 Verifica se o x11-repo está instalado
     if ! dpkg -l | grep -qw x11-repo; then
-        pkg install x11-repo -y > /dev/null 2>&1
+        pkg install --no-install-recommends x11-repo -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #10 Verifica se o termux-x11-nightly está instalado
     if ! dpkg -l | grep -qw termux-x11-nightly; then
-        pkg install termux-x11-nightly -y > /dev/null 2>&1
+        pkg install --no-install-recommends termux-x11-nightly -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #11 Verifica se o pulseaudio está instalado
     if ! dpkg -l | grep -qw pulseaudio; then
-        pkg install pulseaudio -y > /dev/null 2>&1
+        pkg install --no-install-recommends pulseaudio -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #12 Verifica se o wget está instalado
     if ! dpkg -l | grep -qw wget; then
-        pkg install wget -y > /dev/null 2>&1
+        pkg install --no-install-recommends wget -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #13 Verifica se o dialog está instalado
     if ! dpkg -l | grep -qw dialog; then
-        pkg install dialog -y > /dev/null 2>&1
+        pkg install --no-install-recommends dialog -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #14 Verifica se o tar está instalado
     if ! dpkg -l | grep -qw tar; then
-        pkg install tar -y > /dev/null 2>&1
+        pkg install --no-install-recommends tar -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #15 Verifica se o curl está instalado
     if ! dpkg -l | grep -qw curl; then
-        pkg install curl -y > /dev/null 2>&1
+        pkg install --no-install-recommends curl -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #16 Verifica se o unzip está instalado
     if ! dpkg -l | grep -qw unzip; then
-        pkg install unzip -y > /dev/null 2>&1
+        pkg install --no-install-recommends unzip -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #17 Verifica se o xz-utils está instalado
     if ! dpkg -l | grep -qw xz-utils; then
-        pkg install xz-utils -y > /dev/null 2>&1
+        pkg install --no-install-recommends xz-utils -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #18 Verifica se o debootstrap está instalado
     if ! dpkg -l | grep -qw debootstrap; then
-        pkg install debootstrap -y > /dev/null 2>&1
+        pkg install --no-install-recommends debootstrap -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #19 Verifica se o dbus está instalado
     if ! dpkg -l | grep -qw dbus; then
-        pkg install dbus -y > /dev/null 2>&1
+        pkg install --no-install-recommends dbus -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #20 Verifica se o pv está instalado
     if ! dpkg -l | grep -qw pv; then
-        pkg install pv -y > /dev/null 2>&1
+        pkg install --no-install-recommends pv -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #21 Verifica se o git está instalado
     if ! dpkg -l | grep -qw git; then
-        pkg install git -y > /dev/null 2>&1
+        pkg install --no-install-recommends git -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #22 Verifica se o inxi está instalado
     if ! dpkg -l | grep -qw inxi; then
-        pkg install inxi -y > /dev/null 2>&1
+        pkg install --no-install-recommends inxi -y > /dev/null 2>&1
     fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
