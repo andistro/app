@@ -155,7 +155,7 @@ mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
 mkdir -p "$folder/root/.config/gtk-3.0"
 
-echo -e "file:///sdcard sdcard" | sudo tee $folder/root/.config/gtk-3.0/bookmarks
+echo -e "file:///sdcard sdcard" | tee $folder/root/.config/gtk-3.0/bookmarks
 
 # KERNEL_VERSON=$(uname -r)
 
