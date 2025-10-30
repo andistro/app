@@ -351,27 +351,6 @@ case "$1" in
         source "$PREFIX/var/lib/andistro/lib/share/global"
         echo -e "$label_update_finish"
         ;;
-
-    alerta)
-        if [ -z "$2" ]; then
-            # Não foi passado subcomando, comportamento padrão
-            echo "Não foi especificado o subcomando para alerta"
-        else
-            case "$2" in
-                timezone)
-                    {
-                        for i in {1..50}; do
-                            sleep 0.1
-                            echo $((i * 2))
-                        done
-                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
-                    ;;
-                *)
-                    echo "Subcomando desconhecido: $2"
-                    ;;
-            esac
-        fi
-        ;;
     
     -i)
         if [ -z "$2" ]; then
@@ -680,7 +659,26 @@ case "$1" in
             esac
         fi
         ;;
-
+    alerta)
+        if [ -z "$2" ]; then
+            # Não foi passado subcomando, comportamento padrão
+            echo "Não foi especificado o subcomando para alerta"
+        else
+            case "$2" in
+                timezone)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+                    ;;
+                *)
+                    echo "Subcomando desconhecido: $2"
+                    ;;
+            esac
+        fi
+        ;;
     *)
         echo "$distro_command_not_found $1"
         andistro terminal
