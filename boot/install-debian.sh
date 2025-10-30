@@ -97,9 +97,6 @@ echo -e "file:///sdcard sdcard" | tee $folder/root/.config/gtk-3.0/bookmarks
 # 	EOF
 # fi
 
-# Escolher o ambiente gráfico
-
-sleep 4
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 
