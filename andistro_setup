@@ -183,6 +183,8 @@ current_step=0
     
     rm -rf $HOME/app-andistro_setup/.git > /dev/null 2>&1
     rm -rf $HOME/app-andistro_setup/setup > /dev/null 2>&1
+    rm -rf $PREFIX/bin/andistro > /dev/null 2>&1
+    rm -rf $PREFIX/var/lib/andistro/ > /dev/null 2>&1
     mv "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh" > /dev/null 2>&1
     mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro > /dev/null 2>&1
     mv $HOME/app-andistro_setup/ $PREFIX/var/lib/andistro/ > /dev/null 2>&1
