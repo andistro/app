@@ -461,7 +461,6 @@ case "$1" in
         3)
             # Nenhum escolhido
             rm -rf "$folder/root/system-config.sh"
-            sleep 2
         ;;
         esac
         OPTIONS=(1 "${MENU_theme_select_light}"
@@ -475,12 +474,10 @@ case "$1" in
                         2>&1 >/dev/tty)
         case $CHOICE in
             1)	
-                echo "Light Theme"
-                export distro_theme="Light"
+                distro_theme="Light"
             ;;
             2)	
-                echo "Dark Theme"
-                export distro_theme="Dark"
+                distro_theme="Dark"
             ;;
         esac
 
