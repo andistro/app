@@ -1,10 +1,15 @@
-#!/data/data/com.termux/files/usr/bin/bash
-#oi
-# rm -rf * && rm -rf $PREFIX/var/lib/andistro/ && rm -rf $PREFIX/bin/andistro
+#!/bin/bash
 
-# am start --user 0 -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux" este comando abre as informaçoes do termux nas configurações do Android
+inxi_out=$(inxi -F 2>/dev/null)
 
-#extralink="https://raw.githubusercontent.com/andistro/app/main" # Para a versão main
+if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+  echo "Executando comando para Debian/Ubuntu"
+elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+  echo "Executando comando para Android"
+else
+  echo "Sistema não identificado"
+fi
+
 
 # Log de erros
 if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
@@ -351,148 +356,148 @@ case "$1" in
         source "$PREFIX/var/lib/andistro/lib/share/global"
         echo -e "$label_update_finish"
         ;;
-    
+
     -i)
-        if [ -z "$2" ]; then
-            echo "$distro_desc_line_1"
-            echo ""
-            echo "$distro_desc_line_2"
-            echo "$distro_desc_line_3"
-            echo " "
-            echo "$distro_desc_line_8"
-            echo "$distro_desc_line_10"
-            echo " "
-            echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
-            exit 1
-        fi
-    
-        if [ "$2" == "debian" ]; then
-            distro_name="debian"
-        elif [ "$2" == "ubuntu" ]; then
-            distro_name="ubuntu"
-        else
-            echo "Distribuição não reconhecida: $2"
-            exit 1
-        fi
-        echo "$distro_wait"
-        config_file="$andistro_files/boot/.config/$distro_name-based"
-        bin="$andistro_files/boot/start-$distro_name"
-        folder="$andistro_files/boot/$distro_name/stable"
-        binds="$andistro_files/boot/$distro_name/binds"
-        andistro alerta timezone
-        if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
-            system_lang_code="$system_icu_locale_code"
-        else
-            system_lang_code="en-US"
-        fi
-
-        # Montar opções do menu
-        OPTIONS=()
-        OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
-        OPTIONS+=("SEP" "────────────")  # Separador visual seguro
-
-        # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
-        for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
-            [[ "$code" == "$system_lang_code" ]] && continue
-            OPTIONS+=("$code" "${LANG_CODES[$code]}")
-        done
-
-        # Tamanho da janela do dialog
-        HEIGHT=0
-        WIDTH=100
-        CHOICE_HEIGHT=10
-
-        # Mostrar menu com redirecionamento seguro
-        exec 3>&1
-        CHOICE=$(dialog --no-shadow --clear \
-            --title "$MENU_language_select" \
-            --menu "$MENU_language_select" \
-            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-            "${OPTIONS[@]}" \
-            2>&1 1>&3)
-        exec 3>&-
-
-
-        # Determinar idioma selecionado
-        if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
-            language_selected="$system_lang_code"
-        elif [[ "$CHOICE" == "SEP" ]]; then
-            exit 0  # ignorar separador
-        else
-            language_selected="$CHOICE"
-        fi
-
-        # Converter de pt-BR para pt_BR
-        language_transformed="${language_selected//-/_}"
-        # Exportar, se necessário
-        export language_selected
-        export language_transformed
-        case `dpkg --print-architecture` in
-            aarch64)
-                archurl="arm64" ;;
-            arm)
-                archurl="armhf" ;;
-            *)
-                echo "unknown architecture"; exit 1 ;;
-        esac
-
-        OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
-                2 "${MENU_environments_select_light} (LXDE)"
-                3 "${MENU_environments_select_null}") 
-
-        CHOICE=$(dialog --no-shadow --clear \
-                    --title "$TITLE" \
-                    --menu "$MENU_environments_select" \
-                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                    "${OPTIONS[@]}" \
-                    2>&1 >/dev/tty)
-        case $CHOICE in
-        1)	
-            # XFCE
-            config_environment="xfce4"
+            if [ -z "$2" ]; then
+                echo "$distro_desc_line_1"
+                echo ""
+                echo "$distro_desc_line_2"
+                echo "$distro_desc_line_3"
+                echo " "
+                echo "$distro_desc_line_8"
+                echo "$distro_desc_line_10"
+                echo " "
+                echo "$distro_desc_line_13"
+                echo "   debian"
+                echo "   ubuntu"
+                exit 1
+            fi
         
-            ;;
-        2)	
-            # LXDE
-            config_environment="lxde"
-        ;;
-        3)
-            # Nenhum escolhido
-            rm -rf "$folder/root/system-config.sh"
-        ;;
-        esac
-        OPTIONS=(1 "${MENU_theme_select_light}"
-                 2 "${MENU_theme_select_dark}")
+            if [ "$2" == "debian" ]; then
+                distro_name="debian"
+            elif [ "$2" == "ubuntu" ]; then
+                distro_name="ubuntu"
+            else
+                echo "Distribuição não reconhecida: $2"
+                exit 1
+            fi
+            echo "$distro_wait"
+            config_file="$andistro_files/boot/.config/$distro_name-based"
+            bin="$andistro_files/boot/start-$distro_name"
+            folder="$andistro_files/boot/$distro_name/stable"
+            binds="$andistro_files/boot/$distro_name/binds"
+            andistro alerta timezone
+            if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
+                system_lang_code="$system_icu_locale_code"
+            else
+                system_lang_code="en-US"
+            fi
 
-        CHOICE=$(dialog --no-shadow --clear \
+            # Montar opções do menu
+            OPTIONS=()
+            OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
+            OPTIONS+=("SEP" "────────────")  # Separador visual seguro
+
+            # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
+            for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
+                [[ "$code" == "$system_lang_code" ]] && continue
+                OPTIONS+=("$code" "${LANG_CODES[$code]}")
+            done
+
+            # Tamanho da janela do dialog
+            HEIGHT=0
+            WIDTH=100
+            CHOICE_HEIGHT=10
+
+            # Mostrar menu com redirecionamento seguro
+            exec 3>&1
+            CHOICE=$(dialog --no-shadow --clear \
+                --title "$MENU_language_select" \
+                --menu "$MENU_language_select" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 1>&3)
+            exec 3>&-
+
+
+            # Determinar idioma selecionado
+            if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
+                language_selected="$system_lang_code"
+            elif [[ "$CHOICE" == "SEP" ]]; then
+                exit 0  # ignorar separador
+            else
+                language_selected="$CHOICE"
+            fi
+
+            # Converter de pt-BR para pt_BR
+            language_transformed="${language_selected//-/_}"
+            # Exportar, se necessário
+            export language_selected
+            export language_transformed
+            case `dpkg --print-architecture` in
+                aarch64)
+                    archurl="arm64" ;;
+                arm)
+                    archurl="armhf" ;;
+                *)
+                    echo "unknown architecture"; exit 1 ;;
+            esac
+
+            OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
+                    2 "${MENU_environments_select_light} (LXDE)"
+                    3 "${MENU_environments_select_null}") 
+
+            CHOICE=$(dialog --no-shadow --clear \
                         --title "$TITLE" \
-                        --menu "$MENU_theme_select" \
+                        --menu "$MENU_environments_select" \
                         $HEIGHT $WIDTH $CHOICE_HEIGHT \
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
-        case $CHOICE in
+            case $CHOICE in
             1)	
-                distro_theme="Light"
-            ;;
+                # XFCE
+                config_environment="xfce4"
+            
+                ;;
             2)	
-                distro_theme="Dark"
+                # LXDE
+                config_environment="lxde"
             ;;
-        esac
+            3)
+                # Nenhum escolhido
+                rm -rf "$folder/root/system-config.sh"
+            ;;
+            esac
+            OPTIONS=(1 "${MENU_theme_select_light}"
+                    2 "${MENU_theme_select_dark}")
 
-        mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
-        if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
-            mkdir -p "$HOME/storage/shared/termux/"
-            mkdir -p "$HOME/storage/shared/termux/andistro"
-            mkdir -p "$HOME/storage/shared/termux/andistro/boot"
-            mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
-        fi
-        mkdir -p $binds
-        bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl" "$config_environment" "$distro_theme"
-        clear
-        andistro -s
-        andistro -s $distro_name
+            CHOICE=$(dialog --no-shadow --clear \
+                            --title "$TITLE" \
+                            --menu "$MENU_theme_select" \
+                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            "${OPTIONS[@]}" \
+                            2>&1 >/dev/tty)
+            case $CHOICE in
+                1)	
+                    distro_theme="Light"
+                ;;
+                2)	
+                    distro_theme="Dark"
+                ;;
+            esac
+
+            mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
+            if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
+                mkdir -p "$HOME/storage/shared/termux/"
+                mkdir -p "$HOME/storage/shared/termux/andistro"
+                mkdir -p "$HOME/storage/shared/termux/andistro/boot"
+                mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
+            fi
+            mkdir -p $binds
+            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl" "$config_environment" "$distro_theme"
+            clear
+            andistro -s
+            andistro -s $distro_name
         ;;
     -d)
         if [ -z "$2" ]; then
@@ -534,32 +539,38 @@ case "$1" in
         echo "Desinstalação concluída!"
         ;;
     -s)
-        if [ -z "$2" ]; then
-            echo "$distro_desc_line_1"
-            echo ""
-            echo "$distro_desc_line_6"
-            echo "$distro_desc_line_7"
-            echo " "
-            echo "$distro_desc_line_8"
-            echo "$distro_desc_line_12"
-            echo " "
-            echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
-            exit 1
-        fi
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            if [ -z "$2" ]; then
+                echo "$distro_desc_line_1"
+                echo ""
+                echo "$distro_desc_line_6"
+                echo "$distro_desc_line_7"
+                echo " "
+                echo "$distro_desc_line_8"
+                echo "$distro_desc_line_12"
+                echo " "
+                echo "$distro_desc_line_13"
+                echo "   debian"
+                echo "   ubuntu"
+                exit 1
+            fi
 
-        if [ "$2" == "debian" ]; then
-            echo "$distro_wait"
-            bash $PREFIX/var/lib/andistro/boot/start-debian
+            if [ "$2" == "debian" ]; then
+                echo "$distro_wait"
+                bash $PREFIX/var/lib/andistro/boot/start-debian
 
-        elif [ "$2" == "ubuntu" ]; then
-            echo "$distro_wait"
-            bash $PREFIX/var/lib/andistro/boot/start-ubuntu
+            elif [ "$2" == "ubuntu" ]; then
+                echo "$distro_wait"
+                bash $PREFIX/var/lib/andistro/boot/start-ubuntu
 
+            else
+                echo "Distribuição não reconhecida: $2"
+                exit 1
+            fi
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_not_available"
         else
-            echo "Distribuição não reconhecida: $2"
-            exit 1
+            echo "$label_system_not_found"
         fi
         ;;
 
