@@ -117,6 +117,17 @@ fi
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
 cp "$config_file/start-distro" $bin
+sed -i "s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g" $bin
+sed -i "s|command+=\" -b \$folder/root:/dev/shm\"|command+=\" -b $folder/root:/dev/shm\"|g" $bin
+sed -i "s|command+=\" -b \$config_file/proc/fakethings/stat:/proc/stat\"|command+=\" -b $config_file/proc/fakethings/stat:/proc/stat\"|g" $bin
+sed -i "s|command+=\" -b \$config_file/proc/fakethings/vmstat:/proc/vmstat\"|command+=\" -b $config_file/proc/fakethings/vmstat:/proc/vmstat\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/bin/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/bin/andistro\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/boot:/usr/local/bin/andistro/boot\"|command+=\" -b $andistro_files/boot:/usr/local/bin/andistro/boot\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
+sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|g" $bin
+sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$language_transformed.UTF-8\"|g" $bin
+
+
 chmod +x $bin
 
 cp "$config_file/.bash_profile" $folder/root/.bash_profile
