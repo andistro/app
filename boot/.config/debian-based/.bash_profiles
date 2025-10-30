@@ -4,10 +4,7 @@ distro_name="$1"
 distro_theme="$2"
 language_selected="$3"
 language_transformed="$4"
-
 export LANG=$language_transformed.UTF-8
-export distro_id="$distro_name"
-export distro_theme="$distro_theme"
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
@@ -84,7 +81,7 @@ bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
 
-bash ~/system-config.sh "$distro_theme" "$distro_id"
+bash ~/system-config.sh "$distro_theme" "$distro_name"
 
 # Configurações da inteface escolhida
 bash ~/config-environment.sh "$distro_theme"
