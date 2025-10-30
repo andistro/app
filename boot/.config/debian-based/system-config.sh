@@ -1,6 +1,6 @@
 #!/bin/bash
 export distro_theme="$1"
-export distro_id="$2"
+export distro_name="$2"
 # Fonte modular configuração global
 source "/usr/local/bin/andistro/global"
 
