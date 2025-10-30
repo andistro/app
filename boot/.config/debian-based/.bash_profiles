@@ -30,7 +30,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=16
+total_steps=17
 current_step=0
 
 sed -i "s/^# *\($language_transformed.UTF-8\)/\1/" /etc/locale.gen > /dev/null 2>&1
@@ -56,6 +56,11 @@ sleep 0.5
 echo "export LANGUAGE=$language_transformed.UTF-8" >> ~/.bashrc > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" ""
+sleep 0.5
+
+apt update > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" "Configurando repositórios extras"
 sleep 0.5
 
 sudo install -d -m 0755 /etc/apt/keyrings > /dev/null 2>&1
