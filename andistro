@@ -635,13 +635,13 @@ case "$1" in
             nano "$PREFIX/bin/andistro"
         else
             case "$2" in
-                debian)
+                install-debian)
                     nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
                     ;;
                 start-debian)
                     nano "$PREFIX/var/lib/andistro/boot/start-debian"
                     ;;
-                ubuntu)
+                install-ubuntu)
                     nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
                     ;;
                 start-ubuntu)
