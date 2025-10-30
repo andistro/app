@@ -45,74 +45,6 @@ if [ "$first" != 1 ];then
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60 0
 fi
-# =============================================================================================
-# Criar o script de inicialização
-
-
-# cat > $bin <<- EOM
-# #!/bin/bash
-# if [ ! -d "\$HOME/storage" ];then
-#     termux-setup-storage
-# fi
-
-# #cd \$(dirname \$0)
-# cd \$HOME
-
-# #Start termux-x11
-# #termux-x11 :1 &
-
-# pulseaudio --start --exit-idle-time=-1
-# PA_PID=\$(pgrep pulseaudio)
-# pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-# pacmd load-module module-aaudio-sink
-
-# ## unset LD_PRELOAD in case termux-exec is installed
-# unset LD_PRELOAD
-# command="proot"
-# command+=" --kill-on-exit"
-# command+=" --link2symlink"
-# command+=" -0"
-# command+=" -r $folder"
-# command+=" -b /dev"
-# command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
-# command+=" -b /proc"
-# command+=" -b \$TMPDIR:/tmp"
-# command+=" -b /proc/meminfo:/proc/meminfo"
-# command+=" -b /sys"
-# command+=" -b /data"
-# command+=" -b $folder/root:/dev/shm"
-# command+=" -b $config_file/proc/fakethings/stat:/proc/stat"
-# command+=" -b $config_file/proc/fakethings/vmstat:/proc/vmstat"
-# #command+=" -b $config_file/proc/fakethings/version:/proc/version"
-# ## uncomment the following line to have access to the home directory of termux
-# command+=" -b /data/data/com.termux/files/home:/termux/home"
-# command+=" -b $andistro_files/lib/share:/usr/local/bin/andistro"
-# command+=" -b $andistro_files/boot:/usr/local/bin/andistro/boot"
-# command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
-# command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
-# command+=" -b /sdcard"
-# command+=" -w /root"
-# command+=" /usr/bin/env -i"
-# command+=" MOZ_FAKE_NO_SANDBOX=1"
-# command+=" HOME=/root"
-# command+=" DISPLAY=:1"
-# command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
-# command+=" TERM=\$TERM"
-# #command+=" LANG=C.UTF-8"
-# command+=" LANG=$language_transformed.UTF-8"
-# command+=" /bin/bash --login"
-# com="\$@"
-# if [ -z "\$1" ]; then
-#     exec \$command
-# else
-#     \$command -c "\$com"
-# fi
-# PA_PID=\$(pgrep pulseaudio)
-# if [ -n "\$PA_PID" ]; then
-#   kill \$PA_PID
-# fi
-# EOM
-
 
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
@@ -127,9 +59,7 @@ sed -i "s|command+=\" -b \$andistro_files/boot/.config/debian-based/bin:/usr/loc
 sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|g" $bin
 sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$language_transformed.UTF-8\"|g" $bin
 
-
 chmod +x $bin
-
 
 rm -rf $folder/root/.bash_profiles
 cp "$config_file/.bash_profiles" $folder/root/.bash_profiles
