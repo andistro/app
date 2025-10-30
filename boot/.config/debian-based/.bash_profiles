@@ -137,7 +137,7 @@ bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
 
-bash ~/system-config.sh "$distro_theme" "$distro_name" "$language_selected"
+bash ~/system-config.sh "$distro_theme" "$distro_name"
 
 # Configurações da inteface escolhida
 bash ~/config-environment.sh "$distro_theme"
