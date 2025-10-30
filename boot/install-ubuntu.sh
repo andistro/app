@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
+# oi
 # Variáveis de configuração
 config_file="$1"
 andistro_files="$2"
