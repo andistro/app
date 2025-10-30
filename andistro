@@ -387,6 +387,14 @@ case "$1" in
             bin="$andistro_files/boot/start-$distro_name"
             folder="$andistro_files/boot/$distro_name/stable"
             binds="$andistro_files/boot/$distro_name/binds"
+            mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
+            if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
+                mkdir -p "$HOME/storage/shared/termux/"
+                mkdir -p "$HOME/storage/shared/termux/andistro"
+                mkdir -p "$HOME/storage/shared/termux/andistro/boot"
+                mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
+            fi
+            mkdir -p $binds
             andistro alerta timezone
             if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
                 system_lang_code="$system_icu_locale_code"
@@ -486,15 +494,6 @@ case "$1" in
                     distro_theme="Dark"
                 ;;
             esac
-
-            mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
-            if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
-                mkdir -p "$HOME/storage/shared/termux/"
-                mkdir -p "$HOME/storage/shared/termux/andistro"
-                mkdir -p "$HOME/storage/shared/termux/andistro/boot"
-                mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
-            fi
-            mkdir -p $binds
             bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl" "$config_environment" "$distro_theme"
             clear
             andistro -s
