@@ -61,13 +61,12 @@ sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$lang
 
 chmod +x $bin
 
-rm -rf $folder/root/.bash_profiles
-cp "$config_file/.bash_profiles" $folder/root/.bash_profiles
-chmod +x $folder/root/.bash_profiles
+rm -rf $folder/root/.bash_profile
+cp "$config_file/.bash_profile" $folder/root/.bash_profile
 
-sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profiles
-sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profiles
-sed -i "s|language_selected=\"\$3\"|language_selected=\"$language_selected\"|g" $folder/root/.bash_profiles
+sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
+sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
+sed -i "s|language_selected=\"\$3\"|language_selected=\"$language_selected\"|g" $folder/root/.bash_profile
 
 cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
 cp $config_file/system-config.sh $folder/root/system-config.sh
