@@ -2,13 +2,14 @@
 
 inxi_out=$(inxi -F 2>/dev/null)
 
-if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-  echo "Executando comando para Debian/Ubuntu"
-elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-  echo "Executando comando para Android"
-else
-  echo "Sistema não identificado"
-fi
+# Template de verificação do sistema operacional
+# if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+#   echo "Executando comando para Debian/Ubuntu"
+# elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+#   echo "Executando comando para Android"
+# else
+#   echo "Sistema não identificado"
+# fi
 
 
 # Log de erros
