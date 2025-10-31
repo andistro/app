@@ -178,6 +178,7 @@ current_step=0
     rm -rf "$HOME/app-andistro_setup/andistro_setup"
     rm -rf "$HOME/app-andistro_setup/README.md"
     mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
+    mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"
     rsync -a "$HOME/app-github/boot/" "$HOME/app-gitlab/boot/"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
@@ -196,6 +197,7 @@ rm -rf "$HOME/app-andistro_setup"
 rm -rf andistro_setup.zip
 rm -rf "$HOME/andistro_setup"
 
+chmod +x "$HOME/termos.sh"
 bash "$HOME/termos.sh"
 
 andistro --setup storage
