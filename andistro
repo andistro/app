@@ -326,6 +326,12 @@ case "$1" in
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
+            if ! dpkg -l | grep -qw rsync; then
+                pkg install --no-install-recommends rsync -y > /dev/null 2>&1
+            fi
+            ((current_step++))
+            update_progress "$current_step" "$total_steps"; sleep 0.1
+
             #23 Todo o pacote de instalação
             git clone -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
             ((current_step++))
@@ -337,9 +343,7 @@ case "$1" in
             rm -rf "$HOME/app-andistro_setup/README.md"
             rm -rf "$HOME/app-andistro_setup/termos.sh"
             mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
-            shopt -s dotglob
-            mv -f "$HOME/app-andistro_setup/"* "$PREFIX/var/lib/andistro/"
-            shopt -u dotglob
+            rsync -a --delete "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
