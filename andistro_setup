@@ -161,30 +161,32 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #23 Todo o pacote de instalação
+    #23 Verifica se o rsync está instalado
+    if ! dpkg -l | grep -qw rsync; then
+        pkg install --no-install-recommends rsync -y > /dev/null 2>&1
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #24 Todo o pacote de instalação
     git clone -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #24 Extrai o pacote de instalação
-    
-    rm -rf $HOME/app-andistro_setup/.git > /dev/null 2>&1
-    rm -rf $HOME/app-andistro_setup/setup > /dev/null 2>&1
-    rm -rf $PREFIX/bin/andistro > /dev/null 2>&1
-    rm -rf $PREFIX/var/lib/andistro/ > /dev/null 2>&1
-    mv "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh" > /dev/null 2>&1
-    mv $HOME/app-andistro_setup/andistro $PREFIX/bin/andistro > /dev/null 2>&1
-    mv $HOME/app-andistro_setup/ $PREFIX/var/lib/andistro/ > /dev/null 2>&1
-
+    #25 Extrai o pacote de instalação
+    rm -rf "$HOME/app-andistro_setup/.git"
+    rm -rf "$HOME/app-andistro_setup/andistro_setup"
+    rm -rf "$HOME/app-andistro_setup/README.md"
+    rm -rf "$HOME/app-andistro_setup/termos.sh"
+    mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
+    mv "$HOME/app-andistro_setup/" "$HOME/app-gitlab"
+    rsync -a --delete "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #25 Mover o Andistro
-    find $PREFIX/var/lib/andistro/lib -type f -exec chmod +x {} \; 
-    find $PREFIX/var/lib/andistro/boot -type f -exec chmod +x {} \;
-    find $PREFIX/var/lib/andistro/boot/.config -type f -exec chmod +x {} \;
-    chmod +x "$HOME/termos.sh" 2>&1
-    chmod +x "$PREFIX/bin/andistro" 2>&1
+    #26 Mover o Andistro
+    chmod +x "$PREFIX/bin/andistro"
+    chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
