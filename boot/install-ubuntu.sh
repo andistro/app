@@ -69,7 +69,7 @@ chmod +x $bin
 rm -rf $folder/root/.bash_profile
 cp "$config_file/.bash_profile" $folder/root/.bash_profile
 
-sed '/^#!\/bin\/bash/a\
+sed -i '/^#!\/bin\/bash/a\
 groupadd -g 3003 group3003\
 groupadd -g 9997 group9997\
 groupadd -g 20457 group20457\
