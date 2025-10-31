@@ -34,7 +34,7 @@ show_progress_dialog steps-multi-label 48 \
     "${label_install_script_download}\n\n → tigervnc-common" 'sudo apt install tigervnc-common --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tigervnc-standalone-server" 'sudo apt install tigervnc-standalone-server --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tigervnc-tools" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
-    "${label_install_script_download}\n\n → trash-cli" 'sudo apt install trash-cli --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → gvfs-backends" 'sudo apt install gvfs-backends --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
     "${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
     "${label_install_script_download}\n\n → unzip" 'sudo apt install unzip --no-install-recommends -y' \
