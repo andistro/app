@@ -1,6 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
-# "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
 config_file="$1"
 andistro_files="$2"
 distro_name="$3"
