@@ -741,7 +741,7 @@ case "$1" in
                 fi
 
                 # Verifica se o vncserver está rodando
-                if pgrep -x "Xvnc" > /dev/null; then
+                if pgrep -x "vnc" > /dev/null; then
                     # Se xfce4-session estiver rodando executa o comando de escala
                     if pgrep -x "xfce4-session" > /dev/null; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$ESCALA"
