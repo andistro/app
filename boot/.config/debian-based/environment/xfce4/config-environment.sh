@@ -22,48 +22,51 @@ echo $$ > /tmp/xsession.pid
 dbus-launch --exit-with-session /usr/bin/startxfce4
 EOF
 "' \
-    'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
-/* Remove highlight completo e mantém cor branca em todos os estados */
-XfdesktopIconView.view .label,
-XfdesktopIconView.view .label:backdrop,
-XfdesktopIconView.view .label:selected,
-XfdesktopIconView.view .label:selected:backdrop {
-    background-color: transparent;
-    color: #ffffff !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Remove seleção visual dos ícones */
-.xfdesktop-icon-view .cell:selected:backdrop,
-.xfdesktop-icon-view .cell:selected,
-.xfdesktop-icon-view .cell:backdrop {
-    background-color: transparent;
-}
-
-/* Garante que o texto não mude cor no estado desfocado */
-XfdesktopIconView.view {
-    color: #ffffff !important;
-}
-EOF
-"' \
     'chmod +x ~/.vnc/xstartup' \
     "echo 'export DISPLAY=":1"' >> /etc/profile" \
     'sudo apt --fix-broken install -y'
 sleep 2
+#     'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
+# /* Remove highlight completo e mantém cor branca em todos os estados */
+# XfdesktopIconView.view .label,
+# XfdesktopIconView.view .label:backdrop,
+# XfdesktopIconView.view .label:selected,
+# XfdesktopIconView.view .label:selected:backdrop {
+#     background-color: transparent;
+#     color: #ffffff !important;
+#     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+# }
+
+# /* Remove seleção visual dos ícones */
+# .xfdesktop-icon-view .cell:selected:backdrop,
+# .xfdesktop-icon-view .cell:selected,
+# .xfdesktop-icon-view .cell:backdrop {
+#     background-color: transparent;
+# }
+
+# /* Garante que o texto não mude cor no estado desfocado */
+# XfdesktopIconView.view {
+#     color: #ffffff !important;
+# }
+# EOF
+# "' \
 
 vncpasswd
 
 sleep 2
 
 if [ "$distro_theme" = "Light" ]; then
-    wallpaper="andistro/square/andistro-light.jpg"
+    wallpaper="andistro/andistro-light.jpg"
 elif [ "$distro_theme" = "Dark" ]; then
-    wallpaper="andistro/square/andistro-dark.jpg"
+    wallpaper="andistro/andistro-dark.jpg"
 fi
 
 source /etc/profile
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 33 \
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 32 \
+    "sleep 2" \
+    "sleep 4" \
+    "sleep 6" \
     'echo "${label_config_environment_gui}"' \
     "sleep 4" \
     'echo "Default Theme: ${distro_theme}"' \

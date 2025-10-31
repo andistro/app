@@ -25,16 +25,21 @@ EOF
 sleep 2
 
 vncpasswd
-
+sleep
 source /etc/profile
 
+
 if [ "$distro_theme" = "Light" ]; then
-    wallpaper="unsplash/square/tiagojose-OhLxeq6DKvI.jpg"
+    wallpaper="unsplash/tiagojose-OhLxeq6DKvI.jpg"
 elif [ "$distro_theme" = "Dark" ]; then
-    wallpaper="unsplash/square/tiagojose-RiTmt0xGYnA.jpg"
+    wallpaper="unsplash/tiagojose-RiTmt0xGYnA.jpg"
 fi
 
-show_progress_dialog steps-one-label "${label_config_environment_gui}" 11 \
+
+show_progress_dialog steps-one-label "${label_config_environment_gui}" 14 \
+    "sleep 2" \
+    "sleep 4" \
+    "sleep 6" \
     'if [ ! -d "$HOME/.config/lxsession" ];then mkdir -p "$HOME/.config/lxsession"; fi' \
     'if [ ! -d "$HOME/.config/lxsession/LXDE" ];then mkdir -p "$HOME/.config/lxsession/LXDE"; fi' \
     "mkdir -p \$HOME/.config/lxpanel/LXDE" \
