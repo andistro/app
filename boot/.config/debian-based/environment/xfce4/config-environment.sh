@@ -76,21 +76,21 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 33 \
     "sleep 4" \
     'dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/use_compositing --set false' \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/theme --set AnDistro-Majorelle-Blue-${distro_theme}' \
+    "dbus-launch --exit-with-session xfconf-query --channel xfwm4 --property /general/theme --set AnDistro-Majorelle-Blue-${distro_theme}" \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/ThemeName --set AnDistro-Majorelle-Blue-${distro_theme}' \
+    "dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/ThemeName --set AnDistro-Majorelle-Blue-${distro_theme}" \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/IconThemeName --set ZorinBlue-${distro_theme}' \
+    "dbus-launch --exit-with-session xfconf-query --channel xsettings --property /Net/IconThemeName --set ZorinBlue-${distro_theme}" \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set "/usr/share/backgrounds/${wallpaper}"' \
+    "dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitorVNC-0/workspace0/last-image --create --type string --set \"/usr/share/backgrounds/${wallpaper}\"" \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set "/usr/share/backgrounds/${wallpaper}"' \
+    "dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set \"/usr/share/backgrounds/${wallpaper}\"" \
     "sleep 4" \
-    'dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set "/usr/share/backgrounds/${wallpaper}"' \
+    "dbus-launch --exit-with-session xfconf-query --channel xfce4-desktop --create --type string --property /backdrop/screen0/monitor0/image-path --set \"/usr/share/backgrounds/${wallpaper}\"" \
     "sleep 4" \
     "dbus-launch --exit-with-session xfdesktop --reload" \
     "dbus-launch --exit-with-session xfce4-panel --restart" \
     'grep -q "<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" && grep -q "<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" && sed -i -e "s|<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/\"/>|<property name=\"last-image\" type=\"string\" value=\"/usr/share/backgrounds/'"${wallpaper}"'\"/>|g" -e "s|<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/\"/>|<property name=\"image-path\" type=\"string\" value=\"/usr/share/backgrounds/'"${wallpaper}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"' \
     'grep -q "<property name=\"ThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"ThemeName\" type=\"empty\"/>|<property name=\"ThemeName\" type=\"string\" value=\"AnDistro-Majorelle-Blue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"' \
     'grep -q "<property name=\"IconThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"IconThemeName\" type=\"empty\"/>|<property name=\"IconThemeName\" type=\"string\" value=\"ZorinBlue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"'
-#    "rm -rf ~/xfce4-panel.tar.bz2"
+#    "rm -rf ~/xfce4-panel.tar.bz2"/backdrop/screen0/monitorVNC-0/workspace0/last-image
