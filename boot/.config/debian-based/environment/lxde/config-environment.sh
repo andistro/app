@@ -1,7 +1,7 @@
 #!/bin/bash
 distro_theme="$1"
 #LXDE config environment
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
     'sudo apt install lxde-core --no-install-recommends -y' \

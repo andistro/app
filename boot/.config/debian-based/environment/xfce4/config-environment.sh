@@ -1,7 +1,7 @@
 #!/bin/bash
 export distro_theme="$1"
 #XFCE4 config environment
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 14 \
     'echo "${label_config_environment_gui}"' \

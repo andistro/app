@@ -6,7 +6,7 @@ if ! dpkg -l | grep -qw dialog; then
 fi
 
 # Fonte modular configuração global
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 while true; do # Loop até obter uma senha válida ou o usuário cancelar
 

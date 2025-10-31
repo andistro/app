@@ -87,10 +87,10 @@ command+=" -b $config_file/proc/fakethings/vmstat:/proc/vmstat"
 #command+=" -b $config_file/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
 command+=" -b /data/data/com.termux/files/home:/termux/home"
-command+=" -b $andistro_files/lib/share:/usr/local/bin/andistro"
-command+=" -b $andistro_files/boot:/usr/local/bin/andistro/boot"
+command+=" -b $andistro_files/lib/share:/usr/local/lib/andistro"
+command+=" -b $andistro_files/boot:/usr/local/lib/andistro/boot"
 command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
-command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
+command+=" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro"
 command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
@@ -144,7 +144,7 @@ cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
 export LANG=$language_transformed.UTF-8
 
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 groupadd -g 3003 group3003
 groupadd -g 9997 group9997

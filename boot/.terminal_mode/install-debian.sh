@@ -78,10 +78,10 @@ fi
 # #command+=" -b $config_file/proc/fakethings/version:/proc/version"
 # ## uncomment the following line to have access to the home directory of termux
 # command+=" -b /data/data/com.termux/files/home:/termux/home"
-# command+=" -b $andistro_files/lib/share:/usr/local/bin/andistro"
-# command+=" -b $andistro_files/boot:/usr/local/bin/andistro/boot"
+# command+=" -b $andistro_files/lib/share:/usr/local/lib/andistro"
+# command+=" -b $andistro_files/boot:/usr/local/lib/andistro/boot"
 # command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
-# command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro"
+# command+=" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro"
 # command+=" -b /sdcard"
 # command+=" -w /root"
 # command+=" /usr/bin/env -i"
@@ -158,7 +158,7 @@ export LANG=$language_transformed.UTF-8
 export distro_id="$distro_name"
 export distro_theme="$distro_theme"
 # Fonte modular configuração global
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
@@ -227,7 +227,7 @@ sudo apt --fix-broken install -y
 
 echo "alias ls='ls --color=auto'" >> ~/.bashrc
 
-echo "source \"/usr/local/bin/andistro/global\" >> ~/.bashrc
+echo "source \"/usr/local/lib/andistro/global\" >> ~/.bashrc
 
 sudo apt clean
 

@@ -6,7 +6,7 @@ language_selected="$3"
 language_transformed="${language_selected//-/_}"
 export LANG=$language_transformed.UTF-8
 # Fonte modular configuração global
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"

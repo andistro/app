@@ -1,6 +1,6 @@
 #!/bin/bash
 # Fonte modular configuração global
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 show_progress_dialog steps-multi-label 22 \
     "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro'\

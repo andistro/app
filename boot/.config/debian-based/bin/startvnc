@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 if ! dpkg -l | grep -qw dialog; then
     timestamp=$(date +'%d%m%Y-%H%M%S')
     apt install dialog -y >> "/sdcard/termux/andistro/logs/${distro_name}_startvnc_dialog_${timestamp}.txt" 2>&1

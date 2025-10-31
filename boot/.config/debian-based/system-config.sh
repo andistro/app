@@ -4,7 +4,7 @@ export distro_name="$2"
 
 apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 # Fonte modular configuração global
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 # Baixa os pacotes base, um por um
 show_progress_dialog steps-multi-label 48 \
@@ -55,7 +55,7 @@ show_progress_dialog steps-multi-label 48 \
     "${label_system_setup}" 'sudo dpkg --configure -a' \
     "${label_system_setup}" 'sudo apt --fix-broken install -y' \
     "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
-    "${label_system_setup}" 'echo "source \"/usr/local/bin/andistro/global\"" >> ~/.bashrc'\
+    "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> ~/.bashrc'\
     "${label_system_setup}" 'sudo apt-get clean'
 
 sleep 2
@@ -81,4 +81,4 @@ rm -rf system-config.sh
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
 
 # Define um iniciador automático para o VNC Server
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/bin/andistro/boot/start-debian
+sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/boot/start-debian

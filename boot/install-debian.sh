@@ -53,10 +53,10 @@ sed -i "s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g" $bin
 sed -i "s|command+=\" -b \$folder/root:/dev/shm\"|command+=\" -b $folder/root:/dev/shm\"|g" $bin
 sed -i "s|command+=\" -b \$config_file/proc/fakethings/stat:/proc/stat\"|command+=\" -b $config_file/proc/fakethings/stat:/proc/stat\"|g" $bin
 sed -i "s|command+=\" -b \$config_file/proc/fakethings/vmstat:/proc/vmstat\"|command+=\" -b $config_file/proc/fakethings/vmstat:/proc/vmstat\"|g" $bin
-sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/bin/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/bin/andistro\"|g" $bin
-sed -i "s|command+=\" -b \$andistro_files/boot:/usr/local/bin/andistro/boot\"|command+=\" -b $andistro_files/boot:/usr/local/bin/andistro/boot\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/lib/andistro\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/boot:/usr/local/lib/andistro/boot\"|command+=\" -b $andistro_files/boot:/usr/local/lib/andistro/boot\"|g" $bin
 sed -i "s|command+=\" -b \$andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
-sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/bin/andistro/bin/andistro\"|g" $bin
+sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g" $bin
 sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$language_transformed.UTF-8\"|g" $bin
 
 chmod +x $bin

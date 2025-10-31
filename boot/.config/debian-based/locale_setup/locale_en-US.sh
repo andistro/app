@@ -1,6 +1,6 @@
 #!/bin/bash
 # Mudar o idioma para o Inglês dos Estados Unidos [en_US]
-source "/usr/local/bin/andistro/global"
+source "/usr/local/lib/andistro/global"
 
 error_code="LG002en"
 show_progress_dialog steps-one-label "${label_system_language}" 10 \
