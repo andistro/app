@@ -6,7 +6,7 @@ WLAN_IP="$wlan_ip_localhost"
 vncserver -localhost no -depth 24 -name remote-desktop $GEO :$PORT
 
 # Verifica se o vncserver está rodando
-if pgrep -x "Xvnc" > /dev/null; then
+if pgrep -x "vnc" > /dev/null; then
     # Se xfce4-session estiver rodando executa o comando de escala
     if pgrep -x "xfce4-session" > /dev/null; then
         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$ESCALA"
