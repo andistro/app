@@ -351,6 +351,7 @@ case "$1" in
             #26 Mover o Andistro
             chmod +x "$PREFIX/bin/andistro"
             chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+            chmod +x $PREFIX/var/lib/andistro/boot/.config/*/bin/*
             ((current_step++))
             update_progress "$current_step" "$total_steps"; sleep 0.1
 
