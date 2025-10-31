@@ -1,4 +1,5 @@
 #!/bin/bash
+# oi
 
 inxi_out=$(inxi -F 2>/dev/null)
 
