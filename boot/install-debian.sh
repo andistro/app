@@ -103,4 +103,4 @@ touch $folder/root/.hushlogin
 # Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 
 # Inicia o sistema
-bash $bin ./bash_profiles "$distro_name" "$distro_theme" "$language_selected" "$language_transformed"
+bash $bin

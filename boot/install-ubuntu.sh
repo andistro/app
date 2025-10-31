@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
+# "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
 config_file="$1"
 andistro_files="$2"
 distro_name="$3"
@@ -10,8 +11,10 @@ language_selected="$7"
 language_transformed="$8"
 archurl="$9"
 config_environment="${10}"
+distro_theme="${11}"
 
 source "$PREFIX/var/lib/andistro/lib/share/global"
+# Fonte modular configuração global
 
 #=============================================================================================
 # Caso a versão já tenha sido baixada, não baixar novamente
@@ -21,7 +24,7 @@ if [ -d "$folder" ]; then
 fi
 
 sleep 2
-# Baixa
+# Baixar
 label_distro_download=$(printf "$label_distro_download" "$distro_name")
 label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
 label_distro_download_extract=$(printf "$label_distro_download_extract" "$distro_name")
@@ -34,7 +37,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano stable $folder http://port.${distro_name}.com/${distro_name}-ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates stable $folder http://port.${distro_name}.com/${distro_name}ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -43,81 +46,42 @@ if [ "$first" != 1 ];then
 	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60 0
 fi
 
-cat > $bin <<- EOM
-#!/bin/bash
-if [ ! -d "\$HOME/storage" ];then
-    termux-setup-storage
-fi
-
-#cd \$(dirname \$0)
-cd \$HOME
-
-pulseaudio --start --exit-idle-time=-1
-pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-pacmd load-module module-aaudio-sink
-
-## unset LD_PRELOAD in case termux-exec is installed
-unset LD_PRELOAD
-command="proot"
-command+=" --kill-on-exit"
-command+=" --link2symlink"
-command+=" -0"
-command+=" -r $folder"
-if [ -n "\$(ls -A $binds)" ]; then
-    for f in $binds/* ;do
-      . \$f
-    done
-fi
-command+=" -b /dev"
-command+=" -b /dev/null:/proc/sys/kernel/cap_last_cap"
-command+=" -b /proc"
-command+=" -b \$TMPDIR:/tmp"
-command+=" -b /proc/meminfo:/proc/meminfo"
-command+=" -b /sys"
-command+=" -b /data"
-command+=" -b $folder/root:/dev/shm"
-## Exclusivo Ubuntu
-command+=" -b /proc/self/fd/2:/dev/stderr"
-command+=" -b /proc/self/fd/1:/dev/stdout"
-command+=" -b /proc/self/fd/0:/dev/stdin"
-command+=" -b /dev/urandom:/dev/random"
-command+=" -b /proc/self/fd:/dev/fd"
-command+=" -b $config_file/proc/fakethings/stat:/proc/stat"
-command+=" -b $config_file/proc/fakethings/vmstat:/proc/vmstat"
-#command+=" -b $config_file/proc/fakethings/version:/proc/version"
-## uncomment the following line to have access to the home directory of termux
-command+=" -b /data/data/com.termux/files/home:/termux/home"
-command+=" -b $andistro_files/lib/share:/usr/local/lib/andistro"
-command+=" -b $andistro_files/boot:/usr/local/lib/andistro/boot"
-command+=" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/"
-command+=" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro"
-command+=" -b /sdcard"
-command+=" -w /root"
-command+=" /usr/bin/env -i"
-command+=" MOZ_FAKE_NO_SANDBOX=1"
-command+=" HOME=/root"
-command+=" DISPLAY=:1"
-command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
-command+=" TERM=\$TERM"
-#command+=" LANG=C.UTF-8"
-command+=" LANG=$language_transformed.UTF-8"
-command+=" /bin/bash --login"
-com="\$@"
-if [ -z "\$1" ];then
-    exec \$command
-else
-    \$command -c "\$com"
-fi
-PA_PID=\$(pgrep pulseaudio)
-if [ -n "\$PA_PID" ]; then
-  kill \$PA_PID
-fi
-EOM
-chmod +x $bin
-
 # Configurações pós-instalação
 # copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/boot/.configs/debian-based/locale_setup/ ppara o root
-cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
+cp "$config_file/start-distro" $bin
+sed -i "s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g" $bin
+sed -i "s|command+=\" -b \$folder/root:/dev/shm\"|command+=\" -b $folder/root:/dev/shm\"|g" $bin
+sed -i "s|command+=\" -b \$config_file/proc/fakethings/stat:/proc/stat\"|command+=\" -b $config_file/proc/fakethings/stat:/proc/stat\"|g" $bin
+sed -i "s|command+=\" -b \$config_file/proc/fakethings/vmstat:/proc/vmstat\"|command+=\" -b $config_file/proc/fakethings/vmstat:/proc/vmstat\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/lib/andistro\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/boot:/usr/local/lib/andistro/boot\"|command+=\" -b $andistro_files/boot:/usr/local/lib/andistro/boot\"|g" $bin
+sed -i "s|command+=\" -b \$andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
+sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g" $bin
+sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$language_transformed.UTF-8\"|g" $bin
+
+
+groupadd -g 3003 group3003
+groupadd -g 9997 group9997
+groupadd -g 20457 group20457
+groupadd -g 50457 group50457
+groupadd -g 1079 group1079
+chmod +x $bin
+
+rm -rf $folder/root/.bash_profile
+cp "$config_file/.bash_profile" $folder/root/.bash_profile
+
+sed '/^#!\/bin\/bash/a\
+groupadd -g 3003 group3003\
+groupadd -g 9997 group9997\
+groupadd -g 20457 group20457\
+groupadd -g 50457 group50457\
+groupadd -g 1079 group1079
+' $folder/root/.bash_profile
+
+sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
+sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
+sed -i "s|language_selected=\"\$3\"|language_selected=\"$language_selected\"|g" $folder/root/.bash_profile
+
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
@@ -135,138 +99,22 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
+mkdir -p "$folder/root/.config/gtk-3.0"
 
-sleep 4
+echo -e "file:///sdcard sdcard" | tee $folder/root/.config/gtk-3.0/bookmarks
+
+# KERNEL_VERSON=$(uname -r)
+
+# if [ ! -f "${folder}/proc/fakethings/version" ]; then
+# 	cat <<- EOF > "${folder}/proc/fakethings/version"
+# 	$KERNEL_VERSION (FakeAndroid)
+# 	EOF
+# fi
+
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 
-cat > $folder/root/.bash_profile <<- EOM
-#!/bin/bash
-export LANG=$language_transformed.UTF-8
-
-source "/usr/local/lib/andistro/global"
-
-groupadd -g 3003 group3003
-groupadd -g 9997 group9997
-groupadd -g 20457 group20457
-groupadd -g 50457 group50457
-groupadd -g 1079 group1079
-
-# Mensagem de inicialização
-echo -e "\n ${distro_wait}\n"
-#======================================================================================================
-# global == update_progress() {}
-update_progress() {
-    local current_step=\$1
-    local total_steps=\$2
-    local percent=\$((current_step * 100 / total_steps))
-    local bar_length=30
-    local filled_length=\$((percent * bar_length / 100))
-    local empty_length=\$((bar_length - filled_length))
-
-    local filled_bar
-    local empty_bar
-    filled_bar=\$(printf "%\${filled_length}s" | tr " " "=")
-    empty_bar=\$(printf "%\${empty_length}s" | tr " " " ")
-
-    # AQUI ESTÁ O PULO DO GATO: força a saída para o terminal
-    printf "\r[%s%s] %3d%%" "\$filled_bar" "\$empty_bar" "\$percent" > /dev/tty
-}
-
-total_steps=5
-current_step=0
-
-apt update -qq -y > /dev/null 2>&1
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Atualizando repositórios"
-sleep 0.5
-
-if ! dpkg -l | grep -qw sudo; then
-    apt install sudo --no-install-recommends -y > /dev/null 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando sudo"
-sleep 0.5
-
-if ! dpkg -l | grep -qw wget; then
-    apt install wget --no-install-recommends -y > /dev/null 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando wget"
-sleep 0.5
-
-if ! dpkg -l | grep -qw dialog; then
-    apt install dialog --no-install-recommends -y > /dev/null 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando dialog"
-sleep 0.5
-
-if ! dpkg -l | grep -qw nano; then
-    apt install nano --no-install-recommends -y > /dev/null 2>&1
-fi
-((current_step++))
-update_progress "\$current_step" "\$total_steps" "Instalando nano"
-sleep 0.5
-
-echo    # quebra de linha ao final para não sobrepor prompt
-#======================================================================================================
-sudo dpkg --configure -a > /dev/null 2>&1
-sudo apt --fix-broken install -y > /dev/null 2>&1
-
-etc_timezone=\$(cat /etc/timezone)
-
-sudo ln -sf "/usr/share/zoneinfo/\$etc_timezone" /etc/localtime
-
-# Executa as configurações de idioma
-bash ~/locale_$language_selected.sh
-
-# Baixa os wallpapers adicionais
-bash ~/wallpapers.sh
-
-# Seletor de tema
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=5
-export PORT=1
-
-OPTIONS=(1 "\${MENU_theme_select_light}"
-		 2 "\${MENU_theme_select_dark}")
-
-CHOICE=\$(dialog --no-shadow --clear \
-                --title "\$TITLE" \
-                --menu "\$MENU_theme_select" \
-                \$HEIGHT \$WIDTH \$CHOICE_HEIGHT \
-                "\${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-case \$CHOICE in
-	1)	
-		echo "Light Theme"
-		export distro_theme="Light"
-	;;
-	2)	
-		echo "Dark Theme"
-		export distro_theme="Dark"
-	;;
-esac
-
-# Executa as configurações base do sistema
-export distro_id="$distro_name"
-bash ~/system-config.sh "\$distro_theme" "\$distro_id"
-
-# Configurações da inteface escolhida
-bash ~/config-environment.sh "\$distro_theme"
-
-rm -rf ~/locale*.sh
-rm -rf ~/.hushlogin
-rm -rf ~/system-config.sh
-rm -rf ~/config-environment.sh
-rm -rf ~/start-environment.sh
-rm -rf ~/wallpapers.sh
-rm -rf ~/app-list-recommends.sh
-rm -rf ~/.bash_profile
-exit
-EOM
+# Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 
 # Inicia o sistema
 bash $bin
