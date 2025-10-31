@@ -13,6 +13,30 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 14
     'sudo apt install xfce4-terminal --no-install-recommends -y' \
     'sudo apt install xfce4-settings --no-install-recommends -y' \
     'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
+    'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
+/* Remove highlight completo e mantém cor branca em todos os estados */
+XfdesktopIconView.view .label,
+XfdesktopIconView.view .label:backdrop,
+XfdesktopIconView.view .label:selected,
+XfdesktopIconView.view .label:selected:backdrop {
+    background-color: transparent;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Remove seleção visual dos ícones */
+.xfdesktop-icon-view .cell:selected:backdrop,
+.xfdesktop-icon-view .cell:selected,
+.xfdesktop-icon-view .cell:backdrop {
+    background-color: transparent;
+}
+
+/* Garante que o texto não mude cor no estado desfocado */
+XfdesktopIconView.view {
+    color: #ffffff !important;
+}
+EOF
+"' \
     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
@@ -26,30 +50,7 @@ EOF
     "echo 'export DISPLAY=":1"' >> /etc/profile" \
     'sudo apt --fix-broken install -y'
 sleep 2
-#     'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
-# /* Remove highlight completo e mantém cor branca em todos os estados */
-# XfdesktopIconView.view .label,
-# XfdesktopIconView.view .label:backdrop,
-# XfdesktopIconView.view .label:selected,
-# XfdesktopIconView.view .label:selected:backdrop {
-#     background-color: transparent;
-#     color: #ffffff !important;
-#     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-# }
 
-# /* Remove seleção visual dos ícones */
-# .xfdesktop-icon-view .cell:selected:backdrop,
-# .xfdesktop-icon-view .cell:selected,
-# .xfdesktop-icon-view .cell:backdrop {
-#     background-color: transparent;
-# }
-
-# /* Garante que o texto não mude cor no estado desfocado */
-# XfdesktopIconView.view {
-#     color: #ffffff !important;
-# }
-# EOF
-# "' \
 
 vncpasswd
 
