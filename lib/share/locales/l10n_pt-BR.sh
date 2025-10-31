@@ -1,7 +1,7 @@
 #!/bin/bash
 # Troca o nome "Brazil" por "Brasil"
 if [ "$system_country" = "Brazil" ]; then
-  system_country="Brasil"
+    system_country="Brasil"
 fi
 
 #=====================================================================================================

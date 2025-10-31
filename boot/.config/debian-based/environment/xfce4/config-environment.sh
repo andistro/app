@@ -4,16 +4,16 @@ export distro_theme="$1"
 source "/usr/local/bin/andistro/global"
 
 show_progress_dialog steps-one-label "${label_install_environment_gui}\n\n\n" 14 \
-     'echo "${label_config_environment_gui}"' \
-     'sleep 2' \
-     'sleep 4' \
-     'sleep 6' \
-     'sudo apt install xfce4 --no-install-recommends -y' \
-     'sudo apt install xfce4-goodies --no-install-recommends -y' \
-     'sudo apt install xfce4-terminal --no-install-recommends -y' \
-     'sudo apt install xfce4-settings --no-install-recommends -y' \
-     'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
-     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
+    'echo "${label_config_environment_gui}"' \
+    'sleep 2' \
+    'sleep 4' \
+    'sleep 6' \
+    'sudo apt install xfce4 --no-install-recommends -y' \
+    'sudo apt install xfce4-goodies --no-install-recommends -y' \
+    'sudo apt install xfce4-terminal --no-install-recommends -y' \
+    'sudo apt install xfce4-settings --no-install-recommends -y' \
+    'sudo apt install xfce4-panel-profiles --no-install-recommends -y' \
+    'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
 export PULSE_SERVER=127.0.0.1
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
@@ -22,7 +22,7 @@ echo $$ > /tmp/xsession.pid
 dbus-launch --exit-with-session /usr/bin/startxfce4
 EOF
 "' \
-     'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
+    'bash -c "cat > $HOME/.config/gtk-3.0/gtk.css <<EOF
 /* Remove highlight completo e mantém cor branca em todos os estados */
 XfdesktopIconView.view .label,
 XfdesktopIconView.view .label:backdrop,
@@ -46,9 +46,9 @@ XfdesktopIconView.view {
 }
 EOF
 "' \
-     'chmod +x ~/.vnc/xstartup' \
-     "echo 'export DISPLAY=":1"' >> /etc/profile" \
-     'sudo apt --fix-broken install -y'
+    'chmod +x ~/.vnc/xstartup' \
+    "echo 'export DISPLAY=":1"' >> /etc/profile" \
+    'sudo apt --fix-broken install -y'
 sleep 2
 
 vncpasswd
