@@ -177,9 +177,8 @@ current_step=0
     rm -rf "$HOME/app-andistro_setup/.git"
     rm -rf "$HOME/app-andistro_setup/andistro_setup"
     rm -rf "$HOME/app-andistro_setup/README.md"
-    rm -rf "$HOME/app-andistro_setup/termos.sh"
     mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
-    rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
+    rsync -a "$HOME/app-github/boot/" "$HOME/app-gitlab/boot/"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
