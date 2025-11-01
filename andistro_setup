@@ -1,5 +1,8 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+rm -rf $HOME/storage
+termux-setup-storage
+
 update_progress() {
     current_step=$1
     total_steps=$2

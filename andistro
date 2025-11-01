@@ -2,6 +2,9 @@
 
 inxi_out=$(inxi -F 2>/dev/null)
 
+rm -rf $HOME/storage
+termux-setup-storage
+
 # Template de verificação do sistema operacional
 # if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
 #   echo "Executando comando para Debian/Ubuntu"
