@@ -411,17 +411,44 @@ case "$1" in
 
     -i)
             if [ -z "$2" ]; then
-                echo "$distro_desc_line_1"
-                echo ""
-                echo "$distro_desc_line_2"
-                echo "$distro_desc_line_3"
-                echo " "
-                echo "$distro_desc_line_8"
-                echo "$distro_desc_line_10"
-                echo " "
-                echo "$distro_desc_line_13"
-                echo "   debian"
-                echo "   ubuntu"
+                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                    #Existe pelo menos um arquivo start-*
+                    echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                    echo ""
+                    echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
+                    echo "$distro_desc_line_7" #andistro -i debian
+                    echo " "
+                    echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                    echo "$distro_desc_line_9" #   andistro -u
+                    echo " "
+                    echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                    echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+                    echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                    echo "   debian"
+                    echo "   ubuntu"
+                    echo " "
+                    echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+                    start_debian=false
+                    start_ubuntu=false
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                        start_debian=true
+                    fi
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                        start_ubuntu=true
+                    fi
+                    if $start_debian && ! $start_ubuntu; then
+                        echo "   ubuntu" #se já existe o start-debian, mostra apenas o ubuntu
+                    elif ! $start_debian && $start_ubuntu; then
+                        echo "   debian" #se já existe o start-ubuntu, mostra apenas o debian
+                    elif $start_debian && $start_ubuntu; then
+                    else
+                        echo "   debian"
+                        echo "   ubuntu"
+                    fi
+                else
+                # Não existe nenhum arquivo start-*
+                echo "Não há nenhum sistema instalado."
+                fi
                 exit 1
             fi
         
@@ -552,17 +579,45 @@ case "$1" in
         ;;
     -d)
         if [ -z "$2" ]; then
-            echo "$distro_desc_line_1"
-            echo ""
-            echo "$distro_desc_line_4"
-            echo "$distro_desc_line_5"
-            echo " "
-            echo "$distro_desc_line_8"
-            echo "$distro_desc_line_11"
-            echo " "
-            echo "$distro_desc_line_13"
-            echo "   debian"
-            echo "   ubuntu"
+            if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                #Existe pelo menos um arquivo start-*
+                echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                echo ""
+                echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
+                echo "$distro_desc_line_3" #andistro -s debian
+                echo " "
+                echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                echo "$distro_desc_line_9" #   andistro -u
+                echo " "
+                echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
+                echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                echo "   debian"
+                echo "   ubuntu"
+                echo " "
+                echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+                if $start_debian && ! $start_ubuntu; then
+                    echo "   debian"
+                elif ! $start_debian && $start_ubuntu; then
+                    echo "   ubuntu"
+                elif $start_debian && $start_ubuntu; then
+                    echo "   debian"
+                    echo "   ubuntu"
+                else
+                    echo " "
+                fi
+            else
+                # Não existe nenhum arquivo start-*
+                echo "Não há nenhum sistema instalado."
+            fi
             exit 1
         fi
 
@@ -592,18 +647,45 @@ case "$1" in
     -s)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
-                echo "$distro_desc_line_1"
-                echo ""
-                echo "$distro_desc_line_6"
-                echo "$distro_desc_line_7"
-                echo " "
-                echo "$distro_desc_line_8"
-                echo "$distro_desc_line_12"
-                echo " "
-                echo "$distro_desc_line_13"
-                echo "   debian"
-                echo "   ubuntu"
-                exit 1
+                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                    #Existe pelo menos um arquivo start-*
+                    echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                    echo ""
+                    echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
+                    echo "$distro_desc_line_3" #andistro -s debian
+                    echo " "
+                    echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                    echo "$distro_desc_line_9" #   andistro -u
+                    echo " "
+                    echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                    echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
+                    echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                    echo "   debian"
+                    echo "   ubuntu"
+                    echo " "
+                    echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+                    start_debian=false
+                    start_ubuntu=false
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                        start_debian=true
+                    fi
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                        start_ubuntu=true
+                    fi
+                    if $start_debian && ! $start_ubuntu; then
+                        echo "   debian"
+                    elif ! $start_debian && $start_ubuntu; then
+                        echo "   ubuntu"
+                    elif $start_debian && $start_ubuntu; then
+                        echo "   debian"
+                        echo "   ubuntu"
+                    else
+                        echo " "
+                    fi
+                else
+                # Não existe nenhum arquivo start-*
+                echo "Não há nenhum sistema instalado."
+                fi
             fi
 
             if [ "$2" == "debian" ]; then
