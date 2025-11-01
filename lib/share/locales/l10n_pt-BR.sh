@@ -35,8 +35,8 @@ distro_desc_line_12="    -d  desinstala a opção escolhida."
 distro_desc_line_13="    -i  instala a opção escolhida."
 distro_desc_line_14="    -u  atualiza o AnDistro."
 
-distro_desc_line_15="Opções de sistemas disponíveis:"
-
+distro_desc_line_15="Opções de sistemas disponíveis para instalação:"
+distro_desc_line_16="Opções de sistemas disponíveis para inicialização e desinstalação:"
 
 distro_instaled="instalado"
 distro_install="instalar"

@@ -64,17 +64,16 @@ if [ -z "$1" ]; then
     export PORT=1
 
     if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
-        OPTIONS=(-s "Iniciar o sistema"
-                 -d "Desinstalar o sistema"
-                 -i "Instalar outros sistemas"
-                 -u "Atualizar o AnDistro"
-                 -t "Ver como terminal")
+        OPTIONS=(s "Iniciar o sistema"
+                 d "Desinstalar o sistema"
+                 i "Instalar outros sistemas"
+                 u "Atualizar o AnDistro"
+                 t "Ver como terminal")
     else
-        OPTIONS=(-i "Instalar sistemas"
-                 -u "Atualizar o AnDistro"
-                 -t "Ver como terminal")
+        OPTIONS=(i "Instalar sistemas"
+                 u "Atualizar o AnDistro"
+                 t "Ver como terminal")
     fi
-
     CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
         --menu "Escolha uma das opções:" \
@@ -83,11 +82,11 @@ if [ -z "$1" ]; then
         2>&1 >/dev/tty)
 clear
     case $CHOICE in
-        -i)	
+        i)	
             export PORT=1
-            OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+            OPTIONS=(d "Debian"
+                     u "Ubuntu"
+                     t "Ver como terminal")
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
@@ -96,22 +95,42 @@ clear
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
             case $CHOICE in
-                1)
+                d)
                     andistro  -i debian
                     ;;
-                2)
+                u)
                     andistro -i ubuntu
                     ;;
-                3)
+                t)
                     andistro -i
                     ;;
             esac
         ;;
-        -s)	
+        s)	
             export PORT=1
-            OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+            start_debian=false
+            start_ubuntu=false
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                start_debian=true
+            fi
+
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                start_ubuntu=true
+            fi
+
+            if $start_debian && ! $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                         t "Ver como terminal")
+            elif ! $start_debian && $start_ubuntu; then
+                OPTIONS=(u "Ubuntu"
+                         t "Ver como terminal")
+            elif $start_debian && $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                         u "Ubuntu"
+                         t "Ver como terminal")
+            else
+                echo "Não tem nenhum sistema instalado"
+            fi
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
@@ -120,27 +139,45 @@ clear
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
             case $CHOICE in
-                1)
+                d)
                     andistro -s debian
                     ;;
-                2)
+                u)
                     andistro -s ubuntu
                     ;;
-                3)
+                t)
                     andistro -s
                     ;;
             esac
         ;;
-
-        -u)
+        u)
             andistro -u
         ;;
-
-        -d)
+        d)
             export PORT=1
-            OPTIONS=(1 "Debian"
-                    2 "Ubuntu"
-                    3 "Ver como terminal")
+            start_debian=false
+            start_ubuntu=false
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                start_debian=true
+            fi
+
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                start_ubuntu=true
+            fi
+
+            if $start_debian && ! $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                         t "Ver como terminal")
+            elif ! $start_debian && $start_ubuntu; then
+                OPTIONS=(u "Ubuntu"
+                         t "Ver como terminal")
+            elif $start_debian && $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                         u "Ubuntu"
+                         t "Ver como terminal")
+            else
+                echo "Não tem nenhum sistema instalado"
+            fi
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
@@ -149,19 +186,18 @@ clear
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
             case $CHOICE in
-                1)
+                d)
                     andistro -d debian
                     ;;
-                2)
+                u)
                     andistro -d ubuntu
                     ;;
-                3)
+                t)
                     andistro -d
                     ;;
             esac
         ;;
-
-        -t)
+        t)
             andistro terminal
         ;;
     esac
@@ -620,6 +656,29 @@ case "$1" in
             echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
             echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
             echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
+            echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+            echo "   debian"
+            echo "   ubuntu"
+            echo " "
+            echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+            start_debian=false
+            start_ubuntu=false
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                start_debian=true
+            fi
+            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                start_ubuntu=true
+            fi
+            if $start_debian && ! $start_ubuntu; then
+                echo "   debian"
+            elif ! $start_debian && $start_ubuntu; then
+                echo "   ubuntu"
+            elif $start_debian && $start_ubuntu; then
+                echo "   debian"
+                echo "   ubuntu"
+            else
+                echo " "
+            fi
             echo " "
         else
             echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
@@ -634,7 +693,7 @@ case "$1" in
             echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
             echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
             echo " "
-            echo "$distro_desc_line_15" #Opções de sistemas disponíveis:
+            echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
             echo "   debian"
             echo "   ubuntu"
         fi
