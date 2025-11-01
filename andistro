@@ -58,18 +58,33 @@ fi
 # COMANDOS
 #=============================================================================================
 if [ -z "$1" ]; then
-
-    export USER=$(whoami)
     HEIGHT=0
     WIDTH=100
     CHOICE_HEIGHT=5
     export PORT=1
 
-    OPTIONS=(1 "Instalar"
-            2 "Iniciar"
-            3 "Atualizar"
-            4 "Desinstalar"
-            5 "Ver como terminal")
+#=============================================================================================
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# AREA EXPERIMENTAL
+#/////////////////////////////////////////////////////////////////////////////////////////////
+#=============================================================================================
+    if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+        OPTIONS=(-s "Iniciar o sistema"
+                 -d "Desinstalar o sistema"
+                 -i "Instalar outros sistemas"
+                 -u "Atualizar o AnDistro"
+                 -t "Ver como terminal")
+    else
+        OPTIONS=(-i "Instalar sistemas"
+                 -u "Atualizar o AnDistro"
+                 -t "Ver como terminal")
+    fi
+
+#=============================================================================================
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# FIM DA AREA EXPERIMENTAL
+#/////////////////////////////////////////////////////////////////////////////////////////////
+#=============================================================================================
 
     CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
@@ -79,7 +94,7 @@ if [ -z "$1" ]; then
         2>&1 >/dev/tty)
 
     case $CHOICE in
-        1)	
+        -i)	
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -103,7 +118,7 @@ if [ -z "$1" ]; then
                     ;;
             esac
         ;;
-        2)	
+        -s)	
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -128,11 +143,11 @@ if [ -z "$1" ]; then
             esac
         ;;
 
-        3)
+        -u)
             andistro -u
         ;;
 
-        4)
+        -d)
             export PORT=1
             OPTIONS=(1 "Debian"
                     2 "Ubuntu"
@@ -157,7 +172,7 @@ if [ -z "$1" ]; then
             esac
         ;;
 
-        5)
+        -t)
             andistro terminal
         ;;
     esac
@@ -595,7 +610,7 @@ case "$1" in
         fi
         ;;
 
-    terminal)
+    -t|terminal)
         echo "$distro_desc_line_1"
         echo ""
         echo "$distro_desc_line_2"
