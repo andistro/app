@@ -441,6 +441,7 @@ case "$1" in
                     elif ! $start_debian && $start_ubuntu; then
                         echo "   debian" #se já existe o start-ubuntu, mostra apenas o debian
                     elif $start_debian && $start_ubuntu; then
+                        echo "já existem os dois sistemas instalados"
                     else
                         echo "   debian"
                         echo "   ubuntu"
