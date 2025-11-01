@@ -438,13 +438,15 @@ case "$1" in
                     fi
                     if $start_debian && ! $start_ubuntu; then
                         echo "   ubuntu" #se já existe o start-debian, mostra apenas o ubuntu
-                    elif ! $start_debian && $start_ubuntu; then
-                        echo "   debian" #se já existe o start-ubuntu, mostra apenas o debian
-                    elif $start_debian && $start_ubuntu; then
-                        echo "já existem os dois sistemas instalados"
-                    else
-                        echo "   debian"
-                        echo "   ubuntu"
+                        elif ! $start_debian && $start_ubuntu; then
+                            echo "   debian" #se já existe o start-ubuntu, mostra apenas o debian
+                        elif $start_debian && $start_ubuntu; then
+                            echo "já existem os dois sistemas instalados"
+                            #sed -i '\|elif $start_debian && $start_ubuntu; then|a echo " "' $PREFIX/bin/andistro
+
+                        else
+                            echo "   debian"
+                            echo "   ubuntu"
                     fi
                 else
                 # Não existe nenhum arquivo start-*
