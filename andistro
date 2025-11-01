@@ -63,11 +63,6 @@ if [ -z "$1" ]; then
     CHOICE_HEIGHT=5
     export PORT=1
 
-#=============================================================================================
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-# AREA EXPERIMENTAL
-#/////////////////////////////////////////////////////////////////////////////////////////////
-#=============================================================================================
     if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
         OPTIONS=(-s "Iniciar o sistema"
                  -d "Desinstalar o sistema"
@@ -80,19 +75,13 @@ if [ -z "$1" ]; then
                  -t "Ver como terminal")
     fi
 
-#=============================================================================================
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-# FIM DA AREA EXPERIMENTAL
-#/////////////////////////////////////////////////////////////////////////////////////////////
-#=============================================================================================
-
     CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
         --menu "Escolha uma das opções:" \
         $HEIGHT $WIDTH $CHOICE_HEIGHT \
         "${OPTIONS[@]}" \
         2>&1 >/dev/tty)
-
+clear
     case $CHOICE in
         -i)	
             export PORT=1
@@ -611,26 +600,44 @@ case "$1" in
         ;;
 
     -t|terminal)
-        echo "$distro_desc_line_1"
-        echo ""
-        echo "$distro_desc_line_2"
-        echo "$distro_desc_line_3"
-        echo " "
-        echo "$distro_desc_line_4"
-        echo "$distro_desc_line_5"
-        echo " "
-        echo "$distro_desc_line_6"
-        echo "$distro_desc_line_7"
-        echo " "
-        echo "$distro_desc_line_8"
-        echo "$distro_desc_line_9"
-        echo "$distro_desc_line_10"
-        echo "$distro_desc_line_11"
-        echo "$distro_desc_line_12"
-        echo " "
-        echo "$distro_desc_line_13"
-        echo "   debian"
-        echo "   ubuntu"
+        if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+            echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+            echo ""
+            echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
+            echo "$distro_desc_line_3" #andistro -s debian
+            echo " "
+            echo "$distro_desc_line_4" #Exemplo de comando que permite a desinstalação:
+            echo "$distro_desc_line_5" #   andistro -d debian
+            echo " "
+            echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
+            echo "$distro_desc_line_7" #   andistro -i debian
+            echo " "
+            echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+            echo "$distro_desc_line_9" #   andistro -u
+            echo " "
+            echo "$distro_desc_line_10" #Comandos disponíveis para você:
+            echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
+            echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
+            echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+            echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
+            echo " "
+        else
+            echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+            echo ""
+            echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
+            echo "$distro_desc_line_7" #   andistro -i debian
+            echo " "
+            echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+            echo "$distro_desc_line_9" #   andistro -u
+            echo " "
+            echo "$distro_desc_line_10" #Comandos disponíveis para você:
+            echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+            echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
+            echo " "
+            echo "$distro_desc_line_15" #Opções de sistemas disponíveis:
+            echo "   debian"
+            echo "   ubuntu"
+        fi
         ;;
     --setup)
         # Comando interno para iniciar a edição direta do código
