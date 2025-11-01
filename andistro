@@ -568,11 +568,21 @@ case "$1" in
 
             if [ "$2" == "debian" ]; then
                 echo "$distro_wait"
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
                 bash $PREFIX/var/lib/andistro/boot/start-debian
+                else
+                echo "O Desbian ainda não foi instalado, siga os passos abaixo para a instalação:\n
+                Digite o comando 'andistro' seguido do enter , escolha a opção instalar,"
+                fi
 
             elif [ "$2" == "ubuntu" ]; then
                 echo "$distro_wait"
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
                 bash $PREFIX/var/lib/andistro/boot/start-ubuntu
+                else
+                echo "O arquivo não existe"
+                fi
+                
 
             else
                 echo "Distribuição não reconhecida: $2"
