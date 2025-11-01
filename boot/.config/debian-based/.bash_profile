@@ -136,6 +136,9 @@ bash ~/wallpapers.sh
 
 # Executa as configurações base do sistema
 
+dialog --create-rc $HOME/.dialogrc
+sed -i "s|use_shadow = ON|use_shadow = OFF|g" $HOME/.dialogrc
+
 bash ~/system-config.sh "$distro_theme" "$distro_name"
 
 # Configurações da inteface escolhida

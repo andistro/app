@@ -59,17 +59,15 @@ show_progress_dialog steps-multi-label 48 \
     "${label_system_setup}" 'sudo apt-get clean'
 
 sleep 2
-#  "${label_install_script_download}\n\n → gvfs-backends" 'sudo apt install gvfs-backends --no-install-recommends -y' \
-#show_progress_dialog check-packages "Verificando" tzdata xz-utils keyboard-configuration wget curl gpg git python3 tar unzip zip apt-utils lsb-release exo-utils tigervnc-standalone-server tigervnc-common tigervnc-tools dbus-x11 nano inetutils-tools net-tools font-manager synaptic gvfs-backends bleachbit pulseaudio pavucontrol make tumbler firefox code
 
-# Tempo de 10s antes de inicializar as configurações do teclado
-# {
-#  for i in {1..50}; do
-#    sleep 0.1
-#    echo $((i * 2))
-#  done
-# } | dialog --no-shadow --gauge "$label_keyboard_setup" 10 60 0
-# sudo apt install keyboard-configuration --no-install-recommends -y > /dev/null 2>&1
+#Tempo de 10s antes de inicializar as configurações do teclado
+{
+ for i in {1..50}; do
+   sleep 0.1
+   echo $((i * 2))
+ done
+} | dialog --no-shadow --gauge "$label_keyboard_setup" 10 60 0
+sudo apt install keyboard-configuration --no-install-recommends -y
 
 
 
