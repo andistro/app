@@ -1072,8 +1072,8 @@ case "$1" in
                     if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
-
-                    echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_password_forgot\n"
+                    
+                    echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
                 else
                     echo "$label_server_start_error"
                 fi
