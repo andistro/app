@@ -87,5 +87,9 @@ rm -rf system-config.sh
 #sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/boot/start-debian
 
 # O dialog da tela autoiniciar será com o 
-#exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"
+# if [ -z "$1" ]; then
+#     exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"
+# else
+#     $command -c "$com"
+# fi
 # O Dialog-display sera o start.teste
