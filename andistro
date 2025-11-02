@@ -11,13 +11,13 @@ inxi_out=$(inxi -F 2>/dev/null)
 #   echo "Sistema não identificado"
 # fi
 
-if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+# if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
 
-elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+# elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
 
-else
-  echo "Sistema não identificado"
-fi
+# else
+#   echo "Sistema não identificado"
+# fi
 
 if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
     # Disponível somente apara as distribuições
