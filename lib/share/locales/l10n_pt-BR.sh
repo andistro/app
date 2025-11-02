@@ -159,7 +159,7 @@ label_select_resolution="Seleção de resolução"
 label_choose_one_resolution="Escolha uma das opções abaixo"
 
 label_resolution_frequent="Resolução Frequente Detectada"
-label_resolution_frequent_desc="Você tem usado a resolução %s frequentemente.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
+label_resolution_frequent_desc="Você tem usado a resolução %s na ultimas vezes.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
 label_resolution_remove_default="Deseja remover a resolução padrão?"
 label_resolution_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
 label_resolution_remove_default_sucess="A resolução deixou de ser a padrão."

@@ -50,7 +50,8 @@ check_repeated_resolution() {
 # Função para perguntar se quer definir como padrão
 ask_set_default() {
     local res="$1"
-    label_resolution_frequent_desc=$(eval echo "$label_resolution_frequent_desc" | sed "s/%s/$res/")
+    label_resolution_frequent_desc=$(eval echo -e "\"$label_resolution_frequent_desc\"" | sed "s/%s/$res/")
+
     dialog --no-shadow --backtitle "$label_server_setup" \
            --title "$label_resolution_frequent" \
            --yesno "$label_resolution_frequent_desc" 10 60
@@ -73,7 +74,7 @@ if [[ -f /root/.sever_resolution_default ]]; then
     if [[ -n "$RESOLUTION" ]]; then
         dialog --no-shadow --backtitle "$label_server_setup" \
                --title "$label_resolution_option_default" \
-               --yesno "$label_resolution_option_default_desc \n\n$label_resolution: $RESOLUTION \n$label_port: ${PORT:-1}\n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
+               --yesno "$label_resolution_option_default_desc \n\n $label_resolution: $RESOLUTION \n$label_port: ${PORT:-1} \n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
         if [[ $? -eq 0 ]]; then
             echo "$label_resolution_choose_default: $RESOLUTION"
             if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
