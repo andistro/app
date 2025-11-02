@@ -939,6 +939,7 @@ case "$1" in
                             echo $((i * 2))
                         done
                     } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60 0
+                    clear
                     ;;
                 install-success)
                     {
