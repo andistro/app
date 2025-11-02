@@ -189,12 +189,11 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 d)
-                    andistro -d debian > /dev/null 2>&1
-                    andistro alerta uninstall-success
+                    andistro -d debian
+                    
                     ;;
                 u)
-                    andistro -d ubuntu > /dev/null 2>&1
-                    andistro alerta uninstall-success
+                    andistro -d ubuntu
                     ;;
                 t)
                     andistro -d
@@ -627,9 +626,9 @@ case "$1" in
                 else
                     echo " "
                 fi
-            else
-                # Não existe nenhum arquivo start-*
-                echo "$label_andistro_there_no_system_installed"
+                else
+                    # Não existe nenhum arquivo start-*
+                    echo "$label_andistro_there_no_system_installed"
             fi
             exit 1
         fi
@@ -640,22 +639,21 @@ case "$1" in
             rm -rf $andistro_files
             rm -rf $PREFIX/bin/andistro
             
-        elif [ "$2" == "debian" ]; then
-            echo "$distro_wait"
-            distro_name="debian"
+            elif [ "$2" == "debian" ]; then
+                echo "$distro_wait"
+                distro_name="debian"
 
-        elif [ "$2" == "ubuntu" ]; then
-            echo "$distro_wait"
-            distro_name="ubuntu"
-        else
-            echo "$distro_command_not_found: $2"
-            exit 1
+            elif [ "$2" == "ubuntu" ]; then
+                echo "$distro_wait"
+                distro_name="ubuntu"
+            else
+                echo "$distro_command_not_found: $2"
+                exit 1
         fi
         rm -rf $andistro_files/boot/$distro_name
         rm -rf $andistro_files/boot/start-$distro_name
-        #rm -rf /data/data/com.termux/files/usr/var/run/dbus/pid 
-        #rm -rf system_bus_socket
         echo "Desinstalação concluída!"
+        andistro alerta uninstall-success
         ;;
     -s)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
