@@ -507,7 +507,7 @@ case "$1" in
             fi
 
             echo "$distro_wait"
-            config_file="$andistro_files/boot/.config/$distro_based"
+            config_file="$andistro_files/boot/.config/$distro_based-based"
             bin="$andistro_files/boot/start-$distro_name"
             folder="$andistro_files/boot/$distro_name/$distro_version"
             binds="$andistro_files/boot/$distro_name/binds"
