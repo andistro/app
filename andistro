@@ -652,7 +652,6 @@ case "$1" in
         fi
         rm -rf $andistro_files/boot/$distro_name
         rm -rf $andistro_files/boot/start-$distro_name
-        echo "Desinstalação concluída!"
         andistro alerta uninstall-success
         ;;
     -s)
@@ -795,7 +794,7 @@ case "$1" in
         # Comando interno para iniciar a edição direta do código
         if [ -z "$2" ]; then
             # Não foi passado subcomando, comportamento padrão
-            echo "Não foi especificado o subcomando para --setup"
+            echo "$distro_command_not_found: $2"
         else
             case "$2" in
                 storage)
@@ -826,7 +825,7 @@ case "$1" in
                     ;;
  
                 *)
-                    echo "Subcomando desconhecido: $2"
+                    echo "$distro_command_not_found: $2"
                     ;;
             esac
         fi
@@ -857,7 +856,7 @@ case "$1" in
                     nano "$PREFIX/var/lib/andistro/lib/share/locales_${system_icu_locale_code}.sh"
                     ;;
                 *)
-                    echo "Subcomando desconhecido: $2"
+                    echo "$distro_command_not_found: $2"
                     ;;
             esac
         fi
@@ -865,8 +864,7 @@ case "$1" in
     alerta)
         if [ -z "$2" ]; then
             # Não foi passado subcomando, comportamento padrão
-            echo "Não foi especificado o subcomando para alerta"
-            andistro
+            echo "$distro_command_not_found"
         else
             case "$2" in
                 timezone)
@@ -894,7 +892,7 @@ case "$1" in
                     } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60 0
                     ;;
                 *)
-                    echo "Subcomando desconhecido: $2"
+                    echo "$distro_command_not_found: $2"
                     ;;
             esac
         fi
