@@ -189,10 +189,12 @@ if [ -z "$1" ]; then
                 2>&1 >/dev/tty)
             case $CHOICE in
                 d)
-                    andistro -d debian
+                    andistro -d debian > /dev/null 2>&1
+                    andistro alerta uninstall-success
                     ;;
                 u)
-                    andistro -d ubuntu
+                    andistro -d ubuntu > /dev/null 2>&1
+                    andistro alerta uninstall-success
                     ;;
                 t)
                     andistro -d
@@ -583,9 +585,9 @@ case "$1" in
                     distro_theme="Dark"
                 ;;
             esac
-            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme"
+            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
-            andistro -s
+            andistro alerta install-success
             andistro -s $distro_name
         ;;
     -d)
@@ -866,6 +868,7 @@ case "$1" in
         if [ -z "$2" ]; then
             # Não foi passado subcomando, comportamento padrão
             echo "Não foi especificado o subcomando para alerta"
+            andistro
         else
             case "$2" in
                 timezone)
@@ -874,7 +877,23 @@ case "$1" in
                             sleep 0.1
                             echo $((i * 2))
                         done
-                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_5s" 10 60 0
+                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60 0
+                    ;;
+                install-success)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60 0
+                    ;;
+                uninstall-success)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60 0
                     ;;
                 *)
                     echo "Subcomando desconhecido: $2"

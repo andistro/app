@@ -79,6 +79,10 @@ label_system_timezone="Fuso horário"
 label_distro_alert_timezone_desc="O fuso horário será o mesmo do dispositivo."
 label_distro_alert_timezone_detected="Fuso horário detectado: "
 
+# Alertas
+label_uninstall_success="Desinstalação concluida!"
+label_install_success="Instalação concluida!"
+
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
 label_password="Senha"
@@ -140,7 +144,7 @@ label_system_found="Sistema encontrado!"
 label_system_not_found="Sistema não encontrado!"
 
 # Temporizador
-label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
+label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
 # Servidor
 label_server_kill_desc="Desligando o servidor..."
