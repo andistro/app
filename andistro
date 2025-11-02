@@ -975,17 +975,17 @@ case "$1" in
                             DISPLAY_VALUE="$2"
                             #echo "Display set to $DISPLAY_VALUE"
                             shift 2
-                        ;;
+                            ;;
                         --scale)
                             SCALE_VALUE="$2"
                             #echo "Scale set to $SCALE_VALUE"
                             shift 2
-                        ;;
+                            ;;
                         --port)
                             PORT_VALUE="$2"
                             #echo "Port set to $PORT_VALUE"
                             shift 2
-                        ;;
+                            ;;
                         --kill)
                             # Buscar arquivos PID relacionados ao usuário
                             PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)
@@ -1006,7 +1006,8 @@ case "$1" in
                             rm -rf /tmp/.X*-lock
                             rm -rf /tmp/.X11-unix/X$PORTA
                             rm -rf /tmp/.X11-unix/X*
-                            shift 2
+                            shift
+                            exit 1
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
@@ -1041,6 +1042,8 @@ case "$1" in
                                     echo $i
                                 done
                             } | dialog --no-shadow --gauge "${label_change_password}" 10 50
+                            shift
+                            exit 1
                             ;;
                         *)
                             echo "Comando ou parâmetro desconhecido: $1"
@@ -1055,21 +1058,22 @@ case "$1" in
                 fi
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-                    vncserver -localhost -no -depth 24 -name remote-desktop -geometry "$DISPLAY_VALUE" :"$PORT_VALUE"
+                    vncserver -localhost no -depth 24 -name remote-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
+                    #vncserver -localhost no -depth 24 -name remote-desktop -geometry "1920x1080" :1
                 else
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
-                    vncserver -localhost -no -depth 24 -name remote-desktop :"$PORT_VALUE"
+                    vncserver -localhost no -depth 24 -name remote-desktop :"$PORT_VALUE"
+                    #vncserver -localhost no -depth 24 -name remote-desktop :1
                 fi
 
                 # Verifica se o vncserver está rodando
-                if pgrep -x "vnc" > /dev/null; then
+                if pgrep -x "Xtigervnc" > /dev/null; then
                     # Se xfce4-session estiver rodando executa o comando de escala
-                    if pgrep -x "xfce4-session" > /dev/null; then
+                    if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
                     echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_password_forgot\n"
-
                 else
                     echo "$label_server_start_error"
                 fi
