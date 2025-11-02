@@ -2,9 +2,6 @@
 
 inxi_out=$(inxi -F 2>/dev/null)
 
-rm -rf $HOME/storage
-termux-setup-storage
-
 # Template de verificação do sistema operacional
 # if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
 #   echo "Executando comando para Debian/Ubuntu"
@@ -14,424 +11,443 @@ termux-setup-storage
 #   echo "Sistema não identificado"
 # fi
 
+if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+
+elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+
+else
+  echo "Sistema não identificado"
+fi
+
+if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+    # Disponível somente apara as distribuições
+    if [ -f "/usr/local/lib/andistro/global" ]; then
+        source /usr/local/lib/andistro/global
+    fi
+elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+    # Disponível apenas para o Android
+    rm -rf $HOME/storage
+    termux-setup-storage
+
+    # Cria os diretórios necessários
+    if [ ! -d "$PREFIX/var/lib/andistro/" ];then
+        mkdir -p "$PREFIX/var/lib/andistro/"
+        mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
+        mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
+        mkdir -p "$PREFIX/var/lib/andistro/boot/"
+    fi
+
+    if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
+        source $PREFIX/var/lib/andistro/lib/share/global
+    fi
+
+    andistro_files="$PREFIX/var/lib/andistro"
+
+    # Configurações do Termux
+    # Verifica se a configuração já foi aplicada
+    if grep -q "^# hide-soft-keyboard-on-startup = true" "~/.termux/termux.properties"; then
+    # Descomenta a linha removendo o '#' no começo
+    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/" "~/.termux/termux.properties"
+    termux-reload-settings
+    fi
+
+    # Adiciona a configuração de teclas extras se não estiver presente
+    if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+        # Aplica os sed
+        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+        # Recarrega Termux settings
+        termux-reload-settings
+    fi
+else
+  echo "Sistema não identificado"
+fi
 
 # Log de erros
-if [ ! -d "$HOME/storage/shared/termux/andistro/logs" ];then
-    mkdir -p "$HOME/storage/shared/termux/"
-    mkdir -p "$HOME/storage/shared/termux/andistro"
-    mkdir -p "$HOME/storage/shared/termux/andistro/distros"
-    mkdir -p "$HOME/storage/shared/termux/andistro/logs"
-    touch "$HOME/storage/shared/termux/andistro/logs/.nomedia"
-fi
-andistro_files="$PREFIX/var/lib/andistro"
-ANDISTRO_LOG="$HOME/storage/shared/termux/andistro/logs"
-# Cria os diretórios necessários
-if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-	mkdir -p "$PREFIX/var/lib/andistro/"
-	mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-	mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-	mkdir -p "$PREFIX/var/lib/andistro/boot/"
+if [ ! -d "/sdcard/termux/andistro/logs" ];then
+    mkdir -p "/sdcard/termux/"
+    mkdir -p "/sdcard/termux/andistro"
+    mkdir -p "/sdcard/termux/andistro/distros"
+    mkdir -p "/sdcard/termux/andistro/logs"
+    touch "/sdcard/termux/andistro/logs/.nomedia"
 fi
 
-if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-    source $PREFIX/var/lib/andistro/lib/share/global
-fi
-
-# Detecta o idioma do sistema
-system_icu_locale_code=$(getprop persist.sys.locale)
+ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 
 #Verifica se o andistro está em $HOME
-
-# Configurações do Termux
-# Verifica se a configuração já foi aplicada
-file=""
-pattern=""
-
-if grep -q "^# hide-soft-keyboard-on-startup = true" "~/.termux/termux.properties"; then
-  # Descomenta a linha removendo o '#' no começo
-  sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/" "~/.termux/termux.properties"
-  termux-reload-settings
-fi
-
-
-if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-    # Aplica os sed
-    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-    # Recarrega Termux settings
-    termux-reload-settings
-fi
-
-# Adiciona a configuração de teclas extras se não estiver presente
-if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-    # Aplica os sed
-    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-    # Recarrega Termux settings
-    termux-reload-settings
-fi
 
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
 if [ -z "$1" ]; then
-    HEIGHT=0
-    WIDTH=100
-    CHOICE_HEIGHT=5
-    export PORT=1
+    if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        HEIGHT=0
+        WIDTH=100
+        CHOICE_HEIGHT=5
+        export PORT=1
 
-    if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
-        OPTIONS=(s "$label_system_start"
-                 d "$label_system_uninstall"
-                 i "$label_system_install_other_systems"
-                 u "$label_andistro_updater"
-                 t "$label_andistro_termianl_viewer")
+        if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+            OPTIONS=(s "$label_system_start"
+                    d "$label_system_uninstall"
+                    i "$label_system_install_other_systems"
+                    u "$label_andistro_updater"
+                    t "$label_andistro_termianl_viewer")
+        else
+            OPTIONS=(i "$label_system_install_systems"
+                    u "$label_andistro_updater"
+                    t "$label_andistro_termianl_viewer")
+        fi
+
+        CHOICE=$(dialog --no-shadow --clear \
+            --title "AnDistro" \
+            --menu "$label_choose_one_of_the_option:" \
+            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+            "${OPTIONS[@]}" \
+            2>&1 >/dev/tty)
+        clear
+        case $CHOICE in
+            i)
+                OPTIONS=(d "Debian"
+                        u "Ubuntu"
+                        t "$label_andistro_termianl_viewer")
+
+                CHOICE=$(dialog --no-shadow --clear \
+                    --title "AnDistro" \
+                    --menu "$label_choose_one_of_the_option:" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+                case $CHOICE in
+                    d)
+                        andistro  -i debian
+                        ;;
+                    u)
+                        andistro -i ubuntu
+                        ;;
+                    t)
+                        andistro -i
+                        ;;
+                esac
+            ;;
+            s)
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+
+                if $start_debian && ! $start_ubuntu; then
+                    OPTIONS=(d "Debian"
+                            t "$label_andistro_termianl_viewer")
+                elif ! $start_debian && $start_ubuntu; then
+                    OPTIONS=(u "Ubuntu"
+                            t "$label_andistro_termianl_viewer")
+                elif $start_debian && $start_ubuntu; then
+                    OPTIONS=(d "Debian"
+                            u "Ubuntu"
+                            t "$label_andistro_termianl_viewer")
+                else
+                    # Não tem nenhum sistema instalado
+                    OPTIONS=(. " ")
+                fi
+
+                CHOICE=$(dialog --no-shadow --clear \
+                    --title "AnDistro" \
+                    --menu "$label_choose_one_of_the_option:" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+                case $CHOICE in
+                    d)
+                        andistro -s debian
+                        ;;
+                    u)
+                        andistro -s ubuntu
+                        ;;
+                    t)
+                        andistro -s
+                        ;;
+                esac
+            ;;
+            u)
+                andistro -u
+                andistro
+            ;;
+            d)
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+
+                if $start_debian && ! $start_ubuntu; then
+                    OPTIONS=(d "Debian"
+                            t "$label_andistro_termianl_viewer")
+                elif ! $start_debian && $start_ubuntu; then
+                    OPTIONS=(u "Ubuntu"
+                            t "$label_andistro_termianl_viewer")
+                elif $start_debian && $start_ubuntu; then
+                    OPTIONS=(d "Debian"
+                            u "Ubuntu"
+                            t "$label_andistro_termianl_viewer")
+                else
+                    # Não tem nenhum sistema instalado
+                    OPTIONS=(. " ")
+
+                fi
+
+                CHOICE=$(dialog --no-shadow --clear \
+                    --title "AnDistro" \
+                    --menu "$label_choose_one_of_the_option:" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+                case $CHOICE in
+                    d)
+                        andistro -d debian
+                        
+                        ;;
+                    u)
+                        andistro -d ubuntu
+                        ;;
+                    t)
+                        andistro -d
+                        ;;
+                esac
+            ;;
+            t)
+                andistro terminal
+            ;;
+        esac
+    elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        echo "$label_command_not_available"
     else
-        OPTIONS=(i "$label_system_install_systems"
-                 u "$label_andistro_updater"
-                 t "$label_andistro_termianl_viewer")
+        echo "$label_system_not_found"
     fi
-
-    CHOICE=$(dialog --no-shadow --clear \
-        --title "AnDistro" \
-        --menu "$label_choose_one_of_the_option:" \
-        $HEIGHT $WIDTH $CHOICE_HEIGHT \
-        "${OPTIONS[@]}" \
-        2>&1 >/dev/tty)
-    clear
-    case $CHOICE in
-        i)
-            OPTIONS=(d "Debian"
-                     u "Ubuntu"
-                     t "$label_andistro_termianl_viewer")
-
-            CHOICE=$(dialog --no-shadow --clear \
-                --title "AnDistro" \
-                --menu "$label_choose_one_of_the_option:" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-            case $CHOICE in
-                d)
-                    andistro  -i debian
-                    ;;
-                u)
-                    andistro -i ubuntu
-                    ;;
-                t)
-                    andistro -i
-                    ;;
-            esac
-        ;;
-        s)
-            start_debian=false
-            start_ubuntu=false
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
-                start_debian=true
-            fi
-
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
-                start_ubuntu=true
-            fi
-
-            if $start_debian && ! $start_ubuntu; then
-                OPTIONS=(d "Debian"
-                         t "$label_andistro_termianl_viewer")
-            elif ! $start_debian && $start_ubuntu; then
-                OPTIONS=(u "Ubuntu"
-                         t "$label_andistro_termianl_viewer")
-            elif $start_debian && $start_ubuntu; then
-                OPTIONS=(d "Debian"
-                         u "Ubuntu"
-                         t "$label_andistro_termianl_viewer")
-            else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. " ")
-            fi
-
-            CHOICE=$(dialog --no-shadow --clear \
-                --title "AnDistro" \
-                --menu "$label_choose_one_of_the_option:" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-            case $CHOICE in
-                d)
-                    andistro -s debian
-                    ;;
-                u)
-                    andistro -s ubuntu
-                    ;;
-                t)
-                    andistro -s
-                    ;;
-            esac
-        ;;
-        u)
-            andistro -u
-            andistro
-        ;;
-        d)
-            start_debian=false
-            start_ubuntu=false
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
-                start_debian=true
-            fi
-
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
-                start_ubuntu=true
-            fi
-
-            if $start_debian && ! $start_ubuntu; then
-                OPTIONS=(d "Debian"
-                         t "$label_andistro_termianl_viewer")
-            elif ! $start_debian && $start_ubuntu; then
-                OPTIONS=(u "Ubuntu"
-                         t "$label_andistro_termianl_viewer")
-            elif $start_debian && $start_ubuntu; then
-                OPTIONS=(d "Debian"
-                         u "Ubuntu"
-                         t "$label_andistro_termianl_viewer")
-            else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. " ")
-
-            fi
-
-            CHOICE=$(dialog --no-shadow --clear \
-                --title "AnDistro" \
-                --menu "$label_choose_one_of_the_option:" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-            case $CHOICE in
-                d)
-                    andistro -d debian
-                    
-                    ;;
-                u)
-                    andistro -d ubuntu
-                    ;;
-                t)
-                    andistro -d
-                    ;;
-            esac
-        ;;
-        t)
-            andistro terminal
-        ;;
-    esac
 exit 0
 fi
 
 case "$1" in
     -u)
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            echo -e "\n$distro_wait"
+            update_progress() {
+                current_step=$1
+                total_steps=$2
 
-        echo -e "\n$distro_wait"
-        update_progress() {
-            current_step=$1
-            total_steps=$2
+                percent=$((current_step * 100 / total_steps))
+                bar_length=30
+                filled_length=$((percent * bar_length / 100))
+                empty_length=$((bar_length - filled_length))
 
-            percent=$((current_step * 100 / total_steps))
-            bar_length=30
-            filled_length=$((percent * bar_length / 100))
-            empty_length=$((bar_length - filled_length))
+                filled_bar=$(printf "%${filled_length}s" | tr " " "=")
+                empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-            filled_bar=$(printf "%${filled_length}s" | tr " " "=")
-            empty_bar=$(printf "%${empty_length}s" | tr " " " ")
+                printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
+            }
 
-            printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
-        }
+            total_steps=26  # Número total de etapas que você quer monitorar
+            current_step=0
 
-        total_steps=26  # Número total de etapas que você quer monitorar
-        current_step=0
+            {
+                #1 Atualiza os repositórios
+                sleep 1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-        {
-            #1 Atualiza os repositórios
-            sleep 1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #2 Atualiza os repositórios
+                pkg update > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #2 Atualiza os repositórios
-            pkg update > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #3 Instala o bash
+                pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #3 Instala o bash
-            pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #4 Instala o openssl
+                pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #4 Instala o openssl
-            pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #5 Instala o apt
+                pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #5 Instala o apt
-            pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #6 Atualiza os pacotes
+                pkg upgrade -y > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #6 Atualiza os pacotes
-            pkg upgrade -y > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #7 Verifica se o termux-exec está instalado
+                if ! dpkg -l | grep -qw termux-exec; then
+                    pkg install --no-install-recommends termux-exec -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #7 Verifica se o termux-exec está instalado
-            if ! dpkg -l | grep -qw termux-exec; then
-                pkg install --no-install-recommends termux-exec -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #8 Verifica se o proot está instalado
+                if ! dpkg -l | grep -qw proot; then
+                    pkg install --no-install-recommends proot -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #8 Verifica se o proot está instalado
-            if ! dpkg -l | grep -qw proot; then
-                pkg install --no-install-recommends proot -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #9 Verifica se o x11-repo está instalado
+                if ! dpkg -l | grep -qw x11-repo; then
+                    pkg install --no-install-recommends x11-repo -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #9 Verifica se o x11-repo está instalado
-            if ! dpkg -l | grep -qw x11-repo; then
-                pkg install --no-install-recommends x11-repo -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #10 Verifica se o termux-x11-nightly está instalado
+                if ! dpkg -l | grep -qw termux-x11-nightly; then
+                    pkg install --no-install-recommends termux-x11-nightly -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #10 Verifica se o termux-x11-nightly está instalado
-            if ! dpkg -l | grep -qw termux-x11-nightly; then
-                pkg install --no-install-recommends termux-x11-nightly -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #11 Verifica se o pulseaudio está instalado
+                if ! dpkg -l | grep -qw pulseaudio; then
+                    pkg install --no-install-recommends pulseaudio -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #11 Verifica se o pulseaudio está instalado
-            if ! dpkg -l | grep -qw pulseaudio; then
-                pkg install --no-install-recommends pulseaudio -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #12 Verifica se o wget está instalado
+                if ! dpkg -l | grep -qw wget; then
+                    pkg install --no-install-recommends wget -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #12 Verifica se o wget está instalado
-            if ! dpkg -l | grep -qw wget; then
-                pkg install --no-install-recommends wget -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #13 Verifica se o dialog está instalado
+                if ! dpkg -l | grep -qw dialog; then
+                    pkg install --no-install-recommends dialog -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #13 Verifica se o dialog está instalado
-            if ! dpkg -l | grep -qw dialog; then
-                pkg install --no-install-recommends dialog -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #14 Verifica se o tar está instalado
+                if ! dpkg -l | grep -qw tar; then
+                    pkg install --no-install-recommends tar -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #14 Verifica se o tar está instalado
-            if ! dpkg -l | grep -qw tar; then
-                pkg install --no-install-recommends tar -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #15 Verifica se o curl está instalado
+                if ! dpkg -l | grep -qw curl; then
+                    pkg install --no-install-recommends curl -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #15 Verifica se o curl está instalado
-            if ! dpkg -l | grep -qw curl; then
-                pkg install --no-install-recommends curl -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #16 Verifica se o unzip está instalado
+                if ! dpkg -l | grep -qw unzip; then
+                    pkg install --no-install-recommends unzip -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #16 Verifica se o unzip está instalado
-            if ! dpkg -l | grep -qw unzip; then
-                pkg install --no-install-recommends unzip -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #17 Verifica se o xz-utils está instalado
+                if ! dpkg -l | grep -qw xz-utils; then
+                    pkg install --no-install-recommends xz-utils -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #17 Verifica se o xz-utils está instalado
-            if ! dpkg -l | grep -qw xz-utils; then
-                pkg install --no-install-recommends xz-utils -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #18 Verifica se o debootstrap está instalado
+                if ! dpkg -l | grep -qw debootstrap; then
+                    pkg install --no-install-recommends debootstrap -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #18 Verifica se o debootstrap está instalado
-            if ! dpkg -l | grep -qw debootstrap; then
-                pkg install --no-install-recommends debootstrap -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #19 Verifica se o dbus está instalado
+                if ! dpkg -l | grep -qw dbus; then
+                    pkg install --no-install-recommends dbus -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #19 Verifica se o dbus está instalado
-            if ! dpkg -l | grep -qw dbus; then
-                pkg install --no-install-recommends dbus -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #20 Verifica se o pv está instalado
+                if ! dpkg -l | grep -qw pv; then
+                    pkg install --no-install-recommends pv -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #20 Verifica se o pv está instalado
-            if ! dpkg -l | grep -qw pv; then
-                pkg install --no-install-recommends pv -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #21 Verifica se o git está instalado
+                if ! dpkg -l | grep -qw git; then
+                    pkg install --no-install-recommends git -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #21 Verifica se o git está instalado
-            if ! dpkg -l | grep -qw git; then
-                pkg install --no-install-recommends git -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #22 Verifica se o inxi está instalado
+                if ! dpkg -l | grep -qw inxi; then
+                    pkg install --no-install-recommends inxi -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #22 Verifica se o inxi está instalado
-            if ! dpkg -l | grep -qw inxi; then
-                pkg install --no-install-recommends inxi -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #23 Verifica se o rsync está instalado
+                if ! dpkg -l | grep -qw rsync; then
+                    pkg install --no-install-recommends rsync -y > /dev/null 2>&1
+                fi
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #23 Verifica se o rsync está instalado
-            if ! dpkg -l | grep -qw rsync; then
-                pkg install --no-install-recommends rsync -y > /dev/null 2>&1
-            fi
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #24 Todo o pacote de instalação
+                git clone -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #24 Todo o pacote de instalação
-            git clone -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #25 Extrai o pacote de instalação
+                rm -rf "$HOME/app-andistro_setup/.git"
+                rm -rf "$HOME/app-andistro_setup/andistro_setup"
+                rm -rf "$HOME/app-andistro_setup/README.md"
+                rm -rf "$HOME/app-andistro_setup/termos.sh"
+                mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
+                rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #25 Extrai o pacote de instalação
-            rm -rf "$HOME/app-andistro_setup/.git"
-            rm -rf "$HOME/app-andistro_setup/andistro_setup"
-            rm -rf "$HOME/app-andistro_setup/README.md"
-            rm -rf "$HOME/app-andistro_setup/termos.sh"
-            mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
-            rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
+                #26 Mover o Andistro
+                chmod +x "$PREFIX/bin/andistro"
+                chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+                chmod +x $PREFIX/var/lib/andistro/boot/.config/*/bin/*
+                ((current_step++))
+                update_progress "$current_step" "$total_steps"; sleep 0.1
 
-            #26 Mover o Andistro
-            chmod +x "$PREFIX/bin/andistro"
+                echo
+            }
+            rm -rf "$HOME/app-andistro_setup"
+            rm -rf andistro_setup.zip
+            rm -rf "$HOME/andistro_setup"
+            
             chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
-            chmod +x $PREFIX/var/lib/andistro/boot/.config/*/bin/*
-            ((current_step++))
-            update_progress "$current_step" "$total_steps"; sleep 0.1
-
-            echo
-        }
-        rm -rf "$HOME/app-andistro_setup"
-        rm -rf andistro_setup.zip
-        rm -rf "$HOME/andistro_setup"
-        
-        chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
-        source "$PREFIX/var/lib/andistro/lib/share/global"
-        echo -e "$label_update_finish"
+            source "$PREFIX/var/lib/andistro/lib/share/global"
+            echo -e "$label_update_finish"
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
+        else
+        echo "$label_system_not_found"
+        fi
         ;;
 
     -i)
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
                 if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
@@ -495,11 +511,11 @@ case "$1" in
             binds="$andistro_files/boot/$distro_name/binds"
             mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 
-            if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
-                mkdir -p "$HOME/storage/shared/termux/"
-                mkdir -p "$HOME/storage/shared/termux/andistro"
-                mkdir -p "$HOME/storage/shared/termux/andistro/boot"
-                mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
+            if [ ! -d "/sdcard/termux/andistro/boot/$distro_name/stable" ];then
+                mkdir -p "/sdcard/termux/"
+                mkdir -p "/sdcard/termux/andistro"
+                mkdir -p "/sdcard/termux/andistro/boot"
+                mkdir -p "/sdcard/termux/andistro/boot/$distro_name/stable"
             fi
             
             mkdir -p $binds
@@ -535,8 +551,7 @@ case "$1" in
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 1>&3)
-            exec 3>&-
-
+                exec 3>&-
 
             # Determinar idioma selecionado
             if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
@@ -572,19 +587,19 @@ case "$1" in
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
             case $CHOICE in
-            1)	
-                # XFCE
-                config_environment="xfce4"
-            
+                1)	
+                    # XFCE
+                    config_environment="xfce4"
+                
+                    ;;
+                2)	
+                    # LXDE
+                    config_environment="lxde"
                 ;;
-            2)	
-                # LXDE
-                config_environment="lxde"
-            ;;
-            3)
-                # Nenhum escolhido
-                rm -rf "$folder/root/system-config.sh"
-            ;;
+                3)
+                    # Nenhum escolhido
+                    rm -rf "$folder/root/system-config.sh"
+                ;;
             esac
             OPTIONS=(1 "${label_light}"
                     2 "${label_dark}")
@@ -607,71 +622,82 @@ case "$1" in
             clear
             andistro alerta install-success
             andistro -s $distro_name
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
+        else
+            echo "$label_system_not_found"
+        fi
         ;;
     -d)
-        if [ -z "$2" ]; then
-            if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
-                #Existe pelo menos um arquivo start-*
-                echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
-                echo ""
-                echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
-                echo "$distro_desc_line_3" #andistro -s debian
-                echo " "
-                echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
-                echo "$distro_desc_line_9" #   andistro -u
-                echo " "
-                echo "$distro_desc_line_10" #Comandos disponíveis para você:
-                echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
-                echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
-                echo "   debian"
-                echo "   ubuntu"
-                echo " "
-                echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
-                start_debian=false
-                start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
-                    start_debian=true
-                fi
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
-                    start_ubuntu=true
-                fi
-                if $start_debian && ! $start_ubuntu; then
-                    echo "   debian"
-                elif ! $start_debian && $start_ubuntu; then
-                    echo "   ubuntu"
-                elif $start_debian && $start_ubuntu; then
-                    echo "   debian"
-                    echo "   ubuntu"
-                else
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            if [ -z "$2" ]; then
+                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                    #Existe pelo menos um arquivo start-*
+                    echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                    echo ""
+                    echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
+                    echo "$distro_desc_line_3" #andistro -s debian
                     echo " "
+                    echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                    echo "$distro_desc_line_9" #   andistro -u
+                    echo " "
+                    echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                    echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
+                    echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                    echo "   debian"
+                    echo "   ubuntu"
+                    echo " "
+                    echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+                    start_debian=false
+                    start_ubuntu=false
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                        start_debian=true
+                    fi
+                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                        start_ubuntu=true
+                    fi
+                    if $start_debian && ! $start_ubuntu; then
+                        echo "   debian"
+                    elif ! $start_debian && $start_ubuntu; then
+                        echo "   ubuntu"
+                    elif $start_debian && $start_ubuntu; then
+                        echo "   debian"
+                        echo "   ubuntu"
+                    else
+                        echo " "
+                    fi
+                    else
+                        # Não existe nenhum arquivo start-*
+                        echo "$label_andistro_there_no_system_installed"
                 fi
-                else
-                    # Não existe nenhum arquivo start-*
-                    echo "$label_andistro_there_no_system_installed"
-            fi
-            exit 1
-        fi
-
-        if [ "$2" == "total" ]; then
-            # Desinstalação total
-            echo "$distro_wait"
-            rm -rf $andistro_files
-            rm -rf $PREFIX/bin/andistro
-            
-            elif [ "$2" == "debian" ]; then
-                echo "$distro_wait"
-                distro_name="debian"
-
-            elif [ "$2" == "ubuntu" ]; then
-                echo "$distro_wait"
-                distro_name="ubuntu"
-            else
-                echo "$distro_command_not_found: $2"
                 exit 1
+            fi
+
+            if [ "$2" == "total" ]; then
+                # Desinstalação total
+                echo "$distro_wait"
+                rm -rf $andistro_files
+                rm -rf $PREFIX/bin/andistro
+                
+                elif [ "$2" == "debian" ]; then
+                    echo "$distro_wait"
+                    distro_name="debian"
+
+                elif [ "$2" == "ubuntu" ]; then
+                    echo "$distro_wait"
+                    distro_name="ubuntu"
+                else
+                    echo "$distro_command_not_found: $2"
+                    exit 1
+            fi
+            rm -rf $andistro_files/boot/$distro_name
+            rm -rf $andistro_files/boot/start-$distro_name
+            andistro alerta uninstall-success
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
+        else
+            echo "$label_system_not_found"
         fi
-        rm -rf $andistro_files/boot/$distro_name
-        rm -rf $andistro_files/boot/start-$distro_name
-        andistro alerta uninstall-success
         ;;
     -s)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
@@ -740,144 +766,162 @@ case "$1" in
                 exit 1
             fi
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-            echo "$label_command_not_available"
+            echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
         fi
         ;;
 
     -t|terminal)
-        if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
-            echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
-            echo ""
-            echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
-            echo "$distro_desc_line_3" #andistro -s debian
-            echo " "
-            echo "$distro_desc_line_4" #Exemplo de comando que permite a desinstalação:
-            echo "$distro_desc_line_5" #   andistro -d debian
-            echo " "
-            echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
-            echo "$distro_desc_line_7" #   andistro -i debian
-            echo " "
-            echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
-            echo "$distro_desc_line_9" #   andistro -u
-            echo " "
-            echo "$distro_desc_line_10" #Comandos disponíveis para você:
-            echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
-            echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
-            echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
-            echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
-            echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
-            echo "   debian"
-            echo "   ubuntu"
-            echo " "
-            echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
-            start_debian=false
-            start_ubuntu=false
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
-                start_debian=true
-            fi
-            if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
-                start_ubuntu=true
-            fi
-            if $start_debian && ! $start_ubuntu; then
-                echo "   debian"
-            elif ! $start_debian && $start_ubuntu; then
-                echo "   ubuntu"
-            elif $start_debian && $start_ubuntu; then
-                echo "   debian"
-                echo "   ubuntu"
-            else
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                echo ""
+                echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
+                echo "$distro_desc_line_3" #andistro -s debian
                 echo " "
+                echo "$distro_desc_line_4" #Exemplo de comando que permite a desinstalação:
+                echo "$distro_desc_line_5" #   andistro -d debian
+                echo " "
+                echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
+                echo "$distro_desc_line_7" #   andistro -i debian
+                echo " "
+                echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                echo "$distro_desc_line_9" #   andistro -u
+                echo " "
+                echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
+                echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
+                echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+                echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
+                echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                echo "   debian"
+                echo "   ubuntu"
+                echo " "
+                echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+                if $start_debian && ! $start_ubuntu; then
+                    echo "   debian"
+                elif ! $start_debian && $start_ubuntu; then
+                    echo "   ubuntu"
+                elif $start_debian && $start_ubuntu; then
+                    echo "   debian"
+                    echo "   ubuntu"
+                else
+                    echo " "
+                fi
+                echo " "
+            else
+                echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+                echo ""
+                echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
+                echo "$distro_desc_line_7" #   andistro -i debian
+                echo " "
+                echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
+                echo "$distro_desc_line_9" #   andistro -u
+                echo " "
+                echo "$distro_desc_line_10" #Comandos disponíveis para você:
+                echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+                echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
+                echo " "
+                echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
+                echo "   debian"
+                echo "   ubuntu"
             fi
-            echo " "
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
         else
-            echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
-            echo ""
-            echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
-            echo "$distro_desc_line_7" #   andistro -i debian
-            echo " "
-            echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
-            echo "$distro_desc_line_9" #   andistro -u
-            echo " "
-            echo "$distro_desc_line_10" #Comandos disponíveis para você:
-            echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
-            echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
-            echo " "
-            echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
-            echo "   debian"
-            echo "   ubuntu"
+            echo "$label_system_not_found"
         fi
         ;;
     --setup)
-        # Comando interno para iniciar a edição direta do código
-        if [ -z "$2" ]; then
-            # Não foi passado subcomando, comportamento padrão
-            echo "$distro_command_not_found: $2"
-        else
-            case "$2" in
-                storage)
-                    if [ -d "$HOME/storage/shared" ]; then
-                        if ls "$HOME/storage/shared" &>/dev/null; then
-                            # Acesso ao armazenamento OK!
-                            echo "Acesso ao armazenamento."
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            # Comando interno para iniciar a edição direta do código
+            if [ -z "$2" ]; then
+                # Não foi passado subcomando, comportamento padrão
+                echo "$distro_command_not_found: $2"
+            else
+                case "$2" in
+                    storage)
+                        if [ -d "/sdcard" ]; then
+                            if ls "/sdcard" &>/dev/null; then
+                                # Acesso ao armazenamento OK!
+                                echo "Acesso ao armazenamento."
+                            else
+                                # A pasta existe, mas sem permissão de acesso.
+                                dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
+                            --msgbox "Sem permissão de acesso." 8 50
+                            rm -rf storage
+                            termux-setup-storage
+                            fi
                         else
-                            # A pasta existe, mas sem permissão de acesso.
-                            dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                        --msgbox "Sem permissão de acesso." 8 50
-                        rm -rf storage
-                        termux-setup-storage
+                            termux-setup-storage
                         fi
-                    else
-                        termux-setup-storage
-                    fi
-                    ;;
-                battery)
-                    dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                        --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 8 50
-                    am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
-                    ;;
-                termux-details-settings)
-                    dialog --no-shadow --title "Informação" \
-                        --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 8 50
-                    am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
-                    ;;
- 
-                *)
-                    echo "$distro_command_not_found: $2"
-                    ;;
-            esac
+                        ;;
+                    battery)
+                        dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
+                            --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 8 50
+                        am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+                        ;;
+                    termux-details-settings)
+                        dialog --no-shadow --title "Informação" \
+                            --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 8 50
+                        am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
+                        ;;
+    
+                    *)
+                        echo "$distro_command_not_found: $2"
+                        ;;
+                esac
+            fi
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
+        else
+            echo "$label_system_not_found"
         fi
         ;;
     --set-edit)
-        # Comando interno para iniciar a edição direta do código
-        if [ -z "$2" ]; then
-            # Não foi passado subcomando, comportamento padrão
-            nano "$PREFIX/bin/andistro"
+        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+            # Comando interno para iniciar a edição direta do código
+            if [ -z "$2" ]; then
+                # Não foi passado subcomando, comportamento padrão
+                nano "$PREFIX/bin/andistro"
+            else
+                case "$2" in
+                    install-debian)
+                        nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
+                        ;;
+                    start-debian)
+                        nano "$PREFIX/var/lib/andistro/boot/start-debian"
+                        ;;
+                    install-ubuntu)
+                        nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
+                        ;;
+                    start-ubuntu)
+                        nano "$PREFIX/var/lib/andistro/boot/start-ubuntu"
+                        ;;
+                    module-global)
+                        nano "$PREFIX/var/lib/andistro/lib/share/global"
+                        ;;
+                    module-locale)
+                        nano "$PREFIX/var/lib/andistro/lib/share/locales_${system_icu_locale_code}.sh"
+                        ;;
+                    *)
+                        echo "$distro_command_not_found: $2"
+                        ;;
+                esac
+            fi
+        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+            echo "$label_command_problem_andistro_for_distro"
         else
-            case "$2" in
-                install-debian)
-                    nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
-                    ;;
-                start-debian)
-                    nano "$PREFIX/var/lib/andistro/boot/start-debian"
-                    ;;
-                install-ubuntu)
-                    nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
-                    ;;
-                start-ubuntu)
-                    nano "$PREFIX/var/lib/andistro/boot/start-ubuntu"
-                    ;;
-                module-global)
-                    nano "$PREFIX/var/lib/andistro/lib/share/global"
-                    ;;
-                module-locale)
-                    nano "$PREFIX/var/lib/andistro/lib/share/locales_${system_icu_locale_code}.sh"
-                    ;;
-                *)
-                    echo "$distro_command_not_found: $2"
-                    ;;
-            esac
+            echo "$label_system_not_found"
         fi
         ;;
     alerta)
@@ -1011,10 +1055,10 @@ case "$1" in
                 fi
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-                    vncserver -localhost -no -depth 24 -name remote-desktop "$DISPLAY_VALUE" :$PORT_VALUE
+                    vncserver -localhost -no -depth 24 -name remote-desktop "$DISPLAY_VALUE" :"$PORT_VALUE"
                 else
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
-                    vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE
+                    vncserver -localhost -no -depth 24 -name remote-desktop :"$PORT_VALUE"
                 fi
 
                 # Verifica se o vncserver está rodando
@@ -1039,7 +1083,6 @@ case "$1" in
 
     *)
         echo "$distro_command_not_found $1"
-        andistro terminal
         exit 1
         ;;
 esac        

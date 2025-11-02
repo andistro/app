@@ -102,6 +102,7 @@ label_command_not_available="Este comando não está disponível para o sistema 
 
 #Erros e recusas
 label_entry_canceled="Entrada cancelada pelo usuário."
+label_command_problem_andistro_for_distro="Este comando só funciona se encerrar o sistema."
 
 # Dica
 label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
