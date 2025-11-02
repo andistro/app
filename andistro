@@ -507,15 +507,17 @@ case "$1" in
             echo "$distro_wait"
             config_file="$andistro_files/boot/.config/$distro_name-based"
             bin="$andistro_files/boot/start-$distro_name"
-            folder="$andistro_files/boot/$distro_name/stable"
+            
+
+            folder="$andistro_files/boot/$distro_name/$distro_version"
             binds="$andistro_files/boot/$distro_name/binds"
             mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 
-            if [ ! -d "/sdcard/termux/andistro/boot/$distro_name/stable" ];then
+            if [ ! -d "/sdcard/termux/andistro/boot/$distro_name/$distro_version" ];then
                 mkdir -p "/sdcard/termux/"
                 mkdir -p "/sdcard/termux/andistro"
                 mkdir -p "/sdcard/termux/andistro/boot"
-                mkdir -p "/sdcard/termux/andistro/boot/$distro_name/stable"
+                mkdir -p "/sdcard/termux/andistro/boot/$distro_name/$distro_version"
             fi
             
             mkdir -p $binds
@@ -945,6 +947,7 @@ case "$1" in
                             echo $((i * 2))
                         done
                     } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60 0
+                    clear
                     ;;
                 uninstall-success)
                     {
@@ -953,6 +956,7 @@ case "$1" in
                             echo $((i * 2))
                         done
                     } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60 0
+                    clear
                     ;;
                 *)
                     echo "$distro_command_not_found: $2"
