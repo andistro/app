@@ -125,6 +125,7 @@ label_dark="Escuro"
 label_resolution="Resolução"
 label_landscape="Paisagem"
 label_portrait="Retrato"
+label_user="Usuário"
 
 # Informativos em colchetes
 label_detected="[Detectado]"

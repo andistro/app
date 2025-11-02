@@ -24,7 +24,7 @@ EOF
     "sudo apt --fix-broken install -y" 
 sleep 2
 
-vncpasswd
+andistro --boot vnc --passwd
 sleep
 source /etc/profile
 

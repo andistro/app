@@ -1011,7 +1011,7 @@ case "$1" in
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input" 10 50 3>&1 1>&2 2>&3)
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n$label_keyboard_active_sugest" 10 50 3>&1 1>&2 2>&3)
                             if [ $? -eq 0 ]; then
                                 # Valida senha não vazia
                                 if [ -z "$PASSWORD" ]; then
@@ -1072,8 +1072,8 @@ case "$1" in
                     if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
-                    
-                    echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
+
+                    echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
                 else
                     echo "$label_server_start_error"
                 fi

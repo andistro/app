@@ -52,7 +52,7 @@ EOF
 sleep 2
 
 
-vncpasswd
+andistro --boot vnc --passwd
 
 sleep 2
 
