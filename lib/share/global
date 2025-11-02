@@ -161,7 +161,11 @@ show_progress_dialog() {
             #     'comando1' 'comando2' 'comando3'
             local label="$1"
             local total="$2"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
+
             shift 2
 
             {
@@ -173,7 +177,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$label"
                     echo "XXX"
-                    bash -c "$cmd" >> "/sdcard/termux/andistro/logs/steps-one-label_${timestamp}.txt" 2>&1
+                    bash -c "$cmd" >> "$log_file" 2>&1
                     count=$((count + 1))
                 done
 
@@ -191,7 +195,10 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
             shift
             {
                 local percent step=0
@@ -203,7 +210,7 @@ show_progress_dialog() {
                     echo "$percent"
                     echo "$lbl"
                     echo "XXX"
-                    bash -c "$cmd"  >> "/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt" 2>&1
+                    bash -c "$cmd"  >> "$log_file" 2>&1
                     step=$((step + 1))
                     shift 2
                 done
@@ -221,7 +228,10 @@ show_progress_dialog() {
             #     "${label_step2}" 'comando2'
 
             local steps="$1"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
             shift
             local step=0
             local label_done="Finalizado!"
@@ -229,7 +239,7 @@ show_progress_dialog() {
             while [ "$#" -gt 1 ]; do
                 local lbl="$1"
                 local cmd="$2"
-                local log_file="/sdcard/termux/andistro/logs/steps-multi-label_${timestamp}.txt"
+                local log_file="$log_file"
                 
                 # Progresso real: wget/curl
                 if [[ "$cmd" == *wget* ]]; then
@@ -292,10 +302,13 @@ show_progress_dialog() {
             #     -O "$HOME/arquivo.tar.xz" "${url_do_arquivo}"
 
             local label="$1"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
             shift
             {
-                wget "$@" >> "/sdcard/termux/andistro/logs/wget_${timestamp}.txt" 2>&1 &
+                wget "$@" >> "$log_file" 2>&1 &
                 local pid=$!
                 local percent=0
                 while kill -0 "$pid" 2>/dev/null; do
@@ -316,7 +329,10 @@ show_progress_dialog() {
         wget-labeled)
             local label="$1"
             local total="$2"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
             shift 2
 
             {
@@ -337,7 +353,7 @@ show_progress_dialog() {
 
                     echo -e "XXX\n$((count * 100 / total))\n${current_label}\nXXX"
 
-                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" 2>&1 | tee -a "/sdcard/termux/andistro/logs/wget-labeled_${timestamp}.txt" |
+                    wget --tries=20 --progress=bar:force:noscroll "${wget_opts[@]}" "$url" 2>&1 | tee -a "$log_file" |
                     stdbuf -oL grep --line-buffered "%" |
                     stdbuf -oL sed -u -e "s,\.,,g" | awk -v count="$count" -v total="$total" -v label="$current_label" '
                         {
@@ -362,7 +378,10 @@ show_progress_dialog() {
             local label="$1"
             local file="$2"
             local dest="$3"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
 
             # Se não passar destino, cria pasta com o mesmo nome do arquivo (sem extensão)
             if [ -z "$dest" ]; then
@@ -401,7 +420,7 @@ show_progress_dialog() {
 
             set +m
             (
-                "${cmd[@]}" >> "/sdcard/termux/andistro/logs/extract_${timestamp}.txt" 2>&1
+                "${cmd[@]}" >> "$log_file" 2>&1
             ) & disown
             pid=$!
 
@@ -427,8 +446,10 @@ show_progress_dialog() {
             shift
             local packages=("$@")
             local total="${#packages[@]}"
+            local script_name=$(basename "$0") # extrai nome do script
+            script_name="${script_name%%.*}"
             local timestamp=$(date +'%d%m%Y-%H%M%S')
-            local log_file="/sdcard/termux/andistro/logs/check_packages_${timestamp}.txt"
+            local log_file="/sdcard/termux/andistro/logs/${script_name}_$timestamp.txt"
             local pkg_manager=$(detect_package_manager)
             : > "$log_file"
 
