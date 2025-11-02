@@ -30,18 +30,8 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=19
+total_steps=17
 current_step=0
-
-apt update > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps" ""
-sleep 0.5
-
-apt install dialog -y > /dev/null 2>&1
-((current_step++))
-update_progress "$current_step" "$total_steps" ""
-sleep 0.5
 
 sed -i "s/^# *\($default_locale_env.UTF-8\)/\1/" /etc/locale.gen > /dev/null 2>&1
 ((current_step++))
