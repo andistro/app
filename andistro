@@ -1055,7 +1055,7 @@ case "$1" in
                 fi
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-                    vncserver -localhost -no -depth 24 -name remote-desktop "$DISPLAY_VALUE" :"$PORT_VALUE"
+                    vncserver -localhost -no -depth 24 -name remote-desktop -geometry "$DISPLAY_VALUE" :"$PORT_VALUE"
                 else
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
                     vncserver -localhost -no -depth 24 -name remote-desktop :"$PORT_VALUE"
