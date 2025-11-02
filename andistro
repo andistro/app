@@ -496,19 +496,19 @@ case "$1" in
             if [ "$2" == "debian" ]; then
                 distro_name="debian"
                 distro_version="stable"
+                distro_based="debian"
             elif [ "$2" == "ubuntu" ]; then
                 distro_name="ubuntu"
                 distro_version="noble"
+                distro_based="debian"
             else
                 echo "$distro_command_not_found: $2"
                 exit 1
             fi
 
             echo "$distro_wait"
-            config_file="$andistro_files/boot/.config/$distro_name-based"
+            config_file="$andistro_files/boot/.config/$distro_based"
             bin="$andistro_files/boot/start-$distro_name"
-            
-
             folder="$andistro_files/boot/$distro_name/$distro_version"
             binds="$andistro_files/boot/$distro_name/binds"
             mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
