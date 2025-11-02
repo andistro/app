@@ -45,9 +45,9 @@ elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
 
     # Configurações do Termux
     # Verifica se a configuração já foi aplicada
-    if grep -q "^# hide-soft-keyboard-on-startup = true" "~/.termux/termux.properties"; then
+    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
     # Descomenta a linha removendo o '#' no começo
-    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/" "~/.termux/termux.properties"
+    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
     termux-reload-settings
     fi
 
