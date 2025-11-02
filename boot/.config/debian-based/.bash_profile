@@ -2,9 +2,9 @@
 # Variáveis de configuração
 distro_name="$1"
 distro_theme="$2"
-language_selected="$3"
-language_transformed="${language_selected//-/_}"
-export LANG=$language_transformed.UTF-8
+default_locale_system="$3"
+default_locale_env="${default_locale_system//-/_}"
+export LANG=$default_locale_env.UTF-8
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
@@ -30,10 +30,20 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=17
+total_steps=19
 current_step=0
 
-sed -i "s/^# *\($language_transformed.UTF-8\)/\1/" /etc/locale.gen > /dev/null 2>&1
+apt update > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" ""
+sleep 0.5
+
+apt install dialog -y > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps" ""
+sleep 0.5
+
+sed -i "s/^# *\($default_locale_env.UTF-8\)/\1/" /etc/locale.gen > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" ""
 sleep 0.5
@@ -43,17 +53,17 @@ locale-gen > /dev/null 2>&1
 update_progress "$current_step" "$total_steps" ""
 sleep 0.5
 
-echo "LANG=$language_transformed.UTF-8" > /etc/locale.conf > /dev/null 2>&1
+echo "LANG=$default_locale_env.UTF-8" > /etc/locale.conf > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" ""
 sleep 0.5
 
-echo "export LANG=$language_transformed.UTF-8" >> ~/.bashrc > /dev/null 2>&1
+echo "export LANG=$default_locale_env.UTF-8" >> ~/.bashrc > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" ""
 sleep 0.5
 
-echo "export LANGUAGE=$language_transformed.UTF-8" >> ~/.bashrc > /dev/null 2>&1
+echo "export LANGUAGE=$default_locale_env.UTF-8" >> ~/.bashrc > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps" ""
 sleep 0.5
@@ -129,10 +139,7 @@ etc_timezone=$(cat /etc/timezone)
 sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
 # Executa as configurações de idioma
-#bash ~/locale_$language_selected.sh
-
-# Baixa os wallpapers adicionais
-bash ~/wallpapers.sh
+#bash ~/locale_$default_locale_system.sh
 
 # Executa as configurações base do sistema
 
@@ -140,6 +147,9 @@ dialog --create-rc $HOME/.dialogrc
 sed -i "s|use_shadow = ON|use_shadow = OFF|g" $HOME/.dialogrc
 
 bash ~/system-config.sh "$distro_theme" "$distro_name"
+
+# Baixa os wallpapers adicionais
+bash ~/wallpapers.sh
 
 # Configurações da inteface escolhida
 bash ~/config-environment.sh "$distro_theme"
@@ -150,6 +160,6 @@ rm -rf ~/system-config.sh
 rm -rf ~/config-environment.sh
 rm -rf ~/start-environment.sh
 rm -rf ~/wallpapers.sh
-rm -rf ~/app-list-recommends.sh
 rm -rf ~/.bash_profile
+rm -rf ~/.dialogrc
 exit

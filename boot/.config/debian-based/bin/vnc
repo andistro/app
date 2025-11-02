@@ -12,7 +12,7 @@ if pgrep -x "vnc" > /dev/null; then
         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$ESCALA"
     fi
 
-    echo -e "\n${label_startvnc_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_vncserver_password_forgot\n"
+    echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_password_forgot\n"
 
 else
     echo "O servidor VNC não está iniciado. Por favor, verifique o status e tente novamente."

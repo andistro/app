@@ -1,14 +1,14 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Variáveis de configuração
-# "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl"
+# "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl"
 config_file="$1"
 andistro_files="$2"
 distro_name="$3"
 bin="$4"
 folder="$5"
 binds="$6"
-language_selected="$7"
-language_transformed="$8"
+default_locale_system="$7"
+default_locale_env="$8"
 archurl="$9"
 config_environment="${10}"
 distro_theme="${11}"
@@ -27,7 +27,6 @@ sleep 2
 # Baixar
 label_distro_download=$(printf "$label_distro_download" "$distro_name")
 label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
-label_distro_download_extract=$(printf "$label_distro_download_extract" "$distro_name")
 label_distro_download_finish=$(printf "$label_distro_download_finish" "$distro_name")
 
 if [ "$first" != 1 ];then
@@ -91,7 +90,7 @@ fi
 # command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 # command+=" TERM=\$TERM"
 # #command+=" LANG=C.UTF-8"
-# command+=" LANG=$language_transformed.UTF-8"
+# command+=" LANG=$default_locale_env.UTF-8"
 # command+=" /bin/bash --login"
 # com="\$@"
 # if [ -z "\$1" ]; then
@@ -114,7 +113,7 @@ chmod +x $bin
 cp "$config_file/.bash_profile" $folder/root/.bash_profile
 chmod +x $folder/root/.bash_profile
 
-cp $config_file/locale_setup/locale_${language_selected}.sh $folder/root/locale_${language_selected}.sh
+cp $config_file/locale_setup/locale_${default_locale_system}.sh $folder/root/locale_${default_locale_system}.sh
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
@@ -154,7 +153,7 @@ touch $folder/root/.hushlogin
 # Inicia o sistema
 cat > $folder/root/.bash_profile <<- EOM
 #!/bin/bash
-export LANG=$language_transformed.UTF-8
+export LANG=$default_locale_env.UTF-8
 export distro_id="$distro_name"
 export distro_theme="$distro_theme"
 # Fonte modular configuração global
@@ -163,11 +162,11 @@ source "/usr/local/lib/andistro/global"
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
 
-sed -i 's/^# *\($language_transformed.UTF-8\)/\1/' /etc/locale.gen
+sed -i 's/^# *\($default_locale_env.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
-echo 'LANG=$language_transformed.UTF-8' > /etc/locale.conf
-echo 'export LANG=$language_transformed.UTF-8' >> ~/.bashrc
-echo 'export LANGUAGE=$language_transformed.UTF-8' >> ~/.bashrc
+echo 'LANG=$default_locale_env.UTF-8' > /etc/locale.conf
+echo 'export LANG=$default_locale_env.UTF-8' >> ~/.bashrc
+echo 'export LANGUAGE=$default_locale_env.UTF-8' >> ~/.bashrc
 apt update
 
 sudo dpkg --configure -a

@@ -55,7 +55,7 @@ case $CHOICE in
             [[ -n "$falta_msg" ]] && mensagem_erro="${label_vncserver_chose_resolution_custom_alert_error}:\n$falta_msg"
         fi
 
-        cabecalho="$label_vnc_setup"
+        cabecalho="$label_server_setup"
         if [[ -n "$mensagem_erro" ]]; then
             titulo="$dialog_msgbox\n----------------\n$mensagem_erro\n\n${label_numbers_only}"
         else

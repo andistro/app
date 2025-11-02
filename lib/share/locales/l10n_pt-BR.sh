@@ -4,21 +4,11 @@ if [ "$system_country" = "Brazil" ]; then
     system_country="Brasil"
 fi
 
-#=====================================================================================================
-
-label_detected="[Detectado]"
-label_distro_alert_timezone_desc="O Fuso horário será o mesmo do dispositivo."
-label_distro_alert_timezone_detected="Fuso horário detectado: "
-label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
-label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
-label_keyboard_setup="Iniciando as configurações do teclado, $distro_wait...."
-label_tzdata_setup="Iniciando as configurações de fuso horário e data, $distro_wait...."
 
 #=====================================================================================================
-# Andistro
-distro_command="<comando>"
-distro_command_not_found="Comando não encontrado:"
-distro_del="desinstalar"
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Específicos do executável andistro
+
 distro_desc_line_1="Use: andistro <comando> <opção> para seja feito a tarefa desejada."
 distro_desc_line_2="Exemplo de comando que permite a inicialização:"
 distro_desc_line_3="   andistro -s debian"
@@ -38,6 +28,9 @@ distro_desc_line_14="    -u  atualiza o AnDistro."
 distro_desc_line_15="Opções de sistemas disponíveis para instalação:"
 distro_desc_line_16="Opções de sistemas disponíveis para inicialização e desinstalação:"
 
+
+distro_command_not_found="Comando não encontrado:"
+
 distro_instaled="instalado"
 distro_install="instalar"
 distro_notinstaled="não instalado"
@@ -45,47 +38,74 @@ distro_option="<opção>"
 distro_start="iniciar"
 distro_update="atualizar"
 distro_wait="aguarde"
+distro_del="desinstalar"
+distro_command="<comando>"
+
+label_system_start="Iniciar o sistema"
+label_system_uninstall="Desinstalar o sistema"
+label_system_install_systems="Instalar sistemas"
+label_system_install_other_systems="Instalar outros sistemas"
+label_andistro_updater="Atualizar o AnDistro"
+label_andistro_termianl_viewer="Ver como terminal"
+label_andistro_there_no_system_installed="Não tem nenhum sistema instalado"
+label_all_systems_have_been_installed="Todos os sistemas foram instalados"
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////
 #=====================================================================================================
 
-label_distro_stable="Estável"
-label_distro_previous_version="Versão anterior"
-
-label_system_info="Informações do seu sistema"
-label_android_version="Versão do Android"
-label_device_manufacturer="Marca"
-label_device_model="Modelo"
-label_device_hardware="Chipset"
-label_android_architecture="Arquitetura"
-label_android_architecture_unknow="Arquitetura não identificada"
-label_system_country="Região"
-label_system_country_iso="Abreviação"
-label_system_icu_locale_code="Código do idioma"
-label_system_timezone="Fuso horário"
-desc_system_info="Use o comando ./sys-info para poder ver essas informações novamente."
+#=====================================================================================================
+# Aguardos
 label_progress="Em andamento..."
-label_language_download="Baixando o pacote de idiomas..."
-label_create_boot="Criando a inicialização..."
-label_alert_autoupdate_for_u="Estou me atualizando para que o sistema fique bom para você."
-label_find_update="Procurando atualizações..."
 label_upgrade="Atualizando o sistema..."
-label_install_tools="Instalando ferramentas..."
+label_wait="Aguarde"
+
+# Baixar
+label_distro_download="Baixando o %s..."
+label_distro_download_finish="A ultima versão do %s foi baixada com sucesso."
+label_distro_download_start="Em breve será baixado a ultima versão do %s para o armazenamento..."
+label_install_script_download="Baixando script de instalação..."
+label_skip_download="Pulando o download"
+label_update_finish="Atualização concluída!"
+label_wallpaper_download="Baixando papéis de parede..."
+
+# Configurações
+label_keyboard_setup="Iniciando as configurações do teclado, aguarde...."
+label_keyboard_active_sugest="Caso necessário toque no botão para abrir o teclado (⌨)"
 label_system_setup="Configurando o sistema..."
-label_system_language="Configurando idioma..."
-label_updating_packages="Aguarde, atualizando pacotes..."
-label_keyboard_settings="Trazendo as configurações do teclado...."
-label_tzdata_settings="Trazendo as configurações de teclado e fuso horário...."
-label_config_environment_gui="Configurando a interface..."
-label_install_environment_gui="Baixando as configurações para a interface funcionar..."
-label_start_script="Escrevendo script de inicialização"
+label_xdg_user_dirs_setup="Configurando as pastas padrões para o sistema..."
+
+# Fuso horário
+label_system_timezone="Fuso horário"
+label_distro_alert_timezone_desc="O fuso horário será o mesmo do dispositivo."
+label_distro_alert_timezone_detected="Fuso horário detectado: "
+
+# Senhas
+label_change_password="A senha foi alterada com sucesso. "
+label_password="Senha"
+label_password_alt_min="senha"
+label_password_forgot="Esqueceu a senha? Use o comando 'andistro --setup senha' para redefinir a senha."
+label_password_input="Digite a nova senha para o servidor VNC"
+label_password_input_alert_important="É necessário definir uma senha!"
+label_password_save_failed="Falha ao salvar a senha!"
+
+# Escolhas
+label_choose_one_of_the_option="Escolha uma das opções"
+label_choose_language="Escolha o idioma "
+label_choose_theme="Escolha um tema"
+
+#Indisponibilidade
+label_command_not_available="Este comando não está disponível para o sistema atual."
+
+#Erros e recusas
 label_entry_canceled="Entrada cancelada pelo usuário."
-label_sucess="Sucesso!"
-label_completed="Concluído"
-label_done="Finalizado"
-label_change_password="A senha do VNC foi alterada com sucesso. "
-label_retry="Tentando novamente..."
+
+# Dica
+label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
+label_select_no_to_choose_other_resolution="Selecione 'Não' para escolher outra resolução."
+
+# Informativos em palavra única
 label_error="Erro"
-label_vnc_password_save_failed="Falha ao salvar a senha!"
-label_numbers_only="[SOMENTE NÚMEROS]"
+label_done="Finalizado"
 label_width="Largura"
 label_height="Altura"
 label_scale="Escala"
@@ -95,98 +115,62 @@ label_confirm="Confirmar"
 label_cancel="Cancelar"
 label_themes="Temas"
 label_icons="Ícones"
-label_resolution_default="Resolução $current_resolution definida como padrão!"
-label_update_finish="Atualização concluída! \nUse o comando 'andistro' para iniciar."
-label_system_icu_locale_code_file_error="Arquivo de localização não encontrado:"
-label_installing="Instalando"
-label_setting_up="Configurando"
-label_resoluciondefault="definida como padrão!"
-label_xdg_user_dirs_setup="Configurando as pastas padrões para o sistema..."
+label_light="Claro"
+label_dark="Escuro"
+label_resolution="Resolução"
+label_landscape="Paisagem"
+label_portrait="Retrato"
 
-#VNC
-label_vnc_setup="Configuração do VNC"
+# Informativos em colchetes
+label_detected="[Detectado]"
+label_numbers_only="[SOMENTE NÚMEROS]"
 
-# VNC Passwd
-label_vnc_password_input="Digite a nova senha para o servidor VNC \n\nCaso necessário toque no botão para abrir o teclado (⌨)"
-label_vnc_password_input_alert="Toque no botão para abrir o teclado (⌨). Caso não faça isso, a próxima etapa terá erro. Depois pressione OK."
-label_vnc_password_input_alert_important="É necessário definir uma senha!"
-label_vncserver_password_forgot="Esqueceu a senha? Use o comando 'vncpasswd' para redefinir a senha do VNC."
+# Interface
+label_config_environment_gui="Configurando a interface..."
+label_install_environment_gui="Baixando as configurações para a interface funcionar..."
+label_environments_select="Escolha uma interface de área de trabalho: "
+label_environments_select_default="Padrão"
+label_environments_select_light="Leve"
+label_environments_select_null="Nenhum"
 
-
-label_startvnc_desc="O servidor VNC foi iniciado. A senha padrão é a senha da conta "
-label_vncserver_kill="Desligando o servidor VNC..."
-label_vncserver_kill_port="Digite o número da porta que deseja fechar (exemplo: 1): "
-label_vncserver_killed="Desligando o VNC da porta"
-label_vncserver_kill_error="Nenhum servidor VNC encontrado para o usuário $USER"
-label_vncserver_resolution_title="Seleção de resolução"
-label_vncserver_resolution_option="Escolha uma das opções abaixo:"
-label_vncserver_resolution_option_horizontal="Iniciar o vncserver na resolução Horizontal"
-label_vncserver_resolution_option_vertical="Iniciar o vncserver na resolução Vertical"
-label_vncserver_resolution_option_uwhd="Iniciar o vncserver na resolução Ultrawide HD"
-label_vncserver_resolution_option_qdhd="Iniciar o vncserver na resolução Quad-HD"
-label_vncserver_resolution_option_qdhdplus="Iniciar o vncserver na resolução Quad-HD Plus"
-label_vncserver_resolution_option_fhd="Iniciar o vncserver na resolução Full-HD"
-label_vncserver_resolution_option_fhdplus="Iniciar o vncserver na resolução Full-HD Plus"
-label_vncserver_resolution_option_hd="Iniciar o vncserver na resolução HD"
-label_vncserver_resolution_option_hdplus="Iniciar o vncserver na resolução HD Plus"
-label_vncserver_resolution_option_custom="Definir resolução, porta e escala manualmente"
-label_vncserver_resolution_option_predefined="Escolha a partir de uma lista pré-definida"
-label_vncserver_resolution_default="Resolução padrão"
-label_vncserver_resolution_default_desc="Ao confirmar, irá usar definida como padrão: \n\n Resolução: $RESOLUTION \nPorta: ${PORT:-1}, \nEscala: ${SCALE:-1})\n\nSelecione 'Não' para escolher outra resolução."
-label_vncserver_resolution_frequent_desc_title="Resolução Frequente Detectada"
-label_vncserver_resolution_frequent_desc="Você tem usado a resolução %s frequentemente.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
-label_vncserver_chose_resolution_uwhd="Você escolheu a resolução Ultra Wide HD"
-label_vncserver_chose_resolution_qdhd="Você escolheu a resolução Quad-HD"
-label_vncserver_chose_resolution_fhd="Você escolheu a resolução Full HD"
-label_vncserver_chose_resolution_hd="Você escolheu a resolução HD"
-label_vncserver_chose_resolution_default="Você escolheu usar a resolução padrão"
-label_vncserver_chose_resolution_custom="Você escolheu definir a resolução e porta manualmente"
-label_vncserver_chose_resolution_custom_desc="Insira a resolução personalizada no formato LARGURAxALTURA. Exemplo: 1920x1200"
-label_vncserver_chose_resolution_custom_desc_port="Insira o número da porta. Exemplo: 2. A porta padrão é 1"
-label_vncserver_chose_resolution_custom_alert="Atenção: Não tecle ENTER (↲) antes de preencher todos os campos. Clique no texto para selecionar e poder digitar."
-label_vncserver_chose_resolution_custom_alert_caption="Legenda: o campo em azul é o que está selecionado para digitar. Use as teclas ↑ e ↓ para trocar a seleção. Pode clicar nos nomes para selecionar."
-label_vncserver_chose_resolution_custom_alert_error="Faltam ou há valores inválidos nos campos abaixo:\n"
-label_vncserver_chose_resolution_canceled="Cancelado. Use o comando startvnc para selecionar outra resolução"
-
-label_vncserver_remove_default_title="Deseja remover a resolução padrão?"
-#label_vncserver_remove_default_desc="Deseja remover a resolução padrão?"
-label_vncserver_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
-label_vncserver_remove_default_sucess="Resolução padrão removida com sucesso."
-
-
-# Sobre downloads
-label_install_script_download="Baixando script de instalação..."
-label_install_script_download_check="Confirmando a instalação..."
-label_skip_download="Pulando o download"
-label_decopressing_rootfs="Descompactando arquivos..."
-label_wallpaper_download="Baixando wallpaper..."
-label_gnome_download_setup="Baixando as configurações necessárias para o Gnome..."
-
-#Download do sistema
-label_distro_download="Baixando o %s..."
-label_distro_download_start="Em breve será baixado a ultima versão do %s para o armazenamento..."
-label_distro_download_extract="Extraindo o %s para o armazenamento..."
-label_distro_download_finish="A ultima versão do %s foi baixada com sucesso."
-
-
-#TITULO DO MENU DE DIALOGO
-MENU_operating_system_select="Escolha o sistema operacional que será instalado: "
-MENU_language_select="Escolha o idioma "
-MENU_language_selected="Idioma selecionado: "
-MENU_environments_select="Escolha um ambientes de área de trabalho: "
-MENU_environments_select_default="Padrão"
-MENU_environments_select_light="Leve"
-MENU_environments_select_null="Nenhum"
-
-# Seletor de temas
-MENU_theme_select="Escolha um tema: "
-MENU_theme_select_light="Claro"
-MENU_theme_select_dark="Escuro"
-
-# Lista de recomendações
-
-label_apps_select_install="Selecione apps o sistema \nVeja abaixo alguns apps selecionados para você começar. \n\nClique naqueles que deseja instalar e tecle enter (↲) ou clique em <Aceitar>. \n\nCaso não queira nenhum dos listados, mantenha sem selecionar, tecle enter (↲) ou clique em aceitar para pular esta etapa. \n\n\nA tecla enter (↲) não tem função de seleção, somente de confirmação."
-
-label_system_not_found="Sistema não encontrado!"
+# Procura
+label_file_not_found="Arquivo de localização não encontrado"
+label_find_update="Procurando atualizações..."
 label_system_found="Sistema encontrado!"
-label_command_not_available="Este comando não está disponível para o sistema atual."
+label_system_not_found="Sistema não encontrado!"
+
+# Temporizador
+label_sleep_in_5s="Esta mensagem desaparecerá em 5 segundos."
+
+# Servidor
+label_server_kill_desc="Desligando o servidor..."
+label_server_kill_desced="Desligando o servidor da porta"
+label_server_kill_desc_error="Nenhum servidor VNC encontrado para o usuário $USER"
+label_server_setup="Configuração do servidor"
+label_server_start_desc="O servidor foi iniciado."
+label_server_start_error="O servidor VNC não está iniciado. Por favor, registro de erros em .vnc/localhost.log."
+label_select_resolution="Seleção de resolução"
+label_choose_one_resolution="Escolha uma das opções abaixo"
+
+label_resolution_frequent="Resolução Frequente Detectada"
+label_resolution_frequent_desc="Você tem usado a resolução %s frequentemente.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
+label_resolution_remove_default="Deseja remover a resolução padrão?"
+label_resolution_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
+label_resolution_remove_default_sucess="A resolução deixou de ser a padrão."
+
+label_resolution_option_default="Resolução padrão"
+label_resolution_option_default_desc="Ao confirmar, irá usar a resolução definida como padrão."
+label_resolution_choose_options="Escolha algumas opções"
+label_resolution_choose_default="Você escolheu usar a resolução padrão"
+label_resolution_choose_custom="Você escolheu definir a resolução manualmente"
+label_resolution_choose_custom_desc="Insira a resolução personalizada no formato LARGURAxALTURA. Exemplo: 1920x1200"
+label_resolution_choose_custom_desc_port="Defina um número para a porta ou mantenha a que está definida como padrão.  A porta padrão é 1."
+label_resolution_choose_custom_desc_scale="Defina um número para a escala ou mantenha a que está definida como padrão.  A escala padrão é 1."
+label_resolution_choose_custom_desc_alert="Houve algum erro nos dados inseridos. Será retornado a tela anterior. Leia atentamente a descrição e repita o procedimeto."
+
+label_resolution_option_custom="Defina a resolução manualmente"
+label_resolution_option_uwhd="Ultrawide HD"
+label_resolution_option_qdhd="Quad-HD"
+label_resolution_option_fhd="Full-HD"
+label_resolution_option_fhd_wide="Full-HD estendido"
+label_resolution_option_hd="HD"

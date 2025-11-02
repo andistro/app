@@ -6,11 +6,12 @@ distro_name="$3"
 bin="$4"
 folder="$5"
 binds="$6"
-language_selected="$7"
-language_transformed="$8"
+default_locale_system="$7"
+default_locale_env="$8"
 archurl="$9"
 config_environment="${10}"
 distro_theme="${11}"
+distro_version="${12}"
 
 source "$PREFIX/var/lib/andistro/lib/share/global"
 # Fonte modular configuração global
@@ -26,7 +27,6 @@ sleep 2
 # Baixar
 label_distro_download=$(printf "$label_distro_download" "$distro_name")
 label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
-label_distro_download_extract=$(printf "$label_distro_download_extract" "$distro_name")
 label_distro_download_finish=$(printf "$label_distro_download_finish" "$distro_name")
 
 if [ "$first" != 1 ];then
@@ -36,7 +36,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates stable $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -56,7 +56,7 @@ sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|co
 sed -i "s|command+=\" -b \$andistro_files/boot:/usr/local/lib/andistro/boot\"|command+=\" -b $andistro_files/boot:/usr/local/lib/andistro/boot\"|g" $bin
 sed -i "s|command+=\" -b \$andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/boot/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
 sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g" $bin
-sed -i "s|command+=\" LANG=\$language_transformed.UTF-8\"|command+=\" LANG=$language_transformed.UTF-8\"|g" $bin
+sed -i "s|command+=\" LANG=\$default_locale_env.UTF-8\"|command+=\" LANG=$default_locale_env.UTF-8\"|g" $bin
 
 chmod +x $bin
 
@@ -65,7 +65,7 @@ cp "$config_file/.bash_profile" $folder/root/.bash_profile
 
 sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
 sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
-sed -i "s|language_selected=\"\$3\"|language_selected=\"$language_selected\"|g" $folder/root/.bash_profile
+sed -i "s|default_locale_system=\"\$3\"|default_locale_system=\"$default_locale_system\"|g" $folder/root/.bash_profile
 
 cp $config_file/system-config.sh $folder/root/system-config.sh
 cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
@@ -84,9 +84,7 @@ echo "$system_timezone" | tee $folder/etc/timezone
 mkdir -p "$folder/usr/share/backgrounds/"
 mkdir -p "$folder/usr/share/icons/"
 mkdir -p "$folder/root/.vnc/"
-mkdir -p "$folder/root/.config/gtk-3.0"
 
-echo -e "file:///sdcard sdcard" | tee $folder/root/.config/gtk-3.0/bookmarks
 
 # KERNEL_VERSON=$(uname -r)
 

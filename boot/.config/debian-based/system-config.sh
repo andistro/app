@@ -7,7 +7,7 @@ apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '
 source "/usr/local/lib/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 48 \
+show_progress_dialog steps-multi-label 53 \
     "${label_progress}" 'echo "system-config"' \
     "${label_progress}" 'sudo apt clean' \
     "${label_find_update}" 'sudo apt update' \
@@ -42,6 +42,13 @@ show_progress_dialog steps-multi-label 48 \
     "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → zip" 'sudo apt install zip --no-install-recommends -y' \
     "${label_install_script_download}" 'sleep 5' \
+    "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds"' \
+    "${label_system_setup}" 'mkdir -p "/usr/share/icons"' \
+    "${label_system_setup}" 'mkdir -p "/root/.config/gtk-3.0"' \
+    "${label_system_setup}" 'mkdir -p "/root/.vnc"' \
+    "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | tee /root/.config/gtk-3.0/bookmarks' \
+    "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
+    "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> ~/.bashrc' \
     "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
     "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
     "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
@@ -54,8 +61,6 @@ show_progress_dialog steps-multi-label 48 \
     "${label_system_setup}" "echo 'gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
     "${label_system_setup}" 'sudo dpkg --configure -a' \
     "${label_system_setup}" 'sudo apt --fix-broken install -y' \
-    "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
-    "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> ~/.bashrc'\
     "${label_system_setup}" 'sudo apt-get clean'
 
 sleep 2
@@ -79,4 +84,4 @@ rm -rf system-config.sh
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
 
 # Define um iniciador automático para o VNC Server
-sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/boot/start-debian
+#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/boot/start-debian

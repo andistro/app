@@ -6,15 +6,15 @@ PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)
 
 # Verificar se há servidores ativos
 if [ -z "$PID_FILES" ]; then
-    echo "$label_vncserver_kill_error"
+    echo "$label_server_kill_desc_error"
     exit 1
 fi
 
 # Extrair a porta do primeiro arquivo encontrado (ex: localhost:1.pid → 1)
 PORTA=$(echo "$PID_FILES" | head -n1 | cut -d':' -f2 | cut -d'.' -f1)
 
-echo "$label_vncserver_kill"
-echo "$label_vncserver_killed: $PORTA"
+echo "$label_server_kill_desc"
+echo "$label_server_kill_desced: $PORTA"
 
 # Parar o servidor VNC
 vncserver -kill :$PORTA

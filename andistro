@@ -64,33 +64,33 @@ if [ -z "$1" ]; then
     export PORT=1
 
     if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
-        OPTIONS=(s "Iniciar o sistema"
-                 d "Desinstalar o sistema"
-                 i "Instalar outros sistemas"
-                 u "Atualizar o AnDistro"
-                 t "Ver como terminal")
+        OPTIONS=(s "$label_system_start"
+                 d "$label_system_uninstall"
+                 i "$label_system_install_other_systems"
+                 u "$label_andistro_updater"
+                 t "$label_andistro_termianl_viewer")
     else
-        OPTIONS=(i "Instalar sistemas"
-                 u "Atualizar o AnDistro"
-                 t "Ver como terminal")
+        OPTIONS=(i "$label_system_install_systems"
+                 u "$label_andistro_updater"
+                 t "$label_andistro_termianl_viewer")
     fi
+
     CHOICE=$(dialog --no-shadow --clear \
         --title "AnDistro" \
-        --menu "Escolha uma das opções:" \
+        --menu "$label_choose_one_of_the_option:" \
         $HEIGHT $WIDTH $CHOICE_HEIGHT \
         "${OPTIONS[@]}" \
         2>&1 >/dev/tty)
-clear
+    clear
     case $CHOICE in
-        i)	
-            export PORT=1
+        i)
             OPTIONS=(d "Debian"
                      u "Ubuntu"
-                     t "Ver como terminal")
+                     t "$label_andistro_termianl_viewer")
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
-                --menu "Escolha uma das opções:" \
+                --menu "$label_choose_one_of_the_option:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
@@ -106,8 +106,7 @@ clear
                     ;;
             esac
         ;;
-        s)	
-            export PORT=1
+        s)
             start_debian=false
             start_ubuntu=false
             if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
@@ -120,21 +119,22 @@ clear
 
             if $start_debian && ! $start_ubuntu; then
                 OPTIONS=(d "Debian"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             elif ! $start_debian && $start_ubuntu; then
                 OPTIONS=(u "Ubuntu"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             elif $start_debian && $start_ubuntu; then
                 OPTIONS=(d "Debian"
                          u "Ubuntu"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             else
-                echo "Não tem nenhum sistema instalado"
+                # Não tem nenhum sistema instalado
+                OPTIONS=(. " ")
             fi
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
-                --menu "Escolha uma das opções:" \
+                --menu "$label_choose_one_of_the_option:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
@@ -155,7 +155,6 @@ clear
             andistro
         ;;
         d)
-            export PORT=1
             start_debian=false
             start_ubuntu=false
             if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
@@ -168,21 +167,23 @@ clear
 
             if $start_debian && ! $start_ubuntu; then
                 OPTIONS=(d "Debian"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             elif ! $start_debian && $start_ubuntu; then
                 OPTIONS=(u "Ubuntu"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             elif $start_debian && $start_ubuntu; then
                 OPTIONS=(d "Debian"
                          u "Ubuntu"
-                         t "Ver como terminal")
+                         t "$label_andistro_termianl_viewer")
             else
-                echo "Não tem nenhum sistema instalado"
+                # Não tem nenhum sistema instalado
+                OPTIONS=(. " ")
+
             fi
 
             CHOICE=$(dialog --no-shadow --clear \
                 --title "AnDistro" \
-                --menu "Escolha uma das opções:" \
+                --menu "$label_choose_one_of_the_option:" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
@@ -442,7 +443,7 @@ case "$1" in
                         elif ! $start_debian && $start_ubuntu; then
                             echo "   debian" #se já existe o start-ubuntu, mostra apenas o debian
                         elif $start_debian && $start_ubuntu; then
-                            echo "já existem os dois sistemas instalados"
+                            echo "$label_all_systems_have_been_installed"
                             #sed -i '\|elif $start_debian && $start_ubuntu; then|a echo "para atualizar"' $PREFIX/bin/andistro
 
                         else
@@ -451,33 +452,39 @@ case "$1" in
                     fi
                 else
                 # Não existe nenhum arquivo start-*
-                echo "Não há nenhum sistema instalado."
+                echo "$label_andistro_there_no_system_installed"
                 fi
                 exit 1
             fi
         
             if [ "$2" == "debian" ]; then
                 distro_name="debian"
+                distro_version="stable"
             elif [ "$2" == "ubuntu" ]; then
                 distro_name="ubuntu"
+                distro_version="noble"
             else
-                echo "Distribuição não reconhecida: $2"
+                echo "$distro_command_not_found: $2"
                 exit 1
             fi
+
             echo "$distro_wait"
             config_file="$andistro_files/boot/.config/$distro_name-based"
             bin="$andistro_files/boot/start-$distro_name"
             folder="$andistro_files/boot/$distro_name/stable"
             binds="$andistro_files/boot/$distro_name/binds"
             mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
+
             if [ ! -d "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable" ];then
                 mkdir -p "$HOME/storage/shared/termux/"
                 mkdir -p "$HOME/storage/shared/termux/andistro"
                 mkdir -p "$HOME/storage/shared/termux/andistro/boot"
                 mkdir -p "$HOME/storage/shared/termux/andistro/boot/$distro_name/stable"
             fi
+            
             mkdir -p $binds
             andistro alerta timezone
+            
             if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
                 system_lang_code="$system_icu_locale_code"
             else
@@ -503,8 +510,8 @@ case "$1" in
             # Mostrar menu com redirecionamento seguro
             exec 3>&1
             CHOICE=$(dialog --no-shadow --clear \
-                --title "$MENU_language_select" \
-                --menu "$MENU_language_select" \
+                --title "$label_choose_language" \
+                --menu "$label_choose_language" \
                 $HEIGHT $WIDTH $CHOICE_HEIGHT \
                 "${OPTIONS[@]}" \
                 2>&1 1>&3)
@@ -513,18 +520,18 @@ case "$1" in
 
             # Determinar idioma selecionado
             if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
-                language_selected="$system_lang_code"
+                default_locale_system="$system_lang_code"
             elif [[ "$CHOICE" == "SEP" ]]; then
                 exit 0  # ignorar separador
             else
-                language_selected="$CHOICE"
+                default_locale_system="$CHOICE"
             fi
 
             # Converter de pt-BR para pt_BR
-            language_transformed="${language_selected//-/_}"
+            default_locale_env="${default_locale_system//-/_}"
             # Exportar, se necessário
-            export language_selected
-            export language_transformed
+            export default_locale_system
+            export default_locale_env
             case `dpkg --print-architecture` in
                 aarch64)
                     archurl="arm64" ;;
@@ -534,13 +541,13 @@ case "$1" in
                     echo "unknown architecture"; exit 1 ;;
             esac
 
-            OPTIONS=(1 "${MENU_environments_select_default} (XFCE4)"
-                    2 "${MENU_environments_select_light} (LXDE)"
-                    3 "${MENU_environments_select_null}") 
+            OPTIONS=(1 "${label_environments_select_default} (XFCE4)"
+                    2 "${label_environments_select_light} (LXDE)"
+                    3 "${label_environments_select_null}") 
 
             CHOICE=$(dialog --no-shadow --clear \
                         --title "$TITLE" \
-                        --menu "$MENU_environments_select" \
+                        --menu "$label_environments_select" \
                         $HEIGHT $WIDTH $CHOICE_HEIGHT \
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
@@ -559,12 +566,12 @@ case "$1" in
                 rm -rf "$folder/root/system-config.sh"
             ;;
             esac
-            OPTIONS=(1 "${MENU_theme_select_light}"
-                    2 "${MENU_theme_select_dark}")
+            OPTIONS=(1 "${label_light}"
+                    2 "${label_dark}")
 
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
-                            --menu "$MENU_theme_select" \
+                            --menu "$label_choose_theme" \
                             $HEIGHT $WIDTH $CHOICE_HEIGHT \
                             "${OPTIONS[@]}" \
                             2>&1 >/dev/tty)
@@ -576,7 +583,7 @@ case "$1" in
                     distro_theme="Dark"
                 ;;
             esac
-            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$language_selected" "$language_transformed" "$archurl" "$config_environment" "$distro_theme"
+            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme"
             clear
             andistro -s
             andistro -s $distro_name
@@ -620,7 +627,7 @@ case "$1" in
                 fi
             else
                 # Não existe nenhum arquivo start-*
-                echo "Não há nenhum sistema instalado."
+                echo "$label_andistro_there_no_system_installed"
             fi
             exit 1
         fi
@@ -639,7 +646,7 @@ case "$1" in
             echo "$distro_wait"
             distro_name="ubuntu"
         else
-            echo "Distribuição não reconhecida: $2"
+            echo "$distro_command_not_found: $2"
             exit 1
         fi
         rm -rf $andistro_files/boot/$distro_name
@@ -688,7 +695,7 @@ case "$1" in
                     fi
                 else
                 # Não existe nenhum arquivo start-*
-                echo "Não há nenhum sistema instalado."
+                echo "$label_andistro_there_no_system_installed"
                 fi
             fi
 
@@ -711,7 +718,7 @@ case "$1" in
                 
 
             else
-                echo "Distribuição não reconhecida: $2"
+                echo "$distro_command_not_found: $2"
                 exit 1
             fi
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
@@ -901,6 +908,62 @@ case "$1" in
                             #echo "Port set to $PORT_VALUE"
                             shift 2
                         ;;
+                        --kill)
+                            # Buscar arquivos PID relacionados ao usuário
+                            PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)
+
+                            # Verificar se há servidores ativos
+                            if [ -z "$PID_FILES" ]; then
+                                echo "$label_server_kill_desc_error"
+                                exit 1
+                            fi
+                            # Extrair a porta do primeiro arquivo encontrado (ex: localhost:1.pid → 1)
+                            PORTA=$(echo "$PID_FILES" | head -n1 | cut -d':' -f2 | cut -d'.' -f1)
+                            echo "$label_server_kill_desc"
+                            echo "$label_server_kill_desced: $PORTA"
+                            # Parar o servidor VNC
+                            vncserver -kill :$PORTA
+                            # Remover arquivos temporários
+                            rm -rf /tmp/.X$PORTA-lock
+                            rm -rf /tmp/.X*-lock
+                            rm -rf /tmp/.X11-unix/X$PORTA
+                            rm -rf /tmp/.X11-unix/X*
+                            shift 2
+                            ;;
+                        --passwd)
+                            while true; do # Loop até obter uma senha válida ou o usuário cancelar
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input" 10 50 3>&1 1>&2 2>&3)
+                            if [ $? -eq 0 ]; then
+                                # Valida senha não vazia
+                                if [ -z "$PASSWORD" ]; then
+                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
+                                    continue
+                                fi
+                                break
+                            else
+                                echo "${label_entry_canceled}"
+                                exit 1
+                            fi
+
+                            done
+
+                            # Salvar a senha no arquivo apropriado
+                            if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
+                                exit 1
+                            fi
+
+                            # Proteger o arquivo com permissão segura
+                            chmod 600 "$HOME/.vnc/passwd"
+
+                            # Barra de progresso
+                            {
+                                for ((i = 0; i <= 100; i+=2)); do
+                                    sleep 0.08
+                                    echo $i
+                                done
+                            } | dialog --no-shadow --gauge "${label_change_password}" 10 50
+                            ;;
                         *)
                             echo "Comando ou parâmetro desconhecido: $1"
                             shift
@@ -924,13 +987,13 @@ case "$1" in
                 if pgrep -x "vnc" > /dev/null; then
                     # Se xfce4-session estiver rodando executa o comando de escala
                     if pgrep -x "xfce4-session" > /dev/null; then
-                        xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$ESCALA"
+                        xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
-                    echo -e "\n${label_startvnc_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_vncserver_password_forgot\n"
+                    echo -e "\n${label_server_start_desc} $USER\n\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $WLAN_IP:$PORT\n\n$label_password_forgot\n"
 
                 else
-                    echo "O servidor VNC não está iniciado. Por favor, verifique o status e tente novamente."
+                    echo "$label_server_start_error"
                 fi
             fi
         elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
