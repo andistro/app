@@ -175,7 +175,7 @@ label_system_not_found="Sistema não identificado!"
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
 # Sistema
-label_distro_boot="O sistema %s foi iniciado!"
+label_distro_boot="O sistema %s foi iniciado"
 
 # Servidor
 label_server_kill_desc="Desligando o servidor..."
