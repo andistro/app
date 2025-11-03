@@ -142,7 +142,8 @@ bash $HOME/config-environment.sh "$distro_theme"
 
 distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
 label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
-echo "\033[1;96m$label_distro_boot\033[0m" >> $HOME/.bashrc > /dev/null 2>&1
+
+echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
 
 rm -rf $HOME/locale*.sh
 rm -rf $HOME/.hushlogin
