@@ -1112,11 +1112,11 @@ case "$1" in
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
 
-                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_vnc_password_input" 10 50 3>&1 1>&2 2>&3)
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input" 10 50 3>&1 1>&2 2>&3)
                             if [ $? -eq 0 ]; then
                                 # Valida senha não vazia
                                 if [ -z "$PASSWORD" ]; then
-                                    dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_input_alert_important" 10 50
+                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
                                     continue
                                 fi
                                 break
@@ -1129,7 +1129,7 @@ case "$1" in
 
                             # Salvar a senha no arquivo apropriado
                             if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_save_failed" 10 50
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
                                 exit 1
                             fi
 
