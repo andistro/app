@@ -1063,74 +1063,6 @@ case "$1" in
     --boot)
         if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             shift
-            # if [[ "$1" == "set" ]]; then
-            #     shift 
-            #     DISPLAY_VALUE=""
-            #     PORT_VALUE=""
-            #     SCALE_VALUE=""
-
-            #     while [[ $# -gt 0 ]]; do
-            #         case "$1" in
-            #             --passwd)
-            #                 echo "ainda "
-            #                 ;;
-                        
-            #             *)
-            #                 echo "Comando ou parâmetro desconhecido: $1"
-            #                 shift
-            #             ;;
-            #         esac
-            #     done
-            #     # Validar se a porta foi fornecida
-            #     if [[ -z "$PORT_VALUE" ]]; then
-            #         PORT_VALUE="1"
-            #     fi
-            #     # Função para salvar resolução padrão
-                
-            #     if [[ -n "$DISPLAY_VALUE" ]]; then
-            #         #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-            #         save_default_resolution() {
-            #             local res="$1"
-            #             local port="$2"
-            #             local scale="$3"
-            #             echo "RESOLUTION=$res" > /root/.sever_resolution_default
-            #             echo "PORT=$port" >> /root/.sever_resolution_default
-            #             echo "SCALE=$scale" >> /root/.sever_resolution_default
-            #         }
-            #         current_resolution="$DISPLAY_VALUE"
-            #         save_resolution "$current_resolution"
-                    
-            #         if check_repeated_resolution "$current_resolution"; then
-            #             if ask_set_default "$current_resolution"; then
-            #                 if [ -n "$SCALE_VALUE" ]; then
-            #                     save_default_resolution "$current_resolution" "$PORT_VALUE" "$SCALE_VALUE"
-            #                 else
-            #                     save_default_resolution "$current_resolution" "$PORT_VALUE" "1"
-            #                 fi
-                            
-            #                 echo "$label_resolution_option_custom ($current_resolution)" 10 50
-            #             fi
-            #         fi
-            #         vncserver -localhost no -depth 24 -name andistro-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
-            #         #vncserver -localhost no -depth 24 -name remote-desktop -geometry "1920x1080" :1
-            #     else
-            #         #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
-            #         vncserver -localhost no -depth 24 -name andistro-desktop :"$PORT_VALUE"
-            #         #vncserver -localhost no -depth 24 -name remote-desktop :1
-            #     fi
-
-            #     # Verifica se o vncserver está rodando
-            #     if pgrep -x "Xtigervnc" > /dev/null; then
-            #         # Se xfce4-session estiver rodando executa o comando de escala
-            #         if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
-            #             xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
-            #         fi
-
-            #         echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
-            #     else
-            #         echo "$label_server_start_error"
-            #     fi
-            # fi
             if [[ "$1" == "vnc" ]]; then
                 shift 
                 DISPLAY_VALUE=""
@@ -1179,11 +1111,11 @@ case "$1" in
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" 10 60 3>&1 1>&2 2>&3)
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_vnc_password_input" 10 60 3>&1 1>&2 2>&3)
                             if [ $? -eq 0 ]; then
                                 # Valida senha não vazia
                                 if [ -z "$PASSWORD" ]; then
-                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 60
+                                    dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_input_alert_important" 10 60
                                     continue
                                 fi
                                 break
@@ -1194,49 +1126,14 @@ case "$1" in
 
                             done
 
-                            # Gerar hash da senha no formato VNC usando openssl
-                            # VNC usa DES criptography para a senha
-                            PASSWD_HASH=$(echo -n "$PASSWORD" | openssl enc -des-ecb -K 0000000000000000 -P -pass pass:"$PASSWORD" 2>/dev/null | grep "^salt=" | cut -d'=' -f2)
-                            if ! mkdir -p "$HOME/.vnc" 2>/dev/null; then
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
-                                exit 1
-                            fi
-
-                            # Salvar a senha usando o método direto com openssl
-                            if command -v openssl &> /dev/null; then
-                                # Gerar arquivo de senha VNC com openssl
-                                echo -n "$PASSWORD" | openssl enc -des-ecb -K 0000000000000000 2>/dev/null > "$HOME/.vnc/passwd"
-                            else
-                                # Fallback: se openssl não estiver disponível, tentar vncpasswd
-                                if command -v vncpasswd &> /dev/null; then
-                                    echo -e "$PASSWORD\n$PASSWORD" | vncpasswd "$HOME/.vnc/passwd"
-                                else
-                                    dialog --no-shadow --title "$label_error" --msgbox "Nenhum utilitário disponível para criptografar a senha" 10 60
-                                    exit 1
-                                fi
-                            fi
-
-                            # Proteger o arquivo com permissão segura
-                            if [ -f "$HOME/.vnc/passwd" ]; then
-                                chmod 600 "$HOME/.vnc/passwd"
-                            else
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
-                                exit 1
-                            fi
-
                             # Salvar a senha no arquivo apropriado
-                            # if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
-                            #     exit 1
-                            # fi
-                            # if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
-                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
-                            #     exit 1
-                            # fi
-
+                            if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_vnc_password_save_failed" 10 60
+                                exit 1
+                            fi
 
                             # Proteger o arquivo com permissão segura
-                            # chmod 600 $HOME/.vnc/passwd
+                            chmod 600 "$HOME/.vnc/passwd"
 
                             # Barra de progresso
                             {
@@ -1600,8 +1497,7 @@ case "$1" in
                 if [[ -z "$PORT_VALUE" ]]; then
                     PORT_VALUE="1"
                 fi
-                # Função para salvar resolução padrão
-                
+                # Função para salvar resolução padrão             
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
                     save_default_resolution() {
@@ -1633,7 +1529,6 @@ case "$1" in
                     vncserver -localhost no -depth 24 -name andistro-desktop :"$PORT_VALUE"
                     #vncserver -localhost no -depth 24 -name remote-desktop :1
                 fi
-
                 # Verifica se o vncserver está rodando
                 if pgrep -x "Xtigervnc" > /dev/null; then
                     # Se xfce4-session estiver rodando executa o comando de escala
