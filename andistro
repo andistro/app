@@ -658,11 +658,10 @@ case "$1" in
             esac
             bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
-            andistro alerta install-success
 
-            dialog --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
+            dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
             resposta=$?
-
+            
             if [ $resposta -eq 0 ]; then
                 # Usuário escolheu "Sim"
                 # Substituir a linha com exec $command
@@ -670,13 +669,14 @@ case "$1" in
                     sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' "$bin"
                     andistro alerta setup-apply
                 else
-                    dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 50
+                    dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60
                 fi
             else
                 # Usuário escolheu "Não"
                 andistro alerta dialog-display
             fi
             clear
+            andistro alerta install-success
             andistro -s $distro_name
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
@@ -958,7 +958,7 @@ case "$1" in
                             else
                                 # A pasta existe, mas sem permissão de acesso.
                                 dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                            --msgbox "Sem permissão de acesso." 8 50
+                            --msgbox "Sem permissão de acesso." 10 60
                             rm -rf storage
                             termux-setup-storage
                             fi
@@ -968,12 +968,12 @@ case "$1" in
                         ;;
                     battery)
                         dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                            --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 8 50
+                            --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 10 60
                         am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
                         ;;
                     termux-details-settings)
                         dialog --no-shadow --title "Informação" \
-                            --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 8 50
+                            --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 10 60
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
                         ;;
     
@@ -1037,7 +1037,7 @@ case "$1" in
                             sleep 0.1
                             echo $((i * 2))
                         done
-                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60 0
+                    } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60
                     clear
                     ;;
                 install-success)
@@ -1046,7 +1046,7 @@ case "$1" in
                             sleep 0.1
                             echo $((i * 2))
                         done
-                    } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60 0
+                    } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60
                     clear
                     ;;
                 uninstall-success)
@@ -1203,11 +1203,11 @@ case "$1" in
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" 10 50 3>&1 1>&2 2>&3)
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" 10 60 3>&1 1>&2 2>&3)
                             if [ $? -eq 0 ]; then
                                 # Valida senha não vazia
                                 if [ -z "$PASSWORD" ]; then
-                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
+                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 60
                                     continue
                                 fi
                                 break
@@ -1220,11 +1220,11 @@ case "$1" in
 
                             # Salvar a senha no arquivo apropriado
                             # if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
+                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
                             #     exit 1
                             # fi
                             if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
                                 exit 1
                             fi
 
@@ -1238,7 +1238,7 @@ case "$1" in
                                     sleep 0.08
                                     echo $i
                                 done
-                            } | dialog --no-shadow --gauge "${label_change_password}" 10 50
+                            } | dialog --no-shadow --gauge "${label_change_password}" 10 60
                             shift
                             exit 1
                             ;;
@@ -1330,7 +1330,7 @@ case "$1" in
                                             --yesno "$label_resolution_remove_default_desc" 10 60
                                         if [[ $? -eq 0 ]]; then
                                             rm -f $HOME/.sever_resolution_default
-                                            dialog --no-shadow --msgbox "$label_resolution_remove_default_sucess" 10 50 0
+                                            dialog --no-shadow --msgbox "$label_resolution_remove_default_sucess" 10 60
                                         fi
                                     fi
                                 fi
@@ -1361,7 +1361,7 @@ case "$1" in
                                 1) 
                                     # Resolução manual
                                     while true; do
-                                        RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" 10 50 3>&1 1>&2 2>&3 3>&-)
+                                        RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" 10 60 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
                                             andistro --boot vnc --display-panel
                                             exit 0
@@ -1369,12 +1369,12 @@ case "$1" in
                                         if [ -n "$RESOLUTION" ]; then
                                             break
                                         else
-                                            dialog --msgbox "$label_resolution_choose_custom_desc_alert" 10 50
+                                            dialog --msgbox "$label_resolution_choose_custom_desc_alert" 10 60
                                         fi
                                     done
 
                                     while true; do
-                                        PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" 10 50 1 3>&1 1>&2 2>&3 3>&-)
+                                        PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" 10 60 1 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
                                             andistro --boot vnc --display-panel
                                             exit 0
@@ -1391,7 +1391,7 @@ case "$1" in
 
                                     if pgrep -x "xfce4-session" > /dev/null; then
                                         while true; do
-                                            SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" 10 50 1 3>&1 1>&2 2>&3 3>&-)
+                                            SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" 10 60 1 3>&1 1>&2 2>&3 3>&-)
                                             if [ $? -ne 0 ]; then
                                                 andistro --boot vnc --display-panel
                                                 exit 0

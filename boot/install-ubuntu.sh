@@ -35,14 +35,14 @@ if [ "$first" != 1 ];then
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --variant=minbase --include=sudo,wget,nano,locales,gpg,curl,ca-certificates,dialog --components=main,universe $distro_version $folder http://ports.${distro_name}.com/${distro_name}-ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60
+	debootstrap --arch=$archurl --variant=minbase --include=sudo,wget,nano,locales,gpg,curl,ca-certificates,dialog --components=main,universe $distro_version $folder http://ports.${distro_name}.com/${distro_name}-ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 10 60
 	{
 		for i in {1..50}; do
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60 0
+	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60
 fi
 
 # Configurações pós-instalação
