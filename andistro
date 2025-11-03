@@ -26,6 +26,21 @@ fi
 # else
 #   echo "Sistema não identificado"
 # fi
+if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
+    # Descomenta a linha removendo o '#' no começo
+    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+    termux-reload-settings
+fi
+
+# Adiciona a configuração de teclas extras se não estiver presente
+if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+    # Aplica os sed
+    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+    # Recarrega Termux settings
+    termux-reload-settings
+fi
 
 # Log de erros
 if [ ! -d "/sdcard/termux/andistro/logs" ];then
@@ -43,40 +58,6 @@ ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 #=============================================================================================
 if [ -z "$1" ]; then
     if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-
-        rm -rf $HOME/storage
-        termux-setup-storage
-
-        # Cria os diretórios necessários
-        if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-            mkdir -p "$PREFIX/var/lib/andistro/"
-            mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-            mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-            mkdir -p "$PREFIX/var/lib/andistro/boot/"
-        fi
-
-        if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-            source $PREFIX/var/lib/andistro/lib/share/global
-        fi
-
-        # Configurações do Termux
-        # Verifica se a configuração já foi aplicada
-        if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-        # Descomenta a linha removendo o '#' no começo
-        sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-        termux-reload-settings
-        fi
-
-        # Adiciona a configuração de teclas extras se não estiver presente
-        if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-            # Aplica os sed
-            sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-            sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-            # Recarrega Termux settings
-            termux-reload-settings
-        fi
-
         HEIGHT=0
         WIDTH=100
         CHOICE_HEIGHT=5
