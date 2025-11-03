@@ -230,6 +230,29 @@ if [ -z "$1" ]; then
         esac
     elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
         echo "$label_command_not_available"
+        echo " "
+        echo "$distro_desc_line_1"
+        echo " "
+        echo "$distro_desc_line_10"
+        echo "$distro_desc_line_17"
+        echo " "
+        echo "$distro_desc_line_18"
+        echo "$distro_desc_line_19"
+        echo " "
+        echo "$distro_desc_line_20"
+        echo "$distro_desc_line_21"
+        echo "$distro_desc_line_22"
+        echo "$distro_desc_line_23"
+        echo " "
+        echo "$distro_desc_line_24"
+        echo "$distro_desc_line_25"
+        echo "$distro_desc_line_26"
+        echo "$distro_desc_line_27"
+        echo "$distro_desc_line_28"
+        echo " "
+        echo "$distro_desc_line_29"
+        echo "$distro_desc_line_30"
+
     else
         echo "$label_system_not_found"
     fi
@@ -252,7 +275,7 @@ case "$1" in
                 filled_bar=$(printf "%${filled_length}s" | tr " " "=")
                 empty_bar=$(printf "%${empty_length}s" | tr " " " ")
 
-                printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
+                printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
             }
 
             total_steps=26  # Número total de etapas que você quer monitorar
@@ -623,6 +646,24 @@ case "$1" in
             bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
             andistro alerta install-success
+
+            dialog --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
+            resposta=$?
+
+            if [ $resposta -eq 0 ]; then
+                # Usuário escolheu "Sim"
+                # Substituir a linha com exec $command
+                if grep -q '^exec \$command' "$bin"; then
+                    sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' "$bin"
+                    andistro alerta setup-apply
+                else
+                    dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 50
+                fi
+            else
+                # Usuário escolheu "Não"
+                andistro alerta dialog-display
+            fi
+            clear
             andistro -s $distro_name
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
@@ -843,6 +884,7 @@ case "$1" in
             echo "$label_system_not_found"
         fi
         ;;
+    # DevTools
     --setup)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             # Comando interno para iniciar a edição direta do código
@@ -956,7 +998,25 @@ case "$1" in
                             sleep 0.1
                             echo $((i * 2))
                         done
-                    } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60 0
+                    } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60
+                    clear
+                    ;;
+                dialog-display)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "$label_start_dialog_display \n\n$label_sleep_in_10s" 10 60
+                    clear
+                    ;;
+                setup-apply)
+                    {
+                        for i in {1..50}; do
+                            sleep 0.1
+                            echo $((i * 2))
+                        done
+                    } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" 10 60
                     clear
                     ;;
                 *)
@@ -965,9 +1025,79 @@ case "$1" in
             esac
         fi
         ;;
+    
+    # Exclusivo para distribuições
     --boot)
         if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             shift
+            # if [[ "$1" == "set" ]]; then
+            #     shift 
+            #     DISPLAY_VALUE=""
+            #     PORT_VALUE=""
+            #     SCALE_VALUE=""
+
+            #     while [[ $# -gt 0 ]]; do
+            #         case "$1" in
+            #             --passwd)
+            #                 echo "ainda "
+            #                 ;;
+                        
+            #             *)
+            #                 echo "Comando ou parâmetro desconhecido: $1"
+            #                 shift
+            #             ;;
+            #         esac
+            #     done
+            #     # Validar se a porta foi fornecida
+            #     if [[ -z "$PORT_VALUE" ]]; then
+            #         PORT_VALUE="1"
+            #     fi
+            #     # Função para salvar resolução padrão
+                
+            #     if [[ -n "$DISPLAY_VALUE" ]]; then
+            #         #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
+            #         save_default_resolution() {
+            #             local res="$1"
+            #             local port="$2"
+            #             local scale="$3"
+            #             echo "RESOLUTION=$res" > /root/.sever_resolution_default
+            #             echo "PORT=$port" >> /root/.sever_resolution_default
+            #             echo "SCALE=$scale" >> /root/.sever_resolution_default
+            #         }
+            #         current_resolution="$DISPLAY_VALUE"
+            #         save_resolution "$current_resolution"
+                    
+            #         if check_repeated_resolution "$current_resolution"; then
+            #             if ask_set_default "$current_resolution"; then
+            #                 if [ -n "$SCALE_VALUE" ]; then
+            #                     save_default_resolution "$current_resolution" "$PORT_VALUE" "$SCALE_VALUE"
+            #                 else
+            #                     save_default_resolution "$current_resolution" "$PORT_VALUE" "1"
+            #                 fi
+                            
+            #                 echo "$label_resolution_option_custom ($current_resolution)" 10 50
+            #             fi
+            #         fi
+            #         vncserver -localhost no -depth 24 -name andistro-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
+            #         #vncserver -localhost no -depth 24 -name remote-desktop -geometry "1920x1080" :1
+            #     else
+            #         #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
+            #         vncserver -localhost no -depth 24 -name andistro-desktop :"$PORT_VALUE"
+            #         #vncserver -localhost no -depth 24 -name remote-desktop :1
+            #     fi
+
+            #     # Verifica se o vncserver está rodando
+            #     if pgrep -x "Xtigervnc" > /dev/null; then
+            #         # Se xfce4-session estiver rodando executa o comando de escala
+            #         if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
+            #             xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
+            #         fi
+
+            #         echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
+            #     else
+            #         echo "$label_server_start_error"
+            #     fi
+            # fi
             if [[ "$1" == "vnc" ]]; then
                 shift 
                 DISPLAY_VALUE=""
@@ -993,7 +1123,7 @@ case "$1" in
                             ;;
                         --kill)
                             # Buscar arquivos PID relacionados ao usuário
-                            PID_FILES=$(ls -1 ~/.vnc/localhost:* 2>/dev/null)
+                            PID_FILES=$(ls -1 $HOME/.vnc/localhost:* 2>/dev/null)
 
                             # Verificar se há servidores ativos
                             if [ -z "$PID_FILES" ]; then
@@ -1016,7 +1146,7 @@ case "$1" in
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n$label_keyboard_active_sugest" 10 50 3>&1 1>&2 2>&3)
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" 10 50 3>&1 1>&2 2>&3)
                             if [ $? -eq 0 ]; then
                                 # Valida senha não vazia
                                 if [ -z "$PASSWORD" ]; then
@@ -1032,13 +1162,18 @@ case "$1" in
                             done
 
                             # Salvar a senha no arquivo apropriado
-                            if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
+                            # if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
+                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
+                            #     exit 1
+                            # fi
+                            if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
                                 dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
                                 exit 1
                             fi
 
+
                             # Proteger o arquivo com permissão segura
-                            chmod 600 "$HOME/.vnc/passwd"
+                            chmod 600 $HOME/.vnc/passwd
 
                             # Barra de progresso
                             {
@@ -1050,6 +1185,348 @@ case "$1" in
                             shift
                             exit 1
                             ;;
+                        --dialog-display)
+                            timestamp=$(date +'%d%m%Y-%H%M%S')
+                            andistro --boot vnc --kill # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
+                            #=====================================================================================
+                            #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+                            # Painel de seleção de resolução
+                            #//////////////////////////////////////////////////////////////////////////////////////
+                            #=====================================================================================
+                            # Identificador de resolução repetida - Início
+                            RESOLUTION_LOG="$HOME/.server_resolution_history"
+
+                            # Criar arquivo de log se não existir
+                            if [[ ! -f "$RESOLUTION_LOG" ]]; then
+                                touch "$RESOLUTION_LOG"
+                            fi
+
+                            # Função para salvar resolução no histórico
+                            save_resolution() {
+                                local res="$1"
+                                echo "$res|$(date +%s)" >> "$RESOLUTION_LOG"
+                            }
+
+                            # Função para verificar resoluções repetidas
+                            check_repeated_resolution() {
+                                local current_res="$1"
+                                local count=0
+                                local recent_count=0
+                                local time_threshold=$(($(date +%s) - 604800)) # últimos 7 dias
+                                
+                                while IFS='|' read -r res timestamp; do
+                                    if [[ "$res" == "$current_res" ]]; then
+                                        ((count++))
+                                        if [[ $timestamp -ge $time_threshold ]]; then
+                                            ((recent_count++))
+                                        fi
+                                    fi
+                                done < "$RESOLUTION_LOG"
+                                
+                                # Se foi usado 3+ vezes no total ou 2+ vezes na última semana
+                                if [[ $count -ge 3 ]] || [[ $recent_count -ge 2 ]]; then
+                                    return 0 # resolução repetida detectada
+                                else
+                                    return 1 # não é repetida o suficiente
+                                fi
+                            }
+
+                            # Função para perguntar se quer definir como padrão
+                            ask_set_default() {
+                                local res="$1"
+                                label_resolution_frequent_desc=$(eval echo -e "\"$label_resolution_frequent_desc\"" | sed "s/%s/$res/")
+
+                                dialog --no-shadow --backtitle "$label_server_setup" \
+                                    --title "$label_resolution_frequent" \
+                                    --yesno "$label_resolution_frequent_desc" 10 60
+                                return $?
+                            }
+
+                            # Função para salvar resolução padrão
+                            save_default_resolution() {
+                                local res="$1"
+                                local port="$2"
+                                local scale="$3"
+                                echo "RESOLUTION=$res" > $HOME/.sever_resolution_default
+                                echo "PORT=$port" >> $HOME/.sever_resolution_default
+                                echo "SCALE=$scale" >> $HOME/.sever_resolution_default
+                            }
+
+                            # Verificar se existe resolução padrão
+                            if [[ -f $HOME/.sever_resolution_default ]]; then
+                                source $HOME/.sever_resolution_default
+                                if [[ -n "$RESOLUTION" ]]; then
+                                    dialog --no-shadow --backtitle "$label_server_setup" \
+                                        --title "$label_resolution_option_default" \
+                                        --yesno "$label_resolution_option_default_desc \n\n $label_resolution: $RESOLUTION \n$label_port: ${PORT:-1} \n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
+                                    if [[ $? -eq 0 ]]; then
+                                        echo "$label_resolution_choose_default: $RESOLUTION"
+                                        if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
+                                            andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1} --scale ${SCALE:-1}
+                                            #bash --login
+                                            exit 0
+                                        fi
+                                    else
+                                        # Usuário optou por não usar o padrão - perguntar se quer remover
+                                        dialog --no-shadow --backtitle "$label_server_setup" \
+                                            --title "$label_resolution_remove_default" \
+                                            --yesno "$label_resolution_remove_default_desc" 10 60
+                                        if [[ $? -eq 0 ]]; then
+                                            rm -f $HOME/.sever_resolution_default
+                                            dialog --no-shadow --msgbox "$label_resolution_remove_default_sucess" 10 50 0
+                                        fi
+                                    fi
+                                fi
+                            fi
+
+                            HEIGHT=0
+                            WIDTH=0
+                            CHOICE_HEIGHT=5
+                            BACKTITLE="${label_select_resolution}"
+                            TITLE="${label_select_resolution}"
+                            MENU="${label_choose_one_resolution}"
+                            export PORT=1
+
+                            OPTIONS=(1 "${label_resolution_option_custom}"
+                                    2 "${label_resolution_choose_options}")
+
+                            CHOICE=$(dialog --no-shadow --no-shadow --clear \
+                                            --backtitle "$BACKTITLE" \
+                                            --title "$TITLE" \
+                                            --menu "$MENU" \
+                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                            "${OPTIONS[@]}" \
+                                            2>&1 >/dev/tty)
+                            clear
+
+                            case $CHOICE in
+
+                                1) 
+                                    # Resolução manual
+                                    while true; do
+                                        RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" 10 50 3>&1 1>&2 2>&3 3>&-)
+                                        if [ $? -ne 0 ]; then
+                                            andistro --boot vnc --display-panel
+                                            exit 0
+                                        fi
+                                        if [ -n "$RESOLUTION" ]; then
+                                            break
+                                        else
+                                            dialog --msgbox "$label_resolution_choose_custom_desc_alert" 10 50
+                                        fi
+                                    done
+
+                                    while true; do
+                                        PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" 10 50 1 3>&1 1>&2 2>&3 3>&-)
+                                        if [ $? -ne 0 ]; then
+                                            andistro --boot vnc --display-panel
+                                            exit 0
+                                        fi
+                                        # Aceita vazio ou valor, sem validação obrigatória, sai do loop
+                                        # Define valor padrão 1 se vazio
+                                        if [ -z "$PORT" ]; then
+                                            PORT=1
+                                        fi
+                                        break
+                                    done
+
+                                    SCALE=""
+
+                                    if pgrep -x "xfce4-session" > /dev/null; then
+                                        while true; do
+                                            SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" 10 50 1 3>&1 1>&2 2>&3 3>&-)
+                                            if [ $? -ne 0 ]; then
+                                                andistro --boot vnc --display-panel
+                                                exit 0
+                                            fi
+                                            # Pode validar o valor do scale aqui se quiser, ou aceitar vazio
+                                            break
+                                        done
+                                    fi
+
+                                    current_resolution="$RESOLUTION"
+                                    save_resolution "$current_resolution"
+                                    
+                                    if check_repeated_resolution "$current_resolution"; then
+                                        if ask_set_default "$current_resolution"; then
+                                            save_default_resolution "$current_resolution" "$PORT" "$SCALE"
+                                            echo "$label_resolution_option_custom ($current_resolution)" 10 50
+                                        fi
+                                    fi
+
+                                    CMD="andistro --boot vnc --display $RESOLUTION --port $PORT"
+
+                                    if [ -n "$SCALE" ]; then
+                                        CMD="$CMD --scale $SCALE"
+                                    fi
+
+                                    $CMD
+
+                                ;;
+                                2)
+                                    #Lista de resoluções
+                                    OPTIONS=(1 "${label_landscape}"
+                                            2 "${label_portrait}")
+
+                                    CHOICE=$(dialog --no-shadow --clear \
+                                            --backtitle "$BACKTITLE" \
+                                            --title "$TITLE" \
+                                            --menu "$MENU" \
+                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                            "${OPTIONS[@]}" \
+                                            2>&1 >/dev/tty)
+                                    clear
+                                    case $CHOICE in
+                                        1)
+                                            #Horizontal
+                                            OPTIONS=(1 "${label_resolution_option_uwhd} (2560x1080)"
+                                                    2 "${label_resolution_option_qdhd} (2560x1440)"
+                                                    3 "${label_resolution_option_fhd} (1440x1080)"
+                                                    4 "${label_resolution_option_fhd_wide} (1920x1080)"
+                                                    5 "${label_resolution_option_hd} (1280x720)")
+
+                                            CHOICE=$(dialog --no-shadow --clear \
+                                                            --backtitle "$BACKTITLE" \
+                                                            --title "$TITLE" \
+                                                            --menu "$MENU" \
+                                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                                            "${OPTIONS[@]}" \
+                                                            2>&1 >/dev/tty)
+                                            clear
+
+                                            case $CHOICE in
+                                                1)
+                                                    #Ultrawide HD 
+                                                    current_resolution="2560x1080"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_uwhd ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                2)
+                                                    #Quad-HD
+                                                    current_resolution="2560x1440"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_qdhd ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                3)
+                                                    #Full-HD
+                                                    current_resolution="1440x1080"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_fhd ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                4)
+                                                    #Full-HD estendido
+                                                    current_resolution="1920x1080"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                5)
+                                                    #HD
+                                                    current_resolution="1280x720"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_hd ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                            esac
+                                        ;;
+                                        2)
+                                            #Vertical
+                                            OPTIONS=(1 "${label_resolution_option_qdhd} (1440x2560)"
+                                                    2 "${label_resolution_option_fhd} (1080x1440)"
+                                                    3 "${label_resolution_option_hd} (1280x720)")
+
+                                            CHOICE=$(dialog --no-shadow --clear \
+                                                            --backtitle "$BACKTITLE" \
+                                                            --title "$TITLE" \
+                                                            --menu "$MENU" \
+                                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                                            "${OPTIONS[@]}" \
+                                                            2>&1 >/dev/tty)
+                                            clear
+
+                                            case $CHOICE in
+                                                1)
+                                                    #Quad-HD
+                                                    current_resolution="1440x2560"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_qdhd_wide ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                2)
+                                                    #Full-HD
+                                                    current_resolution="1080x1440"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_fhd ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                                3)
+                                                    #HD
+                                                    current_resolution="720x1080"
+                                                    save_resolution "$current_resolution"
+                                                    
+                                                    if check_repeated_resolution "$current_resolution"; then
+                                                        if ask_set_default "$current_resolution"; then
+                                                            save_default_resolution "$current_resolution" "1" "1"
+                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" 10 50
+                                                        fi
+                                                    fi
+                                                    andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
+                                                ;;
+                                            esac
+
+                                        ;;
+                                    esac
+                                ;;
+
+                            esac
+                            shift
+                            exit 1
+                            ;;
                         *)
                             echo "Comando ou parâmetro desconhecido: $1"
                             shift
@@ -1058,16 +1535,39 @@ case "$1" in
                 done
                 # Validar se a porta foi fornecida
                 if [[ -z "$PORT_VALUE" ]]; then
-                    echo "Erro: --port é obrigatório."
-                    exit 1
+                    PORT_VALUE="1"
                 fi
+                # Função para salvar resolução padrão
+                
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-                    vncserver -localhost no -depth 24 -name remote-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
+                    save_default_resolution() {
+                        local res="$1"
+                        local port="$2"
+                        local scale="$3"
+                        echo "RESOLUTION=$res" > $HOME/.sever_resolution_default
+                        echo "PORT=$port" >> $HOME/.sever_resolution_default
+                        echo "SCALE=$scale" >> $HOME/sever_resolution_default
+                    }
+                    current_resolution="$DISPLAY_VALUE"
+                    save_resolution "$current_resolution"
+                    
+                    if check_repeated_resolution "$current_resolution"; then
+                        if ask_set_default "$current_resolution"; then
+                            if [ -n "$SCALE_VALUE" ]; then
+                                save_default_resolution "$current_resolution" "$PORT_VALUE" "$SCALE_VALUE"
+                            else
+                                save_default_resolution "$current_resolution" "$PORT_VALUE" "1"
+                            fi
+                            
+                            echo "$label_resolution_option_custom ($current_resolution)" 10 50
+                        fi
+                    fi
+                    vncserver -localhost no -depth 24 -name andistro-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
                     #vncserver -localhost no -depth 24 -name remote-desktop -geometry "1920x1080" :1
                 else
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop :$PORT_VALUE"
-                    vncserver -localhost no -depth 24 -name remote-desktop :"$PORT_VALUE"
+                    vncserver -localhost no -depth 24 -name andistro-desktop :"$PORT_VALUE"
                     #vncserver -localhost no -depth 24 -name remote-desktop :1
                 fi
 
@@ -1090,6 +1590,7 @@ case "$1" in
         fi
         ;;
 
+    # Erro
     *)
         echo "$distro_command_not_found $1"
         exit 1

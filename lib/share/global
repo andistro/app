@@ -49,8 +49,9 @@ if command -v getprop > /dev/null 2>&1; then
 
     device_dpi=$(getprop ro.sf.lcd_density 2>/dev/null)                     # DPI
 else
-    system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/')
-    apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
+    system_icu_locale_code=$(echo $LANG | sed 's/\..*//' | sed 's/_/-/') # Captura o valor de LANG. Ex.; pt_BR.UTF-8
+    default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]') # torna op valor de LANG em minusculo e troca o _ por -. Ex.: pt-br
+    default_locale_lang_global=$(echo "$LANG" | sed 's/_.*//' | tr '[:upper:]' '[:lower:]') # pega somente a sigla do idioma, sem região. Ex.: pt
     system_architecture=$(dpkg --print-architecture)
 fi
 

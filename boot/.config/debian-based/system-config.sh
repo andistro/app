@@ -2,7 +2,7 @@
 export distro_theme="$1"
 export distro_name="$2"
 
-apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
+default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
@@ -23,7 +23,7 @@ show_progress_dialog steps-multi-label 57 \
     "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
     "${label_install_script_download}\n\n → exo-utils" 'sudo apt install exo-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → firefox" 'sudo apt install firefox --no-install-recommends -y' \
-    "${label_install_script_download}\n\n → firefox ${apt_system_icu_locale_code}" "sudo apt install firefox-l10n-${apt_system_icu_locale_code} --no-install-recommends -y" \
+    "${label_install_script_download}\n\n → firefox ${default_locale_env_lower}" "sudo apt install firefox-l10n-${default_locale_env_lower} --no-install-recommends -y" \
     "${label_install_script_download}\n\n → font-manager" 'sudo apt install font-manager --no-install-recommends -y' \
     "${label_install_script_download}\n\n → git" 'sudo apt install git --no-install-recommends -y' \
     "${label_install_script_download}\n\n → inetutils-tools" 'sudo apt install inetutils-tools --no-install-recommends -y' \
@@ -46,11 +46,11 @@ show_progress_dialog steps-multi-label 57 \
     "${label_install_script_download}" 'sleep 5' \
     "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds"' \
     "${label_system_setup}" 'mkdir -p "/usr/share/icons"' \
-    "${label_system_setup}" 'mkdir -p "/root/.config/gtk-3.0"' \
-    "${label_system_setup}" 'mkdir -p "/root/.vnc"' \
-    "${label_system_setup}" 'echo -e "file:///sdcard sdcard" | tee /root/.config/gtk-3.0/bookmarks' \
-    "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> ~/.bashrc" \
-    "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> ~/.bashrc' \
+    "${label_system_setup}" "mkdir -p $HOME/.config/gtk-3.0" \
+    "${label_system_setup}" "mkdir -p $HOME/.vnc" \
+    "${label_system_setup}" "echo -e \"file:///sdcard sdcard\" | tee $HOME/.config/gtk-3.0/bookmarks" \
+    "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> $HOME/.bashrc" \
+    "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> $HOME/.bashrc' \
     "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
     "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
     "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
@@ -82,7 +82,7 @@ sudo apt install keyboard-configuration -y
 # Remove o arquivo do sistema
 rm -rf system-config.sh
 
-#bash ~/app-list-recommends.sh
+#bash $HOME/app-list-recommends.sh
 
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
 

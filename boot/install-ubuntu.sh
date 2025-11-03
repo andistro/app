@@ -67,16 +67,15 @@ sed -i '/^#!\/bin\/bash/a\
 groupadd -g 3003 group3003\
 groupadd -g 9997 group9997\
 groupadd -g 20457 group20457\
+groupadd -g 20615 group20615\
 groupadd -g 50457 group50457\
-groupadd -g 1079 group1079
-' $folder/root/.bash_profile
+groupadd -g 50615 group50615' $folder/root/.bash_profile
 
 sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
 sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
 sed -i "s|default_locale_system=\"\$3\"|default_locale_system=\"$default_locale_system\"|g" $folder/root/.bash_profile
 
 cp $config_file/system-config.sh $folder/root/system-config.sh
-cp $config_file/wallpapers.sh $folder/root/wallpapers.sh
 cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 if [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4

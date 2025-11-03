@@ -9,8 +9,13 @@ default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
+distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
+label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
+echo "\033[1;96m$label_distro_boot\033[0m" >> $HOME/.bashrc > /dev/null 2>&1
+
+echo -e "\033[1;96m$label_distro_boot\033[0m"
 # Mensagem de inicialização
-echo -e "\n ${distro_wait}\n"
+echo -e "\n${distro_wait}\n"
 
 #======================================================================================================
 # global == update_progress() {}
@@ -19,13 +24,13 @@ sed -i "s/^# *\($default_locale_env.UTF-8\)/\1/" /etc/locale.gen
 
 sudo locale-gen $default_locale_env.UTF-8
 
-echo -e "LANG=$default_locale_env.UTF-8 \nLANGUAGE=$default_locale_env.UTF-8" > /etc/locale.conf
+echo -e "LANG=$default_locale_env.UTF-8" > /etc/locale.conf
 
-echo "export LANG=$default_locale_env.UTF-8" >> ~/.bashrc 
+echo "export LANG=$default_locale_env.UTF-8" >> $HOME/.bashrc 
 
-echo "export LANGUAGE=$default_locale_env.UTF-8" >> ~/.bashrc
+echo "export LANGUAGE=$default_locale_env.UTF-8" >> $HOME/.bashrc
 
-echo "export LANGUAGE=$default_locale_env.UTF-8" >> ~/.bashrc
+echo "export LANGUAGE=$default_locale_env.UTF-8" >> $HOME/.bashrc
 
 apt update
 
@@ -53,8 +58,8 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 
 apt update 
 
-#echo 'export VISUAL=nano' >> ~/.bashrc
-#echo 'export EDITOR=nano' >> ~/.bashrc
+#echo 'export VISUAL=nano' >> $HOME/.bashrc
+#echo 'export EDITOR=nano' >> $HOME/.bashrc
 #======================================================================================================
 sudo dpkg --configure -a 
 sudo apt --fix-broken install -y 
@@ -71,19 +76,104 @@ sudo apt update
 
 sudo apt upgrade
 
+echo -e "\033[1;96m$label_install_script_download\033[0m"
+echo " "
+sleep 2
 
-# Baixa os wallpapers adicionais
-bash ~/wallpapers.sh
+sudo DEBIAN_FRONTEND=noninteractive apt install tzdata --no-install-recommends -y
 
-# Configurações da inteface escolhida
-bash ~/config-environment.sh "$distro_theme"
+sudo apt install --no-install-recommends -y \
+    apt-utils \
+    debconf-utils \
+    dbus-x11 \
+    keyboard-configuration \
+    python3 \
+    python3-psutil \
+    at-spi2-core \
+    bleachbit \
+    exo-utils \
+    firefox \
+    firefox-l10n-${default_locale_env_lower} \
+    font-manager \
+    git \
+    inetutils-tools \
+    inxi \
+    lsb-release \
+    make \
+    net-tools \
+    pavucontrol \
+    synaptic \
+    tigervnc-common \
+    tigervnc-standalone-server \
+    tigervnc-tools \
+    gvfs-backends \
+    tumbler \
+    ffmpegthumbnailer \
+    unzip \
+    xdg-user-dirs \
+    xz-utils \
+    zip
 
-rm -rf ~/locale*.sh
-rm -rf ~/.hushlogin
-rm -rf ~/system-config.sh
-rm -rf ~/config-environment.sh
-rm -rf ~/start-environment.sh
-rm -rf ~/wallpapers.sh
-rm -rf ~/.bash_profile
-rm -rf ~/.dialogrc
+
+echo -e "\033[1;96m$label_system_setup\033[0m"
+echo " "
+sleep 2
+
+mkdir -p "/usr/share/backgrounds"
+mkdir -p "/usr/share/icons"
+mkdir -p "/root/.config/gtk-3.0"
+mkdir -p "/root/.vnc"
+echo -e "file:///sdcard sdcard" | tee /root/.config/gtk-3.0/bookmarks
+echo "alias ls='ls --color=auto'" >> $HOME/.bashrc
+echo "source \"/usr/local/lib/andistro/global\"" >> $HOME/.bashrc
+sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop
+
+echo -e "\033[1;96m$label_themes\033[0m"
+echo " "
+sleep 2
+git clone https://github.com/andistro/themes.git
+mv themes/AnDistro*/ /usr/share/themes/
+rm -rf themes/
+
+echo -e "\033[1;96m$label_icons\033[0m"
+echo " "
+sleep 2
+git clone https://github.com/ZorinOS/zorin-icon-themes.git
+mv zorin-icon-themes/Zorin*/ /usr/share/icons/
+rm -rf zorin-*-themes/
+
+echo -e "\033[1;96m$label_xdg_user_dirs_setup\033[0m"
+echo " "
+sleep 2
+xdg-user-dirs-update
+
+echo -e "[Settings]\ngtk-theme-name=AnDistro-Majorelle-Blue-${distro_theme}" | sudo tee $HOME/.config/gtk-3.0/settings.ini
+echo "gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"" | sudo tee $HOME/.gtkrc-2.0
+
+udo apt --fix-broken install -y
+sudo dpkg --configure -a
+udo apt --fix-broken install -y
+
+sudo apt-get clean
+
+echo -e "\033[1;96m$label_wallpaper_download\033[0m"
+echo " "
+sleep 2
+
+mkdir -p /usr/share/backgrounds/andistro
+
+wget -O "/usr/share/backgrounds/andistro/andistro-light.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/light.jpg"
+wget -O "/usr/share/backgrounds/andistro/andistro-medium.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/medium.jpg"
+wget -O "/usr/share/backgrounds/andistro/andistro-dark.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/dark.jpg"
+
+bash $HOME/config-environment.sh "$distro_theme"
+
+rm -rf $HOME/locale*.sh
+rm -rf $HOME/.hushlogin
+rm -rf $HOME/system-config.sh
+rm -rf $HOME/config-environment.sh
+rm -rf $HOME/start-environment.sh
+rm -rf $HOME/wallpapers.sh
+rm -rf $HOME/.bash_profile
+rm -rf $HOME/.dialogrc
 exit

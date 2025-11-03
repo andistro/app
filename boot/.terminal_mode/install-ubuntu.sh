@@ -36,7 +36,7 @@ if [ "$first" != 1 ];then
 			echo $((i * 2))
 		done
 	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60 0
-	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
+	debootstrap --arch=$archurl --variant=minbase --include=sudo,wget,nano,locales,gpg,curl,ca-certificates,dialog --components=main,universe $distro_version $folder http://ports.${distro_name}.com/${distro_name}-ports  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 20 70
 	{
 		for i in {1..50}; do
 			sleep 0.1
@@ -61,14 +61,21 @@ sed -i "s|command+=\" LANG=\$default_locale_env.UTF-8\"|command+=\" LANG=$defaul
 chmod +x $bin
 
 rm -rf $folder/root/.bash_profile
-cp "$config_file/.bash_profile" $folder/root/.bash_profile
+cp "$PREFIX/var/lib/andistro/boot/.terminal_mode/.bash_profile" $folder/root/.bash_profile
+
+sed -i '/^#!\/bin\/bash/a\
+groupadd -g 3003 group3003\
+groupadd -g 9997 group9997\
+groupadd -g 20457 group20457\
+groupadd -g 20615 group20615\
+groupadd -g 50457 group50457\
+groupadd -g 50615 group50615' $folder/root/.bash_profile
 
 sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
 sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
 sed -i "s|default_locale_system=\"\$3\"|default_locale_system=\"$default_locale_system\"|g" $folder/root/.bash_profile
 
-cp $config_file/system-config.sh $folder/root/system-config.sh
-cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
+cp "$PREFIX/var/lib/andistro/boot/.terminal_mode/.config/debian-based/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 if [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"

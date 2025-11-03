@@ -9,7 +9,11 @@ fi
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # Específicos do executável andistro
 
+# Global andistro
 distro_desc_line_1="Use: andistro <comando> <opção> para seja feito a tarefa desejada."
+distro_desc_line_10="Comandos disponíveis para você:"
+
+# Exclusivo andistro no termux
 distro_desc_line_2="Exemplo de comando que permite a inicialização:"
 distro_desc_line_3="   andistro -s debian"
 distro_desc_line_4="Exemplo de comando que permite a desinstalação:"
@@ -19,7 +23,6 @@ distro_desc_line_7="   andistro -i debian"
 distro_desc_line_8="Exemplo de comando que permite a atualização do AnDistro:"
 distro_desc_line_9="   andistro -u"
     
-distro_desc_line_10="Comandos disponíveis para você:"
 distro_desc_line_11="    -s  inicializa a versão escolhida."
 distro_desc_line_12="    -d  desinstala a opção escolhida."
 distro_desc_line_13="    -i  instala a opção escolhida."
@@ -28,6 +31,22 @@ distro_desc_line_14="    -u  atualiza o AnDistro."
 distro_desc_line_15="Opções de sistemas disponíveis para instalação:"
 distro_desc_line_16="Opções de sistemas disponíveis para inicialização e desinstalação:"
 
+
+# Exclusivo andistro distros
+distro_desc_line_17="    --boot  comando para iniciar alguma configuração."
+distro_desc_line_18="Subcomandos do --boot"
+distro_desc_line_19="    vnc  para iniciar o servidor VNC"
+distro_desc_line_20="Subcomandos do --boot vnc"
+distro_desc_line_21="    --display  define a resolução da tela que será exibida"
+distro_desc_line_22="    --scale    define a escala da tela (1 ou 2)"
+distro_desc_line_23="    --port     define a porta usada pelo servidor."
+distro_desc_line_24="Exemplo de comando que permite a inicialização do servior vnc"
+distro_desc_line_25="Modo simples"
+distro_desc_line_26="   andistro --boot vnc"
+distro_desc_line_27="Modo completo"
+distro_desc_line_28="   andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
+distro_desc_line_29="O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado"
+distro_desc_line_30="O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão."
 
 distro_command_not_found="Comando não encontrado:"
 
@@ -82,6 +101,7 @@ label_distro_alert_timezone_detected="Fuso horário detectado: "
 # Alertas
 label_uninstall_success="Desinstalação concluida!"
 label_install_success="Instalação concluida!"
+label_setup_apply="Configuração aplicada!"
 
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
@@ -107,6 +127,7 @@ label_command_problem_andistro_for_distro="Este comando só funciona se encerrar
 # Dica
 label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
 label_select_no_to_choose_other_resolution="Selecione 'Não' para escolher outra resolução."
+label_start_dialog_display="Caso queira iniciar o servidor com a tela interativa, use o comando:\nandistro --boot vnc --dialog-display"
 
 # Informativos em palavra única
 label_error="Erro"
@@ -148,6 +169,9 @@ label_system_not_found="Sistema não encontrado!"
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
+# Sistema
+label_distro_boot="O sistema %s foi iniciado!"
+
 # Servidor
 label_server_kill_desc="Desligando o servidor..."
 label_server_kill_desced="Desligando o servidor da porta"
@@ -180,3 +204,6 @@ label_resolution_option_qdhd="Quad-HD"
 label_resolution_option_fhd="Full-HD"
 label_resolution_option_fhd_wide="Full-HD estendido"
 label_resolution_option_hd="HD"
+
+label_dialog_display_menu_sugestion="Sugestões de Resolução"
+label_dialog_display_menu_sugestion_desc="Deseja que toda vez que o sistema seja iniciado, apareça uma caixa de diálogo com sugestões de resolução de tela?"
