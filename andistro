@@ -1,5 +1,14 @@
 #!/bin/bash
-inxi_out=$(inxi -F 2>/dev/null)
+
+if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
+    chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+    source "$PREFIX/var/lib/andistro/lib/share/global"
+elif [ -f "/usr/local/lib/andistro/global" ]; then
+    chmod +x "/usr/local/lib/andistro/global"
+    source "/usr/local/lib/andistro/global"
+else
+    echo ""
+fi
 
 # Template de verificação do sistema operacional
 # if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
@@ -18,52 +27,6 @@ inxi_out=$(inxi -F 2>/dev/null)
 #   echo "Sistema não identificado"
 # fi
 
-if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-    # Disponível apenas para o Android
-    rm -rf $HOME/storage
-    termux-setup-storage
-
-    # Cria os diretórios necessários
-    if [ ! -d "$PREFIX/var/lib/andistro/" ];then
-        mkdir -p "$PREFIX/var/lib/andistro/"
-        mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
-        mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
-        mkdir -p "$PREFIX/var/lib/andistro/boot/"
-    fi
-
-    if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
-        source $PREFIX/var/lib/andistro/lib/share/global
-    fi
-
-    andistro_files="$PREFIX/var/lib/andistro"
-
-    # Configurações do Termux
-    # Verifica se a configuração já foi aplicada
-    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-    # Descomenta a linha removendo o '#' no começo
-    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-    termux-reload-settings
-    fi
-
-    # Adiciona a configuração de teclas extras se não estiver presente
-    if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-        # Recarrega Termux settings
-        termux-reload-settings
-    fi
-elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-    # Disponível somente apara as distribuições
-    if [ -f "/usr/local/lib/andistro/global" ]; then
-        source /usr/local/lib/andistro/global
-    fi
-else
-  echo "Sistema não identificado"
-fi
-
-
 # Log de erros
 if [ ! -d "/sdcard/termux/andistro/logs" ];then
     mkdir -p "/sdcard/termux/"
@@ -72,7 +35,7 @@ if [ ! -d "/sdcard/termux/andistro/logs" ];then
     mkdir -p "/sdcard/termux/andistro/logs"
     touch "/sdcard/termux/andistro/logs/.nomedia"
 fi
-
+andistro_files="$PREFIX/var/lib/andistro"
 ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 
 #Verifica se o andistro está em $HOME
@@ -82,6 +45,40 @@ ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 #=============================================================================================
 if [ -z "$1" ]; then
     if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+
+        rm -rf $HOME/storage
+        termux-setup-storage
+
+        # Cria os diretórios necessários
+        if [ ! -d "$PREFIX/var/lib/andistro/" ];then
+            mkdir -p "$PREFIX/var/lib/andistro/"
+            mkdir -p "$PREFIX/var/lib/andistro/lib/share/"
+            mkdir -p "$PREFIX/var/lib/andistro/lib/share/locales/"
+            mkdir -p "$PREFIX/var/lib/andistro/boot/"
+        fi
+
+        if [ -f "$PREFIX/var/lib/andistro/lib/share/global" ]; then
+            source $PREFIX/var/lib/andistro/lib/share/global
+        fi
+
+        # Configurações do Termux
+        # Verifica se a configuração já foi aplicada
+        if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
+        # Descomenta a linha removendo o '#' no começo
+        sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+        termux-reload-settings
+        fi
+
+        # Adiciona a configuração de teclas extras se não estiver presente
+        if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+            # Aplica os sed
+            sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+            sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+            # Recarrega Termux settings
+            termux-reload-settings
+        fi
+
         HEIGHT=0
         WIDTH=100
         CHOICE_HEIGHT=5
