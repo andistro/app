@@ -167,8 +167,8 @@ label_environments_select_null="Nenhum"
 # Procura
 label_file_not_found="Arquivo de localização não encontrado"
 label_find_update="Procurando atualizações..."
-label_system_found="Sistema encontrado!"
-label_system_not_found="Sistema não encontrado!"
+label_system_found="Sistema identificado!"
+label_system_not_found="Sistema não identificado!"
 
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 inxi_out=$(inxi -F 2>/dev/null)
 
 # Template de verificação do sistema operacional
@@ -19,12 +18,7 @@ inxi_out=$(inxi -F 2>/dev/null)
 #   echo "Sistema não identificado"
 # fi
 
-if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-    # Disponível somente apara as distribuições
-    if [ -f "/usr/local/lib/andistro/global" ]; then
-        source /usr/local/lib/andistro/global
-    fi
-elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
     # Disponível apenas para o Android
     rm -rf $HOME/storage
     termux-setup-storage
@@ -60,9 +54,15 @@ elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
         # Recarrega Termux settings
         termux-reload-settings
     fi
+elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+    # Disponível somente apara as distribuições
+    if [ -f "/usr/local/lib/andistro/global" ]; then
+        source /usr/local/lib/andistro/global
+    fi
 else
   echo "Sistema não identificado"
 fi
+
 
 # Log de erros
 if [ ! -d "/sdcard/termux/andistro/logs" ];then
