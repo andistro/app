@@ -75,9 +75,9 @@ if [ "$config_environment" = "xfce4" ]; then
 fi
 
 # Adicionar entradas em hosts, resolv.conf e timezone
-echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf 
-echo "$system_timezone" | tee $folder/etc/timezone
+echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts > /dev/null 2>&1
+echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
 # KERNEL_VERSON=$(uname -r)
 
