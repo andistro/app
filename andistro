@@ -38,8 +38,6 @@ fi
 andistro_files="$PREFIX/var/lib/andistro"
 ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 
-#Verifica se o andistro está em $HOME
-
 #=============================================================================================
 # COMANDOS
 #=============================================================================================
