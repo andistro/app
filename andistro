@@ -449,7 +449,6 @@ case "$1" in
                 #26 Mover o Andistro
                 chmod +x "$PREFIX/bin/andistro"
                 chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
-                chmod +x $PREFIX/var/lib/andistro/boot/.config/*/bin/*
                 ((current_step++))
                 update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -520,13 +519,27 @@ case "$1" in
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
+            elif ["$2" == "debian-sh"]; then
+                distro_name="debian"
+                distro_version="stable"
+                distro_based="debian"
             elif [ "$2" == "ubuntu" ]; then
+                distro_name="ubuntu"
+                distro_version="noble"
+                distro_based="debian"
+            elif ["$2" == "ubuntu-sh"]; then
                 distro_name="ubuntu"
                 distro_version="noble"
                 distro_based="debian"
             else
                 echo "$distro_command_not_found: $2"
                 exit 1
+            fi
+
+            if [[ "$2" == *-sh ]]; then
+                distro_file=".terminal_mode/install-$distro_name.sh"
+            else
+                distro_file="install-$distro_name.sh"
             fi
 
             echo "$distro_wait"
@@ -643,7 +656,7 @@ case "$1" in
                     distro_theme="Dark"
                 ;;
             esac
-            bash $PREFIX/var/lib/andistro/boot/install-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
+            bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
             andistro alerta install-success
 
@@ -840,6 +853,24 @@ case "$1" in
                 echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
                 echo "   debian"
                 echo "   ubuntu"
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+                if $start_debian && ! $start_ubuntu; then
+                    echo "   ubuntu"
+                elif ! $start_debian && $start_ubuntu; then
+                    echo "   debian"
+                elif $start_debian && $start_ubuntu; then
+                    echo -e "\u26A0 $label_all_systems_have_been_installed"
+                else
+                    echo "   debian"
+                    echo "   ubuntu"
+                fi
                 echo " "
                 echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
                 start_debian=false
@@ -859,6 +890,32 @@ case "$1" in
                     echo "   ubuntu"
                 else
                     echo " "
+                fi
+                echo " "
+                echo "$distro_desc_line_31" #Modo de instalação sem interface gráfica, totalmente terminal
+                echo "$distro_desc_line_32" #Adicione o -sh após o nome da distribuição
+                echo "$distro_desc_line_33" #Exemplo de comando que permite a instalação sem interface gráfica
+                echo "$distro_desc_line_34" #Modo de instalação sem interface gráfica, totalmente terminal
+                echo "$distro_desc_line_35" #andistro -i debian-sh
+                echo " "
+                echo "$distro_desc_line_15"
+                start_debian=false
+                start_ubuntu=false
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    start_debian=true
+                fi
+                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    start_ubuntu=true
+                fi
+                if $start_debian && ! $start_ubuntu; then
+                    echo "   ubuntu-sh"
+                elif ! $start_debian && $start_ubuntu; then
+                    echo "   debian-sh"
+                elif $start_debian && $start_ubuntu; then
+                    echo -e "\u26A0 $label_all_systems_have_been_installed"
+                else
+                    echo "   debian-sh"
+                    echo "   ubuntu-sh"
                 fi
                 echo " "
             else

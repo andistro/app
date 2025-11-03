@@ -4,7 +4,6 @@ if [ "$system_country" = "Brazil" ]; then
     system_country="Brasil"
 fi
 
-
 #=====================================================================================================
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # Específicos do executável andistro
@@ -47,6 +46,11 @@ distro_desc_line_27="Modo completo"
 distro_desc_line_28="   andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
 distro_desc_line_29="O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado"
 distro_desc_line_30="O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão."
+
+distro_desc_line_31="Modo de instalação sem interface gráfica, totalmente terminal"
+distro_desc_line_32="Adicione o -sh após o nome da distribuição"
+distro_desc_line_33="Exemplo de comando que permite a instalação sem interface gráfica"
+distro_desc_line_34="   andistro -i debian-sh"
 
 distro_command_not_found="Comando não encontrado:"
 
