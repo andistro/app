@@ -109,8 +109,7 @@ label_setup_apply="Configuração aplicada!"
 
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
-label_password="Senha"
-label_password_alt_min="senha"
+
 label_password_forgot="Esqueceu a senha? Use o comando 'andistro --setup senha' para redefinir a senha."
 label_password_input="Digite a nova senha para o servidor VNC"
 label_password_input_alert_important="É necessário definir uma senha!"
@@ -151,6 +150,8 @@ label_resolution="Resolução"
 label_landscape="Paisagem"
 label_portrait="Retrato"
 label_user="Usuário"
+label_password="Senha"
+label_password_alt_min="senha"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
