@@ -7,7 +7,7 @@ apt_system_icu_locale_code=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '
 source "/usr/local/lib/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 53 \
+show_progress_dialog steps-multi-label 57 \
     "${label_progress}" 'echo "system-config"' \
     "${label_progress}" 'sudo apt clean' \
     "${label_find_update}" 'sudo apt update' \
@@ -15,6 +15,8 @@ show_progress_dialog steps-multi-label 53 \
     "${label_install_script_download}\n\n → apt-utils" 'sudo apt install apt-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → debconf-utils" 'sudo apt install debconf-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → dbus-x11" 'sudo apt install dbus-x11 --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → tzdata" "sudo DEBIAN_FRONTEND=noninteractive apt install tzdata --no-install-recommends -y" \
+    "${label_install_script_download}\n\n → keyboard-configuration" "sudo DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration --no-install-recommends -y" \
     "${label_install_script_download}\n\n → python3" 'sudo apt install python3 --no-install-recommends -y' \
     "${label_install_script_download}\n\n → python3-psutil" 'sudo apt install python3-psutil --no-install-recommends -y' \
     "${label_install_script_download}\n\n → at-spi2-core" 'sudo apt install at-spi2-core --no-install-recommends -y' \
@@ -61,7 +63,8 @@ show_progress_dialog steps-multi-label 53 \
     "${label_system_setup}" "echo 'gtk-theme-name=\"AnDistro-Majorelle-Blue-${distro_theme}\"' | sudo tee $HOME/.gtkrc-2.0" \
     "${label_system_setup}" 'sudo dpkg --configure -a' \
     "${label_system_setup}" 'sudo apt --fix-broken install -y' \
-    "${label_system_setup}" 'sudo apt-get clean'
+    "${label_system_setup}" 'sudo apt-get clean' \
+    "${label_system_setup}" 'sudo apt remove keyboard-configuration -y'
 
 sleep 2
 
@@ -72,7 +75,7 @@ sleep 2
    echo $((i * 2))
  done
 } | dialog --no-shadow --gauge "$label_keyboard_setup" 10 60 0
-sudo apt install keyboard-configuration --no-install-recommends -y
+sudo apt install keyboard-configuration -y
 
 
 
