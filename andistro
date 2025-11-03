@@ -1218,19 +1218,49 @@ case "$1" in
 
                             done
 
+                            # Gerar hash da senha no formato VNC usando openssl
+                            # VNC usa DES criptography para a senha
+                            PASSWD_HASH=$(echo -n "$PASSWORD" | openssl enc -des-ecb -K 0000000000000000 -P -pass pass:"$PASSWORD" 2>/dev/null | grep "^salt=" | cut -d'=' -f2)
+                            if ! mkdir -p "$HOME/.vnc" 2>/dev/null; then
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
+                                exit 1
+                            fi
+
+                            # Salvar a senha usando o método direto com openssl
+                            if command -v openssl &> /dev/null; then
+                                # Gerar arquivo de senha VNC com openssl
+                                echo -n "$PASSWORD" | openssl enc -des-ecb -K 0000000000000000 2>/dev/null > "$HOME/.vnc/passwd"
+                            else
+                                # Fallback: se openssl não estiver disponível, tentar vncpasswd
+                                if command -v vncpasswd &> /dev/null; then
+                                    echo -e "$PASSWORD\n$PASSWORD" | vncpasswd "$HOME/.vnc/passwd"
+                                else
+                                    dialog --no-shadow --title "$label_error" --msgbox "Nenhum utilitário disponível para criptografar a senha" 10 60
+                                    exit 1
+                                fi
+                            fi
+
+                            # Proteger o arquivo com permissão segura
+                            if [ -f "$HOME/.vnc/passwd" ]; then
+                                chmod 600 "$HOME/.vnc/passwd"
+                            else
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
+                                exit 1
+                            fi
+
                             # Salvar a senha no arquivo apropriado
                             # if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
                             #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
                             #     exit 1
                             # fi
-                            if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
-                                exit 1
-                            fi
+                            # if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
+                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 60
+                            #     exit 1
+                            # fi
 
 
                             # Proteger o arquivo com permissão segura
-                            chmod 600 $HOME/.vnc/passwd
+                            # chmod 600 $HOME/.vnc/passwd
 
                             # Barra de progresso
                             {
@@ -1240,7 +1270,7 @@ case "$1" in
                                 done
                             } | dialog --no-shadow --gauge "${label_change_password}" 10 60
                             shift
-                            exit 1
+                            exit 0
                             ;;
                         --dialog-display)
                             timestamp=$(date +'%d%m%Y-%H%M%S')
