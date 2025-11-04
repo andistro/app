@@ -1132,7 +1132,6 @@ case "$1" in
                                 exit 1
                             fi
 
-
                             # Proteger o arquivo com permissão segura
                             chmod 600 $HOME/.vnc/passwd
 
