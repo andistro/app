@@ -1111,18 +1111,19 @@ case "$1" in
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                                PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input" 10 50 3>&1 1>&2 2>&3)
-                                if [ $? -eq 0 ]; then
-                                    # Valida senha não vazia
-                                    if [ -z "$PASSWORD" ]; then
-                                        dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
-                                        continue
-                                    fi
-                                    break
-                                else
-                                    echo "${label_entry_canceled}"
-                                    exit 1
+                            PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input" 10 50 3>&1 1>&2 2>&3)
+                            if [ $? -eq 0 ]; then
+                                # Valida senha não vazia
+                                if [ -z "$PASSWORD" ]; then
+                                    dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
+                                    continue
                                 fi
+                                break
+                            else
+                                echo "${label_entry_canceled}"
+                                exit 1
+                            fi
+
                             done
 
                             # Salvar a senha no arquivo apropriado
@@ -1141,6 +1142,8 @@ case "$1" in
                                     echo $i
                                 done
                             } | dialog --no-shadow --gauge "${label_change_password}" 10 50
+                            shift
+                            exit 1
                             ;;
                         --dialog-display)
                             timestamp=$(date +'%d%m%Y-%H%M%S')
