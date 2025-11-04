@@ -1126,12 +1126,8 @@ case "$1" in
 
                             done
 
-                            # Salvar a senha no arquivo apropriado
-                            # if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-                            #     dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
-                            #     exit 1
-                            # fi
-                            if ! echo -e "$PASSWORD\n$PASSWORD" | /usr/bin/andistro --boot vnc --passwd; then
+                            #Salvar a senha no arquivo apropriado
+                            if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
                                 dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
                                 exit 1
                             fi
