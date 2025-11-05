@@ -11,17 +11,17 @@ else
 fi
 
 # Template de verificação do sistema operacional
-# if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+# if echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
 #   echo "Executando comando para Debian/Ubuntu"
-# elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+# elif echo "$system_name" | grep -q 'Distro:.*Android'; then
 #   echo "Executando comando para Android"
 # else
 #   echo "Sistema não identificado"
 # fi
 
-# if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+# if echo "$system_name" | grep -q 'Distro:.*Android'; then
 
-# elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+# elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
 
 # else
 #   echo "Sistema não identificado"
@@ -57,7 +57,7 @@ ANDISTRO_LOG="/sdcard/termux/andistro/logs"
 # COMANDOS
 #=============================================================================================
 if [ -z "$1" ]; then
-    if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+    if echo "$system_name" | grep -q 'Distro:.*Android'; then
         HEIGHT=0
         WIDTH=100
         CHOICE_HEIGHT=5
@@ -204,7 +204,7 @@ if [ -z "$1" ]; then
                 andistro terminal
             ;;
         esac
-    elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+    elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
         echo "$label_command_not_available"
         echo " "
         echo "$distro_desc_line_1"
@@ -237,7 +237,7 @@ fi
 
 case "$1" in
     -u)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             echo -e "\n$distro_wait"
             update_progress() {
                 current_step=$1
@@ -437,7 +437,7 @@ case "$1" in
             chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
             source "$PREFIX/var/lib/andistro/lib/share/global"
             echo -e "$label_update_finish"
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
         echo "$label_system_not_found"
@@ -445,7 +445,7 @@ case "$1" in
         ;;
 
     -i)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
                 if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
@@ -654,14 +654,14 @@ case "$1" in
             # clear
             andistro alerta install-success
             andistro -s $distro_name
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
         fi
         ;;
     -d)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
                 if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
@@ -725,14 +725,14 @@ case "$1" in
             rm -rf $andistro_files/boot/$distro_name
             rm -rf $andistro_files/boot/start-$distro_name
             andistro alerta uninstall-success
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
         fi
         ;;
     -s)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
                 if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
@@ -797,7 +797,7 @@ case "$1" in
                 echo "$distro_command_not_found: $2"
                 exit 1
             fi
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
@@ -805,7 +805,7 @@ case "$1" in
         ;;
 
     -t|terminal)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
                 echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
                 echo ""
@@ -911,7 +911,7 @@ case "$1" in
                 echo "   debian"
                 echo "   ubuntu"
             fi
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
@@ -919,7 +919,7 @@ case "$1" in
         ;;
     # DevTools
     --setup)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             # Comando interno para iniciar a edição direta do código
             if [ -z "$2" ]; then
                 # Não foi passado subcomando, comportamento padrão
@@ -958,14 +958,14 @@ case "$1" in
                         ;;
                 esac
             fi
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
         fi
         ;;
     --set-edit)
-        if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        if echo "$system_name" | grep -q 'Distro:.*Android'; then
             # Comando interno para iniciar a edição direta do código
             if [ -z "$2" ]; then
                 # Não foi passado subcomando, comportamento padrão
@@ -995,7 +995,7 @@ case "$1" in
                         ;;
                 esac
             fi
-        elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        elif echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
         else
             echo "$label_system_not_found"
@@ -1061,7 +1061,7 @@ case "$1" in
     
     # Exclusivo para distribuições
     --boot)
-        if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
+        if echo "$system_name" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             shift
             if [[ "$1" == "vnc" ]]; then
                 shift 
@@ -1541,7 +1541,7 @@ case "$1" in
                     echo "$label_server_start_error"
                 fi
             fi
-        elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
+        elif echo "$system_name" | grep -q 'Distro:.*Android'; then
             echo "$label_command_not_available"
         else
             echo "$label_system_not_found"  

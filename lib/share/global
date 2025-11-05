@@ -57,6 +57,8 @@ fi
 
 wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
 inxi_out=$(inxi -F 2>/dev/null)
+system_name=$(inxi -F 2>/dev/null | grep -oP 'Distro:\s*\K\w+')
+
 
 # PACOTE DE IDIOMAS ==================================================================================
 # Irá carregar os pacotes de idiomas que tiver no sistema
