@@ -635,23 +635,23 @@ case "$1" in
             bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
 
-            dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
-            resposta=$?
+            # dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
+            # resposta=$?
             
-            if [ $resposta -eq 0 ]; then
-                # Usuário escolheu "Sim"
-                # Substituir a linha com exec $command
-                if grep -q '^exec \$command' "$bin"; then
-                    sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' "$bin"
-                    andistro alerta setup-apply
-                else
-                    dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60
-                fi
-            else
-                # Usuário escolheu "Não"
-                andistro alerta dialog-display
-            fi
-            clear
+            # if [ $resposta -eq 0 ]; then
+            #     # Usuário escolheu "Sim"
+            #     # Substituir a linha com exec $command
+            #     if grep -q '^exec \$command' "$bin"; then
+            #         sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' "$bin"
+            #         andistro alerta setup-apply
+            #     else
+            #         dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60
+            #     fi
+            # else
+            #     # Usuário escolheu "Não"
+            #     andistro alerta dialog-display
+            # fi
+            # clear
             andistro alerta install-success
             andistro -s $distro_name
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
