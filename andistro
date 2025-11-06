@@ -584,7 +584,7 @@ case "$1" in
                     archurl="arm64" ;;
                 arm)
                     archurl="armhf" ;;
-                x86_x86)
+                x86_64)
                     archurl="amd64" ;;
                 x86)
                     archurl="i386" ;;
