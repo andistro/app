@@ -495,27 +495,25 @@ case "$1" in
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
+                distro_file="install-$distro_name.sh"
             elif ["$2" == "debian-sh"]; then
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
+                distro_file=".terminal_mode/install-$distro_name.sh"
             elif [ "$2" == "ubuntu" ]; then
                 distro_name="ubuntu"
                 distro_version="noble"
                 distro_based="debian"
+                distro_file="install-$distro_name.sh"
             elif ["$2" == "ubuntu-sh"]; then
                 distro_name="ubuntu"
                 distro_version="noble"
                 distro_based="debian"
+                distro_file=".terminal_mode/install-$distro_name.sh"
             else
                 echo "$distro_command_not_found: $2"
                 exit 1
-            fi
-
-            if [[ "$2" == *-sh ]]; then
-                distro_file=".terminal_mode/install-$distro_name.sh"
-            else
-                distro_file="install-$distro_name.sh"
             fi
 
             echo "$distro_wait"
