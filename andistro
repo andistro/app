@@ -1,5 +1,5 @@
 #!/bin/bash
-
+inxi_out=$(inxi -F 2>/dev/null)
 if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
     source "$PREFIX/var/lib/andistro/lib/share/global"
 
@@ -619,7 +619,7 @@ case "$1" in
                 ;;
                 3)
                     # Nenhum escolhido
-                    rm -rf "$folder/root/system-config.sh"
+                    config_environment="null"
                 ;;
             esac
             # Tema
@@ -641,40 +641,11 @@ case "$1" in
                 ;;
             esac
 
-            echo "distro_name: $distro_name"
-            echo "distro_version: $distro_version"
-            echo "distro_based: $distro_based"
-            echo "distro_file: $distro_file"
-            echo "distro_theme: $distro_theme"
-            echo "environment: $config_environment"
-            echo "bin: $bin"
-            echo "default_locale_system: $default_locale_system"
-            echo "default_locale_env: $default_locale_env"
-            echo "archurl: $archurl"
-
             echo "installer path: $PREFIX/var/lib/andistro/boot/$distro_file"
             sleep 10
 
             bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
-
-            # dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
-            # resposta=$?
-            
-            # if [ $resposta -eq 0 ]; then
-            #     # Usuário escolheu "Sim"
-            #     # Substituir a linha com exec $command
-            #     if grep -q '^exec \$command' "$bin"; then
-            #         sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' "$bin"
-            #         andistro alerta setup-apply
-            #     else
-            #         dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60
-            #     fi
-            # else
-            #     # Usuário escolheu "Não"
-            #     andistro alerta dialog-display
-            # fi
-            # clear
             andistro alerta install-success
             andistro -s $distro_name
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
