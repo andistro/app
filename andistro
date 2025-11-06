@@ -595,6 +595,8 @@ case "$1" in
                     echo "unknown architecture"; exit 1 ;;
             esac
 
+
+            #environment
             OPTIONS=(1 "${label_environments_select_default} (XFCE4)"
                     2 "${label_environments_select_light} (LXDE)"
                     3 "${label_environments_select_null}") 
@@ -620,6 +622,7 @@ case "$1" in
                     rm -rf "$folder/root/system-config.sh"
                 ;;
             esac
+            # Tema
             OPTIONS=(1 "${label_light}"
                     2 "${label_dark}")
 
@@ -642,10 +645,13 @@ case "$1" in
             echo "distro_version: $distro_version"
             echo "distro_based: $distro_based"
             echo "distro_file: $distro_file"
+            echo "distro_theme: $distro_theme"
+            echo "environment: $config_environment"
             echo "bin: $bin"
             echo "default_locale_system: $default_locale_system"
             echo "default_locale_env: $default_locale_env"
             echo "archurl: $archurl"
+
             echo "installer path: $PREFIX/var/lib/andistro/boot/$distro_file"
             sleep 10
 
