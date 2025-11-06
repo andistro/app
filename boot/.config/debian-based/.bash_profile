@@ -82,7 +82,7 @@ sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.5
 
-echo 'deb [arch=arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null 2>&1
+echo 'deb [arch=arm64,armhf,amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.5
 

@@ -586,6 +586,10 @@ case "$1" in
                     archurl="arm64" ;;
                 arm)
                     archurl="armhf" ;;
+                x86_x86)
+                    archurl="amd64" ;;
+                x86)
+                    archurl="i386" ;;
                 *)
                     echo "unknown architecture"; exit 1 ;;
             esac
