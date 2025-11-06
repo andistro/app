@@ -496,21 +496,25 @@ case "$1" in
                 distro_version="stable"
                 distro_based="debian"
                 distro_file="install-$distro_name.sh"
+
             elif ["$2" == "debian-sh"]; then
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
                 distro_file=".terminal_mode/install-$distro_name.sh"
+
             elif [ "$2" == "ubuntu" ]; then
                 distro_name="ubuntu"
                 distro_version="noble"
                 distro_based="debian"
                 distro_file="install-$distro_name.sh"
+
             elif ["$2" == "ubuntu-sh"]; then
                 distro_name="ubuntu"
                 distro_version="noble"
                 distro_based="debian"
                 distro_file=".terminal_mode/install-$distro_name.sh"
+
             else
                 echo "$distro_command_not_found: $2"
                 exit 1
@@ -520,7 +524,6 @@ case "$1" in
             config_file="$andistro_files/boot/.config/$distro_based-based"
             bin="$andistro_files/boot/start-$distro_name"
             folder="$andistro_files/boot/$distro_name/$distro_version"
-            binds="$andistro_files/boot/$distro_name/binds"
             mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
 
             if [ ! -d "/sdcard/termux/andistro/boot/$distro_name/$distro_version" ];then
@@ -530,7 +533,6 @@ case "$1" in
                 mkdir -p "/sdcard/termux/andistro/boot/$distro_name/$distro_version"
             fi
             
-            mkdir -p $binds
             andistro alerta timezone
             
             if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
@@ -579,6 +581,7 @@ case "$1" in
             # Exportar, se necessário
             export default_locale_system
             export default_locale_env
+
             case `dpkg --print-architecture` in
                 aarch64)
                     archurl="arm64" ;;
@@ -634,6 +637,18 @@ case "$1" in
                     distro_theme="Dark"
                 ;;
             esac
+
+            echo "distro_name: $distro_name"
+            echo "distro_version: $distro_version"
+            echo "distro_based: $distro_based"
+            echo "distro_file: $distro_file"
+            echo "bin: $bin"
+            echo "default_locale_system: $default_locale_system"
+            echo "default_locale_env: $default_locale_env"
+            echo "archurl: $archurl"
+            echo "installer path: $PREFIX/var/lib/andistro/boot/$distro_file"
+            sleep 10
+
             bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
 
