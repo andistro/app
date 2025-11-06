@@ -30,7 +30,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
 }
 
-total_steps=19
+total_steps=23
 current_step=0
 
 sed -i "s/^# *\($default_locale_env.UTF-8\)/\1/" /etc/locale.gen > /dev/null 2>&1
@@ -90,11 +90,30 @@ rm -f packages.microsoft.gpg > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.5
 
+#Brave stable
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.5
 
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null 2>&1
+sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.5
+
+#brave beta
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-beta-archive-keyring.gpg https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.5
+
+sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-beta.sources https://brave-browser-apt-beta.s3.brave.com/brave-browser.sources > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.5
+
+#brave nitly
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg > /dev/null 2>&1
+((current_step++))
+update_progress "$current_step" "$total_steps"; sleep 0.5
+
+sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-nightly.sources https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources > /dev/null 2>&1
 ((current_step++))
 update_progress "$current_step" "$total_steps"; sleep 0.5
 
