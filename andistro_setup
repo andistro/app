@@ -202,10 +202,9 @@ rm -rf "$HOME/andistro_setup"
 chmod +x "$HOME/termos.sh"
 bash "$HOME/termos.sh"
 
-andistro --setup storage < /dev/tty
 chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
 source "$PREFIX/var/lib/andistro/lib/share/global"
 echo -e "$label_update_finish"
 sleep 2
 
-andistro < /dev/tty
+andistro
