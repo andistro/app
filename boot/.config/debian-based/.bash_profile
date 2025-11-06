@@ -139,9 +139,6 @@ etc_timezone=$(cat /etc/timezone)
 
 sudo ln -sf "/usr/share/zoneinfo/$etc_timezone" /etc/localtime
 
-# Executa as configurações de idioma
-#bash $HOME/locale_$default_locale_system.sh
-
 # Executa as configurações base do sistema
 
 dialog --create-rc $HOME/.dialogrc
@@ -164,7 +161,6 @@ label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
 
-
 dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
 resposta=$?
 
@@ -182,12 +178,9 @@ else
     andistro alerta dialog-display
 fi
 
-rm -rf $HOME/locale*.sh
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
 rm -rf $HOME/config-environment.sh
-rm -rf $HOME/start-environment.sh
-rm -rf $HOME/wallpapers.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
 exit
