@@ -1,5 +1,5 @@
 #!/bin/bash
-export extralink="https://raw.githubusercontent.com/andistro/app/main"
+
 export NEWT_COLORS="window=,white border=black,white title=black,white textbox=black,white button=white,blue"
 
 # detector de gerenciadores de pacotes
@@ -55,8 +55,8 @@ else
     system_architecture=$(dpkg --print-architecture)
 fi
 
-wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
-inxi_out=$(inxi -F 2>/dev/null)
+export wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
+export inxi_out=$(inxi -F 2>/dev/null)
 
 
 # PACOTE DE IDIOMAS ==================================================================================
