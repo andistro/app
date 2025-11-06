@@ -68,11 +68,17 @@ sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.b
 sed -i "s|default_locale_system=\"\$3\"|default_locale_system=\"$default_locale_system\"|g" $folder/root/.bash_profile
 
 cp $config_file/system-config.sh $folder/root/system-config.sh
-cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
-if [ "$config_environment" = "xfce4" ]; then
+
+if [ "$config_environment" = "null" ]; then
+	echo " "
+elif [ "$config_environment" = "xfce4" ]; then
     # Coloque aqui o comando que você quer executar quando for XFCE4
+	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
+else
+	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 fi
+
 
 # Adicionar entradas em hosts, resolv.conf e timezone
 echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts > /dev/null 2>&1
