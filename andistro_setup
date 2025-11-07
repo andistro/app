@@ -196,7 +196,6 @@ current_step=0
 }
 
 rm -rf "$HOME/app-andistro_setup"
-rm -rf andistro_setup.zip
 rm -rf "$HOME/andistro_setup"
 
 chmod +x "$HOME/termos.sh"
