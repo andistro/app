@@ -3,6 +3,22 @@
 rm -rf $HOME/storage
 termux-setup-storage
 
+if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
+    # Descomenta a linha removendo o '#' no começo
+    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+    termux-reload-settings
+fi
+
+# Adiciona a configuração de teclas extras se não estiver presente
+if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+    # Aplica os sed
+    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+
+    # Recarrega Termux settings
+    termux-reload-settings
+fi
+
 update_progress() {
     current_step=$1
     total_steps=$2
@@ -34,16 +50,19 @@ current_step=0
 
     #3 Instala o bash
     pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+    # Configuration file '/data/data/com.termux/files/usr/etc/bash.bashrc'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #4 Instala o openssl
     pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1
+    # Configuration file '/data/data/com.termux/files/usr/etc/tls/openssl.cnf'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #5 Instala o apt
     pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
+    # Configuration file '/data/data/com.termux/files/usr/etc/apt/sources.list'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
