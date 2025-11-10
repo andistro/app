@@ -52,11 +52,11 @@ andistro/app (branch: alpha)
 │   │   ├── .config/
 │   │   │   ├── debian-based/
 │   │   │       └── environment/
-│   │   |           ├─── lxde/
-│   │   |           |    └── config-environment.sh
-│   │   |           └── xfce4/
-│   │   |               ├── config-environment.sh
-│   │   |               └── xfce4-panel.tar.bz2
+│   │   │           ├─── lxde/
+│   │   │           │    └── config-environment.sh
+│   │   │           └── xfce4/
+│   │   │               ├── config-environment.sh
+│   │   │               └── xfce4-panel.tar.bz2
 │   │   ├── .bash_profile
 │   │   ├── install-debian.sh
 │   │   ├── install-ubuntu.sh
