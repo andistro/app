@@ -29,6 +29,50 @@
 
 <br>
 
+```bash 
+andistro/app (branch: alpha)
+│
+├── boot/
+│   ├── .config/
+│   │   └── debian-based/
+│   │       ├── environment/
+│   │       │   ├── lxde/
+│   │       │   │   └── config-environment.sh
+│   │       │   └── xfce4/
+│   │       │       ├── config-environment.sh
+│   │       │       └── xfce4-panel.tar.bz2
+│   │       ├── proc/
+│   │       │   └── fakethings/
+│   │       │       ├── stat
+│   │       │       └── vmstat
+│   │       ├── .bash_profile
+│   │       ├── start-distro
+│   │       ├── system-config.sh
+│   ├── .terminal_mode/
+│   │   ├── .config/
+│   │   │   ├── debian-based/
+│   │   │       └── environment/
+│   │   |           ├─── lxde/
+│   │   |           |    └── config-environment.sh
+│   │   |           └── xfce4/
+│   │   |               ├── config-environment.sh
+│   │   |               └── xfce4-panel.tar.bz2
+│   │   ├── .bash_profile
+│   │   ├── install-debian.sh
+│   │   ├── install-ubuntu.sh
+├── lib/
+│   └── share/
+│       ├── locales/
+│       │   ├── l10n_en-US.sh
+│       │   └── l10n_pt-BR.sh
+│       └── global
+├── .editorconfig
+├── .gitattributes
+├── README.md
+├── andistro
+├── andistro_setup
+└── termos.sh
+```
 
 <div align="center">
   <img src="https://visitor-badge.laobi.icu/badge?page_id=andistro.app"  />
