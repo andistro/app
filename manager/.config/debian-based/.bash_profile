@@ -167,8 +167,8 @@ resposta=$?
 if [ $resposta -eq 0 ]; then
     # Usuário escolheu "Sim"
     # Substituir a linha com exec $command
-    if grep -q '^exec \$command' "/usr/local/lib/andistro/boot/start-$distro_name"; then
-        sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' /usr/local/lib/andistro/boot/start-$distro_name
+    if grep -q '^exec \$command' "/usr/local/lib/andistro/manager/start-$distro_name"; then
+        sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' /usr/local/lib/andistro/manager/start-$distro_name
         andistro alerta setup-apply
     else
         dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60

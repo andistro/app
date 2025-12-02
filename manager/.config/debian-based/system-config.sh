@@ -87,8 +87,8 @@ rm -rf system-config.sh
 #"${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
 
 # Define um iniciador automático para o VNC Server
-#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/boot/start-debian
-# sed -i "s|exec \$command|exec \$command -c \"/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login\"|g" /usr/local/lib/andistro/boot/start-$distro_name
+#sed -i '\|command+=" /bin/bash --login"|a command+=" -b /usr/local/bin/startvncserver"' /usr/local/lib/andistro/manager/start-debian
+# sed -i "s|exec \$command|exec \$command -c \"/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login\"|g" /usr/local/lib/andistro/manager/start-$distro_name
 # O dialog da tela autoiniciar será com o 
 # if [ -z "$1" ]; then
 #     exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"

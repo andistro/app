@@ -63,7 +63,7 @@ if [ -z "$1" ]; then
         CHOICE_HEIGHT=5
         export PORT=1
 
-        if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+        if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_system_start"
                     d "$label_system_uninstall"
                     i "$label_system_install_other_systems"
@@ -109,11 +109,11 @@ if [ -z "$1" ]; then
             s)
                 start_debian=false
                 start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     start_debian=true
                 fi
 
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                     start_ubuntu=true
                 fi
 
@@ -157,11 +157,11 @@ if [ -z "$1" ]; then
             d)
                 start_debian=false
                 start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     start_debian=true
                 fi
 
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                     start_ubuntu=true
                 fi
 
@@ -447,7 +447,7 @@ case "$1" in
     -i)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
-                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
                     echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
                     echo ""
@@ -466,10 +466,10 @@ case "$1" in
                     echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
                     start_debian=false
                     start_ubuntu=false
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                         start_debian=true
                     fi
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                         start_ubuntu=true
                     fi
                     if $start_debian && ! $start_ubuntu; then
@@ -521,16 +521,16 @@ case "$1" in
             fi
 
             echo "$distro_wait"
-            config_file="$andistro_files/boot/.config/$distro_based-based"
-            bin="$andistro_files/boot/start-$distro_name"
-            folder="$andistro_files/boot/$distro_name/$distro_version"
-            mkdir -p "$PREFIX/var/lib/andistro/boot/$distro_name"
+            config_file="$andistro_files/config/.config/$distro_based-based"
+            bin="$andistro_files/config/start-$distro_name"
+            folder="$andistro_files/config/$distro_name/$distro_version"
+            mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
 
-            if [ ! -d "/sdcard/termux/andistro/boot/$distro_name/$distro_version" ];then
+            if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
                 mkdir -p "/sdcard/termux/"
                 mkdir -p "/sdcard/termux/andistro"
                 mkdir -p "/sdcard/termux/andistro/boot"
-                mkdir -p "/sdcard/termux/andistro/boot/$distro_name/$distro_version"
+                mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
             fi
             
             andistro alerta timezone
@@ -641,10 +641,10 @@ case "$1" in
                 ;;
             esac
 
-            echo "installer path: $PREFIX/var/lib/andistro/boot/$distro_file"
+            echo "installer path: $PREFIX/var/lib/andistro/manager/$distro_file"
             sleep 10
 
-            bash $PREFIX/var/lib/andistro/boot/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
+            bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
             andistro alerta install-success
             andistro -s $distro_name
@@ -657,7 +657,7 @@ case "$1" in
     -d)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
-                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
                     echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
                     echo ""
@@ -676,10 +676,10 @@ case "$1" in
                     echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
                     start_debian=false
                     start_ubuntu=false
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                         start_debian=true
                     fi
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                         start_ubuntu=true
                     fi
                     if $start_debian && ! $start_ubuntu; then
@@ -716,8 +716,8 @@ case "$1" in
                     echo "$distro_command_not_found: $2"
                     exit 1
             fi
-            rm -rf $andistro_files/boot/$distro_name
-            rm -rf $andistro_files/boot/start-$distro_name
+            rm -rf $andistro_files/config/$distro_name
+            rm -rf $andistro_files/config/start-$distro_name
             andistro alerta uninstall-success
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
@@ -728,7 +728,7 @@ case "$1" in
     -s)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
             if [ -z "$2" ]; then
-                if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+                if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
                     #Existe pelo menos um arquivo start-*
                     echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
                     echo ""
@@ -747,10 +747,10 @@ case "$1" in
                     echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
                     start_debian=false
                     start_ubuntu=false
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                         start_debian=true
                     fi
-                    if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                    if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                         start_ubuntu=true
                     fi
                     if $start_debian && ! $start_ubuntu; then
@@ -771,8 +771,8 @@ case "$1" in
 
             if [ "$2" == "debian" ]; then
                 echo "$distro_wait"
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
-                bash $PREFIX/var/lib/andistro/boot/start-debian
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
+                bash $PREFIX/var/lib/andistro/manager/start-debian
                 else
                 echo "O Desbian ainda não foi instalado, siga os passos abaixo para a instalação:\n
                 Digite o comando 'andistro' seguido do enter , escolha a opção instalar,"
@@ -780,8 +780,8 @@ case "$1" in
 
             elif [ "$2" == "ubuntu" ]; then
                 echo "$distro_wait"
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
-                bash $PREFIX/var/lib/andistro/boot/start-ubuntu
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
+                bash $PREFIX/var/lib/andistro/manager/start-ubuntu
                 else
                 echo "O arquivo não existe"
                 fi
@@ -800,7 +800,7 @@ case "$1" in
 
     -t|terminal)
         if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-            if ls "$PREFIX/var/lib/andistro/boot/start-"* 1>/dev/null 2>&1; then
+            if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
                 echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
                 echo ""
                 echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
@@ -825,10 +825,10 @@ case "$1" in
                 echo "   ubuntu"
                 start_debian=false
                 start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     start_debian=true
                 fi
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                     start_ubuntu=true
                 fi
                 if $start_debian && ! $start_ubuntu; then
@@ -845,10 +845,10 @@ case "$1" in
                 echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
                 start_debian=false
                 start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     start_debian=true
                 fi
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                     start_ubuntu=true
                 fi
                 if $start_debian && ! $start_ubuntu; then
@@ -871,10 +871,10 @@ case "$1" in
                 echo "$distro_desc_line_15"
                 start_debian=false
                 start_ubuntu=false
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-debian" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     start_debian=true
                 fi
-                if [ -f "$PREFIX/var/lib/andistro/boot/start-ubuntu" ]; then
+                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
                     start_ubuntu=true
                 fi
                 if $start_debian && ! $start_ubuntu; then
@@ -967,16 +967,16 @@ case "$1" in
             else
                 case "$2" in
                     install-debian)
-                        nano "$PREFIX/var/lib/andistro/boot/install-debian.sh"
+                        nano "$PREFIX/var/lib/andistro/manager/install-debian.sh"
                         ;;
                     start-debian)
-                        nano "$PREFIX/var/lib/andistro/boot/start-debian"
+                        nano "$PREFIX/var/lib/andistro/manager/start-debian"
                         ;;
                     install-ubuntu)
-                        nano "$PREFIX/var/lib/andistro/boot/install-ubuntu.sh"
+                        nano "$PREFIX/var/lib/andistro/manager/install-ubuntu.sh"
                         ;;
                     start-ubuntu)
-                        nano "$PREFIX/var/lib/andistro/boot/start-ubuntu"
+                        nano "$PREFIX/var/lib/andistro/manager/start-ubuntu"
                         ;;
                     module-global)
                         nano "$PREFIX/var/lib/andistro/lib/share/global"
