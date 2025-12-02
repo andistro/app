@@ -38,7 +38,7 @@ command+=" -b $config_file/proc/fakethings/vmstat:/proc/vmstat"
 ## uncomment the following line to have access to the home directory of termux
 command+=" -b /data/data/com.termux/files/home:/termux/home"
 command+=" -b $andistro_files/lib/share:/usr/local/lib/andistro"
-command+=" -b $andistro_files/boot:/usr/local/lib/andistro/boot"
+command+=" -b $andistro_files/manager:/usr/local/lib/andistro/manager"
 command+=" -b $PREFIX/bin/andistro:/usr/local/bin/andistro"
 command+=" -b /sdcard"
 command+=" -w /root"

@@ -533,7 +533,7 @@ case "$1" in
             if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
                 mkdir -p "/sdcard/termux/"
                 mkdir -p "/sdcard/termux/andistro"
-                mkdir -p "/sdcard/termux/andistro/boot"
+                mkdir -p "/sdcard/termux/andistro/manager"
                 mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
             fi
             
