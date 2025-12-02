@@ -1,4 +1,5 @@
 #!/bin/bash
+# GITHUB Version
 inxi_out=$(inxi -F 2>/dev/null)
 if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
     source "$PREFIX/var/lib/andistro/lib/share/global"
@@ -416,6 +417,9 @@ case "$1" in
                 rm -rf "$HOME/app-andistro_setup/.git"
                 rm -rf "$HOME/app-andistro_setup/andistro_setup"
                 rm -rf "$HOME/app-andistro_setup/README.md"
+                rm -rf "$HOME/app-andistro_setup/.editconfig"
+                rm -rf "$HOME/app-andistro_setup/.gitignore"
+                rm -rf "$HOME/app-andistro_setup/.gitattributes"
                 rm -rf "$HOME/app-andistro_setup/termos.sh"
                 mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
                 rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
@@ -521,9 +525,9 @@ case "$1" in
             fi
 
             echo "$distro_wait"
-            config_file="$andistro_files/config/.config/$distro_based-based"
-            bin="$andistro_files/config/start-$distro_name"
-            folder="$andistro_files/config/$distro_name/$distro_version"
+            config_file="$andistro_files/manager/.config/$distro_based-based"
+            bin="$andistro_files/manager/start-$distro_name"
+            folder="$andistro_files/manager/$distro_name/$distro_version"
             mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
 
             if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
@@ -641,9 +645,6 @@ case "$1" in
                 ;;
             esac
 
-            echo "installer path: $PREFIX/var/lib/andistro/manager/$distro_file"
-            sleep 10
-
             bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
             andistro alerta install-success
@@ -716,8 +717,8 @@ case "$1" in
                     echo "$distro_command_not_found: $2"
                     exit 1
             fi
-            rm -rf $andistro_files/config/$distro_name
-            rm -rf $andistro_files/config/start-$distro_name
+            rm -rf $andistro_files/manager/$distro_name
+            rm -rf $andistro_files/manager/start-$distro_name
             andistro alerta uninstall-success
         elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
             echo "$label_command_problem_andistro_for_distro"
