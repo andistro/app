@@ -230,4 +230,4 @@ source "$PREFIX/var/lib/andistro/lib/share/global"
 echo -e "$label_update_finish"
 sleep 2
 
-andistro
+andistro < /dev/tty

@@ -1,6 +1,9 @@
 #!/bin/bash
 # GITHUB Version
 inxi_out=$(inxi -F 2>/dev/null)
+
+echo "$inxi_out"
+
 if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
     source "$PREFIX/var/lib/andistro/lib/share/global"
 
