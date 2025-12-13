@@ -161,22 +161,18 @@ label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
 
-#dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
-#resposta=$?
+# dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
+# resposta=$?
 
-#if [ $resposta -eq 0 ]; then
-#    # Usuário escolheu "Sim"
-#    # Substituir a linha com exec $command
-#    if grep -q '^exec \$command' "/usr/local/lib/andistro/manager/start-$distro_name"; then
-#        sed -i 's|^exec \$command.*|exec $command -c "/usr/local/bin/andistro --boot vnc --dialog-display; exec /bin/bash --login"|' /usr/local/lib/andistro/manager/start-$distro_name
-#        andistro alerta setup-apply
-#    else
-#        dialog --msgbox "Linha 'exec \$command' não encontrada no arquivo!" 10 60
-#    fi
-#else
-#    # Usuário escolheu "Não"
-#    andistro alerta dialog-display
-#fi
+# if [ $resposta -eq 0 ]; then
+#     # Usuário escolheu "Sim"
+#     # Substituir a linha com exec $command
+#     echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
+#     andistro alerta setup-apply
+# else
+#     # Usuário escolheu "Não"
+#     andistro alerta dialog-display
+# fi
 
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
