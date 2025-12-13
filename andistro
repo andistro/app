@@ -85,7 +85,7 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
                             2>&1 >/dev/tty)
             case $CHOICE in
                 d)
-                    andistro  -i debian
+                    andistro -i debian
                     ;;
                 u)
                     andistro -i ubuntu
