@@ -152,6 +152,8 @@ label_portrait="Retrato"
 label_user="Usuário"
 label_password="Senha"
 label_password_alt_min="senha"
+label_back="Voltar"
+label_next="Próximo"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
@@ -176,6 +178,9 @@ label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
 # Sistema
 label_distro_boot="O sistema %s foi iniciado"
+label_distro_not_installed="O %s não está instalado."
+label_distro_not_installed_desc="O %s ainda não foi instalado, siga os passos abaixo para a instalação:\nDigite o comando 'andistro' seguido do enter , escolha a opção instalar. Depois escolha o %s para iniciar a instalação."
+label_distro_installed="O %s já está instalado."
 
 # Servidor
 label_server_kill_desc="Desligando o servidor..."
