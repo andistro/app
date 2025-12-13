@@ -1,201 +1,196 @@
 #!/bin/bash
 # GITHUB Version
 inxi_out=$(inxi -F 2>/dev/null)
+source "$PREFIX/var/lib/andistro/lib/share/global"
 
 HEIGHT=0
 WIDTH=100
 CHOICE_HEIGHT=10
 export PORT=1
 
-#================================================================================================
-if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
+# Configurações do Termux
+    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
+    # Descomenta a linha removendo o '#' no começo
+    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+    termux-reload-settings
+fi
+# Adiciona a configuração de teclas extras se não estiver presente
+if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+    # Aplica os sed
+    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
 
-    # Carrega variáveis globais
-    source "$PREFIX/var/lib/andistro/lib/share/global"
+    # Recarrega Termux settings
+    termux-reload-settings
+fi
 
-    # Configurações do Termux
-     if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-        # Descomenta a linha removendo o '#' no começo
-        sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-        termux-reload-settings
-    fi
-    # Adiciona a configuração de teclas extras se não estiver presente
-    if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+# Diretório do Andistro
+andistro_files="$PREFIX/var/lib/andistro"
 
-        # Recarrega Termux settings
-        termux-reload-settings
-    fi
-
-    # Diretório do Andistro
-    andistro_files="$PREFIX/var/lib/andistro"
-
-    # Cria diretórios necessários no armazenamento
-    if [ ! -d "/sdcard/termux/andistro/logs" ];then
-        mkdir -p "/sdcard/termux/"
-        mkdir -p "/sdcard/termux/andistro"
-        mkdir -p "/sdcard/termux/andistro/manager"
-        mkdir -p "/sdcard/termux/andistro/logs"
-        touch "/sdcard/termux/andistro/logs/.nomedia"
-    fi
+# Cria diretórios necessários no armazenamento
+if [ ! -d "/sdcard/termux/andistro/logs" ];then
+    mkdir -p "/sdcard/termux/"
+    mkdir -p "/sdcard/termux/andistro"
+    mkdir -p "/sdcard/termux/andistro/manager"
+    mkdir -p "/sdcard/termux/andistro/logs"
+    touch "/sdcard/termux/andistro/logs/.nomedia"
+fi
 
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
-    if [ -z "$1" ]; then
-        if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
-            OPTIONS=(s "$label_system_start" # Iniciar o sistema
-                    d "$label_system_uninstall" # Desinstalar o sistema
-                    i "$label_system_install_other_systems" # Instalar outros sistemas
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    t "$label_andistro_termianl_viewer") # Ver como terminal
-        else
-            OPTIONS=(i "$label_system_install_systems" # Instalar sistemas
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    t "$label_andistro_termianl_viewer") # Ver como terminal
-        fi
-
-        # Mostrar menu
-        CHOICE=$(dialog --no-shadow --clear \
-                        --title "AnDistro" \
-                        --menu "$label_choose_one_of_the_option:" \
-                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                        "${OPTIONS[@]}" \
-                        2>&1 >/dev/tty)
-        clear
-
-        # Opções do menu
-        case $CHOICE in
-            # Iniciar o sistema
-            s)
-                start_debian=false
-                start_ubuntu=false
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
-                    start_debian=true
-                fi
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
-                    start_ubuntu=true
-                fi
-
-                if $start_debian && ! $start_ubuntu; then
-                    OPTIONS=(d "Debian")
-                elif ! $start_debian && $start_ubuntu; then
-                    OPTIONS=(u "Ubuntu")
-                elif $start_debian && $start_ubuntu; then
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. "$label_back") # Voltar
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                case $CHOICE in
-                    d)
-                        andistro -s debian
-                        ;;
-                    u)
-                        andistro -s ubuntu
-                        ;;
-                    .)
-                        andistro
-                        ;;
-                esac
-            ;;
-
-            # Desinstalar o sistema
-            d)
-                start_debian=false
-                start_ubuntu=false
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
-                    start_debian=true
-                fi
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
-                    start_ubuntu=true
-                fi
-
-                if $start_debian && ! $start_ubuntu; then
-                    OPTIONS=(d "Debian")
-                elif ! $start_debian && $start_ubuntu; then
-                    OPTIONS=(u "Ubuntu")
-                elif $start_debian && $start_ubuntu; then
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. "$label_back") # Voltar
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                
-                case $CHOICE in
-                    d)
-                        andistro -d debian
-                        ;;
-                    u)
-                        andistro -d ubuntu
-                        ;;
-                    .)
-                        andistro
-                        ;;
-                esac
-            ;;
-
-            # Instalar sistemas
-            i)
-                if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
-                    OPTIONS=(u "Ubuntu")
-                elif ls "$PREFIX/var/lib/andistro/manager/start-ubuntu" 1>/dev/null 2>&1; then
-                    OPTIONS=(d "Debian")
-                else
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                case $CHOICE in
-                    d)
-                        andistro -i debian
-                        ;;
-                    u)
-                        andistro -i ubuntu
-                        ;;
-                esac
-            ;;
-
-            # Atualizar o AnDistro
-            u)
-                andistro -u
-                andistro
-            ;;
-        
-            # Ver como terminal
-            t)
-                andistro terminal
-            ;;
-        esac
-    exit 0
+if [ -z "$1" ]; then
+    if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
+        OPTIONS=(s "$label_system_start" # Iniciar o sistema
+                d "$label_system_uninstall" # Desinstalar o sistema
+                i "$label_system_install_other_systems" # Instalar outros sistemas
+                u "$label_andistro_updater" # Atualizar o AnDistro
+                t "$label_andistro_termianl_viewer") # Ver como terminal
+    else
+        OPTIONS=(i "$label_system_install_systems" # Instalar sistemas
+                u "$label_andistro_updater" # Atualizar o AnDistro
+                t "$label_andistro_termianl_viewer") # Ver como terminal
     fi
+
+    # Mostrar menu
+    CHOICE=$(dialog --no-shadow --clear \
+                    --title "AnDistro" \
+                    --menu "$label_choose_one_of_the_option:" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+    clear
+
+    # Opções do menu
+    case $CHOICE in
+        # Iniciar o sistema
+        s)
+            start_debian=false
+            start_ubuntu=false
+
+            if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
+                start_debian=true
+            fi
+
+            if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
+                start_ubuntu=true
+            fi
+
+            if $start_debian && ! $start_ubuntu; then
+                OPTIONS=(d "Debian")
+            elif ! $start_debian && $start_ubuntu; then
+                OPTIONS=(u "Ubuntu")
+            elif $start_debian && $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                        u "Ubuntu")
+            else
+            # Não tem nenhum sistema instalado
+            OPTIONS=(. "$label_back") # Voltar
+            fi
+
+            CHOICE=$(dialog --no-shadow --clear \
+                            --title "AnDistro" \
+                            --menu "$label_choose_one_of_the_option:" \
+                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            "${OPTIONS[@]}" \
+                            2>&1 >/dev/tty)
+            case $CHOICE in
+                d)
+                    andistro -s debian
+                    ;;
+                u)
+                    andistro -s ubuntu
+                    ;;
+                .)
+                    andistro
+                    ;;
+            esac
+        ;;
+
+        # Desinstalar o sistema
+        d)
+            start_debian=false
+            start_ubuntu=false
+
+            if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
+                start_debian=true
+            fi
+
+            if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
+                start_ubuntu=true
+            fi
+
+            if $start_debian && ! $start_ubuntu; then
+                OPTIONS=(d "Debian")
+            elif ! $start_debian && $start_ubuntu; then
+                OPTIONS=(u "Ubuntu")
+            elif $start_debian && $start_ubuntu; then
+                OPTIONS=(d "Debian"
+                        u "Ubuntu")
+            else
+            # Não tem nenhum sistema instalado
+            OPTIONS=(. "$label_back") # Voltar
+            fi
+
+            CHOICE=$(dialog --no-shadow --clear \
+                            --title "AnDistro" \
+                            --menu "$label_choose_one_of_the_option:" \
+                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            "${OPTIONS[@]}" \
+                            2>&1 >/dev/tty)
+            
+            case $CHOICE in
+                d)
+                    andistro -d debian
+                    ;;
+                u)
+                    andistro -d ubuntu
+                    ;;
+                .)
+                    andistro
+                    ;;
+            esac
+        ;;
+
+        # Instalar sistemas
+        i)
+            if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
+                OPTIONS=(u "Ubuntu")
+            elif ls "$PREFIX/var/lib/andistro/manager/start-ubuntu" 1>/dev/null 2>&1; then
+                OPTIONS=(d "Debian")
+            else
+                OPTIONS=(d "Debian"
+                        u "Ubuntu")
+            fi
+
+            CHOICE=$(dialog --no-shadow --clear \
+                            --title "AnDistro" \
+                            --menu "$label_choose_one_of_the_option:" \
+                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            "${OPTIONS[@]}" \
+                            2>&1 >/dev/tty)
+            case $CHOICE in
+                d)
+                    andistro -i debian
+                    ;;
+                u)
+                    andistro -i ubuntu
+                    ;;
+            esac
+        ;;
+
+        # Atualizar o AnDistro
+        u)
+            andistro -u
+            andistro
+        ;;
+    
+        # Ver como terminal
+        t)
+            andistro terminal
+        ;;
+    esac
+exit 0
+fi
 
 #>>>#=============================================================================================
 #>>># Ações para funcionar no Termux

@@ -50,20 +50,20 @@ current_step=0
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #3 Instala o bash
-    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" bash -y > /dev/null 2>&1
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y > /dev/null 2>&1
     # Configuration file '/data/data/com.termux/files/usr/etc/bash.bashrc'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #4 Instala o openssl
-    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" openssl -y > /dev/null 2>&1 # este comando mantém as configurações atuais, a que está no sistema
-    # pkg install --no-install-recommends --option Dpkg::Options::="--force-confnew" openssl -y > /dev/null 2>&1 este comando sempre instala a configuração nova
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y > /dev/null 2>&1
+    # pkg install --no-install-recommends --option Dpkg::Options::="--force-confold " openssl -y > /dev/null 2>&1 este comando sempre instala a configuração nova
     # Configuration file '/data/data/com.termux/files/usr/etc/tls/openssl.cnf'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     #5 Instala o apt
-    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confold" apt -y > /dev/null 2>&1
+    pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y > /dev/null 2>&1
     # Configuration file '/data/data/com.termux/files/usr/etc/apt/sources.list'
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
