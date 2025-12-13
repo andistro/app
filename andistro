@@ -625,6 +625,7 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
             start_distro=false
             start_debian=false
             start_ubuntu=false
+            
             if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then # Verifica se alguma distro está instalada
                 start_distro=true
             fi
@@ -657,7 +658,7 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
             echo " "
             echo "$distro_desc_line_10" #Comandos disponíveis para você:
             echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
-            if && $start_distro; then # Verifica se alguma distro está instalada
+            if $start_distro; then # Verifica se alguma distro está instalada
                 echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
                 echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
             fi
