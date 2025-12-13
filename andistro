@@ -66,33 +66,6 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
 
     # Opções do menu
     case $CHOICE in
-        # Instalar sistemas
-        i)
-            if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
-                OPTIONS=(u "Ubuntu")
-            elif ls "$PREFIX/var/lib/andistro/manager/start-ubuntu" 1>/dev/null 2>&1; then
-                OPTIONS=(d "Debian")
-            else
-                OPTIONS=(d "Debian"
-                         u "Ubuntu")
-            fi
-
-            CHOICE=$(dialog --no-shadow --clear \
-                            --title "AnDistro" \
-                            --menu "$label_choose_one_of_the_option:" \
-                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                            "${OPTIONS[@]}" \
-                            2>&1 >/dev/tty)
-            case $CHOICE in
-                d)
-                    andistro -i debian
-                    ;;
-                u)
-                    andistro -i ubuntu
-                    ;;
-            esac
-        ;;
-
         # Iniciar o sistema
         s)
             start_debian=false
@@ -137,12 +110,6 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
             esac
         ;;
 
-        # Atualizar o AnDistro
-        u)
-            andistro -u
-            andistro
-        ;;
-    
         # Desinstalar o sistema
         d)
             start_debian=false
@@ -188,6 +155,39 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
             esac
         ;;
 
+        # Instalar sistemas
+        i)
+            if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
+                OPTIONS=(u "Ubuntu")
+            elif ls "$PREFIX/var/lib/andistro/manager/start-ubuntu" 1>/dev/null 2>&1; then
+                OPTIONS=(d "Debian")
+            else
+                OPTIONS=(d "Debian"
+                         u "Ubuntu")
+            fi
+
+            CHOICE=$(dialog --no-shadow --clear \
+                            --title "AnDistro" \
+                            --menu "$label_choose_one_of_the_option:" \
+                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            "${OPTIONS[@]}" \
+                            2>&1 >/dev/tty)
+            case $CHOICE in
+                d)
+                    andistro -i debian
+                    ;;
+                u)
+                    andistro -i ubuntu
+                    ;;
+            esac
+        ;;
+
+        # Atualizar o AnDistro
+        u)
+            andistro -u
+            andistro
+        ;;
+    
         # Ver como terminal
         t)
             andistro terminal

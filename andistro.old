@@ -28,23 +28,6 @@ else
     echo "Sistema não identificado"
 fi
 
-# Template de verificação do sistema operacional
-# if echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-#   echo "Executando comando para Debian/Ubuntu"
-# elif echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-#   echo "Executando comando para Android"
-# else
-#   echo "Sistema não identificado"
-# fi
-
-# if echo "$inxi_out" | grep -q 'Distro:.*Android'; then
-
-# elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-
-# else
-#   echo "Sistema não identificado"
-# fi
-
 # Log de erros
 if [ ! -d "/sdcard/termux/andistro/logs" ];then
     mkdir -p "/sdcard/termux/"
@@ -53,7 +36,6 @@ if [ ! -d "/sdcard/termux/andistro/logs" ];then
     mkdir -p "/sdcard/termux/andistro/logs"
     touch "/sdcard/termux/andistro/logs/.nomedia"
 fi
-
 
 #=============================================================================================
 # COMANDOS
@@ -207,7 +189,7 @@ if [ -z "$1" ]; then
             ;;
         esac
     elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then
-        echo "$distro_desc_line_1"
+        echo "$distro_desc_line_1" 
         echo " "
         echo "$distro_desc_line_10"
         echo "$distro_desc_line_17"
