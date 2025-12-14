@@ -56,7 +56,7 @@ else
 fi
 
 export wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
-export inxi_out=$(inxi -F 2>/dev/null)
+#export inxi_out=$(inxi -F 2>/dev/null)
 
 
 # PACOTE DE IDIOMAS ==================================================================================
