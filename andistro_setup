@@ -14,7 +14,7 @@ EN="\e[44m${BOLD}${FG} Hello, please wait a moment ${RESET}"
 #DE="\e[43m${BOLD}${FG} Hallo, bitte warten ${RESET}"
 #IT="\e[42m${BOLD}${FG} Ciao, attendi un momento ${RESET}"
 
-echo -e "$PT\n\n$EN\n"
+echo -e "\n$PT\n\n$EN\n"
 
 update_progress() {
     current_step=$1
