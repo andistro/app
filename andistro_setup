@@ -5,16 +5,16 @@
 # Mensagens coloridas antes da barra de progresso
 RESET="\e[0m"
 BOLD="\e[1m"
-FG="\e[97m"  # texto branco
+FG="\e[97m"
 
-PT="\e[42m${BOLD}${FG} Olá, aguarde um instante ${RESET}"        # Brasil
-EN="\e[44m${BOLD}${FG} Hello, please wait a moment ${RESET}"     # Inglês
-ES="\e[41m${BOLD}${FG} Hola, espere un momento ${RESET}"         # Espanhol
-FR="\e[44m${BOLD}${FG} Bonjour, veuillez patienter ${RESET}"     # Francês
-DE="\e[43m${BOLD}${FG} Hallo, bitte warten ${RESET}"             # Alemão
-IT="\e[42m${BOLD}${FG} Ciao, attendi un momento ${RESET}"        # Italiano
+PT="\e[42m${BOLD}${FG} Olá, aguarde um instante ${RESET}"
+EN="\e[44m${BOLD}${FG} Hello, please wait a moment ${RESET}"
+#ES="\e[41m${BOLD}${FG} Hola, espere un momento ${RESET}"
+#FR="\e[44m${BOLD}${FG} Bonjour, veuillez patienter ${RESET}"
+#DE="\e[43m${BOLD}${FG} Hallo, bitte warten ${RESET}"
+#IT="\e[42m${BOLD}${FG} Ciao, attendi un momento ${RESET}"
 
-echo -e "$PT  $EN  $ES  $FR  $DE  $IT"
+echo -e "$PT\n\n$EN\n"
 
 update_progress() {
     current_step=$1
