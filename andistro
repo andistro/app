@@ -1,6 +1,6 @@
 #!/bin/bash
 # GITHUB Version
-inxi_out=$(inxi -F 2>/dev/null)
+#inxi_out=$(inxi -F 2>/dev/null)
 
 HEIGHT=0
 WIDTH=100
