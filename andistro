@@ -8,7 +8,7 @@ CHOICE_HEIGHT=10
 export PORT=1
 
 #================================================================================================
-if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
+if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
     # Carrega variáveis globais
     source "$PREFIX/var/lib/andistro/lib/share/global"
@@ -845,7 +845,7 @@ if echo "$inxi_out" | grep -q 'Distro:.*Android'; then  # Android
     esac
    
 #=================================================================================================
-elif echo "$inxi_out" | grep -Eq 'Distro:.*(Debian|Ubuntu)'; then # Debian/Ubuntu
+elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; then # Debian/Ubuntu
     source "/usr/local/lib/andistro/global"
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
