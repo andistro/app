@@ -178,7 +178,7 @@ label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 # Sistema
 label_distro_boot="O sistema %s foi iniciado"
 label_distro_not_installed="O %s não está instalado."
-label_distro_not_installed_desc="O %s ainda não foi instalado, siga os passos abaixo para a instalação:\nDigite o comando 'andistro' seguido do enter , escolha a opção instalar. Depois escolha o %s para iniciar a instalação."
+label_distro_not_installed_desc="O %s ainda não foi instalado, siga os passos abaixo para a instalação:\nDigite o comando 'andistro' seguido do enter  (↲), escolha a opção instalar. Depois escolha o %s para iniciar a instalação."
 label_distro_installed="O %s já está instalado."
 
 # Servidor
@@ -199,7 +199,7 @@ label_resolution_remove_default_desc="Você está prestes a remover a resoluçã
 label_resolution_remove_default_sucess="A resolução deixou de ser a padrão."
 
 label_resolution_option_default="Resolução padrão"
-label_resolution_option_default_desc="Ao confirmar, irá usar a resolução definida como padrão."
+label_resolution_option_default_desc="Confirme para iniciar com a resolução definida como padrão. \n\nAperte no '<Sim>' para confirmar ou tecle enter (↲). \nAperte no '<Não>' para escolher outra resolução."
 label_resolution_choose_options="Escolha algumas opções"
 label_resolution_choose_default="Você escolheu usar a resolução padrão"
 label_resolution_choose_custom="Você escolheu definir a resolução manualmente"
