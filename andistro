@@ -1195,7 +1195,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                     while true; do
                                         RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" 10 60 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
-                                            andistro --boot vnc --display-panel
+                                            andistro --boot vnc --dialog-display
                                             exit 0
                                         fi
                                         if [ -n "$RESOLUTION" ]; then
@@ -1208,7 +1208,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                     while true; do
                                         PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" 10 60 1 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
-                                            andistro --boot vnc --display-panel
+                                            andistro --boot vnc --dialog-display
                                             exit 0
                                         fi
                                         # Aceita vazio ou valor, sem validação obrigatória, sai do loop
@@ -1225,7 +1225,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                         while true; do
                                             SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" 10 60 1 3>&1 1>&2 2>&3 3>&-)
                                             if [ $? -ne 0 ]; then
-                                                andistro --boot vnc --display-panel
+                                                andistro --boot vnc --dialog-display
                                                 exit 0
                                             fi
                                             # Pode validar o valor do scale aqui se quiser, ou aceitar vazio
@@ -1435,9 +1435,9 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         local res="$1"
                         local port="$2"
                         local scale="$3"
-                        echo "RESOLUTION=$res" > $HOME/.sever_resolution_default
+                        echo "RESOLUTION=$res" >> $HOME/.sever_resolution_default
                         echo "PORT=$port" >> $HOME/.sever_resolution_default
-                        echo "SCALE=$scale" >> $HOME/sever_resolution_default
+                        echo "SCALE=$scale" >> $HOME/.sever_resolution_default
                     }
                     current_resolution="$DISPLAY_VALUE"
                     save_resolution "$current_resolution"
@@ -1469,7 +1469,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
-                    echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n"
+                    echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n\n$label_server_kill_desc_help\n"
                 else
                     echo "$label_server_start_error"
                 fi
