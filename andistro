@@ -1147,7 +1147,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 if [[ -n "$RESOLUTION" ]]; then
                                     dialog --no-shadow --backtitle "$label_server_setup" \
                                         --title "$label_resolution_option_default" \
-                                        --yesno "$label_resolution_option_default_desc \n\n $label_resolution: $RESOLUTION \n$label_port: ${PORT:-1} \n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
+                                        --yesno "$label_resolution_option_default_desc \n\n$label_resolution: $RESOLUTION \n$label_port: ${PORT:-1} \n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
                                     if [[ $? -eq 0 ]]; then
                                         echo "$label_resolution_choose_default: $RESOLUTION"
                                         if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
