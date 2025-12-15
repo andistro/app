@@ -23,7 +23,7 @@
   
   |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/main/profile/assets/flags/brasil.svg" />|[Guia de instalação e resolução de problemas](https://github.com/andistro/wiki/tree/main/pt-BR#readme)|
   |-|-|
-  |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/main/profile/assets/flags/united_states.svg" />|[**Installation and troubleshooting guide**](https://github.com/andistro/wiki/tree/main/en-US#readme)|
+  <!-- |<img height="24" src="https://raw.githubusercontent.com/andistro/.github/main/profile/assets/flags/united_states.svg" />|[**Installation and troubleshooting guide**](https://github.com/andistro/wiki/tree/main/en-US#readme)| -->
   
 </div>
 
