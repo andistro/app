@@ -1136,7 +1136,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 local res="$1"
                                 local port="$2"
                                 local scale="$3"
-                                echo "RESOLUTION=$res" > $HOME/.sever_resolution_default
+                                echo "RESOLUTION=$res" >> $HOME/.sever_resolution_default
                                 echo "PORT=$port" >> $HOME/.sever_resolution_default
                                 echo "SCALE=$scale" >> $HOME/.sever_resolution_default
                             }
