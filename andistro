@@ -711,32 +711,74 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 echo "$distro_command_not_found: $2"
             else
                 case "$2" in
-                    storage)
-                        if [ -d "/sdcard" ]; then
-                            if ls "/sdcard" &>/dev/null; then
-                                # Acesso ao armazenamento OK!
-                                echo "Acesso ao armazenamento."
-                            else
-                                # A pasta existe, mas sem permissão de acesso.
-                                dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                            --msgbox "Sem permissão de acesso." 10 60
-                            rm -rf storage
-                            termux-setup-storage
+                    # Comando andistro --setup storage para configurar permissão de armazenamento
+                    storage-permission)
+                        TEST_DIR="/sdcard/termux"
+                        PKG="com.termux"
+
+                        while true; do
+                            if mkdir -p "$TEST_DIR" 2>/dev/null; then
+                                # Sucesso: tem acesso ao armazenamento
+                                rmdir "$TEST_DIR" 2>/dev/null || true
+                                clear
+                                break   # segue o script normalmente
                             fi
-                        else
-                            termux-setup-storage
-                        fi
-                        ;;
+
+                            # Falhou: provavelmente sem permissão de armazenamento
+                            rm -rf "$HOME/storage"
+                            termux-setup-storage &
+
+                            dialog --no-shadow --clear \
+                            --title "Permissão de armazenamento" \
+                            --yes-label "Já permiti" \
+                            --no-label "Não consegui" \
+                            --yesno "Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo." 12 70
+
+                            resp=$?
+
+                            if [ $resp -eq 0 ]; then
+                                # Botão "Já permiti": tenta de novo no próximo loop
+                                continue
+                            else
+                                # Botão "Não consegui": ajuda + intents
+                                dialog --no-shadow --title "Ajuda com permissão" \
+                                --ok-label "Abrir configs" \
+                                --msgbox "Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"." 12 70
+
+                                # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
+                                am start \
+                                -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
+                                -d "package:${PKG}" >/dev/null 2>&1
+                            fi
+                        done
+                    ;;
+
+                    # Comando andistro --setup battery para configurar permissão de ignorar otimização de bateria
                     battery)
-                        dialog --no-shadow --title "Permissão necessária" --ok-label "Permitir" \
-                            --msgbox "Após clicar em permitir, procure pelo Termux na lista de aplicativos, clique e escolha a opção não restrito." 10 60
-                        am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
-                        ;;
+                        PKG="com.termux"
+                        # Configurações de otimização de bateria
+                        # 1) Explica o que fazer
+                        dialog --no-shadow --title "Otimização de bateria" \
+                        --ok-label "Abrir configurações" \
+                        --msgbox "Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"." 14 70
+
+                        # 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
+                        am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
+
+                        # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
+                        dialog --no-shadow --clear \
+                        --title "Otimização de bateria" \
+                        --yes-label "Já retirei" \
+                        --no-label "Vou deixar para depois" \
+                        --yesno "Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora." 13 70
+                    ;;
+
+                    # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
                         dialog --no-shadow --title "Informação" \
                             --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 10 60
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
-                        ;;
+                    ;;
 
                     *)
                         echo "$distro_command_not_found: $2"
@@ -828,6 +870,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" 10 60
+                        clear
+                        ;;
+                    app-vnc-setup)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow --gauge "Agora iremos configurar o aplicativo VNC. Tenha certeza de que o aplicativo AVNC está instalado, caso contrário, esta estapa falhará \n\n$label_sleep_in_10s" 10 60
                         clear
                         ;;
                     *)
