@@ -146,9 +146,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 case $CHOICE in
                     d)
                         andistro -d debian
+                        andistro
                         ;;
                     u)
                         andistro -d ubuntu
+                        andistro
                         ;;
                     .)
                         andistro
