@@ -98,3 +98,5 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 32 \
     'grep -q "<property name=\"ThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"ThemeName\" type=\"empty\"/>|<property name=\"ThemeName\" type=\"string\" value=\"AnDistro-Majorelle-Blue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"' \
     'grep -q "<property name=\"IconThemeName\" type=\"empty\"/>" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml" && sed -i "s|<property name=\"IconThemeName\" type=\"empty\"/>|<property name=\"IconThemeName\" type=\"string\" value=\"ZorinBlue-'"${distro_theme}"'\"/>|g" "/root/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"'
 #    "rm -rf $HOME/xfce4-panel.tar.bz2"/backdrop/screen0/monitorVNC-0/workspace0/last-image
+
+rm -rf $HOME/config-environment.sh

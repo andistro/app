@@ -1146,27 +1146,10 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                             # Verificar se existe resolução padrão
                             if [[ -f $HOME/.sever_resolution_default ]]; then
                                 source $HOME/.sever_resolution_default
-                                if [[ -n "$RESOLUTION" ]]; then
-                                    dialog --no-shadow --backtitle "$label_server_setup" \
-                                        --title "$label_resolution_option_default" \
-                                        --yesno "$label_resolution_option_default_desc \n\n$label_resolution: $RESOLUTION \n$label_port: ${PORT:-1} \n$label_scale: ${SCALE:-1} \n\n$label_select_no_to_choose_other_resolution" 10 60
-                                    if [[ $? -eq 0 ]]; then
-                                        echo "$label_resolution_choose_default: $RESOLUTION"
-                                        if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
-                                            andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1} --scale ${SCALE:-1}
-                                            #bash --login
-                                            exit 0
-                                        fi
-                                    else
-                                        # Usuário optou por não usar o padrão - perguntar se quer remover
-                                        dialog --no-shadow --backtitle "$label_server_setup" \
-                                            --title "$label_resolution_remove_default" \
-                                            --yesno "$label_resolution_remove_default_desc" 10 60
-                                        if [[ $? -eq 0 ]]; then
-                                            rm -f $HOME/.sever_resolution_default
-                                            dialog --no-shadow --msgbox "$label_resolution_remove_default_sucess" 10 60
-                                        fi
-                                    fi
+
+                                if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
+                                    andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1} --scale ${SCALE:-1}
+                                    exit 0
                                 fi
                             fi
 
@@ -1471,7 +1454,8 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
-                    echo -e "\n${label_server_start_desc} \n\n${label_user}: $USER\n${label_localhost} $HOSTNAME:$PORT / 120.0.0.1:$PORT / $wlan_ip_localhost:$PORT\n\n$label_password_forgot\n\n$label_server_kill_desc_help\n"
+                    
+                    echo -e "\n${label_server_start_desc} \n\n\033[1;96m${label_user}:\033[0m $USER\n\033[1;96m${label_localhost}:\033[0m $HOSTNAME\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m 120.0.0.1\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m $wlan_ip_localhost\033[1;33m:\033[0m$PORT\n\n\033[1;35m${label_password_forgot}\033[0m\n\n\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
                 else
                     echo "$label_server_start_error"
                 fi

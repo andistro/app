@@ -53,3 +53,5 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 14 \
     "sed -i 's|wallpaper=/etc/alternatives/desktop-background|wallpaper=/usr/share/backgrounds/${wallpaper}|' $HOME/.config/pcmanfm/LXDE/desktop-items-0.conf"
 
 sleep 2
+
+rm -rf $HOME/config-environment.sh
