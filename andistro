@@ -402,7 +402,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     echo
                 }
             elif [ "$2" == "dialog" ]; then
-                show_progress_dialog steps-multi-label 2\
+                show_progress_dialog steps-multi-label 36 \
                     "${label_progress}" 'sleep 1' \
                     "${label_find_update}" 'pkg update' \
                     "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
