@@ -626,7 +626,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 exit 1
             elif [ "$2" == "debian" ]; then
                 distro_name_upper="Debian"
-                label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
+                label_dialog_uninstall_menu=$(printf "$label_dialog_uninstall_menu" "$distro_name_upper")
                 dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
                 resposta=$?
                 
@@ -634,6 +634,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     # Usuário escolheu "Sim"
                     echo "$distro_wait"
                     distro_name="debian"
+                    distro_name_upper="Debian"
+                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
                 else
                     # Usuário escolheu "Não"
                     label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Debian")
@@ -643,7 +645,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             elif [ "$2" == "ubuntu" ]; then
                 distro_name_upper="Ubuntu"
-                label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
+                label_dialog_uninstall_menu=$(printf "$label_dialog_uninstall_menu" "$distro_name_upper")
                 dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
                 resposta=$?
                 
@@ -651,6 +653,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     # Usuário escolheu "Sim"
                     echo "$distro_wait"
                     distro_name="ubuntu"
+                    distro_name_upper="Ubuntu"
+                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
                 else
                     # Usuário escolheu "Não"
                     label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Ubuntu")
