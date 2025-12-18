@@ -9,11 +9,6 @@ default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
-distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
-label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
-echo "\033[1;96m$label_distro_boot\033[0m" >> $HOME/.bashrc > /dev/null 2>&1
-
-echo -e "\033[1;96m$label_distro_boot\033[0m"
 # Mensagem de inicialização
 echo -e "\n${distro_wait}\n"
 
@@ -167,6 +162,12 @@ wget -O "/usr/share/backgrounds/andistro/andistro-medium.jpg" "https://gitlab.co
 wget -O "/usr/share/backgrounds/andistro/andistro-dark.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/dark.jpg"
 
 bash $HOME/config-environment.sh "$distro_theme"
+
+distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
+label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
+echo "\033[1;96m$label_distro_boot\033[0m" >> $HOME/.bashrc > /dev/null 2>&1
+
+echo -e "\033[1;96m$label_distro_boot\033[0m"
 
 rm -rf $HOME/locale*.sh
 rm -rf $HOME/.hushlogin

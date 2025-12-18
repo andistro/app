@@ -122,5 +122,4 @@ rm -rf $HOME/system-config.sh
 rm -rf $HOME/config-environment.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
-rm -rf $HOME/.bash_profile_variables
 exit
