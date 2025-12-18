@@ -5,10 +5,6 @@ distro_theme="$2"
 default_locale_system="$3"
 etc_timezone=$(cat /etc/timezone)
 
-if [[ -z "$distro_name" || -z "$distro_theme" || -z "$default_locale_system" ]] && [[ -f "$HOME/.bash_profile_variables" ]]; then
-    source "$HOME/.bash_profile_variables"
-fi
-
 default_locale_env="${default_locale_system//-/_}"
 export LANG=$default_locale_env.UTF-8
 
