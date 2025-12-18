@@ -640,6 +640,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     # Usuário escolheu "Não"
                     label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Debian")
                     andistro alerta uninstall-cancelled
+                    exit 1
                 fi
 
 
@@ -659,6 +660,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     # Usuário escolheu "Não"
                     label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Ubuntu")
                     andistro alerta uninstall-cancelled
+                    exit 1
                 fi
             else
                     echo "$distro_command_not_found: $2"
