@@ -14,6 +14,34 @@ source "/usr/local/lib/andistro/global"
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
 
+# ✅ Verifica se já existe no .bashrc
+if [ -f "$HOME/.bashrc" ] && grep -q "andistro --boot vnc --dialog-display" "$HOME/.bashrc"; then
+    echo "✅ Comando já configurado no .bashrc"
+else
+    dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
+    resposta=$?
+    
+    if [ $resposta -eq 0 ]; then
+        # Usuário escolheu "Sim"
+        echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
+        andistro alerta setup-apply
+    else
+        # Usuário escolheu "Não"
+        andistro alerta dialog-display
+    fi
+fi
+
+andistro alerta install-success
+
+cat << 'EOF' >> ~/.bashrc
+
+termux-cmd() {
+    local file="/termux/home/andistro-bridge"
+    rm -f "$file" 2>/dev/null
+    printf "%s" "$1" > "$file"
+}
+EOF
+
 show_progress_dialog steps-one-label "${label_progress}" 28 \
     "sed -i \"s/^# *\($default_locale_env.UTF-8\)/\1/\" /etc/locale.gen" \
     "sudo locale-gen $default_locale_env.UTF-8" \
@@ -75,34 +103,6 @@ distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name
 label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
-
-# ✅ Verifica se já existe no .bashrc
-if [ -f "$HOME/.bashrc" ] && grep -q "andistro --boot vnc --dialog-display" "$HOME/.bashrc"; then
-    echo "✅ Comando já configurado no .bashrc"
-else
-    dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
-    resposta=$?
-    
-    if [ $resposta -eq 0 ]; then
-        # Usuário escolheu "Sim"
-        echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
-        andistro alerta setup-apply
-    else
-        # Usuário escolheu "Não"
-        andistro alerta dialog-display
-    fi
-fi
-
-andistro alerta install-success
-
-cat << 'EOF' >> ~/.bashrc
-
-termux-cmd() {
-    local file="/termux/home/andistro-bridge"
-    rm -f "$file" 2>/dev/null
-    printf "%s" "$1" > "$file"
-}
-EOF
 
 
 rm -rf $HOME/.hushlogin
