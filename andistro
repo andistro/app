@@ -445,6 +445,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             fi
             
             rm -rf "$HOME/app-andistro_setup"
+            rm -rf "$HOME/termos.sh"
             rm -rf andistro_setup.zip
             rm -rf "$HOME/andistro_setup"
             
