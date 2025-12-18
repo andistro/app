@@ -624,18 +624,48 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 rm -rf $PREFIX/bin/andistro
                 exit 1
             elif [ "$2" == "debian" ]; then
+                dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
+                resposta=$?
+                
+                if [ $resposta -eq 0 ]; then
+                    # Usuário escolheu "Sim"
                     echo "$distro_wait"
                     distro_name="debian"
+                    distro_name_upper="Debian"
+                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
+                else
+                    # Usuário escolheu "Não"
+                    label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Debian")
+                    andistro alerta uninstall-cancelled
+                fi
+
 
             elif [ "$2" == "ubuntu" ]; then
+                dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
+                resposta=$?
+                
+                if [ $resposta -eq 0 ]; then
+                    # Usuário escolheu "Sim"
                     echo "$distro_wait"
                     distro_name="ubuntu"
+                    distro_name_upper="Ubuntu"
+                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
+                else
+                    # Usuário escolheu "Não"
+                    label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Ubuntu")
+                    andistro alerta uninstall-cancelled
+                fi
             else
                     echo "$distro_command_not_found: $2"
                     exit 1
             fi
-            rm -rf $andistro_files/manager/$distro_name
-            rm -rf $andistro_files/manager/start-$distro_name
+            show_progress_dialog steps-one-label "${label_uninstalling_system}" 5 \
+                "sleep 1" \
+                "sleep 1" \
+                "sleep 1" \
+                "rm -rf $andistro_files/manager/$distro_name" \
+                "rm -rf $andistro_files/manager/start-$distro_name"
+
             andistro alerta uninstall-success
         ;;
 
@@ -898,6 +928,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60
+                        clear
+                        ;;
+                    uninstall-canelled)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow --gauge "${label_uninstall_cancelled} \n\n$label_sleep_in_10s" 10 60
                         clear
                         ;;
                     dialog-display)
