@@ -104,6 +104,8 @@ label_distro_alert_timezone_detected="Fuso horário detectado: "
 
 # Alertas
 label_uninstall_success="Desinstalação concluida!"
+label_uninstalling_system="Desinstalando o sistema %s"
+label_uninstall_cancelled="A desinstalação do sistema %s foi cancelada"
 label_install_success="Instalação concluida!"
 label_setup_apply="Configuração aplicada!"
 
@@ -217,3 +219,7 @@ label_resolution_option_hd="HD"
 
 label_dialog_display_menu_sugestion="Sugestões de Resolução"
 label_dialog_display_menu_sugestion_desc="Deseja que toda vez que o sistema seja iniciado, apareça uma caixa de diálogo com sugestões de resolução de tela?"
+
+
+label_dialog_uninstall_menu="Deseja continuar com a desinstalação?"
+label_dialog_uninstall_menu_desc="Você está prestes a desinstalar o sistema %s.\n\nTodos os dados relacionados a este sistema serão perdidos. \nESTE É UMA AÇÃO IRREVERSÍVEL.\n\nDeseja continuar?"
