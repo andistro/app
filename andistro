@@ -1076,7 +1076,13 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 esac
             fi
         ;;
-
+        --termux-cmd)
+            shift  # remove o --termux-cmd
+            local file="/termux/home/bridge"
+            rm -f "$file" 2>/dev/null
+            # junta todos os argumentos restantes em uma linha de comando
+            printf "%s" "$*" > "$file"
+        ;;
         # Comando para iniciar alguma configuração
         --boot)
             shift

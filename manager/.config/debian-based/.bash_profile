@@ -95,6 +95,16 @@ fi
 
 andistro alerta install-success
 
+cat << 'EOF' >> ~/.bashrc
+
+termux-cmd() {
+    local file="/termux/home/andistro-bridge"
+    rm -f "$file" 2>/dev/null
+    printf "%s" "$1" > "$file"
+}
+EOF
+
+
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
 rm -rf $HOME/config-environment.sh

@@ -1,0 +1,9 @@
+#!/bin/bash
+while true; do
+    if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
+        CMD=$(cat ~/andistro-bridge)
+        rm ~/andistro-bridge
+        sh -c "$CMD"   # executa o comando recebido
+    fi
+    sleep 0.5
+done

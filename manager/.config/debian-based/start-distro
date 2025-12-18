@@ -6,6 +6,10 @@ fi
 #cd $(dirname $0)
 cd $HOME
 
+chmod +x $PREFIX/var/lib/andistro/lib/share/listener
+bash $PREFIX/var/lib/andistro/lib/share/listener &
+LISTENER_PID=$!
+
 pulseaudio --start --exit-idle-time=-1
 PA_PID=$(pgrep pulseaudio)
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
@@ -57,7 +61,13 @@ if [ -z "$1" ];then
 else
     $command -c "$com"
 fi
+
 PA_PID=$(pgrep pulseaudio)
 if [ -n "$PA_PID" ]; then
   kill $PA_PID
+fi
+
+if [ -n "$LISTENER_PID" ]; then
+  kill $LISTENER_PID
+  rm -rf $HOME/andistro-bridge
 fi
