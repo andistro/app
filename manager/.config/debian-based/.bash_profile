@@ -14,57 +14,35 @@ source "/usr/local/lib/andistro/global"
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
 
-# show_progress_dialog steps-one-label "${label_progress}" 28 \
-#     "sed -i \"s/^# *\($default_locale_env.UTF-8\)/\1/\" /etc/locale.gen" \
-#     "sudo locale-gen $default_locale_env.UTF-8" \
-#     "echo \"LANG=$default_locale_env.UTF-8\" > /etc/locale.conf" \
-#     "echo \"export LANG=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
-#     "echo \"export LANGUAGE=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
-#     "apt update" \
-#     "sudo install -d -m 0755 /etc/apt/keyrings" \
-#     "wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc" \
-#     "echo \"deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main\" | sudo tee -a /etc/apt/sources.list.d/mozilla.list" \
-#     "echo -e \"\\nPackage: *\\nPin: origin packages.mozilla.org\\nPin-Priority: 1000\" | sudo tee /etc/apt/preferences.d/mozilla" \
-#     "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg" \
-#     "sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg" \
-#     "echo 'deb [arch=arm64,armhf,amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
-#     "rm -f packages.microsoft.gpg" \
-#     "sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg" \
-#     "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources" \
-#     "sudo curl -fsSLo /usr/share/keyrings/brave-browser-beta-archive-keyring.gpg https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg" \
-#     "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-beta.sources https://brave-browser-apt-beta.s3.brave.com/brave-browser.sources" \
-#     "sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg" \
-#     "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-nightly.sources https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources" \
-#     "apt update" \
-#     "sudo apt install language-pack-gnome-$default_locale_lang_global -y" \
-#     "sudo apt install language-pack-$default_locale_lang_global -y" \
-#     "sudo dpkg --configure -a" \
-#     "sudo apt --fix-broken install -y" \
-#     "sudo ln -sf \"/usr/share/zoneinfo/$etc_timezone\" /etc/localtime" \
-#     "dialog --create-rc $HOME/.dialogrc" \
-#     "sed -i \"s|use_shadow = ON|use_shadow = OFF|g\" $HOME/.dialogrc"
-
-
-show_progress_dialog steps-one-label "${label_progress}" 19 \
-    "grep -q '^#.*$default_locale_env.UTF-8' /etc/locale.gen && sed -i \"s/^# *($default_locale_env.UTF-8)/\1/\" /etc/locale.gen || true" \
-    "locale -a 2>/dev/null | grep -q $default_locale_env.UTF-8 || sudo locale-gen $default_locale_env.UTF-8" \
-    "[ ! -f /etc/locale.conf ] || ! grep -q \"LANG=$default_locale_env.UTF-8\" /etc/locale.conf && echo \"LANG=$default_locale_env.UTF-8\" > /etc/locale.conf" \
-    "[ -f $HOME/.bashrc ] && ! grep -q \"export LANG=$default_locale_env.UTF-8\" $HOME/.bashrc && echo \"export LANG=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
-    "[ -f $HOME/.bashrc ] && ! grep -q \"export LANGUAGE=$default_locale_env.UTF-8\" $HOME/.bashrc && echo \"export LANGUAGE=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
+show_progress_dialog steps-one-label "${label_progress}" 28 \
+    "sed -i \"s/^# *\($default_locale_env.UTF-8\)/\1/\" /etc/locale.gen" \
+    "sudo locale-gen $default_locale_env.UTF-8" \
+    "echo \"LANG=$default_locale_env.UTF-8\" > /etc/locale.conf" \
+    "echo \"export LANG=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
+    "echo \"export LANGUAGE=$default_locale_env.UTF-8\" >> $HOME/.bashrc" \
     "apt update" \
-    "[ ! -f /etc/apt/sources.list.d/mozilla.list ] && sudo install -d -m 0755 /etc/apt/keyrings && wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null && echo \"deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main\" | sudo tee /etc/apt/sources.list.d/mozilla.list && echo -e \"\\nPackage: *\\nPin: origin packages.mozilla.org\\nPin-Priority: 1000\" | sudo tee /etc/apt/preferences.d/mozilla" \
-    "[ ! -f /etc/apt/keyrings/packages.microsoft.gpg ] && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg && sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg && echo 'deb [arch=arm64,armhf,amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list && rm -f packages.microsoft.gpg" \
-    "[ ! -f /etc/apt/sources.list.d/brave-browser-release.sources ] && sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg && sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources" \
-    "[ ! -f /etc/apt/sources.list.d/brave-browser-beta.sources ] && sudo curl -fsSLo /usr/share/keyrings/brave-browser-beta-archive-keyring.gpg https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg && sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-beta.sources https://brave-browser-apt-beta.s3.brave.com/brave-browser.sources" \
-    "[ ! -f /etc/apt/sources.list.d/brave-browser-nightly.sources ] && sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg && sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-nightly.sources https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources" \
+    "sudo install -d -m 0755 /etc/apt/keyrings" \
+    "wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc" \
+    "echo \"deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main\" | sudo tee -a /etc/apt/sources.list.d/mozilla.list" \
+    "echo -e \"\\nPackage: *\\nPin: origin packages.mozilla.org\\nPin-Priority: 1000\" | sudo tee /etc/apt/preferences.d/mozilla" \
+    "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg" \
+    "sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg" \
+    "echo 'deb [arch=arm64,armhf,amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list" \
+    "rm -f packages.microsoft.gpg" \
+    "sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg" \
+    "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources" \
+    "sudo curl -fsSLo /usr/share/keyrings/brave-browser-beta-archive-keyring.gpg https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg" \
+    "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-beta.sources https://brave-browser-apt-beta.s3.brave.com/brave-browser.sources" \
+    "sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg" \
+    "sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-nightly.sources https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources" \
     "apt update" \
-    "dpkg -l | grep -q \"language-pack-gnome-$default_locale_lang_global\" || sudo apt install language-pack-gnome-$default_locale_lang_global -y" \
-    "dpkg -l | grep -q \"language-pack-$default_locale_lang_global\" || sudo apt install language-pack-$default_locale_lang_global -y" \
+    "sudo apt install language-pack-gnome-$default_locale_lang_global -y" \
+    "sudo apt install language-pack-$default_locale_lang_global -y" \
     "sudo dpkg --configure -a" \
     "sudo apt --fix-broken install -y" \
-    "[ ! -L /etc/localtime ] || readlink /etc/localtime | grep -qv \"$etc_timezone\" && sudo ln -sf \"/usr/share/zoneinfo/$etc_timezone\" /etc/localtime" \
-    "[ ! -f $HOME/.dialogrc ] && dialog --create-rc $HOME/.dialogrc" \
-    "[ -f $HOME/.dialogrc ] && ! grep -q 'use_shadow = OFF' $HOME/.dialogrc && sed -i \"s|use_shadow = ON|use_shadow = OFF|g\" $HOME/.dialogrc"
+    "sudo ln -sf \"/usr/share/zoneinfo/$etc_timezone\" /etc/localtime" \
+    "dialog --create-rc $HOME/.dialogrc" \
+    "sed -i \"s|use_shadow = ON|use_shadow = OFF|g\" $HOME/.dialogrc"
 
 # Executa as configurações base do sistema
 if [ -f "$HOME/system-config.sh" ]; then
@@ -122,4 +100,5 @@ rm -rf $HOME/system-config.sh
 rm -rf $HOME/config-environment.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
+
 exit
