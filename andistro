@@ -438,7 +438,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"' \
                     "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
                     "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
-                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"'
+                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
+                    "${label_install_script_download}" 'termux-setup-storage'
             else
                 echo "$distro_command_not_found: $2"
                 exit 1
