@@ -439,6 +439,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
                     "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
                     "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
                     "${label_install_script_download}" 'termux-setup-storage'
             else
                 echo "$distro_command_not_found: $2"
@@ -612,7 +613,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
-            
+
             andistro -s $distro_name
         ;;
 
