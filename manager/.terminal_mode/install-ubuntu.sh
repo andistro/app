@@ -89,6 +89,10 @@ echo "$system_timezone" | tee $folder/etc/timezone
 # 	EOF
 # fi
 
+echo "distro_name=\"$distro_name\"
+distro_theme=\"$distro_theme\"
+default_locale_system=\"$default_locale_system\"" >> $HOME/.bash_profile_variables
+
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin
 
