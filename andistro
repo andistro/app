@@ -626,7 +626,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 exit 1
             elif [ "$2" == "debian" ]; then
                 distro_name_upper="Debian"
-                label_dialog_uninstall_menu=$(printf "$label_dialog_uninstall_menu" "$distro_name_upper")
+                label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
                 resposta=$?
                 
@@ -645,7 +645,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             elif [ "$2" == "ubuntu" ]; then
                 distro_name_upper="Ubuntu"
-                label_dialog_uninstall_menu=$(printf "$label_dialog_uninstall_menu" "$distro_name_upper")
+                label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
                 resposta=$?
                 
@@ -1076,6 +1076,8 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 esac
             fi
         ;;
+
+        # Comando para criar ponte de comunicação entre Termux e Andistro
         --termux-cmd)
             shift  # remove o --termux-cmd
             local file="/termux/home/bridge"
