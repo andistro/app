@@ -1533,7 +1533,6 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
-                    
                     echo -e "\n${label_server_start_desc} \n\n\033[1;96m${label_user}:\033[0m $USER\n\033[1;96m${label_localhost}:\033[0m $HOSTNAME\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m 120.0.0.1\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m $wlan_ip_localhost\033[1;33m:\033[0m$PORT\n\n\033[1;35m${label_password_forgot}\033[0m\n\n\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
                 else
                     echo "$label_server_start_error"
