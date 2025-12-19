@@ -100,3 +100,4 @@ show_progress_dialog steps-one-label "${label_config_environment_gui}" 32 \
 #    "rm -rf $HOME/xfce4-panel.tar.bz2"/backdrop/screen0/monitorVNC-0/workspace0/last-image
 
 rm -rf $HOME/config-environment.sh
+rm -rf $HOME/xfce4-panel.tar.bz2
