@@ -7,7 +7,7 @@ default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:
 source "/usr/local/lib/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 57 \
+show_progress_dialog steps-multi-label 58 \
     "${label_progress}" 'echo "system-config"' \
     "${label_progress}" 'sudo apt clean' \
     "${label_find_update}" 'sudo apt update' \
@@ -64,7 +64,8 @@ show_progress_dialog steps-multi-label 57 \
     "${label_system_setup}" 'sudo dpkg --configure -a' \
     "${label_system_setup}" 'sudo apt --fix-broken install -y' \
     "${label_system_setup}" 'sudo apt-get clean' \
-    "${label_system_setup}" 'sudo apt remove keyboard-configuration -y'
+    "${label_system_setup}" 'sudo apt remove keyboard-configuration -y' \
+    "${label_system_setup}" 'echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc'
 
 sleep 2
 
