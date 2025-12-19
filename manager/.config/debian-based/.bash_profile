@@ -84,22 +84,7 @@ label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
 
-# ✅ Verifica se já existe no .bashrc
-if [ -f "$HOME/.bashrc" ] && grep -q "andistro --boot vnc --dialog-display" "$HOME/.bashrc"; then
-    echo "✅ Comando já configurado no .bashrc"
-else
-    dialog --no-shadow --title "$label_dialog_display_menu_sugestion" --yesno "$label_dialog_display_menu_sugestion_desc" 10 60
-    resposta=$?
-    
-    if [ $resposta -eq 0 ]; then
-        # Usuário escolheu "Sim"
-        echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
-        andistro alerta setup-apply
-    else
-        # Usuário escolheu "Não"
-        andistro alerta dialog-display
-    fi
-fi
+echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
 
 andistro alerta install-success
 
