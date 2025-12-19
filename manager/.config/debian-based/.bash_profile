@@ -76,4 +76,6 @@ rm -rf $HOME/config-environment.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
 
+#andistro alerta install-success
+
 exit
