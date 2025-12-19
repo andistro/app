@@ -54,38 +54,25 @@ show_progress_dialog steps-one-label "${label_progress}" 28 \
     "sed -i \"s|use_shadow = ON|use_shadow = OFF|g\" $HOME/.dialogrc"
 
 # Executa as configurações base do sistema
-if [ -f "$HOME/system-config.sh" ]; then
-    bash $HOME/system-config.sh "$distro_theme" "$distro_name"
-fi
+bash $HOME/system-config.sh "$distro_theme" "$distro_name"
 
-# Baixa os wallpapers adicionais
-BACKGROUND_PATH="/usr/share/backgrounds/andistro/"
-BACKGROUND_FILES=("andistro-light.jpg" "andistro-medium.jpg" "andistro-dark.jpg")
+show_progress_dialog steps-multi-label 4 \
+    "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro'\
+    "${label_wallpaper_download}\n\n → AnDistro: Light" 'wget -O "/usr/share/backgrounds/andistro/andistro-light.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/light.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Medium" 'wget -O "/usr/share/backgrounds/andistro/andistro-medium.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/medium.jpg"' \
+    "${label_wallpaper_download}\n\n → AnDistro: Dark" 'wget -O "/usr/share/backgrounds/andistro/andistro-dark.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/dark.jpg"'
 
-if [ -f "$BACKGROUND_PATH${BACKGROUND_FILES[0]}" ] && \
-   [ -f "$BACKGROUND_PATH${BACKGROUND_FILES[1]}" ] && \
-   [ -f "$BACKGROUND_PATH${BACKGROUND_FILES[2]}" ]; then
-    echo " "
-else
-    show_progress_dialog steps-multi-label 4 \
-        "${label_wallpaper_download}\n\n → AnDistro: " 'mkdir -p /usr/share/backgrounds/andistro'\
-        "${label_wallpaper_download}\n\n → AnDistro: Light" 'wget -O "/usr/share/backgrounds/andistro/andistro-light.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/light.jpg"' \
-        "${label_wallpaper_download}\n\n → AnDistro: Medium" 'wget -O "/usr/share/backgrounds/andistro/andistro-medium.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/medium.jpg"' \
-        "${label_wallpaper_download}\n\n → AnDistro: Dark" 'wget -O "/usr/share/backgrounds/andistro/andistro-dark.jpg" "https://gitlab.com/andistro/wallpapers/-/raw/main/dark.jpg"'
-fi
 
 # Configurações da inteface escolhida
-if [ -f "$HOME/config-environment.sh" ]; then
-    bash "$HOME/config-environment.sh" "$distro_theme"
-fi
+bash "$HOME/config-environment.sh" "$distro_theme"
+
+echo "cod0323"
+sleep 2
 
 distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
 label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
-echo "Finalizado"
-
-
 
 andistro alerta install-success
 
