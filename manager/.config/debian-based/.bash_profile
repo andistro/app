@@ -65,16 +65,10 @@ show_progress_dialog steps-multi-label 4 \
 
 # Configurações da inteface escolhida
 bash "$HOME/config-environment.sh" "$distro_theme"
-
-echo "cod0323"
-sleep 2
-
 distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
 label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
-
-andistro alerta install-success
 
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
