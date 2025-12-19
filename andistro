@@ -1517,28 +1517,6 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 # Função para salvar resolução padrão             
                 if [[ -n "$DISPLAY_VALUE" ]]; then
                     #echo "Executando: vncserver -localhost -no -depth 24 -name remote-desktop $DISPLAY_VALUE :$PORT_VALUE"
-                    save_default_resolution() {
-                        local res="$1"
-                        local port="$2"
-                        local scale="$3"
-                        echo "RESOLUTION=$res" >> $HOME/.sever_resolution_default
-                        echo "PORT=$port" >> $HOME/.sever_resolution_default
-                        echo "SCALE=$scale" >> $HOME/.sever_resolution_default
-                    }
-                    current_resolution="$DISPLAY_VALUE"
-                    save_resolution "$current_resolution"
-                    
-                    if check_repeated_resolution "$current_resolution"; then
-                        if ask_set_default "$current_resolution"; then
-                            if [ -n "$SCALE_VALUE" ]; then
-                                save_default_resolution "$current_resolution" "$PORT_VALUE" "$SCALE_VALUE"
-                            else
-                                save_default_resolution "$current_resolution" "$PORT_VALUE" "1"
-                            fi
-                            
-                            echo "$label_resolution_option_custom ($current_resolution)" 10 50
-                        fi
-                    fi
 
                     vncserver -localhost no -depth 24 -name andistro-desktop -geometry "$DISPLAY_VALUE" :$PORT_VALUE
                     #vncserver -localhost no -depth 24 -name remote-desktop -geometry "1920x1080" :1
