@@ -14,7 +14,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     source "$PREFIX/var/lib/andistro/lib/share/global"
 
     # Configurações do Termux
-     if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
+    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
         # Descomenta a linha removendo o '#' no começo
         sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
         termux-reload-settings
