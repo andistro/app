@@ -615,7 +615,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             clear
             #echo "andistro --boot vnc --dialog-display" >> $folder/root/.bashrc # Adiciona o comando para iniciar o VNC automaticamente ao iniciar a distro
             
-            
             andistro -s $distro_name
         ;;
 
