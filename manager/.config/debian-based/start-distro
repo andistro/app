@@ -67,7 +67,9 @@ if [ -n "$PA_PID" ]; then
   kill $PA_PID
 fi
 
-#if [ -n "$LISTENER_PID" ]; then
-#  kill $LISTENER_PID
-#  rm -rf $HOME/andistro-bridge
-#fi
+if [ -n "$LISTENER_PID" ]; then
+    kill -TERM "$LISTENER_PID" 2>/dev/null
+    sleep 1
+    kill -KILL "$LISTENER_PID" 2>/dev/null
+    rm -f "$HOME/andistro-bridge"
+fi

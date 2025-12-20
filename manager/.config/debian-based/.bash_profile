@@ -70,7 +70,7 @@ label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
 echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
 
-#echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
+echo "andistro --boot vnc --dialog-display" >> $HOME/.bashrc
 
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
@@ -78,6 +78,6 @@ rm -rf $HOME/config-environment.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
 
-#andistro alerta install-success
+andistro alerta install-success
 
 exit

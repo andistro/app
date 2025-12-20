@@ -1,9 +1,10 @@
 #!/bin/bash
+trap 'rm -f ~/andistro-bridge; exit 0' TERM INT
 while true; do
     if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
         CMD=$(cat ~/andistro-bridge)
         rm ~/andistro-bridge
-        sh -c "$CMD"   # executa o comando recebido
+        sh -c "$CMD"
     fi
     sleep 0.5
 done
