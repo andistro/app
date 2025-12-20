@@ -1,9 +1,9 @@
 #!/bin/bash
-trap 'rm -f ~/andistro-bridge; exit 0' TERM INT
+trap 'rm -f $HOME/andistro-bridge; exit 0' TERM INT
 while true; do
-    if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
-        CMD=$(cat ~/andistro-bridge)
-        rm ~/andistro-bridge
+    if [ -f $HOME/andistro-bridge ] && [ -s $HOME/andistro-bridge ]; then
+        CMD=$(cat $HOME/andistro-bridge)
+        rm $HOME/andistro-bridge
         sh -c "$CMD"
     fi
     sleep 0.5
