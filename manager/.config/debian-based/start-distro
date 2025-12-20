@@ -6,9 +6,9 @@ fi
 #cd $(dirname $0)
 cd $HOME
 
-#chmod +x $PREFIX/var/lib/andistro/lib/share/listener
-#bash $PREFIX/var/lib/andistro/lib/share/listener &
-#LISTENER_PID=$!
+chmod +x $PREFIX/var/lib/andistro/lib/share/listener
+bash $PREFIX/var/lib/andistro/lib/share/listener &
+LISTENER_PID=$!
 
 pulseaudio --start --exit-idle-time=-1
 PA_PID=$(pgrep pulseaudio)
