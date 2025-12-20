@@ -6,6 +6,15 @@ fi
 #cd $(dirname $0)
 cd $HOME
 
+# Cleanup universal (executa SEMPRE na saída)
+cleanup() {
+    #echo "🧹 Limpando..."
+    rm -f "$HOME/andistro-bridge"
+    pkill -f "pulseaudio" 2>/dev/null
+    [ -n "$LISTENER_PID" ] && kill "$LISTENER_PID" 2>/dev/null
+}
+trap cleanup EXIT INT TERM
+
 chmod +x $PREFIX/var/lib/andistro/lib/share/listener
 bash $PREFIX/var/lib/andistro/lib/share/listener &
 LISTENER_PID=$!
@@ -57,19 +66,8 @@ command+=" LANG=$default_locale_env.UTF-8"
 command+=" /bin/bash --login"
 com="$@"
 if [ -z "$1" ];then
-    exec $command
+    $command
 else
     $command -c "$com"
 fi
 
-PA_PID=$(pgrep pulseaudio)
-if [ -n "$PA_PID" ]; then
-  kill $PA_PID
-fi
-
-if [ -n "$LISTENER_PID" ]; then
-    kill -TERM "$LISTENER_PID" 2>/dev/null
-    sleep 1
-    kill -KILL "$LISTENER_PID" 2>/dev/null
-    rm -f "$HOME/andistro-bridge"
-fi
