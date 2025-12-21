@@ -1082,17 +1082,6 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 esac
             fi
         ;;
-
-        # Comando para criar ponte de comunicação entre Termux e Andistro
-        --termux-cmd)
-            #shift  # remove o --termux-cmd
-            local file="/termux/home/andistro-bridge"
-            printf "%s\n" "$1" > "$file" 2>/dev/null || {
-                echo "Erro: bridge indisponível"
-                return 1
-            }
-            echo "'$1' → Termux"
-        ;;
         # Comando para iniciar alguma configuração
         --boot)
             shift
@@ -1545,7 +1534,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
                         echo -e "\n\e[1;32mAbrindo aVNC...\e[0m"
-                        andistro --termux-cmd "am start -d 'vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true'"
+                        termux-cmd "am start -d 'vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true'"
                         exit 1
                     fi
 
