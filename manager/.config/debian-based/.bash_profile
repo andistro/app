@@ -16,11 +16,21 @@ echo -e "\n ${distro_wait}\n"
 
 cat << 'EOF' >> ~/.bashrc
 
+# Andistro Bridge - Integração Debian ↔ Termux/Android
 termux-cmd() {
     local file="/termux/home/andistro-bridge"
-    rm -f "$file" 2>/dev/null
-    printf "%s" "$1" > "$file"
+    printf "%s\n" "$1" > "$file" 2>/dev/null || {
+        echo "Erro: bridge indisponível"
+        return 1
+    }
+    echo "'$1' → Termux"
 }
+
+# Comandos rápidos
+android-open() { termux-cmd "termux-open '$1'"; }
+android-app()  { termux-cmd "am start -n '$1'"; }
+termux-echo()  { termux-cmd "echo '$1'"; }
+
 EOF
 
 show_progress_dialog steps-one-label "${label_progress}" 28 \
