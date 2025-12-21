@@ -1082,6 +1082,29 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 esac
             fi
         ;;
+        # Bridge direto Debian → Termux
+        --termux-cmd)
+            shift
+            # Junta todos os argumentos restantes em um comando único
+            local cmd="$*"
+
+            if [ -z "$cmd" ]; then
+                echo "Uso: andistro --termux-cmd \"COMANDO_DO_TERMUX\""
+                exit 1
+            fi
+
+            local file="/termux/home/andistro-bridge"
+
+            # Escreve o comando no arquivo de bridge
+            printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
+                echo "Erro: bridge indisponível"
+                exit 1
+            }
+
+            echo "'$cmd' → Termux"
+            exit 0
+        ;;
+
         # Comando para iniciar alguma configuração
         --boot)
             shift
