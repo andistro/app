@@ -408,7 +408,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
                     "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y' \
                     "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y' \
-                    "${label_upgrade}" 'pkg upgrade' \
+                    "${label_upgrade}" 'pkg upgrade -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends termux-exec -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends proot -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends x11-repo -y' \
