@@ -1085,15 +1085,20 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         # Bridge direto Debian → Termux
         --termux-cmd)
             shift
-            # Junta todos os argumentos restantes em um comando único
-            local cmd="$*"
+            cmd="$*"   # junta todos os argumentos em uma string
 
             if [ -z "$cmd" ]; then
                 echo "Uso: andistro --termux-cmd \"COMANDO_DO_TERMUX\""
                 exit 1
             fi
 
-            local file="/termux/home/andistro-bridge"
+            file="/termux/home/andistro-bridge"
+
+            # Garante que o diretório /termux/home existe dentro do proot
+            if [ ! -d "/termux/home" ]; then
+                echo "Erro: diretório /termux/home não está acessível dentro do Debian"
+                exit 1
+            fi
 
             # Escreve o comando no arquivo de bridge
             printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
@@ -1557,7 +1562,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
                         echo -e "\n\e[1;32mAbrindo aVNC...\e[0m"
-                        termux-cmd "am start -d 'vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true'"
+                        andistro --termux-cmd "am start -d 'vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true'"
                         exit 1
                     fi
 
