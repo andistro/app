@@ -422,6 +422,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             # Exportar, se necessário
             export default_locale_system
             export default_locale_env
+            export system_icu_locale_code="$default_locale_system"
 
             # Detectar arquitetura
             case `dpkg --print-architecture` in
