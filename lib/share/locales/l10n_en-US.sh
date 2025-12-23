@@ -5,11 +5,12 @@
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # AnDistro executable specifics
 # Global AnDistro
+distro_desc_line_0="Use: andistro <command> to perform the desired task."
 distro_desc_line_1="Use: andistro <command> <option> to perform the desired task."
 distro_desc_line_10="Available commands for you:"
 # Exclusive andistro in termux
 distro_desc_line_2="Example command that allows initialization:"
-distro_desc_line_3=" andistro -s debian"
+distro_desc_line_3=" andistro -s"
 distro_desc_line_4="Example command that allows uninstallation:"
 distro_desc_line_5=" andistro -d debian"
 distro_desc_line_6="Example command that allows installation:"
@@ -17,7 +18,7 @@ distro_desc_line_7=" andistro -i debian"
 distro_desc_line_8="Example command that allows updating AnDistro:"
 distro_desc_line_9=" andistro -u"
  
-distro_desc_line_11=" -s initializes the chosen version."
+distro_desc_line_11=" -s initializes the Debian."
 distro_desc_line_12=" -d uninstalls the chosen option."
 distro_desc_line_13=" -i installs the chosen option."
 distro_desc_line_14=" -u updates AnDistro."
@@ -54,7 +55,7 @@ distro_del="uninstall"
 distro_command="<command>"
 label_system_start="Start the system"
 label_system_uninstall="Uninstall the system"
-label_system_install_systems="Install systems"
+label_system_install_system="Install the system"
 label_system_install_other_systems="Install other systems"
 label_andistro_updater="Update AnDistro"
 label_andistro_termianl_viewer="View as terminal"
