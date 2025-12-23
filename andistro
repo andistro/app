@@ -47,11 +47,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_system_start" # Iniciar o sistema
                     d "$label_system_uninstall" # Desinstalar o sistema
-                    i "$label_system_install_other_systems" # Instalar outros sistemas
                     u "$label_andistro_updater" # Atualizar o AnDistro
                     t "$label_andistro_termianl_viewer") # Ver como terminal
         else
-            OPTIONS=(i "$label_system_install_systems" # Instalar sistemas
+            OPTIONS=(i "$label_system_install_system" # Instalar o sistema
                     u "$label_andistro_updater" # Atualizar o AnDistro
                     t "$label_andistro_termianl_viewer") # Ver como terminal
         fi
@@ -69,120 +68,17 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         case $CHOICE in
             # Iniciar o sistema
             s)
-                start_debian=false
-                start_ubuntu=false
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
-                    start_debian=true
-                fi
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
-                    start_ubuntu=true
-                fi
-
-                if $start_debian && ! $start_ubuntu; then
-                    OPTIONS=(d "Debian")
-                elif ! $start_debian && $start_ubuntu; then
-                    OPTIONS=(u "Ubuntu")
-                elif $start_debian && $start_ubuntu; then
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. "$label_back") # Voltar
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                case $CHOICE in
-                    d)
-                        andistro -s debian
-                        ;;
-                    u)
-                        andistro -s ubuntu
-                        ;;
-                    .)
-                        andistro
-                        ;;
-                esac
+               andistro -s
             ;;
 
             # Desinstalar o sistema
             d)
-                start_debian=false
-                start_ubuntu=false
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
-                    start_debian=true
-                fi
-
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
-                    start_ubuntu=true
-                fi
-
-                if $start_debian && ! $start_ubuntu; then
-                    OPTIONS=(d "Debian")
-                elif ! $start_debian && $start_ubuntu; then
-                    OPTIONS=(u "Ubuntu")
-                elif $start_debian && $start_ubuntu; then
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                else
-                # Não tem nenhum sistema instalado
-                OPTIONS=(. "$label_back") # Voltar
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                
-                case $CHOICE in
-                    d)
-                        andistro -d debian
-                        andistro
-                        ;;
-                    u)
-                        andistro -d ubuntu
-                        andistro
-                        ;;
-                    .)
-                        andistro
-                        ;;
-                esac
+                andistro -d
             ;;
 
             # Instalar sistemas
             i)
-                if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
-                    OPTIONS=(u "Ubuntu")
-                elif ls "$PREFIX/var/lib/andistro/manager/start-ubuntu" 1>/dev/null 2>&1; then
-                    OPTIONS=(d "Debian")
-                else
-                    OPTIONS=(d "Debian"
-                            u "Ubuntu")
-                fi
-
-                CHOICE=$(dialog --no-shadow --clear \
-                                --title "AnDistro" \
-                                --menu "$label_choose_one_of_the_option:" \
-                                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                                "${OPTIONS[@]}" \
-                                2>&1 >/dev/tty)
-                case $CHOICE in
-                    d)
-                        andistro -i debian
-                        ;;
-                    u)
-                        andistro -i ubuntu
-                        ;;
-                esac
+                andistro -i
             ;;
 
             # Atualizar o AnDistro
@@ -459,32 +355,18 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Comando para instalar uma distro
         -i)
             if [ -z "$2" ]; then
-                andistro terminal
-            elif [ "$2" == "debian" ]; then
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
                 distro_file="install-$distro_name.sh"
 
-            elif ["$2" == "debian-sh"]; then
+            elif [ "$2" == "terminal-mode" ]; then
                 distro_name="debian"
                 distro_version="stable"
                 distro_based="debian"
                 distro_file=".terminal_mode/install-$distro_name.sh"
 
-            elif [ "$2" == "ubuntu" ]; then
-                distro_name="ubuntu"
-                distro_version="noble"
-                distro_based="debian"
-                distro_file="install-$distro_name.sh"
-
-            elif ["$2" == "ubuntu-sh"]; then
-                distro_name="ubuntu"
-                distro_version="noble"
-                distro_based="debian"
-                distro_file=".terminal_mode/install-$distro_name.sh"
-
-            else
+            else 
                 echo "$distro_command_not_found: $2"
                 exit 1
             fi
@@ -549,12 +431,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 arm)
                     archurl="armhf"
                 ;;
-                x86_64)
-                    archurl="amd64"
-                ;;
-                x86)
-                    archurl="i386"
-                ;;
                 *)
                     echo "unknown architecture"; exit 1
                 ;;
@@ -615,20 +491,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             clear
             #echo "andistro --boot vnc --dialog-display" >> $folder/root/.bashrc # Adiciona o comando para iniciar o VNC automaticamente ao iniciar a distro
             
-            andistro -s $distro_name
+            andistro -s
         ;;
 
         # Comando para desinstalar uma distro
         -d)
             if [ -z "$2" ]; then
-                andistro terminal
-            elif [ "$2" == "total" ]; then
-                # Desinstalação total
-                echo "$distro_wait"
-                rm -rf $andistro_files
-                rm -rf $PREFIX/bin/andistro
-                exit 1
-            elif [ "$2" == "debian" ]; then
                 distro_name_upper="Debian"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
@@ -647,45 +515,31 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     exit 1
                 fi
 
+                show_progress_dialog steps-one-label "${label_uninstalling_system}" 5 \
+                    "sleep 1" \
+                    "sleep 1" \
+                    "sleep 1" \
+                    "rm -rf $andistro_files/manager/$distro_name" \
+                    "rm -rf $andistro_files/manager/start-$distro_name"
 
-            elif [ "$2" == "ubuntu" ]; then
-                distro_name_upper="Ubuntu"
-                label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
-                dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
-                resposta=$?
-                
-                if [ $resposta -eq 0 ]; then
-                    # Usuário escolheu "Sim"
-                    echo "$distro_wait"
-                    distro_name="ubuntu"
-                    distro_name_upper="Ubuntu"
-                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
-                else
-                    # Usuário escolheu "Não"
-                    label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "Ubuntu")
-                    andistro alerta uninstall-cancelled
-                    exit 1
-                fi
+                andistro alerta uninstall-success
+            elif [ "$2" == "andistro" ]; then
+                # Desinstalação total
+                echo "$distro_wait"
+                rm -rf $andistro_files
+                rm -rf $PREFIX/bin/andistro
+                echo "$label_uninstalling_andistro_complete"
+                exit 0
             else
                     echo "$distro_command_not_found: $2"
                     exit 1
             fi
-            show_progress_dialog steps-one-label "${label_uninstalling_system}" 5 \
-                "sleep 1" \
-                "sleep 1" \
-                "sleep 1" \
-                "rm -rf $andistro_files/manager/$distro_name" \
-                "rm -rf $andistro_files/manager/start-$distro_name"
-
-            andistro alerta uninstall-success
+            
         ;;
 
         # Comando para iniciar uma distro
         -s)
             if [ -z "$2" ]; then
-                andistro terminal
-
-            elif [ "$2" == "debian" ]; then
                 echo "$distro_wait"
                 if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     bash $PREFIX/var/lib/andistro/manager/start-debian
@@ -694,98 +548,47 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     echo -e "$label_distro_not_installed_desc"
                 fi
 
-            elif [ "$2" == "ubuntu" ]; then
-                echo "$distro_wait"
-                if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then
-                    bash $PREFIX/var/lib/andistro/manager/start-ubuntu
-                else
-                    label_distro_not_installed_desc=$(printf "$label_distro_not_installed_desc" "Ubuntu")
-                    echo -e "$label_distro_not_installed_desc"
-                fi
-
             else
                 echo "$distro_command_not_found: $2"
+                andistro terminal
                 exit 1
             fi
         ;;
 
         # Comando para ver os comandos como terminal
         -t|terminal)
-            start_distro=false
             start_debian=false
-            start_ubuntu=false
             
-            if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then # Verifica se alguma distro está instalada
-                start_distro=true
-            fi
             if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then # Verifica se o Debian está instalado
                     start_debian=true
             fi
-            if [ -f "$PREFIX/var/lib/andistro/manager/start-ubuntu" ]; then # Verifica se o Ubuntu está instalado
-                start_ubuntu=true
-            fi
-            echo "$distro_desc_line_1" #Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+            echo "$distro_command_guide" # Guia de comandos do AnDistro
             echo ""
-            echo "$distro_desc_line_2" #Exemplo de comando que permite a inicialização:
-            echo "$distro_desc_line_3" #andistro -s debian
+            echo "$distro_desc_line_t1" #Exemplo de comando que permite a inicialização:
+            echo "$distro_desc_line_t2" #andistro -s
             echo " "
-            echo "$distro_desc_line_4" #Exemplo de comando que permite a desinstalação:
-            echo "$distro_desc_line_5" #   andistro -d debian
+            echo "$distro_desc_line_t3" #Exemplo de comando que permite a desinstalação:
+            echo "$distro_desc_line_t4" #   andistro -d
             echo " "
-            echo "$distro_desc_line_6" #Exemplo de comando que permite a instalação:
-            echo "$distro_desc_line_7" #   andistro -i debian
+            echo "$distro_desc_line_t5" #Exemplo de comando que permite a instalação:
+            echo "$distro_desc_line_t6" #   andistro -i
             echo " "
-            echo "$distro_desc_line_31" #Modo de instalação sem interface gráfica, totalmente terminal
-            echo "$distro_desc_line_32" #Adicione o -sh após o nome da distribuição
+            echo "$distro_desc_line_t7" #Exemplo de comando que permite a instalação sem interface gráfica
+            echo "$distro_desc_line_t8" #andistro -i terminal-mode
             echo " "
-            echo "$distro_desc_line_33" #Exemplo de comando que permite a instalação sem interface gráfica
-            echo "$distro_desc_line_34" #Modo de instalação sem interface gráfica, totalmente terminal
-            echo "$distro_desc_line_35" #andistro -i debian-sh
+            echo "$distro_desc_line_t9" #Exemplo de comando que permite a atualização do AnDistro:
+            echo "$distro_desc_line_t10" #   andistro -u
             echo " "
-            echo "$distro_desc_line_8" #Exemplo de comando que permite a atualização do AnDistro:
-            echo "$distro_desc_line_9" #   andistro -u
-            echo " "
-            echo "$distro_desc_line_10" #Comandos disponíveis para você:
-            echo "$distro_desc_line_14" #    -u  atualiza o AnDistro.
-            if $start_distro; then # Verifica se alguma distro está instalada
-                echo "$distro_desc_line_11" #    -s  inicia a opção escolhida.
-                echo "$distro_desc_line_12" #    -d  desinstala a opção escolhida.
+            echo "$commands_available_to_you" #Comandos disponíveis para você:
+            echo "$distro_desc_line_t11" #    -u  atualiza o AnDistro.
+            if [ "$start_debian" = true ]; then  # ✅ Executa só se Debian estiver instalado
+                echo "$distro_desc_line_t12" #    -s  inicia o Debian.
+                echo "$distro_desc_line_t13" #    -d  desinstala o Debian.
             fi
-            if $start_distro; then # Verifica se nenhuma distro está instalada
-                echo "$distro_desc_line_13" #    -i  instala a opção escolhida.
+            
+            if [ "$start_debian" = false ]; then  # ✅ Executa só se Debian NÃO estiver instalado
+                echo "$distro_desc_line_t14"     # -i instala o Debian.
             fi
-            echo " "
-            echo "$distro_desc_line_15" #Opções de sistemas disponíveis para a instalação:
-            if $start_debian && ! $start_ubuntu; then # Verifica se apenas o Debian está instalado
-                echo "   ubuntu" # Se o Debian estiver instalado, mostra apenas o Ubuntu
-                echo "   ubuntu-sh"
-            elif ! $start_debian && $start_ubuntu; then # Verifica se apenas o Ubuntu está instalado
-                echo "   debian" # Se o Ubuntu estiver instalado, mostra apenas o Debian
-                echo "   debian-sh"
-            elif $start_debian && $start_ubuntu; then # Verifica se ambos estão instalados
-                echo -e "\u26A0 $label_all_systems_have_been_installed" # Se ambos estiverem instalados, mostra o aviso: Todos os sistemas foram instalados
-            else # Se nenhum estiver instalado
-                echo "   debian"
-                echo "   debian-sh"
-                echo "   ubuntu"
-                echo "   ubuntu-sh"
-            fi
-            echo " "
-            echo "$distro_desc_line_16" #Opções de sistemas disponíveis para a inicialização e desinstalação:
-            if $start_debian && ! $start_ubuntu; then # Verifica se apenas o Debian está instalado
-                echo "   debian" # Se o Debian estiver instalado, mostra apenas o Debian
-            elif ! $start_debian && $start_ubuntu; then # Verifica se apenas o Ubuntu está instalado
-                echo "   ubuntu" # Se o Ubuntu estiver instalado, mostra apenas o Ubuntu
-            elif $start_debian && $start_ubuntu; then # Verifica se ambos estão instalados
-                # Se ambos estiverem instalados, mostra ambos
-                echo "   debian"
-                echo "   ubuntu"
-                
-            else # Se nenhum estiver instalado
-                # Se nenhum estiver instalado, mostra o aviso
-                echo -e "\u26A0 $label_andistro_there_no_system_installed" #Não tem nenhum sistema instalado
-            fi
-            echo " "
         ;;
 
         # DevTools
@@ -887,12 +690,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         ;;
                     start-debian)
                         nano "$PREFIX/var/lib/andistro/manager/start-debian"
-                        ;;
-                    install-ubuntu)
-                        nano "$PREFIX/var/lib/andistro/manager/install-ubuntu.sh"
-                        ;;
-                    start-ubuntu)
-                        nano "$PREFIX/var/lib/andistro/manager/start-ubuntu"
                         ;;
                     module-global)
                         nano "$PREFIX/var/lib/andistro/lib/share/global"
@@ -996,26 +793,28 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
-        echo "$distro_desc_line_1" # Use: andistro <comando> <opção> para seja feito a tarefa desejada.
+        echo "$distro_command_guide" # Guia de comandos do AnDistro
         echo " "
-        echo "$distro_desc_line_10" # Comandos disponíveis:
-        echo "$distro_desc_line_17" #     --boot  comando para iniciar alguma configuração.
+        echo "$distro_desc_line_0_0" # Use: andistro <comando> <subcomando> para seja feito a tarefa desejada.
         echo " "
-        echo "$distro_desc_line_18" # Subcomandos do --boot
-        echo "$distro_desc_line_19" #     vnc  para iniciar o servidor VNC
+        echo "$commands_available_to_you" # Comandos disponíveis:
+        echo "$distro_desc_line_d1" #     --boot  comando para iniciar alguma configuração.
         echo " "
-        echo "$distro_desc_line_20" # Subcomandos do --boot vnc
-        echo "$distro_desc_line_21" #     --display  define a resolução da tela que será exibida
-        echo "$distro_desc_line_22" #     --scale    define a escala da tela (1 ou 2)
-        echo "$distro_desc_line_23" #     --port     define a porta usada pelo servidor.
-        echo "$distro_desc_line_29" # O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado
-        echo "$distro_desc_line_30" # O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão.
+        echo "$distro_desc_line_d2" # Subcomandos do --boot
+        echo "$distro_desc_line_d3" #     vnc  para iniciar o servidor VNC
         echo " "
-        echo "$distro_desc_line_24" # Exemplo de comando que permite a inicialização do servior vnc
-        echo "$distro_desc_line_25" # Modo simples
-        echo "$distro_desc_line_26" #   andistro --boot vnc
-        echo "$distro_desc_line_27" # Modo completo
-        echo "$distro_desc_line_28" #   andistro --boot vnc --display 1920x1080 --port 1 --scale 1
+        echo "$distro_desc_line_d4" # Subcomandos do --boot vnc
+        echo "$distro_desc_line_d5" #     --display  define a resolução da tela que será exibida
+        echo "$distro_desc_line_d6" #     --scale    define a escala da tela (1 ou 2)
+        echo "$distro_desc_line_d7" #     --port     define a porta usada pelo servidor.
+        echo "$distro_desc_line_d8" # O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado
+        echo "$distro_desc_line_d9" # O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão.
+        echo " "
+        echo "$distro_desc_line_d10" # Exemplo de comando que permite a inicialização do servior vnc
+        echo "$distro_desc_line_d11" # Modo simples
+        echo "$distro_desc_line_d12" #   andistro --boot vnc
+        echo "$distro_desc_line_d13" # Modo completo
+        echo "$distro_desc_line_d14" #   andistro --boot vnc --display 1920x1080 --port 1 --scale 1
         echo " "
         exit 0
     fi
@@ -1199,7 +998,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                             ;;
                         --dialog-display)
                             timestamp=$(date +'%d%m%Y-%H%M%S')
-                            andistro --boot vnc --kill # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
+                            andistro --boot vnc --kill >/dev/null 2>&1 # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
                             #=====================================================================================
                             #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
                             # Painel de seleção de resolução
