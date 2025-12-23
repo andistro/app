@@ -106,8 +106,7 @@ label_command_problem_andistro_for_distro="This command only works if you exit t
 # Hint
 label_info_command_andistro_start="Use the 'andistro' command to start."
 label_select_no_to_choose_other_resolution="Select 'No' to choose another resolution."
-label_start_dialog_display="If you want to start the server with the interactive screen, use the command:\
-andistro --boot vnc --dialog-display"
+label_start_dialog_display="If you want to start the server with the interactive screen, use the command:\nandistro --boot vnc --dialog-display"
 # One-word info
 label_error="Error"
 label_done="Finished"
@@ -150,8 +149,7 @@ label_sleep_in_10s="This message will disappear in 10 seconds."
 # System
 label_distro_boot="System %s has been started"
 label_distro_not_installed="The %s is not installed."
-label_distro_not_installed_desc="The %s is not yet installed; follow the steps below for installation:\
-Type the 'andistro' command followed by enter (↲), choose the install option. Then choose %s to start the installation."
+label_distro_not_installed_desc="The %s is not yet installed; follow the steps below for installation:\nType the 'andistro' command followed by enter (↲), choose the install option. Then choose %s to start the installation."
 label_distro_installed="The %s is already installed."
 # Server
 label_server_kill_desc="Shutting down the server..."
@@ -164,23 +162,12 @@ label_server_start_error="The VNC server is not started. Please check the error 
 label_select_resolution="Resolution selection"
 label_choose_one_resolution="Choose one of the options below"
 label_resolution_frequent="Frequent Resolution Detected"
-label_resolution_frequent_desc="You have been using the %s resolution lately.\
-\
-Do you want to set this resolution as default?\
-\
-This will prevent the selection menu from appearing next time."
+label_resolution_frequent_desc="You have been using the %s resolution lately.\n\nDo you want to set this resolution as default?\n\nThis will prevent the selection menu from appearing next time."
 label_resolution_remove_default="Do you want to remove the default resolution?"
-label_resolution_remove_default_desc="You are about to remove the saved default resolution.\
-\
-This will make the resolution selection menu appear again the next time you start VNC.\
-\
-Do you want to continue?"
+label_resolution_remove_default_desc="You are about to remove the saved default resolution.\n\nThis will make the resolution selection menu appear again the next time you start VNC.\n\nDo you want to continue?"
 label_resolution_remove_default_sucess="The resolution is no longer the default."
 label_resolution_option_default="Default resolution"
-label_resolution_option_default_desc="Confirm to start with the resolution set as default. \
-\
-Press '<Yes>' to confirm or press enter (↲). \
-Press '<No>' to choose another resolution."
+label_resolution_option_default_desc="Confirm to start with the resolution set as default. \n\nPress '<Yes>' to confirm or press enter (↲). \nPress '<No>' to choose another resolution."
 label_resolution_choose_options="Choose some options"
 label_resolution_choose_default="You chose to use the default resolution"
 label_resolution_choose_custom="You chose to set the resolution manually"
@@ -197,9 +184,4 @@ label_resolution_option_hd="HD"
 label_dialog_display_menu_sugestion="Resolution Suggestions"
 label_dialog_display_menu_sugestion_desc="Do you want a dialog box with screen resolution suggestions to appear every time the system starts?"
 label_dialog_uninstall_menu="Do you want to continue with the uninstallation?"
-label_dialog_uninstall_menu_desc="You are about to uninstall the system %s.\
-\
-All data related to this system will be lost. \
-THIS IS AN IRREVERSIBLE ACTION.\
-\
-Do you want to continue?"
+label_dialog_uninstall_menu_desc="You are about to uninstall the system %s.\n\nAll data related to this system will be lost. \nTHIS IS AN IRREVERSIBLE ACTION.\n\nDo you want to continue?"
