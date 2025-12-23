@@ -14,6 +14,9 @@ distro_theme="${11}"
 distro_version="${12}"
 
 source "$PREFIX/var/lib/andistro/lib/share/global"
+
+chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
+source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
 # Fonte modular configuração global
 
 #=============================================================================================

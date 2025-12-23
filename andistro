@@ -423,6 +423,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             export default_locale_system
             export default_locale_env
             export system_icu_locale_code="$default_locale_system"
+            chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
+            source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
 
             # Detectar arquitetura
             case `dpkg --print-architecture` in
