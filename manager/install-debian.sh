@@ -28,9 +28,9 @@ fi
 
 sleep 2
 # Baixar
-label_distro_download=$(printf "$label_distro_download" "$distro_name")
-label_distro_download_start=$(printf "$label_distro_download_start" "$distro_name")
-label_distro_download_finish=$(printf "$label_distro_download_finish" "$distro_name")
+label_distro_download=$(printf "$label_distro_download" "Debian")
+label_distro_download_start=$(printf "$label_distro_download_start" "Debian")
+label_distro_download_finish=$(printf "$label_distro_download_finish" "Debian")
 
 if [ "$first" != 1 ];then
 	{
