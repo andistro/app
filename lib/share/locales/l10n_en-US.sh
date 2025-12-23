@@ -1,48 +1,42 @@
 #!/bin/bash
 # Translated by Comet (Perplexity)
-
 #=====================================================================================================
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # AnDistro executable specifics
 # Global AnDistro
 distro_desc_line_0="Use: andistro <command> to perform the desired task."
-distro_desc_line_1="Use: andistro <command> <option> to perform the desired task."
-distro_desc_line_10="Available commands for you:"
+distro_desc_line_0_0="Use: andistro <command> <subcommand> to perform the desired task."
+commands_available_to_you="Available commands for you:"
 # Exclusive andistro in termux
-distro_desc_line_2="Example command that allows initialization:"
-distro_desc_line_3=" andistro -s"
-distro_desc_line_4="Example command that allows uninstallation:"
-distro_desc_line_5=" andistro -d debian"
-distro_desc_line_6="Example command that allows installation:"
-distro_desc_line_7=" andistro -i debian"
-distro_desc_line_8="Example command that allows updating AnDistro:"
-distro_desc_line_9=" andistro -u"
- 
-distro_desc_line_11=" -s initializes the Debian."
-distro_desc_line_12=" -d uninstalls the chosen option."
-distro_desc_line_13=" -i installs the chosen option."
-distro_desc_line_14=" -u updates AnDistro."
-distro_desc_line_15="System options available for installation:"
-distro_desc_line_16="System options available for initialization and uninstallation:"
+distro_desc_line_t1="Example command that allows initialization:"
+distro_desc_line_t2=" andistro -s"
+distro_desc_line_t3="Example command that allows uninstallation:"
+distro_desc_line_t4=" andistro -d"
+distro_desc_line_t5="Example command that allows installation:"
+distro_desc_line_t6=" andistro -i"
+distro_desc_line_t7="Example command that allows installation without graphical interface"
+distro_desc_line_t8=" andistro -i terminal-mode"
+distro_desc_line_t9="Example command that allows updating AnDistro:"
+distro_desc_line_t10=" andistro -u"
+distro_desc_line_t11=" -u updates AnDistro."
+distro_desc_line_t12=" -s starts Debian."
+distro_desc_line_t13=" -d uninstalls Debian."
+distro_desc_line_t14=" -i installs Debian."
 # Exclusive andistro distros
-distro_desc_line_17=" --boot command to start some configuration."
-distro_desc_line_18="Subcommands of --boot"
-distro_desc_line_19=" vnc to start the VNC server"
-distro_desc_line_20="Subcommands of --boot vnc"
-distro_desc_line_21=" --display defines the screen resolution to be displayed"
-distro_desc_line_22=" --scale defines the screen scale (1 or 2)"
-distro_desc_line_23=" --port defines the port used by the server."
-distro_desc_line_24="Example command that allows starting the VNC server"
-distro_desc_line_25="Simple mode"
-distro_desc_line_26=" andistro --boot vnc"
-distro_desc_line_27="Complete mode"
-distro_desc_line_28=" andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
-distro_desc_line_29="The --scale command only works in xfce4; if used in lxde, the command will be ignored"
-distro_desc_line_30="The --display and --port commands are not mandatory, and if not used, the server will start at the default resolution and port."
-distro_desc_line_31="Installation mode without graphical interface, fully terminal"
-distro_desc_line_32="Add -sh after the distribution name"
-distro_desc_line_33="Example command that allows installation without graphical interface"
-distro_desc_line_34=" andistro -i debian-sh"
+distro_desc_line_d1=" --boot command to start some configuration."
+distro_desc_line_d2="Subcommands of --boot"
+distro_desc_line_d3=" vnc to start the VNC server"
+distro_desc_line_d4="Subcommands of --boot vnc"
+distro_desc_line_d5=" --display defines the screen resolution to be displayed"
+distro_desc_line_d6=" --scale defines the screen scale (1 or 2)"
+distro_desc_line_d7=" --port defines the port used by the server."
+distro_desc_line_d8="The --scale command only works on xfce4, if used on lxde, the command will be ignored"
+distro_desc_line_d9="The --display and --port commands are not mandatory and if not used the server will be started at the default resolution and port."
+distro_desc_line_d10="Example command that allows initialization of the vnc server"
+distro_desc_line_d11="Simple mode"
+distro_desc_line_d12=" andistro --boot vnc"
+distro_desc_line_d13="Complete mode"
+distro_desc_line_d14=" andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
 distro_command_not_found="Command not found:"
 distro_instaled="installed"
 distro_install="install"
@@ -53,63 +47,67 @@ distro_update="update"
 distro_wait="wait"
 distro_del="uninstall"
 distro_command="<command>"
+distro_help="Help"
+distro_command_guide="AnDistro command guide"
 label_system_start="Start the system"
 label_system_uninstall="Uninstall the system"
+label_uninstalling_andistro_complete="AnDistro uninstallation complete!"
 label_system_install_system="Install the system"
 label_system_install_other_systems="Install other systems"
 label_andistro_updater="Update AnDistro"
 label_andistro_termianl_viewer="View as terminal"
-label_andistro_there_no_system_installed="No system is installed"
+label_andistro_there_no_system_installed="There is no system installed"
 label_all_systems_have_been_installed="All systems have been installed"
 #//////////////////////////////////////////////////////////////////////////////////////////////////////
 #=====================================================================================================
 #=====================================================================================================
 # Waits
 label_progress="In progress..."
-label_upgrade="Updating the system..."
+label_upgrade="Upgrading system..."
 label_wait="Wait"
 # Download
 label_distro_download="Downloading %s..."
-label_distro_download_finish="The latest version of %s was successfully downloaded."
+label_distro_download_finish="The latest version of %s has been successfully downloaded."
 label_distro_download_start="The latest version of %s will soon be downloaded to storage..."
 label_install_script_download="Downloading necessary files..."
 label_skip_download="Skipping download"
-label_update_finish="Update completed!"
+label_update_finish="Update complete!"
 label_wallpaper_download="Downloading wallpapers..."
 # Settings
-label_keyboard_setup="Starting keyboard settings, please wait...."
-label_keyboard_active_sugest="If necessary, tap the button to open the keyboard (⌨)"
-label_system_setup="Configuring the system..."
-label_xdg_user_dirs_setup="Configuring default folders for the system..."
-# Time zone
-label_system_timezone="Time zone"
-label_distro_alert_timezone_desc="The time zone will be the same as the device."
-label_distro_alert_timezone_detected="Detected time zone: "
+label_keyboard_setup="Starting keyboard settings, wait..."
+label_keyboard_active_sugest="If necessary tap the button to open the keyboard (⌨)"
+label_system_setup="Setting up the system..."
+label_xdg_user_dirs_setup="Setting up default folders for the system..."
+# Timezone
+label_system_timezone="Timezone"
+label_distro_alert_timezone_desc="The timezone will be the same as the device."
+label_distro_alert_timezone_detected="Timezone detected: "
 # Alerts
-label_uninstall_success="Uninstallation completed!"
+label_uninstall_success="Uninstallation complete!"
 label_uninstalling_system="Uninstalling system %s"
-label_uninstall_cancelled="Uninstallation of system %s was cancelled"
-label_install_success="Installation completed!"
+label_uninstall_cancelled="Uninstallation of system %s has been cancelled"
+label_install_success="Installation complete!"
 label_setup_apply="Configuration applied!"
 # Passwords
 label_change_password="The password has been changed successfully. "
-label_password_forgot="Forgot the password? Use the 'andistro --boot vnc --passwd' command to reset the password."
+label_password_forgot="Forgot the password? Use the 'andistro --boot vnc --passwd' command to reset it."
 label_password_input="Enter the new password for the VNC server"
-label_password_input_alert_important="A password must be set!"
-label_password_save_failed="Failed to save password!"
+label_password_input_alert_important="A password must be defined!"
+label_password_save_failed="Failed to save the password!"
 # Choices
 label_choose_one_of_the_option="Choose one of the options"
-label_choose_language="Choose the language "
+label_choose_language="Choose the language"
 label_choose_theme="Choose a theme"
 # Unavailability
 label_command_not_available="This command is not available for the current system."
 # Errors and refusals
 label_entry_canceled="Entry cancelled by user."
-label_command_problem_andistro_for_distro="This command only works if the system is shut down."
+label_command_problem_andistro_for_distro="This command only works if you exit the system."
 # Hint
 label_info_command_andistro_start="Use the 'andistro' command to start."
 label_select_no_to_choose_other_resolution="Select 'No' to choose another resolution."
-label_start_dialog_display="If you want to start the server with the interactive screen, use the command:\nandistro --boot vnc --dialog-display"
+label_start_dialog_display="If you want to start the server with the interactive screen, use the command:\
+andistro --boot vnc --dialog-display"
 # One-word info
 label_error="Error"
 label_done="Finished"
@@ -136,7 +134,7 @@ label_next="Next"
 label_detected="[Detected]"
 label_numbers_only="[NUMBERS ONLY]"
 # Interface
-label_config_environment_gui="Configuring the interface..."
+label_config_environment_gui="Configuring interface..."
 label_install_environment_gui="Downloading settings for the interface to work..."
 label_environments_select="Choose a desktop interface: "
 label_environments_select_default="Default"
@@ -150,9 +148,10 @@ label_system_not_found="System not identified!"
 # Timer
 label_sleep_in_10s="This message will disappear in 10 seconds."
 # System
-label_distro_boot="The system %s has been started"
+label_distro_boot="System %s has been started"
 label_distro_not_installed="The %s is not installed."
-label_distro_not_installed_desc="The %s is not yet installed; follow the steps below for installation:\nType the 'andistro' command followed by enter (↲), choose the install option. Then choose %s to start the installation."
+label_distro_not_installed_desc="The %s is not yet installed; follow the steps below for installation:\
+Type the 'andistro' command followed by enter (↲), choose the install option. Then choose %s to start the installation."
 label_distro_installed="The %s is already installed."
 # Server
 label_server_kill_desc="Shutting down the server..."
@@ -160,24 +159,35 @@ label_server_kill_desc_help="To shut down the VNC server, use the command 'andis
 label_server_kill_desced="Shutting down the server on port"
 label_server_kill_desc_error="No VNC server found for user $USER"
 label_server_setup="Server configuration"
-label_server_start_desc="The server was started."
+label_server_start_desc="The server has been started."
 label_server_start_error="The VNC server is not started. Please check the error log in .vnc/localhost.log."
 label_select_resolution="Resolution selection"
 label_choose_one_resolution="Choose one of the options below"
 label_resolution_frequent="Frequent Resolution Detected"
-label_resolution_frequent_desc="You have used the %s resolution lately.\n\nDo you want to set this resolution as default?\n\nThis will prevent the selection menu from appearing in the future."
+label_resolution_frequent_desc="You have been using the %s resolution lately.\
+\
+Do you want to set this resolution as default?\
+\
+This will prevent the selection menu from appearing next time."
 label_resolution_remove_default="Do you want to remove the default resolution?"
-label_resolution_remove_default_desc="You are about to remove the saved default resolution.\n\nThis will cause the resolution selection menu to appear again the next time you start VNC.\n\nDo you want to continue?"
+label_resolution_remove_default_desc="You are about to remove the saved default resolution.\
+\
+This will make the resolution selection menu appear again the next time you start VNC.\
+\
+Do you want to continue?"
 label_resolution_remove_default_sucess="The resolution is no longer the default."
 label_resolution_option_default="Default resolution"
-label_resolution_option_default_desc="Confirm to start with the resolution set as default. \n\nPress '<Yes>' to confirm or press enter (↲). \nPress '<No>' to choose another resolution."
+label_resolution_option_default_desc="Confirm to start with the resolution set as default. \
+\
+Press '<Yes>' to confirm or press enter (↲). \
+Press '<No>' to choose another resolution."
 label_resolution_choose_options="Choose some options"
 label_resolution_choose_default="You chose to use the default resolution"
 label_resolution_choose_custom="You chose to set the resolution manually"
 label_resolution_choose_custom_desc="Enter the custom resolution in WIDTHxHEIGHT format. Example: 1920x1200"
-label_resolution_choose_custom_desc_port="Set a number for the port or keep the one set as default. The default port is 1."
-label_resolution_choose_custom_desc_scale="Set a number for the scale or keep the one set as default. The default scale is 1."
-label_resolution_choose_custom_desc_alert="There was an error in the entered data. You will be returned to the previous screen. Read the description carefully and repeat the procedure."
+label_resolution_choose_custom_desc_port="Set a number for the port or keep the default. The default port is 1."
+label_resolution_choose_custom_desc_scale="Set a number for the scale or keep the default. The default scale is 1."
+label_resolution_choose_custom_desc_alert="There was an error in the entered data. Returning to the previous screen. Read the description carefully and repeat the procedure."
 label_resolution_option_custom="Set resolution manually"
 label_resolution_option_uwhd="Ultrawide HD"
 label_resolution_option_qdhd="Quad-HD"
@@ -187,4 +197,9 @@ label_resolution_option_hd="HD"
 label_dialog_display_menu_sugestion="Resolution Suggestions"
 label_dialog_display_menu_sugestion_desc="Do you want a dialog box with screen resolution suggestions to appear every time the system starts?"
 label_dialog_uninstall_menu="Do you want to continue with the uninstallation?"
-label_dialog_uninstall_menu_desc="You are about to uninstall the %s system.\n\nAll data related to this system will be lost. \nTHIS IS AN IRREVERSIBLE ACTION.\n\nDo you want to continue?"
+label_dialog_uninstall_menu_desc="You are about to uninstall the system %s.\
+\
+All data related to this system will be lost. \
+THIS IS AN IRREVERSIBLE ACTION.\
+\
+Do you want to continue?"
