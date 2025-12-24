@@ -45,12 +45,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
-            OPTIONS=(s "$label_system_start" # Iniciar o sistema
-                    d "$label_system_uninstall" # Desinstalar o sistema
+            OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
+                    d "$label_andistro_uninstall_system" # Desinstalar o sistema
                     u "$label_andistro_updater" # Atualizar o AnDistro
                     t "$label_andistro_termianl_viewer") # Ver como terminal
         else
-            OPTIONS=(i "$label_system_install_system" # Instalar o sistema
+            OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
                     u "$label_andistro_updater" # Atualizar o AnDistro
                     t "$label_andistro_termianl_viewer") # Ver como terminal
         fi
@@ -74,6 +74,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             # Desinstalar o sistema
             d)
                 andistro -d
+                andistro
             ;;
 
             # Instalar sistemas
@@ -102,7 +103,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Comando para atualizar o Andistro
         -u)
             if [ -z "$2" ]; then
-                echo -e "\n$distro_wait"
+                echo -e "\n$label_wait"
                 update_progress() {
                     current_step=$1
                     total_steps=$2
@@ -338,7 +339,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
                     "${label_install_script_download}" 'termux-setup-storage'
             else
-                echo "$distro_command_not_found: $2"
+                echo "$label_command_not_found: $2"
                 exit 1
             fi
             
@@ -367,11 +368,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 distro_file=".terminal_mode/install-$distro_name.sh"
 
             else 
-                echo "$distro_command_not_found: $2"
+                echo "$label_command_not_found: $2"
                 exit 1
             fi
 
-            echo "$distro_wait" # Aguarde
+            echo "$label_wait" # Aguarde
 
             config_file="$andistro_files/manager/.config/$distro_based-based"
             bin="$andistro_files/manager/start-$distro_name"
@@ -492,7 +493,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
-            #echo "andistro --boot vnc --dialog-display" >> $folder/root/.bashrc # Adiciona o comando para iniciar o VNC automaticamente ao iniciar a distro
             
             andistro -s
         ;;
@@ -507,7 +507,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 
                 if [ $resposta -eq 0 ]; then
                     # Usuário escolheu "Sim"
-                    echo "$distro_wait"
+                    echo "$label_wait"
                     distro_name="debian"
                     distro_name_upper="Debian"
                     label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
@@ -528,13 +528,14 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 andistro alerta uninstall-success
             elif [ "$2" == "andistro" ]; then
                 # Desinstalação total
-                echo "$distro_wait"
+                label_andistro_uninstalling_complete="$label_andistro_uninstalling_complete"
+                echo "$label_wait"
                 rm -rf $andistro_files
                 rm -rf $PREFIX/bin/andistro
-                echo "$label_uninstalling_andistro_complete"
+                echo "$label_andistro_uninstalling_complete"
                 exit 0
             else
-                    echo "$distro_command_not_found: $2"
+                    echo "$label_command_not_found: $2"
                     exit 1
             fi
             
@@ -543,7 +544,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Comando para iniciar uma distro
         -s)
             if [ -z "$2" ]; then
-                echo "$distro_wait"
+                echo "$label_wait"
                 if [ -f "$PREFIX/var/lib/andistro/manager/start-debian" ]; then
                     bash $PREFIX/var/lib/andistro/manager/start-debian
                 else
@@ -552,7 +553,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 fi
 
             else
-                echo "$distro_command_not_found: $2"
+                echo "$label_command_not_found: $2"
                 andistro terminal
                 exit 1
             fi
@@ -601,18 +602,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             # Comando interno para iniciar a edição direta do código
             if [ -z "$2" ]; then
                 # Não foi passado subcomando, comportamento padrão
-                echo "$distro_command_not_found: $2"
+                echo "$label_command_not_found: $2"
             else
                 case "$2" in
                     # Comando andistro --setup storage para configurar permissão de armazenamento
                     storage-permission)
-                        TEST_DIR="/sdcard/termux"
-                        PKG="com.termux"
-
                         while true; do
-                            if mkdir -p "$TEST_DIR" 2>/dev/null; then
+                            if mkdir -p "/sdcard/termux" 2>/dev/null; then
                                 # Sucesso: tem acesso ao armazenamento
-                                rmdir "$TEST_DIR" 2>/dev/null || true
+                                rmdir "/sdcard/termux" 2>/dev/null || true
                                 clear
                                 break   # segue o script normalmente
                             fi
@@ -622,10 +620,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             termux-setup-storage &
 
                             dialog --no-shadow --clear \
-                            --title "Permissão de armazenamento" \
-                            --yes-label "Já permiti" \
-                            --no-label "Não consegui" \
-                            --yesno "Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo." 12 70
+                                --title "$label_storage_permission" \
+                                --yes-label "$label_permission_granted" \
+                                --no-label "$label_permission_not_granted" \
+                                --yesno "$label_storage_permission_desc" 10 60
 
                             resp=$?
 
@@ -634,47 +632,46 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 continue
                             else
                                 # Botão "Não consegui": ajuda + intents
-                                dialog --no-shadow --title "Ajuda com permissão" \
-                                --ok-label "Abrir configs" \
-                                --msgbox "Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"." 12 70
+                                dialog --no-shadow --title "$label_permission_help" \
+                                    --ok-label "$label_open_configs" \
+                                    --msgbox "$label_storange_permission_help_desc" 10 60
 
                                 # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
                                 am start \
-                                -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
-                                -d "package:${PKG}" >/dev/null 2>&1
+                                    -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
+                                    -d "package:com.termux" >/dev/null 2>&1
                             fi
                         done
                     ;;
 
                     # Comando andistro --setup battery para configurar permissão de ignorar otimização de bateria
                     battery)
-                        PKG="com.termux"
                         # Configurações de otimização de bateria
                         # 1) Explica o que fazer
-                        dialog --no-shadow --title "Otimização de bateria" \
-                        --ok-label "Abrir configurações" \
-                        --msgbox "Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"." 14 70
+                        dialog --no-shadow --title "$label_battery_optimization" \
+                            --ok-label "$label_open_configs" \
+                            --msgbox "$label_battery_optimization_desc" 10 60
 
                         # 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
                         am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
 
                         # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
                         dialog --no-shadow --clear \
-                        --title "Otimização de bateria" \
-                        --yes-label "Já retirei" \
-                        --no-label "Vou deixar para depois" \
-                        --yesno "Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora." 13 70
+                        --title "$label_battery_optimization" \
+                        --yes-label "$label_permission_retired" \
+                        --no-label "$label_delay_later" \
+                        --yesno "$label_battery_optimization_desc_info" 10 60
                     ;;
 
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
-                        dialog --no-shadow --title "Informação" \
-                            --msgbox "Após clicar em \"Ok\" será aberto a as informações do Termux no sistema." 10 60
+                        dialog --no-shadow --title "$label_termux_settings" \
+                            --msgbox "$label_open_termux_settings" 10 60
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
                     ;;
 
                     *)
-                        echo "$distro_command_not_found: $2"
+                        echo "$label_command_not_found: $2"
                         ;;
                 esac
             fi
@@ -701,7 +698,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         nano "$PREFIX/var/lib/andistro/lib/share/locales_${system_icu_locale_code}.sh"
                         ;;
                     *)
-                        echo "$distro_command_not_found: $2"
+                        echo "$label_command_not_found: $2"
                         ;;
                 esac
             fi
@@ -711,7 +708,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         alerta)
             if [ -z "$2" ]; then
                 # Não foi passado subcomando, comportamento padrão
-                echo "$distro_command_not_found"
+                echo "$label_command_not_found"
             else
                 case "$2" in
                     timezone)
@@ -768,24 +765,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" 10 60
                         clear
                         ;;
-                    app-vnc-setup)
-                        {
-                            for i in {1..50}; do
-                                sleep 0.1
-                                echo $((i * 2))
-                            done
-                        } | dialog --no-shadow --gauge "Agora iremos configurar o aplicativo VNC. Tenha certeza de que o aplicativo AVNC está instalado, caso contrário, esta estapa falhará \n\n$label_sleep_in_10s" 10 60
-                        clear
-                        ;;
                     *)
-                        echo "$distro_command_not_found: $2"
+                        echo "$label_command_not_found: $2"
                         ;;
                 esac
             fi
         ;;
         # Erro
         *)
-            echo "$distro_command_not_found $1"
+            echo "$label_command_not_found $1"
             exit 1
             ;;
     esac
@@ -830,7 +818,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         alerta)
             if [ -z "$2" ]; then
                 # Não foi passado subcomando, comportamento padrão
-                echo "$distro_command_not_found"
+                echo "$label_command_not_found"
             else
                 case "$2" in
                     timezone)
@@ -879,7 +867,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         clear
                         ;;
                     *)
-                        echo "$distro_command_not_found: $2"
+                        echo "$label_command_not_found: $2"
                         ;;
                 esac
             fi
@@ -890,7 +878,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
             cmd="$*"   # junta todos os argumentos em uma string
 
             if [ -z "$cmd" ]; then
-                echo "Uso: andistro --termux-cmd \"COMANDO_DO_TERMUX\""
+                echo "$distro_desc_line_d15"
                 exit 1
             fi
 
@@ -898,13 +886,13 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
             # Garante que o diretório /termux/home existe dentro do proot
             if [ ! -d "/termux/home" ]; then
-                echo "Erro: diretório /termux/home não está acessível dentro do Debian"
+                echo "$label_error_dir_termux_home_not_accessible"
                 exit 1
             fi
 
             # Escreve o comando no arquivo de bridge
             printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
-                echo "Erro: bridge indisponível"
+                echo "$label_error_bridge_unavailable"
                 exit 1
             }
 
@@ -1078,7 +1066,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                             HEIGHT=0
                             WIDTH=0
-                            CHOICE_HEIGHT=5
+                            CHOICE_HEIGHT=10
                             BACKTITLE="${label_select_resolution}"
                             TITLE="${label_select_resolution}"
                             MENU="${label_choose_one_resolution}"
@@ -1356,24 +1344,24 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     fi
 
                     echo -e "\n${label_server_start_desc} \n\n\033[1;96m${label_user}:\033[0m $USER\n\033[1;96m${label_localhost}:\033[0m $HOSTNAME\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m 120.0.0.1\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m $wlan_ip_localhost\033[1;33m:\033[0m$PORT\n\n\033[1;35m${label_password_forgot}\033[0m\n\n\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
-                    echo -e "\e[1;33mDeseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar\e[0m"
+                    echo -e "\e[1;33m$label_open_avnc_desc\e[0m"
 
-                    trap 'echo -e "\n\e[1;32mQuestionário finalizado pelo usuário.\e[0m"; exit 0' INT
+                    trap 'echo -e "\n\e[1;32m$label_done.\e[0m"; exit 0' INT
 
                     read -s -n1 tecla
 
                     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
-                        echo -e "\n\e[1;32mAbrindo aVNC...\e[0m"
+                        echo -e "\n\e[1;32m$label_open_avnc\e[0m"
                         andistro --termux-cmd "am start -d 'vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true'"
                         exit 1
                     fi
 
                     if [[ "$tecla" == $'\x1b' ]]; then
-                        echo -e "\n\e[1;32mQuestionário finalizado (ESC).\e[0m"
+                        echo -e "\n\e[1;32m$label_action_denied\e[0m"
                         exit 1
                     fi
 
-                    echo -e "\n\e[1;31mTecla inválida, questionário finalizado.\e[0m"
+                    echo -e "\n\e[1;31m$label_invalid_key\e[0m"
                     exit 1
                 else
                     echo "$label_server_start_error"
@@ -1383,11 +1371,11 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         
         # Erro
         *)
-            echo "$distro_command_not_found $1"
+            echo "$label_command_not_found $1"
             exit 1
         ;;
     esac
 #=================================================================================================
 else # Nenhum dos dois
-    echo "Sistema não identificado"
+    echo "$label_system_not_found"
 fi

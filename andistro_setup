@@ -244,68 +244,10 @@ if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END'
     termux-reload-settings
 fi
 
-# Dialogo para permitir o uso do armazenamento
-TEST_DIR="/sdcard/termux"
-PKG="com.termux"
+andistro --setup storage-permission
 
-while true; do
-    if mkdir -p "$TEST_DIR" 2>/dev/null; then
-        # Sucesso: tem acesso ao armazenamento
-        rmdir "$TEST_DIR" 2>/dev/null || true
-        clear
-        break   # segue o script normalmente
-    fi
-
-    # Falhou: provavelmente sem permissão de armazenamento
-    rm -rf "$HOME/storage"
-    termux-setup-storage &
-
-    dialog --no-shadow --clear \
-      --title "Permissão de armazenamento" \
-      --yes-label "Já permiti" \
-      --no-label "Não consegui" \
-      --yesno "Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo." 12 70
-
-    resp=$?
-
-    if [ $resp -eq 0 ]; then
-        # Botão "Já permiti": tenta de novo no próximo loop
-        continue
-    else
-        # Botão "Não consegui": ajuda + intents
-        dialog --no-shadow --title "Ajuda com permissão" \
-          --ok-label "Abrir configs" \
-          --msgbox "Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"." 12 70
-
-        # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
-        am start \
-          -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
-          -d "package:${PKG}" >/dev/null 2>&1
-
-        # 2) Opcional: tela de ignorar otimização de bateria (caso queira sugerir também)
-        # am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
-    fi
-done
-
-# Configurações de otimização de bateria
-# 1) Explica o que fazer
-dialog --no-shadow --title "Otimização de bateria" \
-  --ok-label "Abrir configurações" \
-  --msgbox "Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, abra a seção de Bateria/Otimização do Termux e escolha o modo \"Sem restrições\" ou \"Não restrito\"." 14 70
-
-# 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
-am start \
-  -a android.settings.APPLICATION_DETAILS_SETTINGS \
-  -d "package:${PKG}" >/dev/null 2>&1
-
-# 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
-dialog --no-shadow --clear \
-  --title "Otimização de bateria" \
-  --yes-label "Já retirei" \
-  --no-label "Vou deixar para depois" \
-  --yesno "Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora." 13 70
+andistro --setup battery
 
 clear
-
 
 andistro 

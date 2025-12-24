@@ -9,11 +9,11 @@ fi
 # Específicos do executável andistro
 
 # Global andistro
+distro_command_guide="Guia de comandos do AnDistro"
 distro_desc_line_0="Use: andistro <comando> para seja feito a tarefa desejada."
 distro_desc_line_0_0="Use: andistro <comando> <subcomando> para seja feito a tarefa desejada."
-commands_available_to_you="Comandos disponíveis para você:"
 
-# Exclusivo andistro no termux
+## Exclusivo andistro no termux
 distro_desc_line_t1="Exemplo de comando que permite a inicialização:"
 distro_desc_line_t2="   andistro -s"
 distro_desc_line_t3="Exemplo de comando que permite a desinstalação:"
@@ -29,8 +29,14 @@ distro_desc_line_t12="    -s  inicializa o Debian."
 distro_desc_line_t13="    -d  desinstala o Debian."
 distro_desc_line_t14="    -i  instala o Debian."
 
+label_andistro_install_system="Instalar o sistema"
+label_andistro_start_system="Iniciar o sistema"
+label_andistro_termianl_viewer="Ver como terminal"
+label_andistro_updater="Atualizar o AnDistro"
+label_andistro_uninstall_system="Desinstalar o sistema"
+label_andistro_uninstalling_complete="Desinstalação completa do AnDistro!"
 
-# Exclusivo andistro distros
+## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
 distro_desc_line_d2="Subcomandos do --boot"
 distro_desc_line_d3="    vnc  para iniciar o servidor VNC"
@@ -40,43 +46,17 @@ distro_desc_line_d6="    --scale    define a escala da tela (1 ou 2)"
 distro_desc_line_d7="    --port     define a porta usada pelo servidor."
 distro_desc_line_d8="O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado"
 distro_desc_line_d9="O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão."
-
 distro_desc_line_d10="Exemplo de comando que permite a inicialização do servior vnc"
 distro_desc_line_d11="Modo simples"
 distro_desc_line_d12="   andistro --boot vnc"
 distro_desc_line_d13="Modo completo"
 distro_desc_line_d14="   andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
-
-
-distro_command_not_found="Comando não encontrado:"
-
-distro_instaled="instalado"
-distro_install="instalar"
-distro_notinstaled="não instalado"
-distro_option="<opção>"
-distro_start="iniciar"
-distro_update="atualizar"
-distro_wait="aguarde"
-distro_del="desinstalar"
-distro_command="<comando>"
-distro_help="Ajuda"
-distro_command_guide="Guia de comandos do AnDistro"
-
-label_system_start="Iniciar o sistema"
-label_system_uninstall="Desinstalar o sistema"
-label_uninstalling_andistro_complete="Desinstalação completa do AnDistro!"
-label_system_install_system="Instalar o sistema"
-label_system_install_other_systems="Instalar outros sistemas"
-label_andistro_updater="Atualizar o AnDistro"
-label_andistro_termianl_viewer="Ver como terminal"
-label_andistro_there_no_system_installed="Não tem nenhum sistema instalado"
-label_all_systems_have_been_installed="Todos os sistemas foram instalados"
-
+distro_desc_line_d15="Uso: andistro --termux-cmd \"COMANDO_DO_TERMUX\""
 #//////////////////////////////////////////////////////////////////////////////////////////////////////
 #=====================================================================================================
 
 #=====================================================================================================
-# Aguardos
+# Aguardos e carregamentos 
 label_progress="Em andamento..."
 label_upgrade="Atualizando o sistema..."
 label_wait="Aguarde"
@@ -96,7 +76,17 @@ label_keyboard_active_sugest="Caso necessário toque no botão para abrir o tecl
 label_system_setup="Configurando o sistema..."
 label_xdg_user_dirs_setup="Configurando as pastas padrões para o sistema..."
 
-# Fuso horário
+# Informativos
+commands_available_to_you="Comandos disponíveis para você:"
+label_command_not_found="Comando não encontrado:"
+label_dialog_display_menu_sugestion="Sugestões de Resolução"
+label_dialog_display_menu_sugestion_desc="Deseja que toda vez que o sistema seja iniciado, apareça uma caixa de diálogo com sugestões de resolução de tela?"
+label_dialog_uninstall_menu="Deseja continuar com a desinstalação?"
+label_dialog_uninstall_menu_desc="Você está prestes a desinstalar o sistema %s.\n\nTodos os dados relacionados a este sistema serão perdidos. \nESTE É UMA AÇÃO IRREVERSÍVEL.\n\nDeseja continuar?"
+label_termux_settings="Configurações do Termux"
+label_open_termux_settings="Após clicar em \"Ok\" será aberto a as informações do Termux no sistema."
+
+## Fuso horário
 label_system_timezone="Fuso horário"
 label_distro_alert_timezone_desc="O fuso horário será o mesmo do dispositivo."
 label_distro_alert_timezone_detected="Fuso horário detectado: "
@@ -122,10 +112,13 @@ label_choose_theme="Escolha um tema"
 
 #Indisponibilidade
 label_command_not_available="Este comando não está disponível para o sistema atual."
+label_system_not_found="Sistema não encontrado."
 
 #Erros e recusas
 label_entry_canceled="Entrada cancelada pelo usuário."
 label_command_problem_andistro_for_distro="Este comando só funciona se encerrar o sistema."
+label_error_dir_termux_home_not_accessible="Erro: diretório /termux/home não está acessível dentro do Debian"
+label_error_bridge_unavailable="Erro: bridge indisponível"
 
 # Dica
 label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
@@ -173,6 +166,24 @@ label_find_update="Procurando atualizações..."
 label_system_found="Sistema identificado!"
 label_system_not_found="Sistema não identificado!"
 
+# Permissões
+label_permission_granted="Já permiti"
+label_permission_retired="Já retirei"
+label_permission_not_granted="Não consegui"
+label_permission_help="Ajuda com permissão"
+label_open_configs="Abrir configs."
+label_delay_later="Vou deixar para depois"
+label_storage_permission="Permissão de armazenamento"
+label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
+label_storange_permission_help_desc="Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"."
+label_battery_optimization="Otimização de bateria"
+label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"."
+label_battery_optimization_desc_info="Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
+label_open_avnc="Abrindo AVNC..."
+label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
+label_action_denied="Ação: recusado (ESC) ou CTRL+C."
+label_invalid_key="Tecla inválida, questionário finalizado."
+
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
@@ -215,10 +226,3 @@ label_resolution_option_qdhd="Quad-HD"
 label_resolution_option_fhd="Full-HD"
 label_resolution_option_fhd_wide="Full-HD estendido"
 label_resolution_option_hd="HD"
-
-label_dialog_display_menu_sugestion="Sugestões de Resolução"
-label_dialog_display_menu_sugestion_desc="Deseja que toda vez que o sistema seja iniciado, apareça uma caixa de diálogo com sugestões de resolução de tela?"
-
-
-label_dialog_uninstall_menu="Deseja continuar com a desinstalação?"
-label_dialog_uninstall_menu_desc="Você está prestes a desinstalar o sistema %s.\n\nTodos os dados relacionados a este sistema serão perdidos. \nESTE É UMA AÇÃO IRREVERSÍVEL.\n\nDeseja continuar?"
