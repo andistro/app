@@ -1,10 +1,21 @@
 #!/bin/bash
+timestamp=$(date +'%d%m%Y-%H%M%S')
+log_file="$/sdcard/termux/andistro/logs/termux-cmd_${timestamp}.txt"
+
 while true; do
     if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
         CMD=$(cat ~/andistro-bridge)
         rm ~/andistro-bridge
-        sh -c "$CMD" > /dev/null 2>&1  # ← NÃO devolve output pro Debian
+        {
+            echo "========== $(date +'%Y-%m-%d %H:%M:%S') =========="
+            echo "CMD: $CMD"
+            echo "----------------------------------------"
+            sh -c "$CMD"
+            status=$?
+            echo
+            echo "EXIT STATUS: $status"
+            echo
+        } >>"$log_file" 2>&1
     fi
     sleep 0.5
 done
-
