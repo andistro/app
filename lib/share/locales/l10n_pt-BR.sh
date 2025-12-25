@@ -119,6 +119,8 @@ label_entry_canceled="Entrada cancelada pelo usuário."
 label_command_problem_andistro_for_distro="Este comando só funciona se encerrar o sistema."
 label_error_dir_termux_home_not_accessible="Erro: diretório /termux/home não está acessível dentro do Debian"
 label_error_bridge_unavailable="Erro: bridge indisponível"
+label_action_denied="Ação recusada"
+label_problem="Houve um problema"
 
 # Dica
 label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
@@ -147,6 +149,8 @@ label_password="Senha"
 label_password_alt_min="senha"
 label_back="Voltar"
 label_next="Próximo"
+label_help="Ajuda"
+
 
 # Informativos em colchetes
 label_detected="[Detectado]"
@@ -173,6 +177,17 @@ label_permission_not_granted="Não consegui"
 label_permission_help="Ajuda com permissão"
 label_open_configs="Abrir configs."
 label_delay_later="Vou deixar para depois"
+label_stop_and_open="Você escolheu parar. Nada foi aberto."
+label_action_denied="Ação: recusado (ESC) ou CTRL+C."
+label_invalid_key="Tecla inválida, questionário finalizado."
+label_no_open="Você escolheu NÃO abrir. Nada foi aberto."
+label_cancel_action="Você escolheu cancelar a ação."
+label_continue_action="Você escolheu seguir com a ação."
+label_cancel_action_ctrlc="Você apertou CTRL+C. Você escolheu NÃO executar. Nada foi feito."
+label_cancel_action_esc="Você apertou ESC. Você escolheu NÃO executar. Nada foi feito."
+label_continue_action_executed="Você escolheu executar. Um momento..."
+label_action_accepted="O pedido foi aceito."
+
 label_storage_permission="Permissão de armazenamento"
 label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
 label_storange_permission_help_desc="Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"."
@@ -181,8 +196,8 @@ label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDi
 label_battery_optimization_desc_info="Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
 label_open_avnc="Abrindo AVNC..."
 label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
-label_action_denied="Ação: recusado (ESC) ou CTRL+C."
-label_invalid_key="Tecla inválida, questionário finalizado."
+label_open_avnc_success="Você escolheu abrir o AVNC. Um momento..."
+label_open_avnc_failed="O aplicativo AVNC não abriu.\n\nIsso pode acontecer se o app não estiver instalado ou se a ponte com o Termux não estiver funcionando.\n\nClique em ajuda para abrir uma página que explica como baixar e instalar o AVNC?"
 
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
