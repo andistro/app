@@ -1,6 +1,6 @@
 #!/bin/bash
 timestamp=$(date +'%d%m%Y-%H%M%S')
-log_file="$/sdcard/termux/andistro/logs/termux-cmd_${timestamp}.txt"
+log_file="/sdcard/termux/andistro/logs/termux-cmd_${timestamp}.txt"
 
 while true; do
     if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
