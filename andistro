@@ -875,29 +875,44 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         # Bridge direto Debian → Termux
         --termux-cmd)
             shift
-            cmd="$*"   # junta todos os argumentos em uma string
+            cmd="$*"
 
             if [ -z "$cmd" ]; then
-                echo "$distro_desc_line_d15"
+                echo "$label_no_command_informed"
                 exit 1
             fi
 
             file="/termux/home/andistro-bridge"
+            status_file="/termux/home/andistro-status"
+            error_file="/termux/home/andistro-error"
 
-            # Garante que o diretório /termux/home existe dentro do proot
             if [ ! -d "/termux/home" ]; then
                 echo "$label_error_dir_termux_home_not_accessible"
                 exit 1
             fi
 
-            # Escreve o comando no arquivo de bridge
+            # limpa status/erro anteriores
+            rm -f "$status_file" "$error_file"
+
+            # envia comando para o Termux
             printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
                 echo "$label_error_bridge_unavailable"
                 exit 1
             }
 
-            echo "'$cmd' → Termux"
-            exit 0
+            # espera o Termux responder com o status (timeout ~10s)
+            for i in {1..20}; do
+                if [ -f "$status_file" ]; then
+                    status=$(cat "$status_file")
+                    rm -f "$status_file"
+                    # não apaga o error_file aqui; o chamador pode ler
+                    exit "$status"
+                fi
+                sleep 0.5
+            done
+
+            echo "$label_error_bridge_timeout"
+            exit 1
         ;;
 
         # Comando para iniciar alguma configuração

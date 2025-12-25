@@ -121,6 +121,10 @@ label_error_dir_termux_home_not_accessible="Erro: diretório /termux/home não e
 label_error_bridge_unavailable="Erro: bridge indisponível"
 label_action_denied="Ação recusada"
 label_problem="Houve um problema"
+label_no_command_informed="Nenhum comando foi informado"
+label_error_dir_termux_home_not_accessible="Erro: diretório /termux/home não está acessível dentro do Debian."
+label_error_bridge_unavailable="A ponte entre o Debian e o Termux não está disponível no momento. Tente novamente mais tarde."
+label_error_bridge_timeout="A ponte com o Termux não respondeu dentro do tempo limite. Talvez o Termux não esteja aberto ou o listener não esteja em execução. Tente novamente após reiniciar o sistema."
 
 # Dica
 label_info_command_andistro_start="Use o comando 'andistro' para iniciar."
