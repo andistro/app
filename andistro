@@ -1383,36 +1383,9 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     # ENTER → executa
                     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
                         echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
-
-                        if andistro --termux-cmd "am start -d vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true" >/dev/null 2>&1; then
-                            echo -e "\e[1;32m$label_action_accepted\e[0m"
-                            exit 0
-                        else
-                            ERRMSG=""
-                            if [ -f "/termux/home/andistro-error" ]; then
-                                ERRMSG=$(tail -n1 "/termux/home/andistro-error")
-                            fi
-
-                            dialog_msg="Não foi possível executar o comando\n\n"
-                            dialog_msg+="Talvez o app não esteja instalado ou não esteja sendo reconhecido.\n\n"
-                            if [ -n "$ERRMSG" ]; then
-                                dialog_msg+="Erro relatado\n$ERRMSG\n\n"
-                            fi
-                            dialog_msg+="Quer abrir uma página que explica como baixar e instalar o AVNC?"
-
-                            dialog --no-shadow \
-                                --title "$label_problem" \
-                                --yes-label "$label_help" \
-                                --no-label "$label_back" \
-                                --yesno "$dialog_msg" 10 60
-                                #--yesno "$label_open_avnc_failed" 10 60
-
-                            if [ $? -eq 0 ]; then
-                                andistro --termux-cmd "termux-open-url 'https://github.com/andistro/wiki'"
-                            fi
-
-                            exit 1
-                        fi
+                        echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
+                        andistro --termux-cmd "am start -d vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true" >/dev/null 2>&1
+                        exit 0
                     fi
 
                     # ESC → cancela com mensagem

@@ -191,6 +191,7 @@ label_cancel_action_ctrlc="Você apertou CTRL+C. Você escolheu NÃO executar. N
 label_cancel_action_esc="Você apertou ESC. Você escolheu NÃO executar. Nada foi feito."
 label_continue_action_executed="Você escolheu executar. Um momento..."
 label_action_accepted="O pedido foi aceito."
+label_app_not_open="Caso o aplicativo não abra, verifique se ele está instalado."
 
 label_storage_permission="Permissão de armazenamento"
 label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
