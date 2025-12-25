@@ -3,14 +3,16 @@ timestamp=$(date +'%d%m%Y-%H%M%S')
 log_file="/sdcard/termux/andistro/logs/termux-cmd_${timestamp}.txt"
 status_file=~/andistro-status
 error_file=~/andistro-error
+output_file=~/andistro-output  # ← saída completa
 
 while true; do
     if [ -f ~/andistro-bridge ] && [ -s ~/andistro-bridge ]; then
         CMD=$(cat ~/andistro-bridge)
         rm ~/andistro-bridge
 
-        # limpa erro anterior
-        : > "$error_file"
+        # Limpa arquivos anteriores
+        : > "$error_file" 2>/dev/null
+        rm -f "$output_file"
 
          {
             echo "========== $(date +'%Y-%m-%d %H:%M:%S') =========="
@@ -19,11 +21,12 @@ while true; do
 
             # executa comando, captura saída e última linha de erro
             # stdout+stderr vão para o log; a última linha também vai para error_file
-            sh -c "$CMD" 2> >(tee -a "$log_file" >"$error_file")
+            sh -c "$CMD" 2>&1 | tee "$output_file" | tee -a "$log_file"
             status=$?
 
             echo
             echo "EXIT STATUS: $status"
+            echo "============================================"
             echo
         } >>"$log_file" 2>&1
 
