@@ -204,7 +204,7 @@ label_battery_optimization="Otimização de bateria"
 label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"."
 label_battery_optimization_desc_info="Esse ajuste é essencial para manter o desempenho do Termux. Se já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
 label_open_avnc="Abrindo AVNC..."
-label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
+label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
 
 # Temporizador
