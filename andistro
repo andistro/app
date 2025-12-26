@@ -649,7 +649,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "$label_storage_permission_check" 10 60
                         clear
                         while true; do
                             if mkdir -p "/sdcard/termux" 2>/dev/null; then
