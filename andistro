@@ -728,6 +728,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         if [ $resp -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
+                            sleep 10
                         else
                             echo " "
                         fi
@@ -743,7 +744,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             --yesno "$label_phantom_procs_desc" 20 60
 
                         if [ $resp -eq 0 ]; then
-                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki/blob/main/pt-BR/resolucao-de-problemas.md#corrigindo-o-problema-da-parada-for%C3%A7ada-do-sistema-no-termux--process-completed-signal-9--press-enter---"    
+                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki/blob/main/pt-BR/resolucao-de-problemas.md#corrigindo-o-problema-da-parada-for%C3%A7ada-do-sistema-no-termux--process-completed-signal-9--press-enter---"
+                            sleep 10
                         else
                             echo " "
                         fi
