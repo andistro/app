@@ -48,11 +48,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
                     d "$label_andistro_uninstall_system" # Desinstalar o sistema
                     u "$label_andistro_updater" # Atualizar o AnDistro
-                    t "$label_andistro_termianl_viewer") # Ver como terminal
+                    c "$label_settings_and_help" # Configurações e Ajuda
+                    )
         else
             OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
                     u "$label_andistro_updater" # Atualizar o AnDistro
-                    t "$label_andistro_termianl_viewer") # Ver como terminal
+                    c "$label_settings_and_help" # Configurações e Ajuda
+                    )
         fi
 
         # Mostrar menu
@@ -88,9 +90,44 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 andistro
             ;;
         
-            # Ver como terminal
-            t)
-                andistro terminal
+            # Configurações e Ajuda
+            c)
+
+                OPTIONS=(1 "$label_andistro_battery_optimization" 
+                    2 "$label_andistro_signal9_error" 
+                    3 "$label_andistro_install_avnc"
+                    4 "$label_andistro_storage_permission_check"
+                    )
+
+                CHOICE=$(dialog --no-shadow --clear \
+                        --title "AnDistro" \
+                        --menu "$label_choose_one_of_the_option:" \
+                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                        "${OPTIONS[@]}" \
+                        2>&1 >/dev/tty)
+                clear
+                case $CHOICE in
+
+                1)
+                    andistro --setup battery
+                    andistro
+                ;;
+
+                2)
+                    andistro --setup phantom-procs
+                    andistro
+                ;;
+
+                3)
+                    andistro --setup avnc
+                    andistro
+                ;;
+
+                4)
+                    andistro --setup storage-permission
+                    andistro
+                ;;
+                esac
             ;;
         esac
     exit 0
@@ -607,10 +644,23 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 case "$2" in
                     # Comando andistro --setup storage para configurar permissão de armazenamento
                     storage-permission)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" 10 60
+                        clear
                         while true; do
                             if mkdir -p "/sdcard/termux" 2>/dev/null; then
                                 # Sucesso: tem acesso ao armazenamento
                                 rmdir "/sdcard/termux" 2>/dev/null || true
+                                {
+                                    for i in {1..50}; do
+                                        sleep 0.1
+                                        echo $((i * 2))
+                                    done
+                                } | dialog --no-shadow --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" 10 60
                                 clear
                                 break   # segue o script normalmente
                             fi
@@ -678,6 +728,22 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         if [ $resp -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
+                        else
+                            echo " "
+                        fi
+
+                        exit 0
+                    ;;
+
+                    phantom-procs)
+                        dialog --no-shadow --title "$label_attention" \
+                            --backtitle "$label_warning" \
+                            --yes-label "$label_help" \
+                            --no-label "$label_skip" \
+                            --yesno "$label_phantom_procs_desc" 20 60
+
+                        if [ $resp -eq 0 ]; then
+                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki/blob/main/pt-BR/resolucao-de-problemas.md#corrigindo-o-problema-da-parada-for%C3%A7ada-do-sistema-no-termux--process-completed-signal-9--press-enter---"    
                         else
                             echo " "
                         fi

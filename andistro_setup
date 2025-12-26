@@ -250,6 +250,8 @@ andistro --setup battery
 
 andistro --setup avnc
 
+andistro --setup phantom-procs
+
 clear
 
 andistro 

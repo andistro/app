@@ -36,6 +36,11 @@ label_andistro_updater="Atualizar o AnDistro"
 label_andistro_uninstall_system="Desinstalar o sistema"
 label_andistro_uninstalling_complete="Desinstalação completa do AnDistro!"
 
+label_andistro_battery_optimization="Retirar otimização da bateria"
+label_andistro_signal9_error="Resolver o erro signal 9"
+label_andistro_storage_permission_check="Verificar permissão de armazenamento"
+label_andistro_install_avnc="Instalar o AVNC"
+
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
 distro_desc_line_d2="Subcomandos do --boot"
@@ -158,7 +163,10 @@ label_proceed="Prosseguir"
 label_install="Instalar"
 label_ignore="Ignorar"
 label_warning="Aviso"
-
+label_skip="Pular"
+label_attention="Atenção"
+label_settings="Configurações"
+label_settings_and_help="Configurações e Ajuda"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
@@ -197,6 +205,8 @@ label_continue_action_executed="Você escolheu executar. Um momento..."
 label_action_accepted="O pedido foi aceito."
 label_app_not_open="Caso o aplicativo não abra, verifique se está instalado."
 
+label_storage_permission_check="Verificando as permissões de armazenamento..."
+label_storage_permission_granted="Já possui acesso ao armazenamento."
 label_storage_permission="Permissão de armazenamento"
 label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
 label_storange_permission_help_desc="Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"."
@@ -206,6 +216,7 @@ label_battery_optimization_desc_info="Esse ajuste é essencial para manter o des
 label_open_avnc="Abrindo AVNC..."
 label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
+label_phantom_procs_desc="Para o sistema não seja encerrado pelo sistema a qualquer momento, até mesmo em uso, clique em <Ajuda> e siga o tutorial para resolver o problema.\nPoderá fazer a configuração após a instalação do AnDistro. Clique em <Pular> para finalizar a instalação do AnDistro. Poderá consultar novamente na opção 'Configurações e Ajuda' do AnDistro."
 
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
