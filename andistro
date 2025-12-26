@@ -670,7 +670,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     ;;
 
                     avnc)
-                        dialog --title "$label_install AVNC" \
+                        dialog --no-shadow --title "$label_install AVNC" \
                             --backtitle "$label_warning" \
                             --yes-label "$label_install" \
                             --no-label "$label_ignore" \
