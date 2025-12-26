@@ -205,7 +205,7 @@ label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDi
 label_battery_optimization_desc_info="Esse ajuste é essencial para manter o desempenho do Termux. Se já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
 label_open_avnc="Abrindo AVNC..."
 label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
-label_avnc_desc="Já tem o AVNC instalado?\n Caso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
+label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 

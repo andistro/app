@@ -674,7 +674,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             --backtitle "$label_warning" \
                             --yes-label "$label_install" \
                             --no-label "$label_ignore" \
-                            --yesno "$label_avnc_desc" 10 60
+                            --yesno "$label_avnc_desc" 20 60
 
                         if [ $resp -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
