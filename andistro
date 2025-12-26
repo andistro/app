@@ -1400,11 +1400,12 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                     # CTRL+C → cancelar de forma clara
                     trap 'echo -e "\n\e[1;32m$label_cancel_action_ctrlc\e[0m"; exit 0' INT
-
                     read -s -n1 tecla
+                    trap INT  # Remove o trap imediatamente após read
 
                     # ENTER → executa
                     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
+                        echo -e "\n\e[1;32m$label_open_avnc\e[0m"
                         echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
                         echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
                         andistro --termux-cmd "am start -d vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true" >/dev/null 2>&1
