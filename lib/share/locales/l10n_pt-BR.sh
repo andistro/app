@@ -195,7 +195,7 @@ label_cancel_action_ctrlc="Você apertou CTRL+C. Você escolheu NÃO executar. N
 label_cancel_action_esc="Você apertou ESC. Você escolheu NÃO executar. Nada foi feito."
 label_continue_action_executed="Você escolheu executar. Um momento..."
 label_action_accepted="O pedido foi aceito."
-label_app_not_open="Caso o aplicativo não abra, verifique se ele está instalado."
+label_app_not_open="Caso o aplicativo não abra, verifique se está instalado."
 
 label_storage_permission="Permissão de armazenamento"
 label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
@@ -206,6 +206,7 @@ label_battery_optimization_desc_info="Esse ajuste é essencial para manter o des
 label_open_avnc="Abrindo AVNC..."
 label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
 label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
+
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 
