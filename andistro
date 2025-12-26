@@ -1409,13 +1409,13 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
                         echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
                         andistro --termux-cmd "am start -d vnc://localhost:1?ConnectionName=AnDistro&SaveConnection=true" >/dev/null 2>&1
-                        exit 0
+                        exit 1
                     fi
 
                     # ESC → cancela com mensagem
                     if [[ "$tecla" == $'\x1b' ]]; then
                         echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
-                        exit 0
+                        exit 1
                     fi
 
                     # Qualquer outra tecla → não confirma nem cancela, só volta silenciosamente
