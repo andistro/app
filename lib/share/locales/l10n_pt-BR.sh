@@ -154,6 +154,10 @@ label_password_alt_min="senha"
 label_back="Voltar"
 label_next="Próximo"
 label_help="Ajuda"
+label_proceed="Prosseguir"
+label_install="Instalar"
+label_ignore="Ignorar"
+label_warning="Aviso"
 
 
 # Informativos em colchetes
@@ -180,7 +184,7 @@ label_permission_retired="Já retirei"
 label_permission_not_granted="Não consegui"
 label_permission_help="Ajuda com permissão"
 label_open_configs="Abrir configs."
-label_delay_later="Vou deixar para depois"
+label_delay_later="Deixarei para depois"
 label_stop_and_open="Você escolheu parar. Nada foi aberto."
 label_action_denied="Ação: recusado (ESC) ou CTRL+C."
 label_invalid_key="Tecla inválida, questionário finalizado."
@@ -198,12 +202,10 @@ label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gere
 label_storange_permission_help_desc="Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"."
 label_battery_optimization="Otimização de bateria"
 label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"."
-label_battery_optimization_desc_info="Você já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
+label_battery_optimization_desc_info="Esse ajuste é essencial para manter o desempenho do Termux. Se já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
 label_open_avnc="Abrindo AVNC..."
 label_open_avnc_desc="Deseja abrir o aplicativo AVNC?\nCaso sim, tecle ENTER (↲), caso contrário, tecle ESC ou CTRL+C para ignorar."
-label_open_avnc_success="Você escolheu abrir o AVNC. Um momento..."
-label_open_avnc_failed="O aplicativo AVNC não abriu.\n\nIsso pode acontecer se o app não estiver instalado ou se a ponte com o Termux não estiver funcionando.\n\nClique em ajuda para abrir uma página que explica como baixar e instalar o AVNC?"
-
+label_avnc_desc="Já tem o AVNC instalado?\n Caso não tenha, clique no botão <Instalar>. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 

@@ -248,6 +248,8 @@ andistro --setup storage-permission
 
 andistro --setup battery
 
+andistro --setup avnc
+
 clear
 
 andistro 

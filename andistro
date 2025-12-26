@@ -658,9 +658,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
                         dialog --no-shadow --clear \
                         --title "$label_battery_optimization" \
-                        --yes-label "$label_permission_retired" \
-                        --no-label "$label_delay_later" \
-                        --yesno "$label_battery_optimization_desc_info" 10 60
+                        --ok-label "$label_next" \
+                        --msgbox "$label_battery_optimization_desc_info" 10 60
                     ;;
 
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
@@ -668,6 +667,22 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         dialog --no-shadow --title "$label_termux_settings" \
                             --msgbox "$label_open_termux_settings" 10 60
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
+                    ;;
+
+                    avnc)
+                        dialog --title "$label_install AVNC" \
+                            --backtitle "$label_warning" \
+                            --yes-label "$label_install" \
+                            --no-label "$label_ignore" \
+                            --yesno "$label_avnc_desc" 10 60
+
+                        if [ $resp -eq 0 ]; then
+                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
+                        else
+                            echo " "
+                        fi
+
+                        exit 0
                     ;;
 
                     *)
@@ -1370,8 +1385,16 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
 
-                    echo -e "\n${label_server_start_desc} \n\n\033[1;96m${label_user}:\033[0m $USER\n\033[1;96m${label_localhost}:\033[0m $HOSTNAME\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m 120.0.0.1\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m $wlan_ip_localhost\033[1;33m:\033[0m$PORT\n\n\033[1;35m${label_password_forgot}\033[0m\n\n\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
-
+                    echo -e "\n${label_server_start_desc}"
+                    echo
+                    echo -e "\033[1;96m${label_user}:\033[0m $USER\n"
+                    echo
+                    echo -e "\033[1;96m${label_localhost}:\033[0m $HOSTNAME\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m 120.0.0.1\033[1;33m:\033[0m$PORT \033[1;33m/\033[0m $wlan_ip_localhost\033[1;33m:\033[0m$PORT"
+                    echo
+                    echo -e "\033[1;35m${label_password_forgot}\033[0m"
+                    echo
+                    echo -e "\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
+                    echo
                     # Pergunta para abrir o AVNC
                     echo -e "\e[1;33m$label_open_avnc_desc\e[0m"
 
