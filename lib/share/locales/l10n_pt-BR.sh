@@ -218,7 +218,7 @@ label_distro_installed="O %s já está instalado."
 
 # Servidor
 label_server_kill_desc="Desligando o servidor..."
-label_server_kill_desc_help="Para desligar o servidor VNC, use o comando 'andistro --boot vnc --kill'"
+label_server_kill_desc_help="Para desligar o servidor VNC, use o comando:\n→ 'andistro --boot vnc --kill'"
 label_server_kill_desced="Desligando o servidor da porta"
 label_server_kill_desc_error="Nenhum servidor VNC encontrado para o usuário $USER"
 label_server_setup="Configuração do servidor"
