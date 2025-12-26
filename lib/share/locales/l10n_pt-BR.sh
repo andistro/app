@@ -100,7 +100,7 @@ label_setup_apply="Configuração aplicada!"
 
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
-label_password_forgot="Esqueceu a senha? Use o comando 'andistro --boot vnc --passwd' para redefinir a senha."
+label_password_forgot="Esqueceu a senha? Use o comando abaixo para redefinir a senha:\n→ 'andistro --boot vnc --passwd'"
 label_password_input="Digite a nova senha para o servidor VNC"
 label_password_input_alert_important="É necessário definir uma senha!"
 label_password_save_failed="Falha ao salvar a senha!"
