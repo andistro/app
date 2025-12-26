@@ -52,9 +52,9 @@ show_progress_dialog steps-multi-label 57 \
     "${label_system_setup}" "echo \"alias ls='ls --color=auto'\" >> $HOME/.bashrc" \
     "${label_system_setup}" 'echo "source \"/usr/local/lib/andistro/global\"" >> $HOME/.bashrc' \
     "${label_system_setup}\n\n → synaptic" "sudo sed -i 's/^Exec=synaptic-pkexec/Exec=synaptic/' /usr/share/applications/synaptic.desktop" \
-    "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone https://github.com/andistro/themes.git' \
+    "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'git clone --depth 1 https://github.com/andistro/themes.git' \
     "${label_system_setup}\n\n → ${label_themes}: andistro-themes" 'mv themes/AnDistro*/ /usr/share/themes/' \
-    "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone https://github.com/ZorinOS/zorin-icon-themes.git' \
+    "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'git clone --depth 1 https://github.com/ZorinOS/zorin-icon-themes.git' \
     "${label_system_setup}\n\n → ${label_icons}: zorin-icon-themes" 'mv zorin-icon-themes/Zorin*/ /usr/share/icons/' \
     "${label_system_setup}\n\n → ${label_xdg_user_dirs_setup}" "xdg-user-dirs-update" \
     "${label_system_setup}" 'rm -rf zorin-*-themes/' \
