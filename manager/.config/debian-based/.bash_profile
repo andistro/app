@@ -7,11 +7,14 @@ system_icu_locale_code="$4"
 system_icu_lang_code_env="${system_icu_locale_code//-/_}"
 etc_timezone=$(cat /etc/timezone)
 
-LANG="$system_icu_locale_code.UTF-8"
- 
-export LANG=$system_icu_locale_code.UTF-8
+LANG="$system_icu_lang_code_env.UTF-8"
+
+export LANG=$system_icu_lang_code_env.UTF-8
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
+
+chmod +x "/usr/local/lib/andistro/locales/l10n_${system_lang_code}.sh"
+source "/usr/local/lib/andistro/locales/l10n_${system_lang_code}.sh"
 
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
