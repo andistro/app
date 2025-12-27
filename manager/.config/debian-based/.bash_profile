@@ -14,7 +14,7 @@ source "/usr/local/lib/andistro/global"
 echo -e "\n ${distro_wait}\n"
 echo "LANG $system_icu_lang_code"
 echo "LANG $system_icu_lang_code_env"
-sleep 10
+sleep 50
 
 cat << 'EOF' >> ~/.bashrc
 

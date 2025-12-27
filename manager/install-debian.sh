@@ -11,8 +11,7 @@ config_environment="$8"
 distro_theme="$9"
 distro_version="${10}"
 
-source "$PREFIX/var/lib/andistro/lib/share/global"
-# Fonte modular configuração global
+source "$PREFIX/var/lib/andistro/lib/share/global" # Fonte modular configuração global
 
 #=============================================================================================
 # Caso a versão já tenha sido baixada, não baixar novamente
