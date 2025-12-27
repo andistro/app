@@ -7,7 +7,8 @@ system_icu_locale_code="$4"
 system_icu_lang_code_env="${system_icu_locale_code//-/_}"
 etc_timezone=$(cat /etc/timezone)
 
-LANG=$system_icu_locale_code.UTF-8
+LANG="$system_icu_locale_code.UTF-8"
+ 
 export LANG=$system_icu_locale_code.UTF-8
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
