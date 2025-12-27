@@ -484,7 +484,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 ;;
             esac
 
-            andistro alerta timezone
+            #andistro alerta timezone
 
             bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$system_lang_code" "$system_lang_code_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
