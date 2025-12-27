@@ -528,10 +528,35 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             elif [ "$2" == "andistro" ]; then
                 # Desinstalação total
                 label_andistro_uninstalling_complete="$label_andistro_uninstalling_complete"
-                echo "$label_wait"
-                rm -rf $andistro_files
-                rm -rf $PREFIX/bin/andistro
-                echo "$label_andistro_uninstalling_complete"
+                distro_name_upper="AnDistro"
+                label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
+                dialog --no-shadow \
+                    --title "$label_dialog_uninstall_menu" \
+                    --yes-label "$label_yes" \
+                    --no-label "$label_no" \
+                    --yesno "$label_dialog_uninstall_menu_desc" 10 60
+                resposta=$?
+
+                if [ $resposta -eq 0 ]; then
+                    # Usuário escolheu "Sim"
+                    echo "$label_wait"
+                    label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
+                else
+                    # Usuário escolheu "Não"
+                    label_uninstall_cancelled=$(printf "$label_uninstall_cancelled" "AnDistro")
+                    andistro alerta uninstall-cancelled
+                    exit 1
+                fi
+
+                show_progress_dialog steps-one-label "${label_uninstalling_system}" 5 \
+                    "sleep 1" \
+                    "sleep 1" \
+                    "sleep 1" \
+                    "rm -rf $andistro_files" \
+                    "rm -rf $PREFIX/bin/andistro"
+
+                andistro alerta uninstall-success
+
                 exit 0
             else
                     echo "$label_command_not_found: $2"
