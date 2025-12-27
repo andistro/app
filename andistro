@@ -497,7 +497,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             if [ -z "$2" ]; then
                 distro_name_upper="Debian"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
-                dialog --no-shadow --title "$label_dialog_uninstall_menu" --yesno "$label_dialog_uninstall_menu_desc" 10 60
+                dialog --no-shadow \
+                    --title "$label_dialog_uninstall_menu" \
+                    --yes-label "$label_yes" \
+                    --no-label "$label_no" \
+                    --yesno "$label_dialog_uninstall_menu_desc" 10 60
                 resposta=$?
                 
                 if [ $resposta -eq 0 ]; then

@@ -167,6 +167,8 @@ label_skip="Pular"
 label_attention="Atenção"
 label_settings="Configurações"
 label_settings_and_help="Configurações e Ajuda"
+label_yes="Sim"
+label_no="Não"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
