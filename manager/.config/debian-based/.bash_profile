@@ -3,10 +3,11 @@
 distro_name="$1"
 distro_theme="$2"
 system_lang_code="$3"
+system_icu_locale_code="$4"
 etc_timezone=$(cat /etc/timezone)
 
 system_lang_code_env="${system_lang_code//-/_}"
-export LANG=$system_lang_code_env.UTF-8
+export LANG=$system_icu_locale_code.UTF-8
 
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
@@ -34,11 +35,11 @@ termux-echo()  { termux-cmd "echo '$1'"; }
 EOF
 
 show_progress_dialog steps-one-label "${label_progress}" 28 \
-    "sed -i \"s/^# *\($system_lang_code_env.UTF-8\)/\1/\" /etc/locale.gen" \
-    "sudo locale-gen $system_lang_code_env.UTF-8" \
-    "echo \"LANG=$system_lang_code_env.UTF-8\" > /etc/locale.conf" \
-    "echo \"export LANG=$system_lang_code_env.UTF-8\" >> $HOME/.bashrc" \
-    "echo \"export LANGUAGE=$system_lang_code_env.UTF-8\" >> $HOME/.bashrc" \
+    "sed -i \"s/^# *\($system_icu_locale_code.UTF-8\)/\1/\" /etc/locale.gen" \
+    "sudo locale-gen $system_icu_locale_code.UTF-8" \
+    "echo \"LANG=$system_icu_locale_code.UTF-8\" > /etc/locale.conf" \
+    "echo \"export LANG=$system_icu_locale_code.UTF-8\" >> $HOME/.bashrc" \
+    "echo \"export LANGUAGE=$system_icu_locale_code.UTF-8\" >> $HOME/.bashrc" \
     "apt update" \
     "sudo install -d -m 0755 /etc/apt/keyrings" \
     "wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc" \
