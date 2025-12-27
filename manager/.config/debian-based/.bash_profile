@@ -4,14 +4,17 @@ distro_name="$1"
 distro_theme="$2"
 system_lang_code="$3"
 system_icu_locale_code="$4"
+system_icu_lang_code_env="${system_icu_locale_code//-/_}"
 etc_timezone=$(cat /etc/timezone)
-export LANG=$system_icu_locale_code.UTF-8
 
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
 # Mensagem de inicialização
 echo -e "\n ${distro_wait}\n"
+echo "LANG $system_icu_lang_code"
+echo "LANG $system_icu_lang_code_env"
+sleep 10
 
 cat << 'EOF' >> ~/.bashrc
 
@@ -29,7 +32,6 @@ termux-cmd() {
 android-open() { termux-cmd "termux-open '$1'"; }
 android-app()  { termux-cmd "am start -n '$1'"; }
 termux-echo()  { termux-cmd "echo '$1'"; }
-
 EOF
 
 show_progress_dialog steps-one-label "${label_progress}" 28 \
