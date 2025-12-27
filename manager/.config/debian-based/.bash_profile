@@ -5,8 +5,6 @@ distro_theme="$2"
 system_lang_code="$3"
 system_icu_locale_code="$4"
 etc_timezone=$(cat /etc/timezone)
-
-system_lang_code_env="${system_lang_code//-/_}"
 export LANG=$system_icu_locale_code.UTF-8
 
 # Fonte modular configuração global
