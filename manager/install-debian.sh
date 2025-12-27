@@ -69,6 +69,9 @@ sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.b
 sed -i "s|system_lang_code=\"\$3\"|system_lang_code=\"$system_lang_code\"|g" $folder/root/.bash_profile
 sed -i "s|system_icu_locale_code=\"\$4\"|system_icu_locale_code=\"$system_icu_locale_code\"|g" $folder/root/.bash_profile
 
+echo "Sistema lang $system_icu_locale_code"
+sleep 10
+
 cp $config_file/system-config.sh $folder/root/system-config.sh
 
 if [ "$config_environment" = "null" ]; then
