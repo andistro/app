@@ -2,7 +2,7 @@
 # Variáveis de configuração
 distro_name="$1"
 distro_theme="$2"
-LANG="$system_icu_lang_code_env.UTF-8"
+LANG="$4"
 etc_timezone=$(cat /etc/timezone)
 
 # Fonte modular configuração global
