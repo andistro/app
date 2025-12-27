@@ -71,3 +71,7 @@ else
     $command -c "$com"
 fi
 
+
+rm -rf andistro-error
+rm -rf andistro-bridge
+rm -rf andistro-output
