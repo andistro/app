@@ -6,8 +6,8 @@ distro_name="$3"
 bin="$4"
 folder="$5"
 binds="$6"
-default_locale_system="$7"
-default_locale_env="$8"
+system_lang_code="$7"
+system_lang_code_env="$8"
 archurl="$9"
 config_environment="${10}"
 distro_theme="${11}"
@@ -51,7 +51,7 @@ sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|co
 sed -i "s|command+=\" -b \$andistro_files/manager:/usr/local/lib/andistro/manager\"|command+=\" -b $andistro_files/manager:/usr/local/lib/andistro/manager\"|g" $bin
 sed -i "s|command+=\" -b \$andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
 sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g" $bin
-sed -i "s|command+=\" LANG=\$default_locale_env.UTF-8\"|command+=\" LANG=$default_locale_env.UTF-8\"|g" $bin
+sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $bin
 
 chmod +x $bin
 
@@ -60,7 +60,7 @@ cp "$PREFIX/var/lib/andistro/manager/.terminal_mode/.bash_profile" $folder/root/
 
 sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
 sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
-sed -i "s|default_locale_system=\"\$3\"|default_locale_system=\"$default_locale_system\"|g" $folder/root/.bash_profile
+sed -i "s|system_lang_code=\"\$3\"|system_lang_code=\"$system_lang_code\"|g" $folder/root/.bash_profile
 
 cp "$PREFIX/var/lib/andistro/manager/.terminal_mode/.config/debian-based/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 if [ "$config_environment" = "xfce4" ]; then

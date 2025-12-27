@@ -421,48 +421,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
                 mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
             fi
-            
-            # Menu de seleção de idioma
-            if [[ -n "${LANG_CODES[$system_icu_locale_code]}" ]]; then
-                system_lang_code="$system_icu_locale_code" # Usa o código de idioma ICU detectado
-            else
-                system_lang_code="en-US" # Padrão para inglês se não detectado
-            fi
-            # Montar opções do menu
-            OPTIONS=()
-            OPTIONS+=("auto" "→ ${LANG_CODES[$system_lang_code]} $label_detected")
-            OPTIONS+=("SEP" "────────────")  # Separador visual seguro
-            # Adicionar os demais idiomas em ordem alfabética (exceto o detectado)
-            for code in $(printf "%s\n" "${!LANG_CODES[@]}" | sort); do
-                [[ "$code" == "$system_lang_code" ]] && continue
-                OPTIONS+=("$code" "${LANG_CODES[$code]}")
-            done
-            # Mostrar menu com redirecionamento seguro
-            exec 3>&1
-            CHOICE=$(dialog --no-shadow --clear \
-                            --title "$label_choose_language" \
-                            --menu "$label_choose_language" \
-                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                            "${OPTIONS[@]}" \
-                            2>&1 1>&3)
-                            exec 3>&-
-
-            # Determinar idioma selecionado
-            if [[ "$CHOICE" == "auto" || -z "$CHOICE" ]]; then
-                default_locale_system="$system_lang_code"
-            elif [[ "$CHOICE" == "SEP" ]]; then
-                exit 0  # ignorar separador
-            else
-                default_locale_system="$CHOICE"
-            fi
-            # Converter de lang-LANG para lang_LANG
-            default_locale_env="${default_locale_system//-/_}"
-            # Exportar, se necessário
-            export default_locale_system
-            export default_locale_env
-            export system_icu_locale_code="$default_locale_system"
-            chmod +x "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
-            source "$PREFIX/var/lib/andistro/lib/share/locales/l10n_${default_locale_system}.sh"
 
             # Detectar arquitetura
             case `dpkg --print-architecture` in
@@ -528,7 +486,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             andistro alerta timezone
 
-            bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$default_locale_system" "$default_locale_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
+            bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$system_lang_code" "$system_lang_code_env" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
             clear
             
             andistro -s

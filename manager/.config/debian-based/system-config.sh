@@ -2,7 +2,7 @@
 export distro_theme="$1"
 export distro_name="$2"
 
-default_locale_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
+system_lang_code_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
 
@@ -23,7 +23,7 @@ show_progress_dialog steps-multi-label 57 \
     "${label_install_script_download}\n\n → bleachbit" 'sudo apt install bleachbit --no-install-recommends -y' \
     "${label_install_script_download}\n\n → exo-utils" 'sudo apt install exo-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → firefox" 'sudo apt install firefox --no-install-recommends -y' \
-    "${label_install_script_download}\n\n → firefox ${default_locale_env_lower}" "sudo apt install firefox-l10n-${default_locale_env_lower} --no-install-recommends -y" \
+    "${label_install_script_download}\n\n → firefox ${system_lang_code_env_lower}" "sudo apt install firefox-l10n-${system_lang_code_env_lower} --no-install-recommends -y" \
     "${label_install_script_download}\n\n → font-manager" 'sudo apt install font-manager --no-install-recommends -y' \
     "${label_install_script_download}\n\n → git" 'sudo apt install git --no-install-recommends -y' \
     "${label_install_script_download}\n\n → inetutils-tools" 'sudo apt install inetutils-tools --no-install-recommends -y' \
