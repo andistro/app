@@ -1,5 +1,9 @@
 #!/bin/bash
 # Translated by  Comet (AI Assistant)
+# Change "Brazil" name to "Brasil"
+if [ "$system_country" = "Brazil" ]; then
+  system_country="Brasil"
+fi
 #=====================================================================================================
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # AndDistro executable specific definitions
@@ -213,3 +217,25 @@ label_resolution_option_qdhd="Quad-HD"
 label_resolution_option_fhd="Full-HD"
 label_resolution_option_fhd_wide="Full-HD extended"
 label_resolution_option_hd="HD"
+label_proceed="Proceed"
+label_install="Install"
+label_ignore="Ignore"
+label_warning="Warning"
+label_skip="Skip"
+label_attention="Attention"
+label_settings="Settings"
+label_settings_and_help="Settings and Help"
+label_yes="Yes"
+label_no="No"
+label_storage_permission_check="Checking storage permissions..."
+label_storage_permission_granted="Already have access to storage."
+label_finalizing_setup="Finalizing the settings of %s..."
+label_opening="Opening %s..."
+label_andistro_battery_optimization="Remove battery optimization"
+label_andistro_signal9_error="Resolve signal 9 error"
+label_andistro_storage_permission_check="Check storage permission"
+label_andistro_install_avnc="Install AVNC"
+label_avnc_desc="Do you already have AVNC installed? If not, click the <Install> button and after starting the installation, return here. If you already have it installed or do not want to install it on your phone, click <Ignore>\n\nThe app is not mandatory, but it is recommended.\nYou can use any other VNC viewing app."
+label_phantom_procs_desc="For AnDistro not to be terminated by the Android system at any time with the signal 9 error message, click <Help> and follow the tutorial to resolve the problem.\n\nYou can do the configuration after AnDistro installation. Click <Skip> to finish AnDistro installation. You can consult again in the 'Settings and Help' option of AnDistro."
+label_open_avnc_success="You chose to open AVNC. One moment..."
+label_open_avnc_failed="The AVNC application did not open.\n\nThis can happen if the app is not installed or if the bridge with Termux is not working.\n\nClick Help to open a page that explains how to download and install AVNC?"
