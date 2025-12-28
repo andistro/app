@@ -27,4 +27,3 @@ fi
 
 # Qualquer outra tecla → não confirma nem cancela, só volta silenciosamente
 # (nenhum echo, nenhum diálogo, apenas fim do script)
-exit 0
