@@ -62,7 +62,7 @@ cp "$config_file/.bash_profile" $folder/root/.bash_profile
 
 sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
 sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
-sed -i "s|LANG=\"\$4.UTF-8\"|LANG=\"$system_icu_locale_code.UTF-8\"|g" $folder/root/.bash_profile
+sed -i "s|LANG=\"\$4\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g" $folder/root/.bash_profile
 	
 cp $config_file/system-config.sh $folder/root/system-config.sh
 
