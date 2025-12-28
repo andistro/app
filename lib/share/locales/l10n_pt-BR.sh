@@ -40,6 +40,7 @@ label_andistro_battery_optimization="Retirar otimização da bateria"
 label_andistro_signal9_error="Resolver o erro signal 9"
 label_andistro_storage_permission_check="Verificar permissão de armazenamento"
 label_andistro_install_avnc="Instalar o AVNC"
+label_autoboot_andistro="Auto iniciar o AnDistro"
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."

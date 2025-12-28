@@ -97,6 +97,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     2 "$label_andistro_signal9_error" 
                     3 "$label_andistro_install_avnc"
                     4 "$label_andistro_storage_permission_check"
+                    5 "$label_autoboot_andistro"
                     )
 
                 CHOICE=$(dialog --no-shadow --clear \
@@ -125,6 +126,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                 4)
                     andistro --setup storage-permission
+                    andistro
+                ;;
+                5)
+                    andistro --setup autoboot
                     andistro
                 ;;
                 esac
@@ -753,6 +758,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         if [ $resp -eq 0 ]; then
                             cp "$andistro_files/manager/.config/autoboot" $HOME/.bash_profile
+                            andistro alerta setup-apply
                         else
                             echo " "
                         fi
