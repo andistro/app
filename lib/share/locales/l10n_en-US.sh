@@ -1,9 +1,6 @@
 #!/bin/bash
 # Translated by  Comet (AI Assistant)
 # Change "Brazil" name to "Brasil"
-if [ "$system_country" = "Brazil" ]; then
-  system_country="Brasil"
-fi
 #=====================================================================================================
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # AndDistro executable specific definitions
