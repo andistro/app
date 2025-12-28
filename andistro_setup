@@ -252,6 +252,8 @@ andistro --setup avnc
 
 andistro --setup phantom-procs
 
+andistro --setup autoboot
+
 clear
 
 andistro 
