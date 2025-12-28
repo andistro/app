@@ -742,6 +742,24 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         exit 0
                     ;;
 
+                    autoboot)
+                        dialog --no-shadow --title "$label_attention" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_yes" \
+                                --no-label "$label_no" \
+                                --yesno "$label_autoboot_andistro_desc" 20 60
+
+                        resp=$?
+
+                        if [ $resp -eq 0 ]; then
+                            cp "$andistro_files/manager/.config/autoboot" $HOME/.bash_profile
+                        else
+                            echo " "
+                        fi
+
+                        exit 0
+                    ;;
+
                     *)
                         echo "$label_command_not_found: $2"
                         ;;
@@ -1453,7 +1471,8 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     echo -e "\033[1;38;5;208m${label_server_kill_desc_help}\033[0m"
                     echo
                     # Pergunta para abrir o AVNC
-                    echo -e "\e[1;33m$label_open_avnc_desc\e[0m"
+                    label_open_app_desc=$(printf "$label_open_app_desc" "AVNC")
+                    echo -e "\e[1;33m$label_open_app_desc\e[0m"
 
                     # CTRL+C → cancelar de forma clara
                     trap 'echo -e "\n\e[1;32m$label_cancel_action_ctrlc\e[0m"; exit 0' INT
