@@ -42,29 +42,28 @@ if [ "$first" != 1 ];then
 	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60
 fi
 
-# Configurações pós-instalação
-# copia o arquivo de configuração de idioma da pasta $PREFIX/var/lib/andistro/manager/.configs/debian-based/locale_setup/ ppara o root
-cp "$config_file/start-distro" $bin
-sed -i "s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g" $bin
-sed -i "s|command+=\" -b \$folder/root:/dev/shm\"|command+=\" -b $folder/root:/dev/shm\"|g" $bin
-sed -i "s|command+=\" -b \$config_file/proc/fakethings/stat:/proc/stat\"|command+=\" -b $config_file/proc/fakethings/stat:/proc/stat\"|g" $bin
-sed -i "s|command+=\" -b \$config_file/proc/fakethings/vmstat:/proc/vmstat\"|command+=\" -b $config_file/proc/fakethings/vmstat:/proc/vmstat\"|g" $bin
-sed -i "s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/lib/andistro\"|g" $bin
-sed -i "s|command+=\" -b \$andistro_files/manager:/usr/local/lib/andistro/manager\"|command+=\" -b $andistro_files/manager:/usr/local/lib/andistro/manager\"|g" $bin
-sed -i "s|command+=\" -b \$andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|g" $bin
-sed -i "s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g" $bin
-sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $bin
-
-chmod +x $bin
-
-rm -rf $folder/root/.bash_profile
-cp "$config_file/.bash_profile" $folder/root/.bash_profile
-
-sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
-sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
-sed -i "s|LANG=\"\$4\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g" $folder/root/.bash_profile
-	
-cp $config_file/system-config.sh $folder/root/system-config.sh
+show_progress_dialog steps-one-label "${label_finalizing_setup}" 21 \
+	"cp \"$config_file/start-distro\" $bin" \
+	"sed -i \"s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g\" $bin" \
+	"sed -i \"s|command+=\" -r \$folder\"|command+=\" -r $folder\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$folder/root:/dev/shm\"|command+=\" -b $folder/root:/dev/shm\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$config_file/proc/fakethings/stat:/proc/stat\"|command+=\" -b $config_file/proc/fakethings/stat:/proc/stat\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$config_file/proc/fakethings/vmstat:/proc/vmstat\"|command+=\" -b $config_file/proc/fakethings/vmstat:/proc/vmstat\"|g" $bin" \
+	"sed -i \"s|command+=\" -b \$andistro_files/lib/share:/usr/local/lib/andistro\"|command+=\" -b $andistro_files/lib/share:/usr/local/lib/andistro\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$andistro_files/manager:/usr/local/lib/andistro/manager\"|command+=\" -b $andistro_files/manager:/usr/local/lib/andistro/manager\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|command+=\" -b $andistro_files/manager/.config/debian-based/bin:/usr/local/bin/\"|g\" $bin" \
+	"sed -i \"s|command+=\" -b \$PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|command+=\" -b $PREFIX/bin/andistro:/usr/local/lib/andistro/bin/andistro\"|g\" $bin" \
+	"sed -i \"s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g\" $bin" \
+	"chmod +x $bin" \
+	"rm -rf $folder/root/.bash_profile" \
+	"cp \"$config_file/.bash_profile\" $folder/root/.bash_profile" \
+	"sed -i \"s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g\" $folder/root/.bash_profile" \
+	"sed -i \"s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g\" $folder/root/.bash_profile" \
+	"sed -i \"s|LANG=\"\$4\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g\" $folder/root/.bash_profile" \
+	"cp $config_file/system-config.sh $folder/root/system-config.sh" \
+	"echo \"127.0.0.1 localhost localhost\" | tee $folder/etc/hosts" \
+	"echo \"nameserver 8.8.8.8\" | tee $folder/etc/resolv.conf" \
+	"echo \"$system_timezone\" | tee $folder/etc/timezone" 
 
 if [ "$config_environment" = "null" ]; then
 	echo " "
@@ -75,20 +74,6 @@ elif [ "$config_environment" = "xfce4" ]; then
 else
 	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 fi
-
-
-# Adicionar entradas em hosts, resolv.conf e timezone
-echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts > /dev/null 2>&1
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
-echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
-
-# KERNEL_VERSON=$(uname -r)
-
-# if [ ! -f "${folder}/proc/fakethings/version" ]; then
-# 	cat <<- EOF > "${folder}/proc/fakethings/version"
-# 	$KERNEL_VERSION (FakeAndroid)
-# 	EOF
-# fi
 
 echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
 touch $folder/root/.hushlogin

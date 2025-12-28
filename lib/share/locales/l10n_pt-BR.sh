@@ -90,6 +90,7 @@ label_dialog_uninstall_menu="Deseja continuar com a desinstalação?"
 label_dialog_uninstall_menu_desc="Você está prestes a desinstalar o sistema %s.\n\nTodos os dados relacionados a este sistema serão perdidos. \nESTE É UMA AÇÃO IRREVERSÍVEL.\n\nDeseja continuar?"
 label_termux_settings="Configurações do Termux"
 label_open_termux_settings="Após clicar em \"Ok\" será aberto a as informações do Termux no sistema."
+label_finalizing_setup="Finalizando as configurações do %s..."
 
 ## Fuso horário
 label_system_timezone="Fuso horário"
