@@ -91,6 +91,7 @@ label_dialog_uninstall_menu_desc="Você está prestes a desinstalar o sistema %s
 label_termux_settings="Configurações do Termux"
 label_open_termux_settings="Após clicar em \"Ok\" será aberto a as informações do Termux no sistema."
 label_finalizing_setup="Finalizando as configurações do %s..."
+label_opening="Abrindo %s..."
 
 ## Fuso horário
 label_system_timezone="Fuso horário"
