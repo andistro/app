@@ -460,11 +460,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 2)	
                     config_environment="lxde"
                 ;;
-
-                # Nenhuma interface gráfica - Null
-                3)
-                    config_environment="null"
-                ;;
             esac
 
             # Menu de Tema
