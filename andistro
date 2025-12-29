@@ -365,7 +365,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'pkg install --no-install-recommends inxi -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
-                    "${label_install_script_download}" 'git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup' \
+                    "${label_install_script_download}" 'git clone --depth 1 https://github.com/andistro/app.git app-andistro_setup' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/andistro_setup"' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/README.md"' \
