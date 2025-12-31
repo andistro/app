@@ -823,6 +823,47 @@ EOF
                     fi
                     exit 0
                     ;;
+                    autoboot-disable)
+                        dialog --no-shadow --title "$label_attention" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_yes" \
+                                --no-label "$label_no" \
+                                --yesno "Deseja DESATIVAR o autoboot do AnDistro?\n\nIsso removerá a confirmação automática do .bash_profile." 12 60
+
+                        resp=$?
+
+                        if [ $resp -eq 0 ]; then
+                            BASH_PROFILE="$HOME/.bash_profile"
+                            
+                            # Verifica se arquivo existe E tem seção AnDistro
+                            if [[ -f "$BASH_PROFILE" && -n "$(grep -c '# CONFIRMAÇÃO Andistro no .bash_profile' "$BASH_PROFILE" 2>/dev/null)" ]]; then
+                                echo -e "\e[1;33m🔍 Verificando seção AnDistro no .bash_profile...\e[0m"
+                                
+                                # Backup ANTES de remover
+                                cp "$BASH_PROFILE" "$BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)"
+                                echo -e "\e[1;32m✅ Backup criado: $BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)\e[0m"
+                                
+                                # Remove APENAS seção AnDistro
+                                sed -i '/# =======================================/,/# FIM DA CONFIRMAÇÃO Andistro no .bash_profile/ d' "$BASH_PROFILE"
+                                
+                                # Verifica se sobrou algo no arquivo
+                                if [[ -s "$BASH_PROFILE" ]]; then
+                                    echo -e "\e[1;32m✅ Seção AnDistro removida! Código do usuário preservado.\e[0m"
+                                    chmod 755 "$BASH_PROFILE"
+                                else
+                                    echo -e "\e[1;32m🗑️  Arquivo vazio após remoção → Excluindo $BASH_PROFILE\e[0m"
+                                    rm "$BASH_PROFILE"
+                                fi
+                                
+                                andistro alerta setup-apply
+                            else
+                                echo -e "\e[1;33mℹ️  Autoboot AnDistro não está ativo ou arquivo não existe.\e[0m"
+                            fi
+                        else
+                            echo " "
+                        fi
+                        exit 0
+                        ;;
 
 
                     adb)
