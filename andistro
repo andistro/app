@@ -764,7 +764,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             if [[ ! -f "$BASH_PROFILE" ]]; then
                                 echo -e "\e[1;32m✅ Criando novo $BASH_PROFILE\e[0m"
                                 touch "$BASH_PROFILE"
-                                chmod 755 "$BASH_PROFILE"
+                                chmod +x "$BASH_PROFILE"
                             else
                                 # Verifica se já tem seção AnDistro
                                 if grep -q "# CONFIRMAÇÃO Andistro no .bash_profile" "$BASH_PROFILE" 2>/dev/null; then
