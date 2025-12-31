@@ -220,7 +220,7 @@ label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDi
 label_battery_optimization_desc_info="Esse ajuste é essencial para manter o desempenho do Termux. Se já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
 label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
 label_phantom_procs_desc="Para que o AnDistro não seja encerrado pelo sistema Android a qualquer momento com a mensagem de erro signal 9, clique em <Ajuda> e siga o tutorial para resolver o problema.\n\nPoderá fazer a configuração após a instalação do AnDistro. Clique em <Pular> para finalizar a instalação do AnDistro. Poderá consultar novamente na opção 'Configurações e Ajuda' do AnDistro."
-label_open_app_desc="Deseja abrir o aplicativo %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
+label_open_app_desc="Deseja iniar o %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_autoboot_andistro_desc="Deseja receber um aviso para iniciar o AnDistro toda vez que abrir o Termux?\n O AnDistro, não será iniciado automaticamente, será necessário confirmar com o enter (↲) após aparecer a mensagem."
 
 # Temporizador

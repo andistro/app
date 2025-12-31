@@ -32,7 +32,7 @@
 ```bash 
 andistro/app (branch: alpha)
 │
-├── boot/
+├── manager/
 │   ├── .config/
 │   │   └── debian-based/
 │   │       ├── environment/
@@ -73,10 +73,6 @@ andistro/app (branch: alpha)
 ├── andistro_setup
 └── termos.sh
 ```
-
-<div align="center">
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=andistro.app"  />
-</div>
 
 
 
