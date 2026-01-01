@@ -32,7 +32,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
 
-total_steps=27  # Número total de etapas que você quer monitorar
+total_steps=28  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
@@ -189,7 +189,6 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-
     #24 Verifica se o termux-api está instalado
     if ! dpkg -l | grep -qw termux-api; then
         pkg install --no-install-recommends termux-api -y > /dev/null 2>&1 # necessita do app Termux:API instalado no dispositivo
@@ -197,12 +196,19 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #25 Todo o pacote de instalação
+    #25 Verifica se o android-tools está instalado
+    if ! dpkg -l | grep -qw android-tools; then
+        pkg install --no-install-recommends android-tools -y > /dev/null 2>&1
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    #26 Todo o pacote de instalação
     git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #26 Extrai o pacote de instalação
+    #27 Extrai o pacote de instalação
     rm -rf "$HOME/app-andistro_setup/.git"
     rm -rf "$HOME/app-andistro_setup/andistro_setup"
     rm -rf "$HOME/app-andistro_setup/README.md"
@@ -215,7 +221,7 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    #27 Mover o Andistro
+    #28 Mover o Andistro
     chmod +x "$PREFIX/bin/andistro"
     chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
     ((current_step++))
