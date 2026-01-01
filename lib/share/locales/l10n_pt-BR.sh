@@ -41,6 +41,8 @@ label_andistro_signal9_error="Resolver o erro signal 9"
 label_andistro_storage_permission_check="Verificar permissão de armazenamento"
 label_andistro_install_avnc="Instalar o AVNC"
 label_autoboot_andistro="Auto iniciar o AnDistro"
+label_disable_autoboot_andistro="Desativar o auto iniciar AnDistro"
+label_andistro_uninstall="Desinstalar o AnDistro"
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
@@ -222,6 +224,7 @@ label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <I
 label_phantom_procs_desc="Para que o AnDistro não seja encerrado pelo sistema Android a qualquer momento com a mensagem de erro signal 9, clique em <Ajuda> e siga o tutorial para resolver o problema.\n\nPoderá fazer a configuração após a instalação do AnDistro. Clique em <Pular> para finalizar a instalação do AnDistro. Poderá consultar novamente na opção 'Configurações e Ajuda' do AnDistro."
 label_open_app_desc="Deseja iniar o %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_autoboot_andistro_desc="Deseja receber um aviso para iniciar o AnDistro toda vez que abrir o Termux?\n O AnDistro, não será iniciado automaticamente, será necessário confirmar com o enter (↲) após aparecer a mensagem."
+label_autoboot_andistro_disable_desc="Deseja DESATIVAR o autoboot do AnDistro?\n\nIsso removerá a mensagem de aviso que aparece toda vez que o Termux é iniciado."
 
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."

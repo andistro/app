@@ -97,7 +97,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     2 "$label_andistro_signal9_error" 
                     3 "$label_andistro_install_avnc"
                     4 "$label_andistro_storage_permission_check"
-                    5 "$label_back"
+                    5 "$label_autoboot_andistro"
+                    6 "$label_disable_autoboot_andistro"
+                    7 "$label_andistro_uninstall"
+                    8 "$label_back"
                     )
 
                 CHOICE=$(dialog --no-shadow --clear \
@@ -129,6 +132,17 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     andistro
                 ;;
                 5)
+                    andistro --setup autoboot
+                    andistro
+                ;;
+                6)
+                    andistro --setup autoboot-disable
+                    andistro
+                ;;
+                7)
+                    andistro -d andistro
+                ;;
+                8)
                     andistro
                 ;;
                 esac
@@ -542,6 +556,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     --yes-label "$label_yes" \
                     --no-label "$label_no" \
                     --yesno "$label_dialog_uninstall_menu_desc" 10 60
+
                 resposta=$?
 
                 if [ $resposta -eq 0 ]; then
@@ -563,8 +578,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "rm -rf $PREFIX/bin/andistro"
 
                 andistro alerta uninstall-success
-
-                exit 0
+                clear
+                cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
             else
                     echo "$label_command_not_found: $2"
                     exit 1
@@ -759,112 +774,85 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         resp=$?
 
                         if [ $resp -eq 0 ]; then
-                            BASH_PROFILE="$HOME/.bash_profile"
-                            
-                            if [[ ! -f "$BASH_PROFILE" ]]; then
-                                echo -e "\e[1;32m✅ Criando novo $BASH_PROFILE\e[0m"
-                                touch "$BASH_PROFILE"
-                                chmod +x "$BASH_PROFILE"
-                            else
-                                # Verifica se já tem seção AnDistro
-                                if grep -q "# CONFIRMAÇÃO Andistro no .bash_profile" "$BASH_PROFILE" 2>/dev/null; then
-                                    echo -e "\e[1;32m🔄 Seção AnDistro encontrada → Atualizando...\e[0m"
-                                    # Remove APENAS a seção AnDistro antiga
-                                    sed -i '/# =======================================/,/# FIM DA CONFIRMAÇÃO Andistro no .bash_profile/ d' "$BASH_PROFILE"
-                                fi
-                                
-                                # Backup sempre
-                                cp "$BASH_PROFILE" "$BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)"
-                                echo -e "\e[1;32m✅ Backup: $BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)\e[0m"
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+
+                            if [[ -f "$BASHRC_FILE" ]]; then
+                                # Remove só seção AnDistro antiga, se existir
+                                sed -i '/# AnDistro: Confirmação de autoboot/,/# AnDistro: Fim da confirmação de autoboot/ d' "$BASHRC_FILE"
+
+                                # Backup ANTES de gravar nova seção
+                                cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
                             fi
 
                             CONFIRM_CODE=$(cat << 'EOF'
 # ========================================
-# CONFIRMAÇÃO Andistro no .bash_profile
+# AnDistro: Confirmação de autoboot
 # ========================================
-source "$PREFIX/var/lib/andistro/lib/share/global"
+if command -v andistro >/dev/null 2>&1; then
+    source "$PREFIX/var/lib/andistro/lib/share/global" 2>/dev/null || true
 
-# Mensagem versátil para Andistro
-msg_andistro=$(printf "$label_open_app_desc" "Andistro")
+    msg_andistro=$(printf "$label_open_app_desc" "Andistro")
 
-echo
-echo -e "\e[1;33m$msg_andistro\e[0m"
+    echo
+    echo -e "\e[1;33m$msg_andistro\e[0m"
 
-trap "echo -e '\n\e[1;32m$label_cancel_action_ctrlc\e[0m'; exec bash" INT
-read -rsn1 tecla
-trap - INT
+    trap "echo -e '\n\e[1;32m$label_cancel_action_ctrlc\e[0m'; exec bash" INT
+    read -rsn1 tecla
+    trap - INT
 
-if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
-    echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
-    echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
-    echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
-    andistro
+    if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
+        echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
+        echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
+        echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
+        andistro >/dev/null 2>&1 &
+        exec bash
+    fi
+
+    if [[ "$tecla" == $'\x1b' ]]; then
+        echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
+    fi
+
     exec bash
 fi
-
-if [[ "$tecla" == $'\x1b' ]]; then
-    echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
-fi
-
-exec bash
 # ========================================
-# FIM DA CONFIRMAÇÃO Andistro no .bash_profile
+# AnDistro: Fim da confirmação de autoboot
 # ========================================
 EOF
 )
 
-                        # INSERE no FINAL (preserva código do usuário)
-                        echo "$CONFIRM_CODE" >> "$BASH_PROFILE"
-                        chmod +x "$BASH_PROFILE"
-                        
-                        andistro alerta setup-apply
-                    else
-                        echo " "
-                    fi
-                    exit 0
+                            echo "$CONFIRM_CODE" >> "$BASHRC_FILE"
+                            chmod 644 "$BASHRC_FILE"
+
+                            andistro alerta setup-apply
+                        fi
+                        exit 0
                     ;;
+
                     autoboot-disable)
                         dialog --no-shadow --title "$label_attention" \
                                 --backtitle "$label_warning" \
                                 --yes-label "$label_yes" \
                                 --no-label "$label_no" \
-                                --yesno "Deseja DESATIVAR o autoboot do AnDistro?\n\nIsso removerá a confirmação automática do .bash_profile." 12 60
+                                --yesno "$label_autoboot_andistro_disable_desc" 12 60
 
                         resp=$?
 
                         if [ $resp -eq 0 ]; then
-                            BASH_PROFILE="$HOME/.bash_profile"
-                            
-                            # Verifica se arquivo existe E tem seção AnDistro
-                            if [[ -f "$BASH_PROFILE" && -n "$(grep -c '# CONFIRMAÇÃO Andistro no .bash_profile' "$BASH_PROFILE" 2>/dev/null)" ]]; then
-                                echo -e "\e[1;33m🔍 Verificando seção AnDistro no .bash_profile...\e[0m"
-                                
-                                # Backup ANTES de remover
-                                cp "$BASH_PROFILE" "$BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)"
-                                echo -e "\e[1;32m✅ Backup criado: $BASH_PROFILE.bak.$(date +%Y%m%d_%H%M%S)\e[0m"
-                                
-                                # Remove APENAS seção AnDistro
-                                sed -i '/# =======================================/,/# FIM DA CONFIRMAÇÃO Andistro no .bash_profile/ d' "$BASH_PROFILE"
-                                
-                                # Verifica se sobrou algo no arquivo
-                                if [[ -s "$BASH_PROFILE" ]]; then
-                                    echo -e "\e[1;32m✅ Seção AnDistro removida! Código do usuário preservado.\e[0m"
-                                    chmod 755 "$BASH_PROFILE"
-                                else
-                                    echo -e "\e[1;32m🗑️  Arquivo vazio após remoção → Excluindo $BASH_PROFILE\e[0m"
-                                    rm "$BASH_PROFILE"
-                                fi
-                                
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+
+                            if [[ -f "$BASHRC_FILE" ]]; then
+                                # Backup antes de remover
+                                cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+
+                                # Remove só seção AnDistro
+                                sed -i '/# =======================================/,/# FIM DA CONFIRMAÇÃO AnDistro no bash.bashrc/ d' "$BASHRC_FILE"
+
+                                chmod 644 "$BASHRC_FILE"
                                 andistro alerta setup-apply
-                            else
-                                echo -e "\e[1;33mℹ️  Autoboot AnDistro não está ativo ou arquivo não existe.\e[0m"
                             fi
-                        else
-                            echo " "
                         fi
                         exit 0
                         ;;
-
 
                     adb)
 
