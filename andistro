@@ -78,6 +78,13 @@ fi
                         2>&1 >/dev/tty)
         clear
 
+        ret_code=$?  # ← Captura código de retorno
+
+        if [ $ret_code -eq 1 ]; then
+            clear  # ← Clear se cancelado
+            exit 0
+        fi
+
         # Opções do menu
         case $CHOICE in
             # Iniciar o sistema
