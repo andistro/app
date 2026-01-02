@@ -868,23 +868,20 @@ autoboot-disable)
         BASHRC_FILE="$PREFIX/etc/bash.bashrc"
         HOME_AUTOBOT="$HOME/.andistro_autoboot"
 
-        # Backup
         cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
-        # Remove LINHA do bash.bashrc
-        sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
+        # Remove LINHA EXATA (com escaping)
+        sed -i '/\[\[ *\$ANDISTRO_ASKED[^]]*\]\] *&& *export *ANDISTRO_ASKED=1 *&& *exec *"[^"]*\.andistro_autoboot"/d' "$BASHRC_FILE"
         
-        # Apaga arquivo do HOME
-        rm -f "$HOME_AUTOBOT"
+        # OU mais simples: grep -v (remove linha exata)
+        grep -v 'ANDISTRO_ASKED.*andistro_autoboot' "$BASHRC_FILE" > "$BASHRC_FILE.tmp" && mv "$BASHRC_FILE.tmp" "$BASHRC_FILE"
 
+        rm -f "$HOME/.andistro_autoboot"
         chmod 644 "$BASHRC_FILE"
         andistro alerta setup-apply
     fi
     exit 0
     ;;
-
-
-
                     adb)
 
                     ;;
