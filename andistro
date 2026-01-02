@@ -501,7 +501,7 @@ fi
             # Menu de Ambiente Gráfico
             OPTIONS=(1 "${label_environments_select_default} (XFCE4)" # Interface padrão
                     2 "${label_environments_select_light} (LXDE)" # Interface leve
-                    3 "${label_environments_select_null}")  # Nenhuma interface gráfica
+                    )
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
                             --cancel-label "$label_back" \
