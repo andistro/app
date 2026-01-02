@@ -153,9 +153,9 @@ update_progress() {
 # DIALOG menu ==================================================================================
 export USER=$(whoami)
 
-dialog_height=10
+dialog_height=15
 dialog_width=100
-dialog_choice_height=10
+dialog_choice_height=15
 export PORT=1
 
 
