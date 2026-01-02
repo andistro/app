@@ -152,9 +152,10 @@ update_progress() {
 
 # DIALOG menu ==================================================================================
 export USER=$(whoami)
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=10
+
+dialog_height=0
+dialog_width=100
+dialog_choice_height=10
 export PORT=1
 
 
@@ -196,7 +197,7 @@ show_progress_dialog() {
                 echo "${label_done}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --no-shadow --gauge "$label" 10 60
+            } | dialog --no-shadow --gauge "$label" $dialog_height $dialog_width
         ;;
 
         steps-multi-label)
@@ -229,7 +230,7 @@ show_progress_dialog() {
                 echo "${label_done}"
                 echo "XXX"
                 sleep 1  # <–– aqui o label final aparece por pelo menos 1s
-            } | dialog --no-shadow --gauge "$title_progress" 10 60
+            } | dialog --no-shadow --gauge "$title_progress" $dialog_height $dialog_width
         ;;
         
         steps-multi-label-alt)
@@ -261,7 +262,7 @@ show_progress_dialog() {
                         echo "$percent"
                         echo "$lbl"
                         echo "XXX"
-                    done | dialog --no-shadow --gauge "$lbl" 10 60
+                    done | dialog --no-shadow --gauge "$lbl" $dialog_height $dialog_width
                 elif [[ "$cmd" == *curl* ]]; then
                     eval "$cmd" 2>&1 | \
                     grep --line-buffered "%" | \
@@ -271,7 +272,7 @@ show_progress_dialog() {
                         echo "$percent"
                         echo "$lbl"
                         echo "XXX"
-                    done | dialog --no-shadow --gauge "$lbl" 10 60
+                    done | dialog --no-shadow --gauge "$lbl" $dialog_height $dialog_width
                 else
                     # Fake animada para comandos longos
                     (
@@ -287,12 +288,12 @@ show_progress_dialog() {
                         percent=$((percent + 6))
                         [ $percent -ge 94 ] && percent=94
                         sleep 0.3
-                    done | dialog --no-shadow --gauge "$lbl" 10 60
+                    done | dialog --no-shadow --gauge "$lbl" $dialog_height $dialog_width
                     wait $CMDPID
                     echo "XXX"
                     echo "100"
                     echo "$lbl"
-                    echo "XXX" | dialog --no-shadow --gauge "$lbl" 10 60
+                    echo "XXX" | dialog --no-shadow --gauge "$lbl" $dialog_height $dialog_width
                 fi
 
                 step=$((step + 1))
@@ -302,7 +303,7 @@ show_progress_dialog() {
             echo "XXX"
             echo "100"
             echo "${label_done}"
-            echo "XXX" | dialog --no-shadow --gauge "${label_done}" 10 60
+            echo "XXX" | dialog --no-shadow --gauge "${label_done}" $dialog_height $dialog_width
             sleep 1
         ;;
 
@@ -381,7 +382,7 @@ show_progress_dialog() {
                 echo "100"
                 echo "${label_done}"
                 echo "XXX"
-            } | dialog --no-shadow --gauge "$label" 10 60
+            } | dialog --no-shadow --gauge "$label" $dialog_height $dialog_width
         ;;
         
         extract)
@@ -408,7 +409,7 @@ show_progress_dialog() {
 
             # Verifica se o arquivo existe
             if [ ! -f "$file" ]; then
-                dialog --no-shadow --title "Erro" --msgbox "Arquivo não encontrado: $file" 10 60
+                dialog --no-shadow --title "Erro" --msgbox "Arquivo não encontrado: $file" $dialog_height $dialog_width
                 return 1
             fi
 
@@ -423,7 +424,7 @@ show_progress_dialog() {
                 *.xz) cmd=(xz -d "$file") ;;
                 *.gz) cmd=(gunzip "$file") ;;
                 *)
-                    dialog --no-shadow --title "Erro" --msgbox "Formato de arquivo não suportado: $file" 10 60
+                    dialog --no-shadow --title "Erro" --msgbox "Formato de arquivo não suportado: $file" $dialog_height $dialog_width
                     return 1
                 ;;
             esac
@@ -444,7 +445,7 @@ show_progress_dialog() {
                 done
                 echo 100
                 set -m
-            } | dialog --no-shadow --gauge "$label" 10 60
+            } | dialog --no-shadow --gauge "$label" $dialog_height $dialog_width
         ;;
 
 
@@ -493,10 +494,10 @@ show_progress_dialog() {
                     echo "$percent"
                     sleep 0.2
                 done
-            } | dialog --no-shadow --title "$title" --gauge "Verificando pacotes..." 10 60
+            } | dialog --no-shadow --title "$title" --gauge "Verificando pacotes..." $dialog_height $dialog_width
 
             # Exibe resultado final com scroll, sem botão OK
-            dialog --no-shadow --title "Resultado da verificação" --textbox "$log_file" 10 60
+            dialog --no-shadow --title "Resultado da verificação" --textbox "$log_file" $dialog_height $dialog_width
             ;;
 
         *)
