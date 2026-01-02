@@ -129,7 +129,6 @@ fi
 
                 ret_code=$?  # ← Captura código de retorno
                 if [ $ret_code -eq 1 ]; then
-                    clear # ← Clear se cancelado
                     andistro
                 fi
 
