@@ -821,96 +821,54 @@ fi
                         exit 0
                     ;;
 
-                    autoboot)
-                        dialog --no-shadow --title "$label_attention" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_yes" \
-                                --no-label "$label_no" \
-                                --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
+ autoboot)
+    dialog --no-shadow --title "$label_attention" \
+           --backtitle "$label_warning" \
+           --yes-label "$label_yes" \
+           --no-label "$label_no" \
+           --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
 
-                        dialog_retorno=$?
+    dialog_retorno=$?
 
-                        if [ $dialog_retorno -eq 0 ]; then
-                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+    if [ $dialog_retorno -eq 0 ]; then
+        BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+        SOURCE_AUTOBOT="$PREFIX/var/lib/andistro/manager/.config/autoboot"
+        HOME_AUTOBOT="$HOME/.andistro_autoboot"
 
-                            if [[ -f "$BASHRC_FILE" ]]; then
-                                # Remove só seção AnDistro antiga, se existir
-                                sed -i '/# AnDistro: Confirmação de autoboot/,/# AnDistro: Fim da confirmação de autoboot/ d' "$BASHRC_FILE"
+        # Copia autoboot para HOME (se não existir)
+        if [[ ! -f "$HOME_AUTOBOT" && -f "$SOURCE_AUTOBOT" ]]; then
+            cp "$SOURCE_AUTOBOT" "$HOME_AUTOBOT"
+            chmod +x "$HOME_AUTOBOT"
+        fi
 
-                                # Backup ANTES de gravar nova seção
-                                cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
-                            fi
+        # Remove executor antigo
+        sed -i '/# AnDistro Autoboot Executor/,/# Fim AnDistro Autoboot/ d' "$BASHRC_FILE"
+        
+        # Backup
+        cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
-                            CONFIRM_CODE=$(cat << 'EOF'
+        # INSERE EXECUTOR
+        EXECUTOR_CODE=$(cat << 'EOF'
 # ========================================
-# AnDistro: Confirmação de autoboot
+# AnDistro Autoboot Executor
 # ========================================
-if command -v andistro >/dev/null 2>&1; then
-    source "$PREFIX/var/lib/andistro/lib/share/global" 2>/dev/null || true
-
-    msg_andistro=$(printf "$label_open_app_desc" "Andistro")
-
-    echo
-    echo -e "\e[1;33m$msg_andistro\e[0m"
-
-    trap "echo -e '\n\e[1;32m$label_cancel_action_ctrlc\e[0m'; exec bash" INT
-    read -rsn1 tecla
-    trap - INT
-
-    if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
-        echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
-        echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
-        echo -e "\e[1;32m$label_action_accepted\n\n\e[0m"
-        andistro >/dev/null 2>&1  # ← Sem & aqui!
-        exec bash
-    fi
-
-    if [[ "$tecla" == $'\x1b' ]]; then
-        echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
-    fi
-
-    exec bash
+if [[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]]; then
+    export ANDISTRO_ASKED=1
+    exec "$HOME/.andistro_autoboot"
 fi
 # ========================================
-# AnDistro: Fim da confirmação de autoboot
+# Fim AnDistro Autoboot
 # ========================================
-
 EOF
 )
 
-                            echo "$CONFIRM_CODE" >> "$BASHRC_FILE"
-                            chmod 644 "$BASHRC_FILE"
+        echo "$EXECUTOR_CODE" >> "$BASHRC_FILE"
+        chmod 644 "$BASHRC_FILE"
+        andistro alerta setup-apply
+    fi
+    exit 0
+    ;;
 
-                            andistro alerta setup-apply
-                        fi
-                        exit 0
-                    ;;
-
-                    autoboot-disable)
-                        dialog --no-shadow --title "$label_attention" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_yes" \
-                                --no-label "$label_no" \
-                                --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
-
-                        dialog_retorno=$?
-
-                        if [ $dialog_retorno -eq 0 ]; then
-                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
-
-                            if [[ -f "$BASHRC_FILE" ]]; then
-                                # Backup antes de remover
-                                cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
-
-                                # Remove só seção AnDistro
-                                sed -i '/# AnDistro: Confirmação de autoboot/,/# AnDistro: Fim da confirmação de autoboot/ d' "$BASHRC_FILE"
-
-                                chmod 644 "$BASHRC_FILE"
-                                andistro alerta setup-apply
-                            fi
-                        fi
-                        exit 0
-                        ;;
 
                     adb)
 
