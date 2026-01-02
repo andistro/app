@@ -115,6 +115,8 @@ fi
             # Configurações e Ajuda
             c)
 
+            CHOICE_HEIGHT=10
+            export PORT=1
                 OPTIONS=(1 "$label_andistro_battery_optimization" 
                     2 "$label_andistro_signal9_error" 
                     3 "$label_andistro_install_avnc"
@@ -127,10 +129,18 @@ fi
 
                 CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro" \
+                        --cancel-label "$label_back" \ 
                         --menu "$label_choose_one_of_the_option:" \
                         $HEIGHT $WIDTH $CHOICE_HEIGHT \
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
+
+                ret_code=$?  # ← Captura código de retorno
+                if [ $ret_code -eq 1 ]; then
+                    clear # ← Clear se cancelado
+                    andistro
+                fi
+
                 clear
                 case $CHOICE in
 
