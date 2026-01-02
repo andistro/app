@@ -51,7 +51,6 @@ fi
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
-        CHOICE_HEIGHT=5
 
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
@@ -66,6 +65,8 @@ fi
                     )
         fi
 
+        CHOICE_HEIGHT=5
+        
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro [alpha]" \
