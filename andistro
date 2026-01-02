@@ -2,11 +2,6 @@
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
 
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=10
-export PORT=1
-
 #================================================================================================
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
@@ -114,9 +109,6 @@ fi
         
             # Configurações e Ajuda
             c)
-
-            CHOICE_HEIGHT=10
-            export PORT=1
                 OPTIONS=(1 "$label_andistro_battery_optimization" 
                     2 "$label_andistro_signal9_error" 
                     3 "$label_andistro_install_avnc"
