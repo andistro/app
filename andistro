@@ -20,15 +20,27 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         termux-reload-settings
     fi
     # Adiciona a configuração de teclas extras se não estiver presente
-    if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
+    # if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
+    #     # Aplica os sed
+    #     sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
+    #     sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
 
-        # Recarrega Termux settings
-        termux-reload-settings
-    fi
+    #     # Recarrega Termux settings
+    #     termux-reload-settings
+    # fi
+    if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
+  cat << 'EOF' >> ~/.termux/termux.properties
 
+
+#############################################################################
+# Andistro Extra keys
+#############################################################################
+extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
+              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
+              ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
+    
+EOF
+fi
     # Diretório do Andistro
     andistro_files="$PREFIX/var/lib/andistro"
 
@@ -811,8 +823,8 @@ if command -v andistro >/dev/null 2>&1; then
     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
         echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
         echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
-        echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
-        andistro >/dev/null 2>&1 &
+        echo -e "\e[1;32m$label_action_accepted\n\n\e[0m"
+        andistro >/dev/null 2>&1  # ← Sem & aqui!
         exec bash
     fi
 
@@ -825,6 +837,7 @@ fi
 # ========================================
 # AnDistro: Fim da confirmação de autoboot
 # ========================================
+
 EOF
 )
 
@@ -853,7 +866,7 @@ EOF
                                 cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
                                 # Remove só seção AnDistro
-                                sed -i '/# =======================================/,/# FIM DA CONFIRMAÇÃO AnDistro no bash.bashrc/ d' "$BASHRC_FILE"
+                                sed -i '/# AnDistro: Confirmação de autoboot/,/# AnDistro: Fim da confirmação de autoboot/ d' "$BASHRC_FILE"
 
                                 chmod 644 "$BASHRC_FILE"
                                 andistro alerta setup-apply

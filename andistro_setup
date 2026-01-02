@@ -241,22 +241,20 @@ source "$PREFIX/var/lib/andistro/lib/share/global"
 sleep 2
 
 
-# Configurações do Termux
-if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-    # Descomenta a linha removendo o '#' no começo
-    sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-    termux-reload-settings
+if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
+  cat << 'EOF' >> ~/.termux/termux.properties
+
+
+#############################################################################
+# Andistro Extra keys
+#############################################################################
+extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
+              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
+              ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
+    
+EOF
 fi
 
-# Adiciona a configuração de teclas extras se não estiver presente
-if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-    # Aplica os sed
-    sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-    sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-    # Recarrega Termux settings
-    termux-reload-settings
-fi
 
 andistro --setup storage-permission
 
