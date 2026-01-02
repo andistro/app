@@ -835,39 +835,54 @@ fi
         SOURCE_AUTOBOT="$PREFIX/var/lib/andistro/manager/.config/autoboot"
         HOME_AUTOBOT="$HOME/.andistro_autoboot"
 
-        # Copia autoboot para HOME (se não existir)
-        if [[ ! -f "$HOME_AUTOBOT" && -f "$SOURCE_AUTOBOT" ]]; then
-            cp "$SOURCE_AUTOBOT" "$HOME_AUTOBOT"
-            chmod +x "$HOME_AUTOBOT"
-        fi
+        # Remove linha antiga (se existir)
+        sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
 
-        # Remove executor antigo
-        sed -i '/# AnDistro Autoboot Executor/,/# Fim AnDistro Autoboot/ d' "$BASHRC_FILE"
-        
         # Backup
         cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
-        # INSERE EXECUTOR
-        EXECUTOR_CODE=$(cat << 'EOF'
-# ========================================
-# AnDistro Autoboot Executor
-# ========================================
-if [[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]]; then
-    export ANDISTRO_ASKED=1
-    exec "$HOME/.andistro_autoboot"
-fi
-# ========================================
-# Fim AnDistro Autoboot
-# ========================================
-EOF
-)
+        # Copia autoboot para HOME
+        cp "$SOURCE_AUTOBOT" "$HOME_AUTOBOT"
+        chmod +x "$HOME_AUTOBOT"
 
-        echo "$EXECUTOR_CODE" >> "$BASHRC_FILE"
+        # INSERE SÓ 1 LINHA!
+        echo '[[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]] && export ANDISTRO_ASKED=1 && exec "$HOME/.andistro_autoboot"' >> "$BASHRC_FILE"
+
         chmod 644 "$BASHRC_FILE"
         andistro alerta setup-apply
     fi
     exit 0
     ;;
+
+
+autoboot-disable)
+    dialog --no-shadow --title "$label_attention" \
+           --backtitle "$label_warning" \
+           --yes-label "$label_yes" \
+           --no-label "$label_no" \
+           --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
+
+    dialog_retorno=$?
+
+    if [ $dialog_retorno -eq 0 ]; then
+        BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+        HOME_AUTOBOT="$HOME/.andistro_autoboot"
+
+        # Backup
+        cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+
+        # Remove LINHA do bash.bashrc
+        sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
+        
+        # Apaga arquivo do HOME
+        rm -f "$HOME_AUTOBOT"
+
+        chmod 644 "$BASHRC_FILE"
+        andistro alerta setup-apply
+    fi
+    exit 0
+    ;;
+
 
 
                     adb)
