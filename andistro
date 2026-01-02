@@ -119,6 +119,7 @@ fi
                     8 "$label_back"
                     )
 
+                CHOICE_HEIGHT=10
                 CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro" \
                         --cancel-label "$label_back" \ 
@@ -134,6 +135,7 @@ fi
                 fi
 
                 clear
+
                 case $CHOICE in
 
                 1)
