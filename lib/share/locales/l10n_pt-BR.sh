@@ -176,6 +176,7 @@ label_settings="Configurações"
 label_settings_and_help="Configurações e Ajuda"
 label_yes="Sim"
 label_no="Não"
+label_close="Fechar"
 
 # Informativos em colchetes
 label_detected="[Detectado]"

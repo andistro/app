@@ -68,6 +68,7 @@ fi
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro [alpha]" \
+                        --cancel-label "$label_close" \
                         --menu "$label_choose_one_of_the_option:" \
                         $dialog_height $dialog_width $dialog_choice_height \
                         "${OPTIONS[@]}" \
