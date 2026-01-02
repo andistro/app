@@ -1,34 +1,63 @@
 #!/bin/bash
-
+source "$PREFIX/var/lib/andistro/lib/share/global"
 # ========================================
 # AnDistro: Confirmação de autoboot
 # ========================================
-if command -v andistro >/dev/null 2>&1; then
-    source "$PREFIX/var/lib/andistro/lib/share/global" 2>/dev/null || true
+# if command -v andistro >/dev/null 2>&1; then
 
-    msg_andistro=$(printf "$label_open_app_desc" "Andistro")
+#     msg_andistro=$(printf "$label_open_app_desc" "Andistro")
 
-    echo
-    echo -e "\e[1;33m$msg_andistro\e[0m"
+#     echo
+#     echo -e "\e[1;33m$msg_andistro\e[0m"
 
-    trap "echo -e '\n\e[1;32m$label_cancel_action_ctrlc\e[0m'; exec bash" INT
-    read -rsn1 tecla
-    trap - INT
+#     trap "echo -e '\n\e[1;32m$label_cancel_action_ctrlc\e[0m'; exec bash" INT
+#     read -rsn1 tecla
+#     trap - INT
 
-    if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
-        echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
-        echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
-        echo -e "\e[1;32m$label_action_accepted\n\n\e[0m"
-        andistro >/dev/null 2>&1  # ← Sem & aqui!
-        exec bash
-    fi
+#     if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
+#         echo -e "\n\e[1;32m$(printf "$label_opening" "Andistro")\e[0m"
+#         echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
+#         echo -e "\e[1;32m$label_action_accepted\n\n\e[0m"
+#         andistro >/dev/null 2>&1  # ← Sem & aqui!
+#         exec bash
+#     fi
 
-    if [[ "$tecla" == $'\x1b' ]]; then
-        echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
-    fi
+#     if [[ "$tecla" == $'\x1b' ]]; then
+#         echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
+#     fi
 
-    exec bash
+#     exec bash
+# fi
+# # ========================================
+# # AnDistro: Fim da confirmação de autoboot
+# # ========================================
+
+
+# Pergunta para abrir o AVNC
+label_open_app_desc=$(printf "$label_open_app_desc" "AnDistro")
+echo -e "\e[1;33m$label_open_app_desc\e[0m"
+
+# CTRL+C → cancelar de forma clara
+trap 'echo -e "\n\e[1;32m$label_cancel_action_ctrlc\e[0m"; exit 0' INT
+read -s -n1 tecla
+trap INT  # Remove o trap imediatamente após read
+
+# ENTER → executa
+if [[ -z "$tecla" || "$tecla" == $'\r' || "$tecla" == $'\n' ]]; then
+    label_opening=$(printf "$label_opening" "AnDistro")
+    echo -e "\n\e[1;32m$label_opening\e[0m"
+    echo -e "\n\e[1;32m$label_continue_action_executed\e[0m"
+    echo -e "\e[1;32m$label_action_accepted\n\n$label_app_not_open\e[0m"
+    andistro
+    exit 1
 fi
-# ========================================
-# AnDistro: Fim da confirmação de autoboot
-# ========================================
+
+# ESC → cancela com mensagem
+if [[ "$tecla" == $'\x1b' ]]; then
+    echo -e "\n\e[1;32m$label_cancel_action_esc\e[0m"
+    exit 1
+fi
+
+# Qualquer outra tecla → não confirma nem cancela, só volta silenciosamente
+# (nenhum echo, nenhum diálogo, apenas fim do script)
+exit 0
