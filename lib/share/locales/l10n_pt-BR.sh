@@ -44,6 +44,8 @@ label_autoboot_andistro="Auto iniciar o AnDistro"
 label_disable_autoboot_andistro="Desativar o auto iniciar AnDistro"
 label_andistro_uninstall="Desinstalar o AnDistro"
 
+label_andistro_start_command_info="Use o comando 'andistro' para iniciar o AnDistro. Lembre-se de teclar o enter (↲) para confirmar."
+
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
 distro_desc_line_d2="Subcomandos do --boot"

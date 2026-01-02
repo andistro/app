@@ -82,6 +82,8 @@ fi
 
         if [ $ret_code -eq 1 ]; then
             clear  # ← Clear se cancelado
+            cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
+            echo -e "\n$label_andistro_start_command_info"
             exit 0
         fi
 
