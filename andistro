@@ -122,6 +122,7 @@ fi
                 CHOICE_HEIGHT=10
                 CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro" \
+                        --cancel-label "$label_back" \
                         --menu "$label_choose_one_of_the_option:" \
                         $HEIGHT $WIDTH $CHOICE_HEIGHT \
                         "${OPTIONS[@]}" \
@@ -129,7 +130,9 @@ fi
 
                 ret_code=$?  # ← Captura código de retorno
                 if [ $ret_code -eq 1 ]; then
+                    clear # ← Clear se cancelado
                     andistro
+                    exit 0
                 fi
 
                 clear
