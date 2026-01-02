@@ -73,9 +73,9 @@ fi
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
 
-        ret_code=$?  # ← Captura código de retorno
+        dialog_retorno=$?  # ← Captura código de retorno
 
-        if [ $ret_code -eq 1 ]; then
+        if [ $dialog_retorno -eq 1 ]; then
             clear  # ← Clear se cancelado
             cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
             echo -e "\n$label_andistro_start_command_info"
@@ -128,8 +128,8 @@ fi
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
 
-                ret_code=$?  # ← Captura código de retorno
-                if [ $ret_code -eq 1 ]; then
+                dialog_retorno=$?  # ← Captura código de retorno
+                if [ $dialog_retorno -eq 1 ]; then
                     clear # ← Clear se cancelado
                     andistro
                     exit 0
@@ -503,11 +503,19 @@ fi
                     3 "${label_environments_select_null}")  # Nenhuma interface gráfica
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
+                            --cancel-label "$label_back" \
                             --menu "$label_environments_select" \
                             $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \
                             2>&1 >/dev/tty)
 
+            dialog_retorno=$?  # ← Captura código de retorno
+            if [ $dialog_retorno -eq 1 ]; then
+                clear # ← Clear se cancelado
+                andistro
+                exit 0
+            fi
+            clear
             case $CHOICE in
                 # Interface padrão - XFCE4
                 1)
@@ -526,10 +534,19 @@ fi
 
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
+                            --cancel-label "$label_back" \
                             --menu "$label_choose_theme" \
                             $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \
                             2>&1 >/dev/tty)
+            
+            dialog_retorno=$?  # ← Captura código de retorno
+            if [ $dialog_retorno -eq 1 ]; then
+                clear # ← Clear se cancelado
+                andistro
+                exit 0
+            fi
+            clear
             case $CHOICE in
                 # Tema claro
                 1)	
@@ -559,9 +576,9 @@ fi
                     --yes-label "$label_yes" \
                     --no-label "$label_no" \
                     --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
-                resposta=$?
+                dialog_retorno=$?
                 
-                if [ $resposta -eq 0 ]; then
+                if [ $dialog_retorno -eq 0 ]; then
                     # Usuário escolheu "Sim"
                     echo "$label_wait"
                     distro_name="debian"
@@ -593,9 +610,9 @@ fi
                     --no-label "$label_no" \
                     --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
 
-                resposta=$?
+                dialog_retorno=$?
 
-                if [ $resposta -eq 0 ]; then
+                if [ $dialog_retorno -eq 0 ]; then
                     # Usuário escolheu "Sim"
                     echo "$label_wait"
                     label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
@@ -694,7 +711,9 @@ fi
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_storage_permission_check" $dialog_height $dialog_width
+                        } | dialog --no-shadow \
+                                --gauge "$label_storage_permission_check" \
+                                $dialog_height $dialog_width
                         clear
                         while true; do
                             if mkdir -p "/sdcard/termux" 2>/dev/null; then
@@ -705,7 +724,8 @@ fi
                                         sleep 0.1
                                         echo $((i * 2))
                                     done
-                                } | dialog --no-shadow --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                                } | dialog --no-shadow \
+                                        --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                                 clear
                                 break   # segue o script normalmente
                             fi
@@ -720,9 +740,9 @@ fi
                                 --no-label "$label_permission_not_granted" \
                                 --yesno "$label_storage_permission_desc" $dialog_height $dialog_width
 
-                            resp=$?
+                            dialog_retorno=$?
 
-                            if [ $resp -eq 0 ]; then
+                            if [ $dialog_retorno -eq 0 ]; then
                                 # Botão "Já permiti": tenta de novo no próximo loop
                                 continue
                             else
@@ -771,9 +791,9 @@ fi
                             --no-label "$label_ignore" \
                             --yesno "$label_avnc_desc" $dialog_height $dialog_width
                         
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
+                        if [ $dialog_retorno -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
                         else
                             echo " "
@@ -789,9 +809,9 @@ fi
                             --no-label "$label_skip" \
                             --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
 
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
+                        if [ $dialog_retorno -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki/blob/main/pt-BR/resolucao-de-problemas.md#corrigindo-o-problema-da-parada-for%C3%A7ada-do-sistema-no-termux--process-completed-signal-9--press-enter---"
                         else
                             echo " "
@@ -807,9 +827,9 @@ fi
                                 --no-label "$label_no" \
                                 --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
 
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
+                        if [ $dialog_retorno -eq 0 ]; then
                             BASHRC_FILE="$PREFIX/etc/bash.bashrc"
 
                             if [[ -f "$BASHRC_FILE" ]]; then
@@ -872,9 +892,9 @@ EOF
                                 --no-label "$label_no" \
                                 --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
 
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
+                        if [ $dialog_retorno -eq 0 ]; then
                             BASHRC_FILE="$PREFIX/etc/bash.bashrc"
 
                             if [[ -f "$BASHRC_FILE" ]]; then
@@ -1126,7 +1146,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 exit 1
             }
 
-            # espera o Termux responder com o status (timeout ~10s)
+            # espera o Termux dialog_retornoonder com o status (timeout ~10s)
             for i in {1..20}; do
                 if [ -f "$status_file" ]; then
                     status=$(cat "$status_file")
