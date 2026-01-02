@@ -76,7 +76,6 @@ fi
                         $HEIGHT $WIDTH $CHOICE_HEIGHT \
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
-        clear
 
         ret_code=$?  # ← Captura código de retorno
 
@@ -86,6 +85,8 @@ fi
             echo -e "\n$label_andistro_start_command_info"
             exit 0
         fi
+
+        clear
 
         # Opções do menu
         case $CHOICE in
