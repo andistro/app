@@ -821,67 +821,67 @@ fi
                         exit 0
                     ;;
 
- autoboot)
-    dialog --no-shadow --title "$label_attention" \
-           --backtitle "$label_warning" \
-           --yes-label "$label_yes" \
-           --no-label "$label_no" \
-           --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
+                    autoboot)
+                        dialog --no-shadow --title "$label_attention" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_yes" \
+                                --no-label "$label_no" \
+                                --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
 
-    dialog_retorno=$?
+                        dialog_retorno=$?
 
-    if [ $dialog_retorno -eq 0 ]; then
-        BASHRC_FILE="$PREFIX/etc/bash.bashrc"
-        SOURCE_AUTOBOT="$PREFIX/var/lib/andistro/manager/.config/autoboot"
-        HOME_AUTOBOT="$HOME/.andistro_autoboot"
+                        if [ $dialog_retorno -eq 0 ]; then
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+                            SOURCE_AUTOBOOT="$PREFIX/var/lib/andistro/manager/.config/autoboot"
+                            #HOME_AUTOBOT="$HOME/.andistro_autoboot"
 
-        # Remove linha antiga (se existir)
-        sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
+                            # Remove linha antiga (se existir)
+                            sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
 
-        # Backup
-        cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+                            # Backup
+                            cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
-        # Copia autoboot para HOME
-        cp "$SOURCE_AUTOBOT" "$HOME_AUTOBOT"
-        chmod +x "$HOME_AUTOBOT"
+                            # Copia autoboot para HOME
+                            #cp "$SOURCE_AUTOBOOT" "$HOME_AUTOBOT"
+                            chmod +x "$HOME_AUTOBOT"
 
-        # INSERE SÓ 1 LINHA!
-        echo '[[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]] && export ANDISTRO_ASKED=1 && exec "$HOME/.andistro_autoboot"' >> "$BASHRC_FILE"
+                            # INSERE SÓ 1 LINHA!
+                            echo '[[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]] && export ANDISTRO_ASKED=1 && exec "$PREFIX/var/lib/andistro/manager/.config/autoboot"' >> "$BASHRC_FILE"
 
-        chmod 644 "$BASHRC_FILE"
-        andistro alerta setup-apply
-    fi
-    exit 0
-    ;;
+                            chmod 644 "$BASHRC_FILE"
+                            andistro alerta setup-apply
+                        fi
+                        exit 0
+                    ;;
 
+                    autoboot-disable)
+                        dialog --no-shadow --title "$label_attention" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_yes" \
+                                --no-label "$label_no" \
+                                --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
 
-autoboot-disable)
-    dialog --no-shadow --title "$label_attention" \
-           --backtitle "$label_warning" \
-           --yes-label "$label_yes" \
-           --no-label "$label_no" \
-           --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
+                        dialog_retorno=$?
 
-    dialog_retorno=$?
+                        if [ $dialog_retorno -eq 0 ]; then
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+                            HOME_AUTOBOT="$HOME/.andistro_autoboot"
 
-    if [ $dialog_retorno -eq 0 ]; then
-        BASHRC_FILE="$PREFIX/etc/bash.bashrc"
-        HOME_AUTOBOT="$HOME/.andistro_autoboot"
+                            cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
 
-        cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+                            # Remove LINHA EXATA (com escaping)
+                            sed -i '/\[\[ *\$ANDISTRO_ASKED[^]]*\]\] *&& *export *ANDISTRO_ASKED=1 *&& *exec *"[^"]*\autoboot"/d' "$BASHRC_FILE"
+                            
+                            # OU mais simples: grep -v (remove linha exata)
+                            grep -v 'ANDISTRO_ASKED.*andistro_autoboot' "$BASHRC_FILE" > "$BASHRC_FILE.tmp" && mv "$BASHRC_FILE.tmp" "$BASHRC_FILE"
 
-        # Remove LINHA EXATA (com escaping)
-        sed -i '/\[\[ *\$ANDISTRO_ASKED[^]]*\]\] *&& *export *ANDISTRO_ASKED=1 *&& *exec *"[^"]*\.andistro_autoboot"/d' "$BASHRC_FILE"
-        
-        # OU mais simples: grep -v (remove linha exata)
-        grep -v 'ANDISTRO_ASKED.*andistro_autoboot' "$BASHRC_FILE" > "$BASHRC_FILE.tmp" && mv "$BASHRC_FILE.tmp" "$BASHRC_FILE"
+                            #rm -f "$HOME/.andistro_autoboot"
+                            chmod 644 "$BASHRC_FILE"
+                            andistro alerta setup-apply
+                        fi
+                        exit 0
+                    ;;
 
-        rm -f "$HOME/.andistro_autoboot"
-        chmod 644 "$BASHRC_FILE"
-        andistro alerta setup-apply
-    fi
-    exit 0
-    ;;
                     adb)
 
                     ;;
