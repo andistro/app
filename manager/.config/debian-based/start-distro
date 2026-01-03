@@ -8,6 +8,7 @@ cd $HOME
 
 # Cleanup universal (executa SEMPRE na saída)
 cleanup() {
+    #echo "🧹 Limpando..."
     rm -rf andistro-error
     rm -rf andistro-bridge
     rm -rf andistro-output
