@@ -10,6 +10,9 @@ show_progress_dialog steps-one-label "${label_install_environment_gui}" 9 \
     'sudo apt install obconf --no-install-recommends -y' \
     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
+export GALLIUM_DRIVER=virpipe
+export MESA_GL_VERSION_OVERRIDE=4.0
+export MESA_GLES_VERSION_OVERRIDE=3.0
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 export PULSE_SERVER=127.0.0.1
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup

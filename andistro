@@ -202,7 +202,7 @@ fi
                     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
                 }
 
-                total_steps=28  # Número total de etapas que você quer monitorar
+                total_steps=31  # Número total de etapas que você quer monitorar
                 current_step=0
 
                 {
@@ -369,25 +369,46 @@ fi
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #26 Todo o pacote de instalação
+                    #26 Verifica se o virglrenderer-android está instalado
+                    if ! dpkg -l | grep -qw virglrenderer-android; then
+                        pkg install --no-install-recommends virglrenderer-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #27 Verifica se o angle-android está instalado
+                    if ! dpkg -l | grep -qw angle-android; then
+                        pkg install --no-install-recommends angle-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #28 Verifica se o vulkan-loader-android está instalado
+                    if ! dpkg -l | grep -qw vulkan-loader-android; then
+                        pkg install --no-install-recommends vulkan-loader-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #29 Todo o pacote de instalação
                     git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #27 Extrai o pacote de instalação
+                    #30 Extrai o pacote de instalação
                     rm -rf "$HOME/app-andistro_setup/.git"
                     rm -rf "$HOME/app-andistro_setup/andistro_setup"
                     rm -rf "$HOME/app-andistro_setup/README.md"
                     rm -rf "$HOME/app-andistro_setup/.editconfig"
                     rm -rf "$HOME/app-andistro_setup/.gitignore"
                     rm -rf "$HOME/app-andistro_setup/.gitattributes"
-                    rm -rf "$HOME/app-andistro_setup/termos.sh"
                     mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
+                    mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"
                     rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #28 Mover o Andistro
+                    #31 Mover o Andistro
                     chmod +x "$PREFIX/bin/andistro"
                     chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
                     ((current_step++))
@@ -396,7 +417,7 @@ fi
                     echo
                 }
             elif [ "$2" == "dialog" ]; then
-                show_progress_dialog steps-multi-label 40 \
+                show_progress_dialog steps-multi-label 43 \
                     "${label_progress}" 'sleep 1' \
                     "${label_find_update}" 'pkg update' \
                     "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
@@ -422,6 +443,9 @@ fi
                     "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends termux-api -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends android-tools -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends virglrenderer-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends angle-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends vulkan-loader-android -y' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
                     "${label_install_script_download}" 'git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \

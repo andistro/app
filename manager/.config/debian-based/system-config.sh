@@ -43,6 +43,11 @@ show_progress_dialog steps-multi-label 57 \
     "${label_install_script_download}\n\n → xdg-user-dirs" 'sudo apt install xdg-user-dirs --no-install-recommends -y' \
     "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → zip" 'sudo apt install zip --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → mesa-utils" 'sudo apt install mesa-utils --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → mesa-utils-extra" 'sudo apt install mesa-utils-extra --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → mesa-vulkan-drivers" 'sudo apt install mesa-vulkan-drivers --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → libgl1-mesa-dri" 'sudo apt install libgl1-mesa-dri --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → libglx-mesa0" 'sudo apt install libglx-mesa0 --no-install-recommends -y' \
     "${label_install_script_download}" 'sleep 5' \
     "${label_system_setup}" 'mkdir -p "/usr/share/backgrounds"' \
     "${label_system_setup}" 'mkdir -p "/usr/share/icons"' \

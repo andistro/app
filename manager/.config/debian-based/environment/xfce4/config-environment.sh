@@ -39,6 +39,9 @@ EOF
 "' \
     'bash -c "cat > $HOME/.vnc/xstartup <<EOF
 #!/bin/bash
+export GALLIUM_DRIVER=virpipe
+export MESA_GL_VERSION_OVERRIDE=4.0
+export MESA_GLES_VERSION_OVERRIDE=3.0
 export PULSE_SERVER=127.0.0.1
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources

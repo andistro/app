@@ -6,6 +6,8 @@ fi
 #cd $(dirname $0)
 cd $HOME
 
+
+
 # Cleanup universal (executa SEMPRE na saída)
 cleanup() {
     #echo "🧹 Limpando..."
@@ -23,6 +25,10 @@ pulseaudio --start --exit-idle-time=-1
 PA_PID=$(pgrep pulseaudio)
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
 pacmd load-module module-aaudio-sink
+
+# Inicia VirGL (servidor GPU Android)
+virgl_test_server_android &
+VIRGL_PID=$!
 
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
