@@ -509,7 +509,7 @@ show_progress_dialog() {
 
 cleanup_old_logs() {
     local log_dir="/sdcard/termux/andistro/logs"
-    local days=7
+    local days=15
     
     # Cria a pasta se não existir
     mkdir -p "$log_dir"
