@@ -7,8 +7,7 @@ system_lang_code_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '
 source "/usr/local/lib/andistro/global"
 
 # Baixa os pacotes base, um por um
-show_progress_dialog steps-multi-label 57 \
-    "${label_progress}" 'echo "system-config"' \
+show_progress_dialog steps-multi-label 65 \
     "${label_progress}" 'sudo apt clean' \
     "${label_find_update}" 'sudo apt update' \
     "${label_upgrade}" 'sudo apt full-upgrade -y' \
@@ -32,13 +31,17 @@ show_progress_dialog steps-multi-label 57 \
     "${label_install_script_download}\n\n → make" 'sudo apt install make --no-install-recommends -y' \
     "${label_install_script_download}\n\n → net-tools" 'sudo apt install net-tools --no-install-recommends -y' \
     "${label_install_script_download}\n\n → pavucontrol" 'sudo apt install pavucontrol --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → pulseaudio-utils" 'sudo apt install pulseaudio-utils --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → alsa-utils" 'sudo apt install alsa-utils --no-install-recommends -y' \
     "${label_install_script_download}\n\n → synaptic" 'sudo apt install synaptic --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tigervnc-common" 'sudo apt install tigervnc-common --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tigervnc-standalone-server" 'sudo apt install tigervnc-standalone-server --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tigervnc-tools" 'sudo apt install tigervnc-tools --no-install-recommends -y' \
     "${label_install_script_download}\n\n → gvfs-backends" 'sudo apt install gvfs-backends --no-install-recommends -y' \
     "${label_install_script_download}\n\n → tumbler" 'sudo apt install tumbler --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → ffmpeg" 'sudo apt install ffmpeg --no-install-recommends -y' \
     "${label_install_script_download}\n\n → ffmpegthumbnailer" 'sudo apt install ffmpegthumbnailer --no-install-recommends -y' \
+    "${label_install_script_download}\n\n → mpv" 'sudo apt install mpv --no-install-recommends -y' \
     "${label_install_script_download}\n\n → unzip" 'sudo apt install unzip --no-install-recommends -y' \
     "${label_install_script_download}\n\n → xdg-user-dirs" 'sudo apt install xdg-user-dirs --no-install-recommends -y' \
     "${label_install_script_download}\n\n → xz-utils" 'sudo apt install xz-utils --no-install-recommends -y' \

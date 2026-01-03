@@ -1257,6 +1257,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                         --dialog-display)
                             timestamp=$(date +'%d%m%Y-%H%M%S')
                             andistro --boot vnc --kill >/dev/null 2>&1 # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
+                            andistro --boot vnc --kill >/dev/null 2>&1 # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
                             #=====================================================================================
                             #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
                             # Painel de seleção de resolução
