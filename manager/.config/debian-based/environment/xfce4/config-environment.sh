@@ -46,7 +46,7 @@ export PULSE_SERVER=127.0.0.1
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 echo $$ > /tmp/xsession.pid
-dbus-launch --exit-with-session /usr/bin/startxfce4
+dbus-launch --exit-with-session /usr/bin/startxfce4 2> >(grep -v "VTEST_CLIENT_DISCONNECTED" >&2)
 EOF
 "' \
     'chmod +x $HOME/.vnc/xstartup' \

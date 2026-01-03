@@ -6,28 +6,35 @@ fi
 #cd $(dirname $0)
 cd $HOME
 
-
-
 # Cleanup universal (executa SEMPRE na saída)
 cleanup() {
-    #echo "🧹 Limpando..."
+    rm -rf andistro-error
+    rm -rf andistro-bridge
+    rm -rf andistro-output
     rm -f "$HOME/andistro-bridge"
     pkill -f "pulseaudio" 2>/dev/null
     [ -n "$LISTENER_PID" ] && kill "$LISTENER_PID" 2>/dev/null
+    [ -n "$PA_PID" ] && kill "$PA_PID" 2>/dev/null
+    [ -n "$VIRGL_PID" ] && kill "$VIRGL_PID" 2>/dev/null
+    clear
+    cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
+    source "$PREFIX/var/lib/andistro/lib/share/global"
+    echo -e "\n$label_andistro_start_command_info"
 }
+
 trap cleanup EXIT INT TERM
 
-chmod +x $PREFIX/var/lib/andistro/lib/share/listener
 bash $PREFIX/var/lib/andistro/lib/share/listener &
 LISTENER_PID=$!
 
 pulseaudio --start --exit-idle-time=-1
+#pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
 PA_PID=$(pgrep pulseaudio)
 pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
 pacmd load-module module-aaudio-sink
 
 # Inicia VirGL (servidor GPU Android)
-virgl_test_server_android &
+virgl_test_server_android > /dev/null 2>&1 &
 VIRGL_PID=$!
 
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -65,6 +72,7 @@ command+=" /usr/bin/env -i"
 command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
 command+=" DISPLAY=:1"
+command+=" PULSE_SERVER=127.0.0.1"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=$TERM"
 #command+=" LANG=C.UTF-8"
@@ -76,8 +84,3 @@ if [ -z "$1" ];then
 else
     $command -c "$com"
 fi
-
-
-rm -rf andistro-error
-rm -rf andistro-bridge
-rm -rf andistro-output
