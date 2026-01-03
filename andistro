@@ -1,7 +1,21 @@
 #!/bin/bash
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
+if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
+if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
+  cat << 'EOF' >> ~/.termux/termux.properties
 
+
+#############################################################################
+# Andistro Extra keys
+#############################################################################
+extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
+              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
+              ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
+    
+EOF
+fi
+fi
 #================================================================================================
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
@@ -9,7 +23,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     source "$PREFIX/var/lib/andistro/lib/share/global"
     # Limpa logs antigos automaticamente (silencioso)
     cleanup_old_logs
-    
+
     # Configurações do Termux
     if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
         # Descomenta a linha removendo o '#' no começo
@@ -25,19 +39,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     #     # Recarrega Termux settings
     #     termux-reload-settings
     # fi
-    if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
-  cat << 'EOF' >> ~/.termux/termux.properties
-
-
-#############################################################################
-# Andistro Extra keys
-#############################################################################
-extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
-              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
-              ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
-    
-EOF
-fi
     # Diretório do Andistro
     andistro_files="$PREFIX/var/lib/andistro"
 
