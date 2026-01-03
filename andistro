@@ -7,7 +7,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
     # Carrega variáveis globais
     source "$PREFIX/var/lib/andistro/lib/share/global"
-
+    # Limpa logs antigos automaticamente (silencioso)
+    cleanup_old_logs
+    
     # Configurações do Termux
     if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
         # Descomenta a linha removendo o '#' no começo

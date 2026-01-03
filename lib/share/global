@@ -506,3 +506,18 @@ show_progress_dialog() {
         ;;
     esac
 }
+
+cleanup_old_logs() {
+    local log_dir="/sdcard/termux/andistro/logs"
+    local days=30
+    
+    # Cria a pasta se não existir
+    mkdir -p "$log_dir"
+    
+    # Encontra e deleta logs com mais de 30 dias (silenciosamente)
+    find "$log_dir" -name "*.txt" -type f -mtime +"$days" -delete 2>/dev/null
+    
+    # Log silencioso da limpeza (opcional, só para debug)
+    local deleted_count=$(find "$log_dir" -name "*.txt" -type f -mtime +"$days" -print0 2>/dev/null | wc -l 2>/dev/null)
+    [ "$deleted_count" -gt 0 ] && echo "$(date +'%Y-%m-%d %H:%M:%S') - Limpou ${deleted_count} logs antigos" >> "$log_dir/cleanup.log" 2>/dev/null
+}
