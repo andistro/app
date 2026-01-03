@@ -1585,7 +1585,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
-
+                    clear
                     echo -e "\n${label_server_start_desc}"
                     echo
                     echo -e "\033[1;96m${label_user}:\033[0m $USER\n"
