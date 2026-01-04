@@ -1005,8 +1005,29 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
 
                                 # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
-                                adb pair "localhost:$adbPortCode" "$adbPairCode"
-                                adb connect localhost:$adbPortCode
+                                #adb pair "localhost:$adbPortCode" "$adbPairCode"
+                                #adb connect localhost:$adbPortCode
+                                # Após extrair códigos, tenta parear e conectar com validação
+                                pair_output=$(adb pair "localhost:$adbPortCode" "$adbPairCode" 2>&1)
+                                if echo "$pair_output" | grep -q "Successfully paired"; then
+                                connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
+                                termux-notification \
+                                    --id "adb_success" \
+                                    --title "✅ Pareamento ADB Finalizado!" \
+                                    --content "Wi-Fi debugging ativado em localhost:$adbPortCode\nRetorne ao Termux para continuar o setup AnDistro." \
+                                    --button1 "Abrir Termux" \
+                                    --button1-action 'termux-open-url "termux://"'
+                                else
+                                termux-notification \
+                                    --id "adb_fail" \
+                                    --title "❌ Erro no Pareamento ADB" \
+                                    --content "Falha: $pair_output\nRefaça: andistro --setup adb-pair" \
+                                    --button1 "Tentar Novamente" \
+                                    --button1-action 'andistro --setup adb-pair'
+                                fi
+
+                                termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+
 
                                 unset adbPairCode adbPortCode
                                 rm -f "$HOME/.adb_setup.sh"
