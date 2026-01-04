@@ -947,7 +947,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         sleep 10
                         source "$HOME/.adb_setup.sh"
                         #echo -e "Código de pareamento: $adbPairCode\nCódigo da porta: $adbPortCode"
-                        termux-toast "Código de pareamento: $adbPairCode\nCódigo da porta: $adbPortCode"
+                        termux-toast "Código de pareamento: $adbPairCode | Código da porta: $adbPortCode"
+                        rm -rf "$HOME/.adb_setup.sh"
                     ;;
 
                     
