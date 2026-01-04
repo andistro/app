@@ -926,11 +926,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     adb-pair)
                         termux-toast "AnDistro: Verificando Termux:API..."
+                        mkdir -p /tmp
                         status=$?
 
                         if [ $status -eq 0 ]; then
                             # O Termux:API está instalado e respondendo
-                            echo "[OK] termux-toast executou com sucesso (Termux:API está instalado e respondendo)."
+                            #echo "[OK] termux-toast executou com sucesso (Termux:API está instalado e respondendo)."
                             {
                                 for i in {1..50}; do
                                     sleep 0.1
@@ -938,6 +939,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 done
                             } | dialog --no-shadow --gauge "É necessário cuidado para essa configuração. Siga atentamente ao que for solicitado e caso necessário, poderá solicitar ajuda nos foruns do Termux ou na wiki do AnDistro\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                             clear
+
                             andistro --setup device-info-settings
 
                             dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
@@ -948,32 +950,64 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             dialog_retorno=$?
 
                             if [ $dialog_retorno -eq 0 ]; then
-                                adbPairingCode=""
-                                adbPort=""
                                 wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
                                 am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
-                                # Notificação 1: Irá pedir o código de pareamento
-                                termux-notification \
-                                    --title "Digite o código de pareamento" \
-                                    --content "Abra este terminal e digite o código de 6 dígitos:" \
-                                    --button1 "Digite o código"
-                                    echo -n "Código: "
-                                    read adbPairingCode
+                                sleep 2
 
-                                termux-notification \
-                                    --title "Digite a PORTA" \
-                                    --content "Código que vem após o $wlan_ip_localhost:____" \
-                                    --button1 "Digite o código"
-                                    echo -n "Porta: "
-                                    read adbPort
+                                notify_porta() {
+                                    termux-notification --id 400 --title "Código da PORTA de Pareamento" \
+                                        --content "Código que vem após o $wlan_ip_localhost:____ " \
+                                        --button1 "Digite o código" \
+                                        --button1-action "echo \\\"\\\$REPLY\\\" > ~/tmp/adb_port && notify_codigo"
+                                }
+
+                                notify_codigo() {
+                                    termux-notification --id 401 --title "Código de pareamento" \
+                                        --content "Digite o código de pareamento por Wi-Fi" \
+                                        --button1 "Digite o código" \
+                                        --button1-action "echo \\\"\\\$REPLY\\\" > ~/tmp/adb_code && do_pair"
+                                }
 
                                 termux-toast "Pareando o Termux com o depurador wi-fi: localhost:$adbPort $adbPairingCode"
                                 adb pair localhost:"$adbPort" "$adbPairingCode"
 
+                                do_pair() {
+                                    port=$(cat ~/.cache/adb_port 2>/dev/null)
+                                    code=$(cat ~/.cache/adb_code 2>/dev/null)
+                                    
+                                    # TOAST 1
+                                    termux-toast "🔄 Irá fazer pareamento: localhost:$port $code"
+                                    
+                                    # ADB PAIR
+                                    adb pair "localhost:$port" "$code"
+                                    sleep 2
+                                    
+                                    # TOAST 2 + VERIFICA
+                                    if adb devices 2>/dev/null | grep -q "localhost.*device"; then
+                                        termux-toast "✅ SUCESSO: ADB pareado localhost:$port!"
+                                        touch /tmp/adb_success
+                                    else
+                                        termux-toast "❌ ERRO pareamento. Verifique!"
+                                        touch /tmp/adb_error
+                                    fi
+                                    
+                                    # LIMPA
+                                    rm -f ~/.cache/adb_port ~/.cache/adb_code /tmp/adb_*
+                                    termux-notification-remove 400 401
+                                }
 
-                                # adb pair localhost:$adbPort $adbPairingCode
-                                # Confirmar conexão
-                                # ver se está conectado
+                                # INICIA FLUXO
+                                notify_porta
+
+                                # ESPERA
+                                for i in {1..60}; do
+                                    [ -f /tmp/adb_success ] && { echo "[OK] Pareado!"; break; }
+                                    [ -f /tmp/adb_error ] && { echo "[ERRO] Falhou"; break; }
+                                    sleep 1
+                                done
+
+                                rm -f /tmp/adb_* 2>/dev/null
+                                termux-notification-remove 400 401 2>/dev/null
                             fi
 
                         else
