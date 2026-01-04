@@ -955,19 +955,21 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 # Notificação 1: Irá pedir o código de pareamento
                                 termux-notification \
                                     --title "Digite o código de pareamento" \
-                                    --content "Abra este terminal e digite o código de 6 dígitos:"
+                                    --content "Abra este terminal e digite o código de 6 dígitos:" \
+                                    --button1 "Digite o código"
                                     echo -n "Código: "
                                     read adbPairingCode
 
                                 termux-notification \
                                     --title "Digite a PORTA" \
-                                    --content "Código que vem após o $wlan_ip_localhost:____"
+                                    --content "Código que vem após o $wlan_ip_localhost:____" \
+                                    --button1 "Digite o código"
                                     echo -n "Porta: "
                                     read adbPort
 
                                 termux-toast "Pareando o Termux com o depurador wi-fi: localhost:$adbPort $adbPairingCode"
                                 adb pair localhost:"$adbPort" "$adbPairingCode"
-                                
+
 
                                 # adb pair localhost:$adbPort $adbPairingCode
                                 # Confirmar conexão
