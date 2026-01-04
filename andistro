@@ -930,7 +930,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             --title "Digite o código de pareamento" \
                             --content "Código de 6 digitos em destaque, ao lado ou abaixo da descrição \"Código de pareamento por Wi-Fi\"" \
                             --button1 "Digite o código" \
-                            --button1-action 'echo "adbPairCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh"'
+                            --button1-action 'echo "adbPairCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh";sleep 2; andistro --setup notify-adb-port-code'
 
                     ;;
 
