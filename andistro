@@ -1005,8 +1005,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
 
                                 # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
-                                # adb pair "localhost:$adbPortCode" "$adbPairCode"
-                                # adb connect localhost:$adbPortCode
+                                adb pair "localhost:$adbPortCode" "$adbPairCode"
+                                adb connect localhost:$adbPortCode
 
                                 unset adbPairCode adbPortCode
                                 rm -f "$HOME/.adb_setup.sh"
