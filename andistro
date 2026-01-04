@@ -944,17 +944,47 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     ;;
 
                     adb-pair)
-                        rm -rf "$HOME/.adb_setup.sh"
-                        sleep 1
+                        rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior
+                        
+                        # Passo 1: Cria notificação pair se não existir
+                        if [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh"; then
                         andistro --setup notify-adb-pair-code
-                        andistro --setup notify-adb-port-code
-                        source "$HOME/.adb_setup.sh"
-                        if [ -n "$adbPairCode" ] && [ -n "$adbPortCode" ]; then
-                            termux-toast "Código de pareamento: $adbPairCode | Código da porta: $adbPortCode"
-                        else
-                            termux-toast "Aguardando códigos de pareamento e porta serem digitados."
+                        echo "Notificação de pareamento enviada. Digite o código de 6 dígitos."
                         fi
-                        rm -rf "$HOME/.adb_setup.sh"
+
+                        # Loop: Aguarda pairCode ser salvo, então cria port
+                        while [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                        sleep 2
+                        done
+
+                        # Extrai pairCode (última linha para evitar duplicatas)
+                        adbPairCode=$(grep '^adbPairCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                        if [ -n "$adbPairCode" ]; then
+                        echo "PairCode detectado: $adbPairCode"
+
+                        # Passo 2: Cria notificação port se não existir
+                        if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
+                            andistro --setup notify-adb-port-code
+                            echo "Notificação de porta enviada. Digite o código após $wlan_ip_localhost:_____."
+                        fi
+
+                        # Loop: Aguarda portCode ser salvo
+                        while ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                            sleep 2
+                        done
+
+                        # Extrai portCode e usa valores
+                        adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                        termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
+
+                        # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
+                        # adb pair "localhost:$adbPortCode" "$adbPairCode"
+                        # adb connect localhost:$adbPortCode
+
+                        unset adbPairCode adbPortCode
+                        rm -f "$HOME/.adb_setup.sh"
+                        fi
+
                     ;;
 
                     
