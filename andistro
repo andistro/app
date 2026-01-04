@@ -926,6 +926,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     notify-adb-pair-code)
                         termux-notification \
+                            --id "adb_pair_code" \
                             --title "Digite o código de pareamento" \
                             --content "Código de 6 digitos em destaque, ao lado ou abaixo da descrição \"Código de pareamento por Wi-Fi\"" \
                             --button1 "Digite o código" \
@@ -935,6 +936,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     notify-adb-port-code)
                         termux-notification \
+                            --id "adb_port_code" \
                             --title "Digite o código da porta" \
                             --content "O código que aparece logo após o $wlan_ip_localhost:_____" \
                             --button1 "Digite o código" \
@@ -942,12 +944,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     ;;
 
                     adb-pair)
+                        rm -rf "$HOME/.adb_setup.sh"
+                        sleep 1
                         andistro --setup notify-adb-pair-code
                         andistro --setup notify-adb-port-code
-                        sleep 10
                         source "$HOME/.adb_setup.sh"
-                        #echo -e "Código de pareamento: $adbPairCode\nCódigo da porta: $adbPortCode"
-                        termux-toast "Código de pareamento: $adbPairCode | Código da porta: $adbPortCode"
+                        if [ -n "$adbPairCode" ] && [ -n "$adbPortCode" ]; then
+                            termux-toast "Código de pareamento: $adbPairCode | Código da porta: $adbPortCode"
+                        else
+                            termux-toast "Aguardando códigos de pareamento e porta serem digitados."
+                        fi
                         rm -rf "$HOME/.adb_setup.sh"
                     ;;
 
