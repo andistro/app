@@ -5,14 +5,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
 if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
   cat << 'EOF' >> ~/.termux/termux.properties
 
-
 #############################################################################
 # Andistro Extra keys
 #############################################################################
 extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
               ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
               ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
-    
 EOF
 fi
 fi
@@ -812,6 +810,23 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
                     ;;
 
+                    device-info-settings)
+                        dialog --no-shadow --title "$label_android_device_info" \
+                            --backtitle "$label_warning" \
+                            --yes-label "$label_open" \
+                            --no-label "$label_close" \
+                            --yesno "$label_android_device_info_desc\n$label_android_device_info_desc_dev_mode" $dialog_height $dialog_width
+                        
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            am start -a android.settings.DEVICE_INFO_SETTINGS
+                        else
+                            echo " "
+                        fi
+                        exit 0
+                    ;;
+
                     avnc)
                         dialog --no-shadow --title "$label_install AVNC" \
                             --backtitle "$label_warning" \
@@ -909,8 +924,66 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         exit 0
                     ;;
 
-                    adb)
+                    adb-pair)
+                        termux-toast "AnDistro: Verificando Termux:API..."
+                        status=$?
 
+                        if [ $status -eq 0 ]; then
+                            # O Termux:API está instalado e respondendo
+                            echo "[OK] termux-toast executou com sucesso (Termux:API está instalado e respondendo)."
+                            {
+                                for i in {1..50}; do
+                                    sleep 0.1
+                                    echo $((i * 2))
+                                done
+                            } | dialog --no-shadow --gauge "É necessário cuidado para essa configuração. Siga atentamente ao que for solicitado e caso necessário, poderá solicitar ajuda nos foruns do Termux ou na wiki do AnDistro\n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                            clear
+                            andistro --setup device-info-settings
+
+                            dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
+                            --backtitle "$label_warning" \
+                            --yes-label "$label_open" \
+                            --no-label "$label_close" \
+                            --yesno "ATENÇÃO: LEIA TUDO. \n\nClique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI', ative e dentro da opção, clique em parear dispositivo com código de pareamento e assim que o código for gerado, SEM APERTAR NO BOTÃO DE VOLTAR OU DE INÍCIO, abra as notificações do celular e digite o código na notificação do Termux sobre o código de pareamento. Logo após clique em enviar" $dialog_height $dialog_width
+                            dialog_retorno=$?
+
+                            if [ $dialog_retorno -eq 0 ]; then
+                                adbPairingCode=""
+                                adbPort=""
+                                wlan_ip_localhost=$(ifconfig 2>/dev/null | grep 'inet ' | grep broadcast | awk '{print $2}') # IP da rede 
+                                am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
+                                # Notificação 1: Irá pedir o código de pareamento
+                                termux-notification \
+                                    --title "Digite o código de pareamento" \
+                                    --content "Abra este terminal e digite o código de 6 dígitos:"
+                                    echo -n "Código: "
+                                    read adbPairingCode
+
+                                termux-notification \
+                                    --title "Digite a PORTA" \
+                                    --content "Código que vem após o $wlan_ip_localhost:____"
+                                    echo -n "Porta: "
+                                    read adbPort
+
+                                termux-toast "Pareando o Termux com o depurador wi-fi: localhost:$adbPort $adbPairingCode"
+                                adb pair localhost:"$adbPort" "$adbPairingCode"
+                                
+
+                                # adb pair localhost:$adbPort $adbPairingCode
+                                # Confirmar conexão
+                                # ver se está conectado
+                            fi
+
+                        else
+                            # O Termux:API não está instalado ou não está respondendo
+                            {
+                                for i in {1..50}; do
+                                    sleep 0.1
+                                    echo $((i * 2))
+                                done
+                            } | dialog --no-shadow --gauge "Para que essa ferramenta funcione perfeitamente, será necessário instalar o Termux:API. Link nas configurações do AnDistro\n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                            clear
+                        fi
                     ;;
 
                     *)

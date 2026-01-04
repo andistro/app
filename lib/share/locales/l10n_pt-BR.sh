@@ -97,6 +97,10 @@ label_termux_settings="Configurações do Termux"
 label_open_termux_settings="Após clicar em \"Ok\" será aberto a as informações do Termux no sistema."
 label_finalizing_setup="Finalizando as configurações do %s..."
 label_opening="Abrindo %s..."
+label_android_device_info="Informações do dispositivo Android"
+label_android_device_info_desc="Após clicar em '< Abrir >' será aberto a tela de informações do dispositivo Android nas configurações do sistema."
+label_android_device_info_desc_dev_mode="Para habilitar o modo desenvolvedor, localize o item \"Número de compilação\" e toque nele 7 vezes seguidas. Poderá ser solicitado a senha de desbloqueio do celular.\n\nCaso não ache, procure pelas informações do software.\n\nDepois de habilitar o modo desenvolvedor. Retorne ao Termux e prossiga com a instalação."
+
 
 ## Fuso horário
 label_system_timezone="Fuso horário"
@@ -177,6 +181,7 @@ label_settings_and_help="Configurações e Ajuda"
 label_yes="Sim"
 label_no="Não"
 label_close="Fechar"
+label_open="Abrir"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
