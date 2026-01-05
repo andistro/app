@@ -1111,24 +1111,22 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                     # Extrai portCode e usa valores
                                     adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
-                                    termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
+                                    termux-toast "Porta: $adbPortCode"
                                     termux-notification \
-                                        --id "adb_pair_finizsh" \
-                                        --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
+                                        --id "adb_port_finish" \
+                                        --content "Porta: $adbPortCode"
 
-                                    # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
-                                    #adb pair "localhost:$adbPortCode" "$adbPairCode"
-                                    #adb connect localhost:$adbPortCode
+                                    
                                     # Após extrair códigos, tenta parear e conectar com validação
                                     connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
                                     if echo "$connect_output" | grep -q "connected"; then
-                                        
                                         termux-notification \
                                             --id "adb_connect_success" \
                                             --title "✅ Conexão ADB Finalizada!" \
                                             --content "Retorne ao Termux para continuar o que estava fazendo." \
                                             --button1 "Abrir Termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
+
                                     else
                                         termux-notification \
                                             --id "adb_fail" \
@@ -1136,13 +1134,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                             --content "Será necessário reiniciar as configurações de conexão" \
                                             --button1 "Retorne ao Termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
+
                                     fi
 
                                     termux-toast "Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
 
                                     unset adbPortCode
                                     rm -f "$HOME/.adb_setup.sh"
-                                    fi
                                 fi
                             fi
 
