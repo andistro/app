@@ -1014,9 +1014,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 termux-notification \
                                     --id "adb_success" \
                                     --title "✅ Pareamento ADB Finalizado!" \
-                                    --content "Wi-Fi debugging ativado em localhost:$adbPortCode\nRetorne ao Termux para continuar o setup AnDistro." \
+                                    --content "Retorne ao Termux para continuar o setup AnDistro." \
                                     --button1 "Abrir Termux" \
-                                    --button1-action 'termux-open-url "termux://"'
+                                    --button1-action 'am start -n com.termux/.app.TermuxActivity'
                                 else
                                 termux-notification \
                                     --id "adb_fail" \
