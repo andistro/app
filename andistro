@@ -845,23 +845,23 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         exit 0
                     ;;
 
-                    phantom-procs)
-                        dialog --no-shadow --title "$label_attention" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_help" \
-                            --no-label "$label_skip" \
-                            --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
+                    # phantom-procs)
+                    #     dialog --no-shadow --title "$label_attention" \
+                    #         --backtitle "$label_warning" \
+                    #         --yes-label "$label_help" \
+                    #         --no-label "$label_skip" \
+                    #         --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
 
-                        dialog_retorno=$?
+                    #     dialog_retorno=$?
 
-                        if [ $dialog_retorno -eq 0 ]; then
+                    #     if [ $dialog_retorno -eq 0 ]; then
                             
-                        else
-                            echo " "
-                        fi
+                    #     else
+                    #         echo " "
+                    #     fi
 
-                        exit 0
-                    ;;
+                    #     exit 0
+                    # ;;
 
                     autoboot)
                         dialog --no-shadow --title "$label_attention" \
@@ -1084,7 +1084,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     $dialog_height $dialog_width
                                 clear
                             else
-                                echo "❌ Termux NÃO ESTÁ CONECTADO ao ADB - iniciando configuração..."
+                                #echo "❌ Termux NÃO ESTÁ CONECTADO ao ADB - iniciando configuração..."
                                 dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
                                 --backtitle "$label_warning" \
                                 --yes-label "$label_open" \
@@ -1092,6 +1092,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 --yesno "ATENÇÃO: LEIA TUDO. \n\nO Termux não está conectado ao ADB usando a Depuração por Wi-Fi. Siga os passos para fazer a conexão\n\n1. Clique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI'; \n2. Ative e dentro da opção,  procure por 'Endereço IP e porta'. Caso não ache, clique em 'Parear o dispositivo com um código de pareamento' e lá aparecerá o código da porta;\n\n3. Aguarde receber as notificações e digite os códigos que forem solicitados; \n4. Em hitótese alguma, na tela da Depuração por Wi-Fi, use o gesto de voltar ou de ir para o inicio. Isso irá reiniciar o código e terá que refazer tudo novamente. Somente use a central de notificações para enviar os códigos." \
                                 25 $dialog_width
                                 dialog_retorno=$?
+
                                 if [ $dialog_retorno -eq 0 ]; then
                                     am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
                                     sleep 10
