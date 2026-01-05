@@ -845,24 +845,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         exit 0
                     ;;
 
-                    # phantom-procs)
-                    #     dialog --no-shadow --title "$label_attention" \
-                    #         --backtitle "$label_warning" \
-                    #         --yes-label "$label_help" \
-                    #         --no-label "$label_skip" \
-                    #         --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
-
-                    #     dialog_retorno=$?
-
-                    #     if [ $dialog_retorno -eq 0 ]; then
-                            
-                    #     else
-                    #         echo " "
-                    #     fi
-
-                    #     exit 0
-                    # ;;
-
                     autoboot)
                         dialog --no-shadow --title "$label_attention" \
                                 --backtitle "$label_warning" \
@@ -972,8 +954,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior
                                 # Passo 1: Cria notificação pair se não existir
                                 if [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh"; then
-                                andistro --setup notify-adb-pair-code
-                                echo "Notificação de pareamento enviada. Digite o código de 6 dígitos."
+                                    andistro --setup notify-adb-pair-code
+                                    echo "Notificação de pareamento enviada. Digite o código de 6 dígitos."
                                 fi
 
                                 # Loop: Aguarda pairCode ser salvo, então cria port
@@ -984,63 +966,65 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 # Extrai pairCode (última linha para evitar duplicatas)
                                 adbPairCode=$(grep '^adbPairCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
                                 if [ -n "$adbPairCode" ]; then
-                                echo "PairCode detectado: $adbPairCode"
+                                    echo "PairCode detectado: $adbPairCode"
 
-                                # Passo 2: Cria notificação port se não existir
-                                if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
-                                    andistro --setup notify-adb-port-code
-                                    echo "Notificação de porta enviada. Digite o código após $wlan_ip_localhost:_____."
-                                fi
+                                    # Passo 2: Cria notificação port se não existir
+                                    if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
+                                        andistro --setup notify-adb-port-code
+                                        echo "Notificação de porta enviada. Digite o código após $wlan_ip_localhost:_____."
+                                    fi
 
-                                # Loop: Aguarda portCode ser salvo
-                                while ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
-                                    sleep 2
-                                done
+                                    # Loop: Aguarda portCode ser salvo
+                                    while ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                                        sleep 2
+                                    done
 
-                                # Extrai portCode e usa valores
-                                adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
-                                termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
-                                termux-notification \
-                                    --id "adb_pair_finizsh" \
-                                    --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
-
-                                # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
-                                #adb pair "localhost:$adbPortCode" "$adbPairCode"
-                                #adb connect localhost:$adbPortCode
-                                # Após extrair códigos, tenta parear e conectar com validação
-                                pair_output=$(adb pair "localhost:$adbPortCode" "$adbPairCode" 2>&1)
-                                if echo "$pair_output" | grep -q "Successfully paired"; then
-                                    connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
+                                    # Extrai portCode e usa valores
+                                    adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                                    termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
                                     termux-notification \
-                                        --id "adb_success" \
-                                        --title "✅ Pareamento ADB Finalizado!" \
-                                        --content "Retorne ao Termux para continuar o setup AnDistro." \
-                                        --button1 "Abrir Termux" \
-                                        --button1-action 'am start -n com.termux/.app.TermuxActivity'
+                                        --id "adb_pair_finizsh" \
+                                        --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
+
+                                    # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
+                                    #adb pair "localhost:$adbPortCode" "$adbPairCode"
+                                    #adb connect localhost:$adbPortCode
+                                    # Após extrair códigos, tenta parear e conectar com validação
+                                    pair_output=$(adb pair "localhost:$adbPortCode" "$adbPairCode" 2>&1)
+                                    if echo "$pair_output" | grep -q "Successfully paired"; then
+                                        connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
+                                        termux-notification \
+                                            --id "adb_success" \
+                                            --title "✅ Pareamento ADB Finalizado!" \
+                                            --content "Retorne ao Termux para continuar o setup AnDistro." \
+                                            --button1 "Abrir Termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+                                        
+                                    else
+                                        termux-notification \
+                                            --id "adb_fail" \
+                                            --title "❌ Erro no Pareamento ADB" \
+                                            --content "Será necessário reiniciar as configurações de pareamento" \
+                                            --button1 "Retorne ao Termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+                                    fi
+
+                                    termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+
+                                    unset adbPairCode adbPortCode
+                                    rm -f "$HOME/.adb_setup.sh"
                                     
-                                    # dialog --no-shadow --title "Desativar o Phantom Process" \
-                                    #     --backtitle "$label_warning" \
-                                    #     --yes-label "$label_open" \
-                                    #     --no-label "$label_close" \
-                                    #     --yesno "Deseja desativar o Phantom Process?\n Este é o causador da mensagem de erro '[Process completed (signal 9) - press Enter]'" \
-                                    #     25 $dialog_width
-                                    #     dialog_retorno=$?
-                                    #     if [ $dialog_retorno -eq 0 ]; then
-                                    #         # ainda em testes
-                                    #     fi
-                                else
-                                    termux-notification \
-                                        --id "adb_fail" \
-                                        --title "❌ Erro no Pareamento ADB" \
-                                        --content "Será necessário reiniciar as configurações de pareamento" \
-                                        --button1 "Retorne ao Termux" \
-                                        --button1-action 'am start -n com.termux/.app.TermuxActivity'
-                                fi
+                                    dialog --no-shadow --title "Desativar o Phantom Process" \
+                                        --backtitle "$label_warning" \
+                                        --yes-label "$label_open" \
+                                        --no-label "$label_close" \
+                                        --yesno "Deseja desativar o Phantom Process?\n Este é o causador da mensagem de erro '[Process completed (signal 9) - press Enter]'" \
+                                        25 $dialog_width
+                                        dialog_retorno=$?
 
-                                termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
-
-                                unset adbPairCode adbPortCode
-                                rm -f "$HOME/.adb_setup.sh"
+                                    if [ $dialog_retorno -eq 0 ]; then
+                                       andistro --setup phantom-procs
+                                    fi
                                 fi
                             fi
                         fi
@@ -1089,8 +1073,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 --backtitle "$label_warning" \
                                 --yes-label "$label_open" \
                                 --no-label "$label_close" \
-                                --yesno "ATENÇÃO: LEIA TUDO. \n\nO Termux não está conectado ao ADB usando a Depuração por Wi-Fi. Siga os passos para fazer a conexão\n\n1. Clique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI'; \n2. Ative e dentro da opção,  procure por 'Endereço IP e porta'. Caso não ache, clique em 'Parear o dispositivo com um código de pareamento' e lá aparecerá o código da porta;\n\n3. Aguarde receber as notificações e digite os códigos que forem solicitados; \n4. Em hitótese alguma, na tela da Depuração por Wi-Fi, use o gesto de voltar ou de ir para o inicio. Isso irá reiniciar o código e terá que refazer tudo novamente. Somente use a central de notificações para enviar os códigos." \
-                                25 $dialog_width
+                                --yesno "ATENÇÃO: LEIA TUDO. \n\nO Termux não está conectado ao ADB usando a Depuração por Wi-Fi. Siga os passos para fazer a conexão\n\n1. Clique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI'; \n\n2. Ative e dentro da opção,  procure por 'Endereço IP e porta'. Caso não ache, clique em 'Parear o dispositivo com um código de pareamento' e lá aparecerá o código da porta;\n\n3. Aguarde receber as notificações e digite os códigos que forem solicitados; \n4. Em hitótese alguma, na tela da Depuração por Wi-Fi, use o gesto de voltar ou de ir para o inicio. Isso irá reiniciar o código e terá que refazer tudo novamente. Somente use a central de notificações para enviar os códigos." \
+                                30 $dialog_width
                                 dialog_retorno=$?
 
                                 if [ $dialog_retorno -eq 0 ]; then
@@ -1101,7 +1085,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     # Passo 1: Cria notificação port se não existir
                                     if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
                                         andistro --setup notify-adb-port-code
-                                        echo "Notificação de porta enviada. Digite o código após $wlan_ip_localhost:_____."
+                                        echo "Notificação de porta enviada."
                                     fi
 
                                     # Loop: Aguarda portCode ser salvo
@@ -1147,7 +1131,44 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         fi
                     ;;
 
-                    
+                    phantom-procs)
+                        dialog --no-shadow --title "$label_attention" \
+                            --backtitle "$label_warning" \
+                            --yes-label "$label_help" \
+                            --no-label "$label_skip" \
+                            --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
+
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            andistro --setup adb-connect
+                            sleep 2
+                            dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_open" \
+                                --no-label "$label_close" \
+                                --yesno "ATENÇÃO: LEIA TUDO. \n\nEsta é uma ação que altera algumas permissões do sistema. Esteja ciente que caso haja problemas, pode ser que seja necessário restaurar o aparelho aos padrões de fabrica.\n\n Continue por sua conta e risco. Caso aceite continuar, será exibido os comandos que serão realizados." \
+                                30 $dialog_width
+                                dialog_retorno=$?
+                            if [ $dialog_retorno -eq 0 ]; then
+                                show_progress_dialog steps-multi-label 9 \
+                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' \
+                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' \
+                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5' \
+                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'adb shell settings put global settings_enable_monitor_phantom_procs false' \
+                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5'
+
+                            andistro alerta setup-apply
+                            fi
+                        fi
+
+                        exit 0
+                    ;;
+
 
                     *)
                         echo "$label_command_not_found: $2"
