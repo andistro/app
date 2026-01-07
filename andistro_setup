@@ -281,7 +281,7 @@ andistro --setup storage-permission
 
 andistro --setup battery
 
-andistro --setup avnc
+andistro --setup install-avnc
 
 andistro --setup phantom-procs
 

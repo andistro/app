@@ -46,6 +46,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         mkdir -p "/sdcard/termux/andistro"
         mkdir -p "/sdcard/termux/andistro/manager"
         mkdir -p "/sdcard/termux/andistro/logs"
+        mkdir -p "/sdcard/termux/andistro/backups"
         touch "/sdcard/termux/andistro/logs/.nomedia"
     fi
 
@@ -55,14 +56,14 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
-                    d "$label_andistro_uninstall_system" # Desinstalar o sistema
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    c "$label_settings_and_help" # Configurações e Ajuda
+                     d "$label_andistro_uninstall_system" # Desinstalar o sistema
+                     u "$label_andistro_updater" # Atualizar o AnDistro
+                     c "$label_settings_and_help" # Configurações e Ajuda
                     )
         else
             OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    c "$label_settings_and_help" # Configurações e Ajuda
+                     u "$label_andistro_updater" # Atualizar o AnDistro
+                     c "$label_settings_and_help" # Configurações e Ajuda
                     )
         fi
 
@@ -77,7 +78,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
         dialog_retorno=$?  # ← Captura código de retorno
 
-        if [ $dialog_retorno -eq 1 ]; then
+        if [ $dialog_retorno -eq 1 ]; then # Se o usuário cancelar
             clear  # ← Clear se cancelado
             cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
             echo -e "\n$label_andistro_start_command_info"
@@ -89,8 +90,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Opções do menu
         case $CHOICE in
             # Iniciar o sistema
-            s)
+            s) 
                andistro -s
+               andistro
             ;;
 
             # Desinstalar o sistema
@@ -112,23 +114,21 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         
             # Configurações e Ajuda
             c)
-                OPTIONS=(1 "$label_andistro_battery_optimization" 
-                    2 "$label_andistro_signal9_error" 
-                    3 "$label_andistro_install_avnc"
-                    4 "$label_andistro_storage_permission_check"
-                    5 "$label_autoboot_andistro"
-                    6 "$label_disable_autoboot_andistro"
-                    7 "$label_andistro_uninstall"
-                    8 "$label_back"
-                    )
+                OPTIONS=(1 "$label_autoboot_andistro" # Inicialização
+                         2 "$label_andistro_adb_configs" # Configurações do ADB
+                         3 "$label_andistro_storage_permission_check" # Verificar permissão de armazenamento
+                         4 "$label_andistro_battery_optimization" #Retirar otimização da bateria
+                         5 "$label_andistro_install_avnc" # Instalar o AVNC
+                         6 "$label_andistro_uninstall" # Desinstalar o AnDistro
+                        )
 
                 CHOICE=$(dialog --no-shadow --clear \
-                        --title "AnDistro" \
-                        --cancel-label "$label_back" \
-                        --menu "$label_choose_one_of_the_option:" \
-                        $dialog_height $dialog_width $dialog_choice_height \
-                        "${OPTIONS[@]}" \
-                        2>&1 >/dev/tty)
+                                --title "AnDistro" \
+                                --cancel-label "$label_back" \
+                                --menu "$label_choose_one_of_the_option:" \
+                                $dialog_height $dialog_width $dialog_choice_height \
+                                "${OPTIONS[@]}" \
+                                2>&1 >/dev/tty)
 
                 dialog_retorno=$?  # ← Captura código de retorno
                 if [ $dialog_retorno -eq 1 ]; then
@@ -140,44 +140,139 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 clear
 
                 case $CHOICE in
+                    #Configurações de inicialização
+                    1)
+                        OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
+                                 2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
+                                )
 
-                1)
-                    andistro --setup battery
-                    andistro
-                ;;
+                        CHOICE=$(dialog --no-shadow --clear \
+                                        --title "$label_autoboot_andistro" \
+                                        --cancel-label "$label_back" \
+                                        --menu "$label_autoboot_andistro_desc" \
+                                        $dialog_height $dialog_width $dialog_choice_height \
+                                        "${OPTIONS[@]}" \
+                                        2>&1 >/dev/tty)
+                        dialog_retorno=$?  # ← Captura código de retorno
+                        
+                        if [ $dialog_retorno -eq 1 ]; then
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
+                        fi
+                        clear
+                        case $CHOICE in
+                            # Habilita a mensagem de inicialização do AnDistro
+                            1)
+                                andistro --setup autoboot
+                                andistro
+                            ;;
 
-                2)
-                    andistro --setup phantom-procs
-                    andistro
-                ;;
+                            # Desativa a mensagem de inicialização do AnDistro
+                            2)
+                                andistro --setup autoboot-disable
+                                andistro
+                            ;;
+                        esac
 
-                3)
-                    andistro --setup avnc
-                    andistro
-                ;;
+                    ;;
 
-                4)
-                    andistro --setup storage-permission
-                    andistro
-                ;;
-                5)
-                    andistro --setup autoboot
-                    andistro
-                ;;
-                6)
-                    andistro --setup autoboot-disable
-                    andistro
-                ;;
-                7)
-                    andistro -d andistro
-                ;;
-                8)
-                    andistro
-                ;;
+                    # Configurações do ADB
+                    2)
+                        dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_confirm" \
+                               --no-label "$label_close" \
+                               --yesno "$label_andistro_adb_configs_desc" \
+                               25 $dialog_width
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            
+                            OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
+                                     2 "$label_andistro_adb_pair" # Pareamento do ADB
+                                     3 "$label_andistro_adb_connect" # Conectar ao ADB
+                                     4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
+                                    )
+
+                            CHOICE=$(dialog --no-shadow --clear \
+                                           --title "$label_andistro_adb_configs" \
+                                           --cancel-label "$label_back" \
+                                           --menu "$label_choose_one_of_the_option:" \
+                                           $dialog_height $dialog_width $dialog_choice_height \
+                                           "${OPTIONS[@]}" \
+                                           2>&1 >/dev/tty)
+
+                            dialog_retorno=$?  # ← Captura código de retorno
+
+                            if [ $dialog_retorno -eq 1 ]; then
+                                clear # ← Clear se cancelado
+                                andistro
+                                exit 0
+                            fi
+
+                            clear
+                            
+                            case $CHOICE in
+                                # Habilitar o modo desenvolvedor
+                                1)
+                                    andistro --setup enable-dev-mode
+                                    andistro
+                                ;;
+
+                                # Pareamento do ADB
+                                2)
+                                    andistro --setup adb-pair
+                                    andistro
+                                ;;
+
+                                # Conectar ao ADB
+                                3)
+                                    andistro --setup adb-connect
+                                    andistro
+                                ;;
+
+                                # Desativar o monitor de processos fantasmas
+                                4)
+                                    andistro --setup disable-ghost-process-monitor
+                                    andistro
+                                ;;
+                            esac
+                            
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
+                        fi
+                        clear
+                    ;;
+
+                    # Verificar permissão de armazenamento
+                    3)
+                        andistro --setup storage-permission
+                        andistro
+                    ;;
+
+                    # Retirar otimização da bateria
+                    4)
+                        andistro --setup battery
+                        andistro
+                    ;;
+
+                    # Instalar o AVNC
+                    5)
+                        andistro --setup install-avnc
+                        andistro
+                    ;;
+
+                    # Desinstalar o AnDistro
+                    6)
+                        andistro -d andistro
+                    ;;
                 esac
             ;;
         esac
-    exit 0
+        exit 0
     fi
 
 #>>>#=============================================================================================
@@ -525,7 +620,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             # Menu de Ambiente Gráfico
             OPTIONS=(1 "${label_environments_select_default} (XFCE4)" # Interface padrão
-                    2 "${label_environments_select_light} (LXDE)" # Interface leve
+                     2 "${label_environments_select_light} (LXDE)" # Interface leve
                     )
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
@@ -598,10 +693,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 distro_name_upper="Debian"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow \
-                    --title "$label_dialog_uninstall_menu" \
-                    --yes-label "$label_yes" \
-                    --no-label "$label_no" \
-                    --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
+                       --title "$label_dialog_uninstall_menu" \
+                       --yes-label "$label_yes" \
+                       --no-label "$label_no" \
+                       --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
                 dialog_retorno=$?
                 
                 if [ $dialog_retorno -eq 0 ]; then
@@ -631,10 +726,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 distro_name_upper="AnDistro"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow \
-                    --title "$label_dialog_uninstall_menu" \
-                    --yes-label "$label_yes" \
-                    --no-label "$label_no" \
-                    --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
+                       --title "$label_dialog_uninstall_menu" \
+                       --yes-label "$label_yes" \
+                       --no-label "$label_no" \
+                       --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
 
                 dialog_retorno=$?
 
@@ -679,7 +774,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             else
                 echo "$label_command_not_found: $2"
-                andistro terminal
                 exit 1
             fi
         ;;
@@ -738,8 +832,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow \
-                                --gauge "$label_storage_permission_check" \
-                                $dialog_height $dialog_width
+                                   --gauge "$label_storage_permission_check" \
+                                   $dialog_height $dialog_width
                         clear
                         while true; do
                             if mkdir -p "/sdcard/termux" 2>/dev/null; then
@@ -751,7 +845,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                         echo $((i * 2))
                                     done
                                 } | dialog --no-shadow \
-                                        --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                                           --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                                 clear
                                 break   # segue o script normalmente
                             fi
@@ -761,10 +855,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             termux-setup-storage &
 
                             dialog --no-shadow --clear \
-                                --title "$label_storage_permission" \
-                                --yes-label "$label_permission_granted" \
-                                --no-label "$label_permission_not_granted" \
-                                --yesno "$label_storage_permission_desc" $dialog_height $dialog_width
+                                   --title "$label_storage_permission" \
+                                   --yes-label "$label_permission_granted" \
+                                   --no-label "$label_permission_not_granted" \
+                                   --yesno "$label_storage_permission_desc" $dialog_height $dialog_width
 
                             dialog_retorno=$?
 
@@ -774,8 +868,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             else
                                 # Botão "Não consegui": ajuda + intents
                                 dialog --no-shadow --title "$label_permission_help" \
-                                    --ok-label "$label_open_configs" \
-                                    --msgbox "$label_storange_permission_help_desc" $dialog_height $dialog_width
+                                       --ok-label "$label_open_configs" \
+                                       --msgbox "$label_storange_permission_help_desc" $dialog_height $dialog_width
 
                                 # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
                                 am start \
@@ -790,17 +884,17 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Configurações de otimização de bateria
                         # 1) Explica o que fazer
                         dialog --no-shadow --title "$label_battery_optimization" \
-                            --ok-label "$label_open_configs" \
-                            --msgbox "$label_battery_optimization_desc" $dialog_height $dialog_width
+                               --ok-label "$label_open_configs" \
+                               --msgbox "$label_battery_optimization_desc" $dialog_height $dialog_width
 
                         # 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
                         am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
 
                         # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
                         dialog --no-shadow --clear \
-                        --title "$label_battery_optimization" \
-                        --ok-label "$label_next" \
-                        --msgbox "$label_battery_optimization_desc_info" $dialog_height $dialog_width
+                               --title "$label_battery_optimization" \
+                               --ok-label "$label_next" \
+                               --msgbox "$label_battery_optimization_desc_info" $dialog_height $dialog_width
                     ;;
 
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
@@ -810,36 +904,44 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
                     ;;
 
-                    device-info-settings)
+                    enable-dev-mode)
                         dialog --no-shadow --title "$label_android_device_info" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_open" \
-                            --no-label "$label_close" \
-                            --yesno "$label_android_device_info_desc\n$label_android_device_info_desc_dev_mode" $dialog_height $dialog_width
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_open" \
+                               --no-label "$label_close" \
+                               --yesno "$label_android_device_info_desc\n$label_android_device_info_desc_dev_mode" $dialog_height $dialog_width
                         
                         dialog_retorno=$?
 
                         if [ $dialog_retorno -eq 0 ]; then
                             am start -a android.settings.DEVICE_INFO_SETTINGS
                         else
-                            echo " "
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
                         exit 0
                     ;;
 
-                    avnc)
+                    open-dev-mode)
+                        am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
+                    ;;
+
+                    install-avnc)
                         dialog --no-shadow --title "$label_install AVNC" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_install" \
-                            --no-label "$label_ignore" \
-                            --yesno "$label_avnc_desc" $dialog_height $dialog_width
+                              --backtitle "$label_warning" \
+                              --yes-label "$label_install" \
+                              --no-label "$label_ignore" \
+                              --yesno "$label_avnc_desc" $dialog_height $dialog_width
                         
                         dialog_retorno=$?
 
                         if [ $dialog_retorno -eq 0 ]; then
                             am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
                         else
-                            echo " "
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
 
                         exit 0
@@ -847,10 +949,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     autoboot)
                         dialog --no-shadow --title "$label_attention" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_yes" \
-                                --no-label "$label_no" \
-                                --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_yes" \
+                               --no-label "$label_no" \
+                               --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
 
                         dialog_retorno=$?
 
@@ -874,16 +976,20 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                             chmod 644 "$BASHRC_FILE"
                             andistro alerta setup-apply
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
                         exit 0
                     ;;
 
                     autoboot-disable)
                         dialog --no-shadow --title "$label_attention" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_yes" \
-                                --no-label "$label_no" \
-                                --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_yes" \
+                               --no-label "$label_no" \
+                               --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
 
                         dialog_retorno=$?
 
@@ -902,6 +1008,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             #rm -f "$HOME/.andistro_autoboot"
                             chmod 644 "$BASHRC_FILE"
                             andistro alerta setup-apply
+                        
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0 
                         fi
                         exit 0
                     ;;
@@ -909,69 +1020,61 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     notify-adb-pair-code)
                         termux-notification \
                             --id "adb_pair_code" \
-                            --title "Digite o código de pareamento" \
-                            --content "Código de 6 digitos em destaque, ao lado ou abaixo da descrição \"Código de pareamento por Wi-Fi\"" \
-                            --button1 "Digite o código" \
-                            --button1-action 'echo "adbPairCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh" && sleep && andistro --setup notify-adb-port-code'
+                            --title "$label_notify_adb_pair_code_title" \
+                            --content "$label_notify_adb_pair_code_desc" \
+                            --button1 "$label_notify_adb_code_button" \
+                            --button1-action 'echo "adbPairCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh"'
 
                     ;;
 
                     notify-adb-port-code)
                         termux-notification \
                             --id "adb_port_code" \
-                            --title "Digite o código da porta" \
-                            --content "O código que aparece logo após o $wlan_ip_localhost:_____" \
-                            --button1 "Digite o código" \
+                            --title "$label_notify_adb_pair_port_code_title" \
+                            --content "$label_notify_adb_pair_port_code_desc" \
+                            --button1 "$label_notify_adb_code_button" \
                             --button1-action 'echo "adbPortCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh"'
                     ;;
 
                     adb-pair)
-                        termux-toast "AnDistro: Verificando Termux:API..."
+                        termux-toast "AnDistro: Check Termux:API..."
                         status=$?
                         if [ $status -eq 0 ]; then
                             # O Termux:API está instalado e respondendo
-                            {
-                                for i in {1..50}; do
-                                    sleep 0.1
-                                    echo $((i * 2))
-                                done
-                            } | dialog --no-shadow --gauge "É necessário cuidado para essa configuração. Siga atentamente ao que for solicitado e caso necessário, poderá solicitar ajuda nos foruns do Termux ou na wiki do AnDistro\n\n$label_sleep_in_10s" $dialog_height $dialog_width
-                            clear
-                            andistro --setup device-info-settings
-
-                            dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_open" \
-                            --no-label "$label_close" \
-                            --yesno "ATENÇÃO: LEIA TUDO. \n\n1. Clique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI'; \n2. Ative e dentro da opção, clique em 'Parear o dispositivo com um código de pareamento'; \n3. Aguarde receber as notificações e digite os códigos que forem solicitados; \n4. Em hitótese alguma, na tela da Depuração por Wi-Fi, use o gesto de voltar ou de ir para o inicio. Isso irá reiniciar o código e terá que refazer tudo novamente. Somente use a central de notificações para enviar os códigos." \
-                            25 $dialog_width
+                            dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                   --backtitle "$label_warning" \
+                                   --yes-label "$label_open" \
+                                   --no-label "$label_close" \
+                                   --yesno "$label_andistro_adb_pair_desc" \
+                                   25 $dialog_width
                             dialog_retorno=$?
 
                             if [ $dialog_retorno -eq 0 ]; then
-                                am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
+                                andistro --setup open-dev-mode
                                 sleep 10
                         
-                                rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior
+                                rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior se houver
+
                                 # Passo 1: Cria notificação pair se não existir
                                 if [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh"; then
                                     andistro --setup notify-adb-pair-code
-                                    echo "Notificação de pareamento enviada. Digite o código de 6 dígitos."
+                                    #echo "Notificação de pareamento enviada."
                                 fi
 
                                 # Loop: Aguarda pairCode ser salvo, então cria port
                                 while [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
-                                sleep 2
+                                    sleep 2
                                 done
 
                                 # Extrai pairCode (última linha para evitar duplicatas)
                                 adbPairCode=$(grep '^adbPairCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
                                 if [ -n "$adbPairCode" ]; then
-                                    echo "PairCode detectado: $adbPairCode"
+                                    #echo "PairCode detectado: $adbPairCode"
 
                                     # Passo 2: Cria notificação port se não existir
                                     if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
                                         andistro --setup notify-adb-port-code
-                                        echo "Notificação de porta enviada. Digite o código após $wlan_ip_localhost:_____."
+                                        #echo "Notificação de porta enviada."
                                     fi
 
                                     # Loop: Aguarda portCode ser salvo
@@ -981,57 +1084,47 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                     # Extrai portCode e usa valores
                                     adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
-                                    termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
+                                    #termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
                                     termux-notification \
                                         --id "adb_pair_finizsh" \
-                                        --content "Pareamento: $adbPairCode | Porta: $adbPortCode"
+                                        --content "$label_pairing: $adbPairCode | $label_port: $adbPortCode"
 
-                                    # Aqui: Execute o comando ADB final, ex: adb pair localhost:$adbPortCode "$adbPairCode"
-                                    #adb pair "localhost:$adbPortCode" "$adbPairCode"
-                                    #adb connect localhost:$adbPortCode
                                     # Após extrair códigos, tenta parear e conectar com validação
                                     pair_output=$(adb pair "localhost:$adbPortCode" "$adbPairCode" 2>&1)
                                     if echo "$pair_output" | grep -q "Successfully paired"; then
                                         connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
                                         termux-notification \
                                             --id "adb_success" \
-                                            --title "✅ Pareamento ADB Finalizado!" \
-                                            --content "Retorne ao Termux para continuar o setup AnDistro." \
-                                            --button1 "Abrir Termux" \
+                                            --title "$label_andistro_notify_adb_pair_title_success" \
+                                            --content "$label_andistro_notify_adb_pair_success_desc" \
+                                            --button1 "$label_open_termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
                                         
                                     else
                                         termux-notification \
                                             --id "adb_fail" \
-                                            --title "❌ Erro no Pareamento ADB" \
-                                            --content "Será necessário reiniciar as configurações de pareamento" \
-                                            --button1 "Retorne ao Termux" \
+                                            --title "$label_andistro_notify_adb_pair_title_error" \
+                                            --content "$label_andistro_notify_adb_pair_error_desc" \
+                                            --button1 "$label_open_termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
                                     fi
 
-                                    termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+                                    #termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
 
                                     unset adbPairCode adbPortCode
                                     rm -f "$HOME/.adb_setup.sh"
-                                    
-                                    dialog --no-shadow --title "Desativar o Phantom Process" \
-                                        --backtitle "$label_warning" \
-                                        --yes-label "$label_open" \
-                                        --no-label "$label_close" \
-                                        --yesno "Deseja desativar o Phantom Process?\n Este é o causador da mensagem de erro '[Process completed (signal 9) - press Enter]'" \
-                                        25 $dialog_width
-                                        dialog_retorno=$?
-
-                                    if [ $dialog_retorno -eq 0 ]; then
-                                       andistro --setup phantom-procs
-                                    fi
                                 fi
                             fi
+                        else
+                            andistro alerta termux-api-not-installed
+                            clear  # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
                     ;;
 
                     adb-connect)
-                        termux-toast "AnDistro: Verificando Termux:API..."
+                        termux-toast "AnDistro: Check Termux:API..."
                         status=$?
                         if [ $status -eq 0 ]; then
                            # Flag para conexão
@@ -1051,41 +1144,41 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                         break
                                     fi
                                 done
-                            } | dialog --no-shadow --gauge "Verificando se o Termux tem uma conexão com a depuração por Wi-Fi\n\n$label_sleep_in_10s" \
+                            } | dialog --no-shadow --gauge "$label_andistro_adb_connect_verify\n\n$label_sleep_in_10s" \
                                 $dialog_height $dialog_width
 
                             clear
 
                             # Echo claro do status + verificação final
                             if [ $connected -eq 1 ] || adb devices 2>/dev/null | grep -q 'device$' ; then
-                                echo "✅ Termux JÁ ESTÁ CONECTADO ao ADB"
+                                #echo "✅ Termux JÁ ESTÁ CONECTADO ao ADB"
                                 {
                                     for i in {1..50}; do
                                         sleep 0.1
                                         echo $((i * 2))
                                     done
-                                } | dialog --no-shadow --gauge "O Termux já está conectado ao ADB\n\n$label_sleep_in_10s" \
+                                } | dialog --no-shadow --gauge "$label_andistro_adb_already_connected\n\n$label_sleep_in_10s" \
                                     $dialog_height $dialog_width
                                 clear
                             else
                                 #echo "❌ Termux NÃO ESTÁ CONECTADO ao ADB - iniciando configuração..."
-                                dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
+                                dialog --no-shadow --title "$label_andistro_adb_pair_title" \
                                 --backtitle "$label_warning" \
                                 --yes-label "$label_open" \
                                 --no-label "$label_close" \
-                                --yesno "ATENÇÃO: LEIA TUDO. \n\nO Termux não está conectado ao ADB usando a Depuração por Wi-Fi. Siga os passos para fazer a conexão\n\n1. Clique em < Abrir > para que seja aberto as configurações de desenvolvedor do seu dispositivo e procure pela opção chamada 'Depuração por Wi-FI'; \n\n2. Ative e dentro da opção,  procure por 'Endereço IP e porta'. Caso não ache, clique em 'Parear o dispositivo com um código de pareamento' e lá aparecerá o código da porta;\n\n3. Aguarde receber as notificações e digite os códigos que forem solicitados; \n4. Em hitótese alguma, na tela da Depuração por Wi-Fi, use o gesto de voltar ou de ir para o inicio. Isso irá reiniciar o código e terá que refazer tudo novamente. Somente use a central de notificações para enviar os códigos." \
+                                --yesno "$label_andistro_adb_pair_desc" \
                                 30 $dialog_width
                                 dialog_retorno=$?
 
                                 if [ $dialog_retorno -eq 0 ]; then
-                                    am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
+                                    andistro --setup open-dev-mode
                                     sleep 10
                             
                                     rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior
                                     # Passo 1: Cria notificação port se não existir
                                     if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
                                         andistro --setup notify-adb-port-code
-                                        echo "Notificação de porta enviada."
+                                        #echo "Notificação de porta enviada."
                                     fi
 
                                     # Loop: Aguarda portCode ser salvo
@@ -1098,77 +1191,77 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     termux-toast "Porta: $adbPortCode"
                                     termux-notification \
                                         --id "adb_port_finish" \
-                                        --content "Porta: $adbPortCode"
+                                        --content "$label_port: $adbPortCode"
 
-                                    
                                     # Após extrair códigos, tenta parear e conectar com validação
                                     connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
                                     if echo "$connect_output" | grep -q "connected"; then
                                         termux-notification \
                                             --id "adb_connect_success" \
-                                            --title "✅ Conexão ADB Finalizada!" \
-                                            --content "Retorne ao Termux para continuar o que estava fazendo." \
-                                            --button1 "Abrir Termux" \
+                                            --title "$label_andistro_adb_connect_title_success" \
+                                            --content "$label_andistro_notify_adb_pair_success_desc" \
+                                            --button1 "$label_open_termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
 
                                     else
                                         termux-notification \
                                             --id "adb_fail" \
-                                            --title "❌ Erro na Conexão ADB" \
-                                            --content "Será necessário reiniciar as configurações de conexão" \
-                                            --button1 "Retorne ao Termux" \
+                                            --title "$label_andistro_adb_connect_title_error" \
+                                            --content "$label_andistro_notify_adb_pair_error_desc" \
+                                            --button1 "$label_open_termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
 
                                     fi
 
-                                    termux-toast "Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+                                    #termux-toast "Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
 
                                     unset adbPortCode
                                     rm -f "$HOME/.adb_setup.sh"
                                 fi
                             fi
+                        else
+                            andistro alerta termux-api-not-installed
+                            clear  # ← Clear se cancelado
+                            andistro
+                            exit 0
 
                         fi
                     ;;
 
-                    phantom-procs)
+                    disable-ghost-process-monitor)
                         dialog --no-shadow --title "$label_attention" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_help" \
-                            --no-label "$label_skip" \
-                            --yesno "$label_phantom_procs_desc" $dialog_height $dialog_width
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_help" \
+                               --no-label "$label_skip" \
+                               --yesno "$label_disable_ghost_process_monitor_desc" \
+                               $dialog_height $dialog_width
 
                         dialog_retorno=$?
 
                         if [ $dialog_retorno -eq 0 ]; then
                             andistro --setup adb-connect
                             sleep 2
-                            dialog --no-shadow --title "Permitir acesso ADB ao Termux" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_open" \
-                                --no-label "$label_close" \
-                                --yesno "ATENÇÃO: LEIA TUDO. \n\nEsta é uma ação que altera algumas permissões do sistema. Esteja ciente que caso haja problemas, pode ser que seja necessário restaurar o aparelho aos padrões de fabrica.\n\n Continue por sua conta e risco. Caso aceite continuar, será exibido os comandos que serão realizados." \
-                                30 $dialog_width
-                                dialog_retorno=$?
-                            if [ $dialog_retorno -eq 0 ]; then
-                                show_progress_dialog steps-multi-label 9 \
-                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
-                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' \
-                                    '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
-                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
-                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' \
-                                    '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
-                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5' \
-                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'adb shell settings put global settings_enable_monitor_phantom_procs false' \
-                                    '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5'
+
+                            show_progress_dialog steps-multi-label 9 \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'adb shell settings put global settings_enable_monitor_phantom_procs false' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5'
 
                             andistro alerta setup-apply
                             fi
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0 
                         fi
-
                         exit 0
                     ;;
-
 
                     *)
                         echo "$label_command_not_found: $2"
@@ -1238,7 +1331,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
-                    uninstall-canelled)
+                    uninstall-cancelled)
                         {
                             for i in {1..50}; do
                                 sleep 0.1
@@ -1263,6 +1356,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                        clear
+                        ;;
+                    termux-api-not-installed)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow --gauge "$label_termux_api_not_installed\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     *)
