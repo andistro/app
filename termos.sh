@@ -51,13 +51,13 @@ if [ "$system_lang_code" = "en-US" ]; then
     label_accept="Accept"
     label_reject="Reject"
     label_u_accepted="User accepted the terms. Continuing..."
-    label_u_rejected="You have rejected the terms. The file will be deleted. To use again, download it again."
+    label_u_rejected="You have rejected the terms. The AnDistro will be deleted. To use again, download it again."
 elif [ "$system_lang_code" = "pt-BR" ]; then
     label_term="Termos de Uso"
     label_accept="Aceitar"
     label_reject="Negar"
     label_u_accepted="Usuário aceitou os termos. Continuando..."
-    label_u_rejected="Você recusou os termos. O arquivo será excluído. Caso queira utilizar novamente, será necessário baixá-lo outra vez."
+    label_u_rejected="Você recusou os termos. O AnDistro será excluído. Caso queira utilizar novamente, será necessário baixá-lo outra vez."
 fi
 
 
