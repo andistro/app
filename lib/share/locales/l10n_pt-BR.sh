@@ -40,7 +40,6 @@ label_andistro_battery_optimization="Retirar otimização da bateria"
 label_andistro_signal9_error="Resolver o erro signal 9"
 label_andistro_storage_permission_check="Verificar permissão de armazenamento"
 label_andistro_install_avnc="Instalar o AVNC"
-
 label_autoboot_andistro="Inicialização"
 label_autoboot_andistro_desc="Ao habilitar, toda vez que o Termux for aberto, haverá uma pergunta se deseja iniciar ou não o AnDistro e o comando necessário para a tomada da decisão."
 label_enable_autoboot_andistro="Habilitar a mensagem de inicialização do AnDistro"
@@ -62,7 +61,6 @@ label_andistro_adb_connect_verify="Verificando se o Termux tem uma conexão com 
 label_andistro_adb_already_connected="O Termux já está conectado ao ADB."
 label_andistro_disable_ghost_process_monitor="Desativar o monitor de processos fantasmas"
 label_andistro_enable_dev_mode="Habilitar o modo desenvolvedor"
-
 label_andistro_start_command_info="Digite 'andistro' para iniciar o AnDistro.\nTecla ENTER (↲) para confirmar."
 
 ## Exclusivo andistro distros
@@ -119,16 +117,12 @@ label_opening="Abrindo %s..."
 label_android_device_info="Informações do dispositivo Android"
 label_android_device_info_desc="Após clicar em '< Abrir >' será aberto a tela de informações do dispositivo Android nas configurações do sistema."
 label_android_device_info_desc_dev_mode="Para habilitar o modo desenvolvedor, localize o item \"Número de compilação\" e toque nele 7 vezes seguidas. Poderá ser solicitado a senha de desbloqueio do celular.\n\nCaso não ache, procure pelas informações do software.\n\nDepois de habilitar o modo desenvolvedor. Retorne ao Termux e prossiga com a instalação."
-
 label_open_termux="Abrir Termux"
 label_notify_adb_code_button="Digite o código"
-
 label_notify_adb_pair_code_title="Digite o código de pareamento"
 label_notify_adb_pair_code_desc="Código de 6 digitos em destaque, ao lado ou abaixo da descrição \"Código de pareamento por Wi-Fi\""
-
 label_notify_adb_pair_port_code_title="Digite o código da porta"
 label_notify_adb_pair_port_code_desc="O código que aparece logo após o $wlan_ip_localhost:_____"
-
 label_termux_api_not_installed="O Termux:API não está instalado. Instale para que possa fazer algumas configurações no AnDistro."
 
 ## Fuso horário
@@ -250,7 +244,6 @@ label_cancel_action_esc="Você apertou ESC. Você escolheu NÃO executar. Nada f
 label_continue_action_executed="Você escolheu executar. Um momento..."
 label_action_accepted="O pedido foi aceito."
 label_app_not_open="Caso o aplicativo não abra, verifique se está instalado."
-
 label_storage_permission_check="Verificando as permissões de armazenamento..."
 label_storage_permission_granted="Já possui acesso ao armazenamento."
 label_storage_permission="Permissão de armazenamento"
@@ -284,13 +277,11 @@ label_server_start_desc="O servidor foi iniciado."
 label_server_start_error="O servidor VNC não está iniciado. Por favor, registro de erros em .vnc/localhost.log."
 label_select_resolution="Seleção de resolução"
 label_choose_one_resolution="Escolha uma das opções abaixo"
-
 label_resolution_frequent="Resolução Frequente Detectada"
 label_resolution_frequent_desc="Você tem usado a resolução %s na ultimas vezes.\n\nDeseja definir esta resolução como padrão?\n\nIsso evitará que o menu de seleção apareça nas próximas vezes."
 label_resolution_remove_default="Deseja remover a resolução padrão?"
 label_resolution_remove_default_desc="Você está prestes a remover a resolução padrão salva.\n\nIsso fará com que o menu de seleção de resolução apareça novamente na próxima vez que iniciar o VNC.\n\nDeseja continuar?"
 label_resolution_remove_default_sucess="A resolução deixou de ser a padrão."
-
 label_resolution_option_default="Resolução padrão"
 label_resolution_option_default_desc="Confirme para iniciar com a resolução definida como padrão. \n\nAperte no '<Sim>' para confirmar ou tecle enter (↲). \nAperte no '<Não>' para escolher outra resolução."
 label_resolution_choose_options="Escolha algumas opções"
@@ -300,7 +291,6 @@ label_resolution_choose_custom_desc="Insira a resolução personalizada no forma
 label_resolution_choose_custom_desc_port="Defina um número para a porta ou mantenha a que está definida como padrão.  A porta padrão é 1."
 label_resolution_choose_custom_desc_scale="Defina um número para a escala ou mantenha a que está definida como padrão.  A escala padrão é 1."
 label_resolution_choose_custom_desc_alert="Houve algum erro nos dados inseridos. Será retornado a tela anterior. Leia atentamente a descrição e repita o procedimeto."
-
 label_resolution_option_custom="Defina a resolução manualmente"
 label_resolution_option_uwhd="Ultrawide HD"
 label_resolution_option_qdhd="Quad-HD"
