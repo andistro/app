@@ -74,8 +74,8 @@ if [ $resposta -eq 0 ]; then
     # aqui é onde você coloca o que já seria feito
 elif [ $resposta -eq 1 ]; then
     # Usuário recusou
-    dialog --no-shadow --msgbox "$label_u_rejected" 20 100
-    andistro -d total
+    dialog --no-shadow --msgbox "$label_u_rejected" 40 100
+    andistro -d andistro
 fi
 
 clear
