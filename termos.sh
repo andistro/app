@@ -62,7 +62,7 @@ fi
 
 
 dialog --no-shadow --title "$label_term" --yes-label "$label_accept" --no-label "$label_reject" \
-       --yesno "$(cat $TERMO)" 20 100
+       --yesno "$(cat $TERMO)" 40 100
 
 resposta=$?
 
