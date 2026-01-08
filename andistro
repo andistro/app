@@ -1254,7 +1254,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5'
 
                             andistro alerta setup-apply
-                            fi
                         else
                             clear # ← Clear se cancelado
                             andistro
