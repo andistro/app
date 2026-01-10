@@ -67,9 +67,14 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     )
         fi
 
+        if [ "$andistro_version" = "main" ]; then
+            an_title_version=""
+        elif [ "$andistro_version" = "alpha" ]; then
+            an_title_version=" [alpha]"
+        fi
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
-                        --title "AnDistro [alpha]" \
+                        --title "AnDistro$an_title_version" \
                         --cancel-label "$label_close" \
                         --menu "$label_choose_one_of_the_option:" \
                         $dialog_height $dialog_width $dialog_choice_height \
