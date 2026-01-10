@@ -345,7 +345,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Comando para atualizar o Andistro
         -u)
             update_dialog_view(){
-                show_progress_dialog steps-multi-label 46 \
+                show_progress_dialog steps-multi-label 50 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 2' \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 4' \
@@ -391,7 +391,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
                     "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
                     "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
-                    "${label_install_script_download}" 'termux-setup-storage'
+                    "${label_install_script_download}" 'termux-setup-storage' \
+                    "${label_update_apply}" 'sleep 1' \
+                    "${label_update_apply}" 'sleep 2' \
+                    "${label_update_apply}" 'sleep 4' \
+                    "${label_update_apply}" 'sleep 6'
             }
             updatel_terminal_view(){
                 update_progress() {
