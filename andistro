@@ -72,6 +72,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         elif [ "$andistro_version" = "alpha" ]; then
             an_title_version=" [alpha]"
         fi
+
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro$an_title_version" \
@@ -964,19 +965,32 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             fi
 
                             # Falhou: provavelmente sem permissão de armazenamento
-                            rm -rf "$HOME/storage"
-                            termux-setup-storage &
+
+                            {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow \
+                                   --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" \
+                                   $dialog_height $dialog_width
+                        clear
+                            am start \
+                                    -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
+                                    -d "package:com.termux" >/dev/null 2>&1
 
                             dialog --no-shadow --clear \
                                    --title "$label_storage_permission" \
                                    --yes-label "$label_permission_granted" \
                                    --no-label "$label_permission_not_granted" \
-                                   --yesno "$label_storage_permission_desc" $dialog_height $dialog_width
+                                   --yesno "$label_storage_permission_not_granted" $dialog_height $dialog_width
 
                             dialog_retorno=$?
 
                             if [ $dialog_retorno -eq 0 ]; then
                                 # Botão "Já permiti": tenta de novo no próximo loop
+                                rm -rf "$HOME/storage"
+                                termux-setup-storage &
                                 continue
                             else
                                 # Botão "Não consegui": ajuda + intents
