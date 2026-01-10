@@ -114,7 +114,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         
             # Configurações e Ajuda
             c)
-                dialog_config_menu(){
+                while true; do
                     # porque não tem o while true; do aqui?
                     OPTIONS=(1 "$label_autoboot_andistro" # Inicialização
                             2 "$label_andistro_adb_configs" # Configurações do ADB
@@ -138,134 +138,130 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         andistro
                         exit 0
                     fi
-
                     clear
-                }
 
-                dialog_config_menu
-                
-                case $CHOICE in
-                    #Configurações de inicialização
-                    1)
-                        dialog_config_boot_menu(){
-                            while true; do
-                                OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
-                                        2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
-                                        )
-
-                                CHOICE=$(dialog --no-shadow --clear \
-                                                --title "$label_autoboot_andistro" \
-                                                --cancel-label "$label_back" \
-                                                --menu "$label_autoboot_andistro_desc" \
-                                                $dialog_height $dialog_width $dialog_choice_height \
-                                                "${OPTIONS[@]}" \
-                                                2>&1 >/dev/tty)
-                                dialog_retorno=$?  # ← Captura código de retorno
-                                
-                                if [ $dialog_retorno -eq 1 ]; then
-                                    clear # ← Clear se cancelado
-                                    dialog_config_menu
-                                    exit 0
-                                fi
-                                clear
-                            
-                                case $CHOICE in
-                                    # Habilita a mensagem de inicialização do AnDistro
-                                    1) andistro --setup autoboot ;;
-
-                                    # Desativa a mensagem de inicialização do AnDistro
-                                    2) andistro --setup autoboot-disable ;;
-                                esac
-                            done
-                        }
-                        dialog_config_boot_menu
-                    ;;
-
-                    # Configurações do ADB
-                    2)
-                        dialog --no-shadow --title "$label_andistro_adb_pair_title" \
-                               --backtitle "$label_warning" \
-                               --yes-label "$label_confirm" \
-                               --no-label "$label_close" \
-                               --yesno "$label_andistro_adb_configs_desc" \
-                               25 $dialog_width
-                        dialog_retorno=$?
-
-                        if [ $dialog_retorno -eq 0 ]; then
-                            dialog_config_adb_menu(){
+                    case $CHOICE in
+                        #Configurações de inicialização
+                        1)
+                            dialog_config_boot_menu(){
                                 while true; do
-                                    OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
-                                            2 "$label_andistro_adb_pair" # Pareamento do ADB
-                                            3 "$label_andistro_adb_connect" # Conectar ao ADB
-                                            4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
+                                    OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
+                                            2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
                                             )
 
                                     CHOICE=$(dialog --no-shadow --clear \
-                                                --title "$label_andistro_adb_configs" \
-                                                --cancel-label "$label_back" \
-                                                --menu "$label_choose_one_of_the_option:" \
-                                                $dialog_height $dialog_width $dialog_choice_height \
-                                                "${OPTIONS[@]}" \
-                                                2>&1 >/dev/tty)
-
+                                                    --title "$label_autoboot_andistro" \
+                                                    --cancel-label "$label_back" \
+                                                    --menu "$label_autoboot_andistro_desc" \
+                                                    $dialog_height $dialog_width $dialog_choice_height \
+                                                    "${OPTIONS[@]}" \
+                                                    2>&1 >/dev/tty)
                                     dialog_retorno=$?  # ← Captura código de retorno
-
+                                    
                                     if [ $dialog_retorno -eq 1 ]; then
                                         clear # ← Clear se cancelado
                                         dialog_config_menu
                                         exit 0
                                     fi
-
                                     clear
                                 
-                                
                                     case $CHOICE in
-                                        # Habilitar o modo desenvolvedor
-                                        1) andistro --setup enable-dev-mode ;;
+                                        # Habilita a mensagem de inicialização do AnDistro
+                                        1) andistro --setup autoboot ;;
 
-                                        # Pareamento do ADB
-                                        2) andistro --setup adb-pair ;;
-
-                                        # Conectar ao ADB
-                                        3) andistro --setup adb-connect ;;
-
-                                        # Desativar o monitor de processos fantasmas
-                                        4) andistro --setup disable-ghost-process-monitor ;;
+                                        # Desativa a mensagem de inicialização do AnDistro
+                                        2) andistro --setup autoboot-disable ;;
                                     esac
                                 done
                             }
-                        dialog_config_adb_menu
-                        else
-                            clear # ← Clear se cancelado
+                            dialog_config_boot_menu
+                        ;;
+
+                        # Configurações do ADB
+                        2)
+                            dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_confirm" \
+                                --no-label "$label_close" \
+                                --yesno "$label_andistro_adb_configs_desc" \
+                                25 $dialog_width
+                            dialog_retorno=$?
+
+                            if [ $dialog_retorno -eq 0 ]; then
+                                dialog_config_adb_menu(){
+                                    while true; do
+                                        OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
+                                                2 "$label_andistro_adb_pair" # Pareamento do ADB
+                                                3 "$label_andistro_adb_connect" # Conectar ao ADB
+                                                4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
+                                                )
+
+                                        CHOICE=$(dialog --no-shadow --clear \
+                                                    --title "$label_andistro_adb_configs" \
+                                                    --cancel-label "$label_back" \
+                                                    --menu "$label_choose_one_of_the_option:" \
+                                                    $dialog_height $dialog_width $dialog_choice_height \
+                                                    "${OPTIONS[@]}" \
+                                                    2>&1 >/dev/tty)
+
+                                        dialog_retorno=$?  # ← Captura código de retorno
+
+                                        if [ $dialog_retorno -eq 1 ]; then
+                                            clear # ← Clear se cancelado
+                                            dialog_config_menu
+                                        fi
+
+                                        clear
+                                    
+                                    
+                                        case $CHOICE in
+                                            # Habilitar o modo desenvolvedor
+                                            1) andistro --setup enable-dev-mode ;;
+
+                                            # Pareamento do ADB
+                                            2) andistro --setup adb-pair ;;
+
+                                            # Conectar ao ADB
+                                            3) andistro --setup adb-connect ;;
+
+                                            # Desativar o monitor de processos fantasmas
+                                            4) andistro --setup disable-ghost-process-monitor ;;
+                                        esac
+                                    done
+                                }
+                                dialog_config_adb_menu
+                            else
+                                clear # ← Clear se cancelado
+                                dialog_config_menu
+                                exit 0
+                            fi
+                            clear
+                        ;;
+
+                        # Verificar permissão de armazenamento
+                        3)
+                            andistro --setup storage-permission
                             dialog_config_menu
-                            exit 0
-                        fi
-                        clear
-                    ;;
+                        ;;
 
-                    # Verificar permissão de armazenamento
-                    3)
-                        andistro --setup storage-permission
-                        dialog_config_menu
-                    ;;
+                        # Retirar otimização da bateria
+                        4)
+                            andistro --setup battery
+                            dialog_config_menu
+                        ;;
 
-                    # Retirar otimização da bateria
-                    4)
-                        andistro --setup battery
-                        dialog_config_menu
-                    ;;
+                        # Instalar o AVNC
+                        5)
+                            andistro --setup install-avnc
+                            dialog_config_menu
+                        ;;
 
-                    # Instalar o AVNC
-                    5)
-                        andistro --setup install-avnc
-                        dialog_config_menu
-                    ;;
-
-                    # Desinstalar o AnDistro
-                    6)
-                        andistro -d andistro
-                    ;;
-                esac
+                        # Desinstalar o AnDistro
+                        6)
+                            andistro -d andistro
+                        ;;
+                    esac
+                done
             ;;
         esac
         exit 0
