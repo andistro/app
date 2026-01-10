@@ -108,7 +108,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             c)
                 while true; do
                     # porque não tem o while true; do aqui?
-                    OPTIONS=(1 "$label_autoboot_andistro" # Inicialização
+                    OPTIONS=(1 "$label_autoboot_andistro" # Inicialização / autoboot
                             2 "$label_andistro_adb_configs" # Configurações do ADB
                             3 "$label_andistro_update" # Atualizar o AnDistro
                             4 "$label_andistro_check_permissions" # Verificar permissões
@@ -252,13 +252,82 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 clear
                             
                                 case $CHOICE in
-                                    # Habilita a mensagem de inicialização do AnDistro
+                                    # Atualizar o AnDistro [estável]
                                     1) andistro -u main-dialog ;;
 
-                                    # Desativa a mensagem de inicialização do AnDistro
+                                    # Atualizar o AnDistro [alpha]
                                     2) andistro -u alpha-dialog ;;
                                 esac
                             done
+                        ;;
+
+                        # Verificar permissões
+                        4)
+                            while true; do
+                                OPTIONS=(1 "$label_andistro_storage_permission_check" # Verificar permissão de armazenamento
+                                        2 "$label_andistro_battery_optimization" # Remover otimização de bateria
+                                        )
+
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_check_permissions" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_check_permissions_desc" \
+                                                20 $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Verificar permissão de armazenamento
+                                    1) andistro --setup storage-permission ;;
+
+                                    # Remover otimização de bateria
+                                    2) andistro --setup battery ;;
+                                esac
+                            done
+                        ;;
+
+                        # Instalar aplicativos adicionais
+                        5)
+                            while true; do
+                                OPTIONS=(1 "$label_andistro_install_avnc" # Verificar permissão de armazenamento
+                                        )
+
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_check_permissions" \
+                                                --ok-label "$label_install" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_install_apps_desc" \
+                                                20 $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Instalar o AVNC
+                                    1) andistro --setup install-avnc ;;
+
+                                esac
+                            done
+                        ;;
+
+                        # Instalar aplicativos adicionais
+                        6)
+                            andistro -d andistro
                         ;;
                     esac
                 done

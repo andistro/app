@@ -36,7 +36,7 @@ label_andistro_termianl_viewer="Ver como terminal"
 label_andistro_uninstall_system="Desinstalar o sistema Debian" # Antes era "Desinstalar o sistema"
 label_andistro_uninstalling_complete="Desinstalação completa do AnDistro!"
 
-label_andistro_battery_optimization="Retirar otimização da bateria"
+label_andistro_battery_optimization="Remover otimização da bateria"
 label_andistro_signal9_error="Resolver o erro signal 9"
 label_andistro_storage_permission_check="Verificar permissão de armazenamento"
 label_andistro_install_avnc="Instalar o AVNC"
@@ -68,8 +68,9 @@ label_andistro_update_main="Atualizar o AnDistro [estável]"
 label_andistro_update_alpha="Atualizar o AnDistro [alpha]"
 label_andistro_update_beta="Atualizar o AnDistro [beta]"
 label_andistro_check_permissions="Verificar permissões"
+label_andistro_check_permissions_desc="Use as opções abaixo para verificar e configurar as permissões necessárias para o AnDistro funcionar corretamente."
 label_andistro_install_apps="Instalar aplicativos adicionais"
-
+label_andistro_install_apps_desc="Instale aplicativos adicionais para que o AnDistro possa funcionar da maneira esperada.\n\nEscolha os aplicativos desejados e prossiga com a instalação."
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
@@ -219,6 +220,7 @@ label_port="Porta"
 label_stable="Estável"
 label_alpha="Alpha"
 label_beta="Beta"
+label_install="Instalar"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
