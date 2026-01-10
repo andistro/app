@@ -243,19 +243,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Verificar permissão de armazenamento
                         3)
                             andistro --setup storage-permission
-                            break
                         ;;
 
                         # Retirar otimização da bateria
                         4)
                             andistro --setup battery
-                            break
                         ;;
 
                         # Instalar o AVNC
                         5)
                             andistro --setup install-avnc
-                            break
                         ;;
 
                         # Desinstalar o AnDistro
