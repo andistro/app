@@ -237,7 +237,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             fi
                             clear
                             dialog_config_adb_menu
-                            break
                         ;;
 
                         # Verificar permissão de armazenamento
