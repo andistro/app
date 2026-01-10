@@ -995,9 +995,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # label_battery_optimization_desc="O Termux pode ser finalizado em segundo plano devido às otimizações de bateria do Android. Para evitar isso, é recomendado desativar a otimização de bateria para o Termux.\n\nEm alguns instantes será aparecerá uma mensagem do sistema sobre parar a otimização do uso da bateria, clique em \"Permitir\" para continuar."
                         # label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
                         {
-                            for i in {1..100}; do
-                                sleep 0.2
-                                echo $i
+                            for i in {1..50}; do
+                                sleep 0.4 # 20s
+                                echo $((i * 2))
                             done
                         } | dialog --no-shadow \
                                    --gauge "$label_battery_optimization_desc\n\n$label_sleep_in_20s" \
