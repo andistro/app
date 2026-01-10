@@ -239,7 +239,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                 --title "$label_andistro_update" \
                                                 --cancel-label "$label_back" \
                                                 --menu "$label_andistro_update_desc" \
-                                                30 $dialog_width $dialog_choice_height \
+                                                20 $dialog_width $dialog_choice_height \
                                                 "${OPTIONS[@]}" \
                                                 2>&1 >/dev/tty)
                                 dialog_retorno=$?  # ← Captura código de retorno
