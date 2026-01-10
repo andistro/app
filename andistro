@@ -972,7 +972,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow \
-                                   --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" \
+                                   --gauge "$label_storage_permission_not_granted\n\n$label_sleep_in_10s" \
                                    $dialog_height $dialog_width
                         clear
                             am start \
@@ -983,7 +983,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                    --title "$label_storage_permission" \
                                    --yes-label "$label_permission_granted" \
                                    --no-label "$label_permission_not_granted" \
-                                   --yesno "$label_storage_permission_not_granted" $dialog_height $dialog_width
+                                   --yesno "$label_storange_permission_help_desc" $dialog_height $dialog_width
 
                             dialog_retorno=$?
 
