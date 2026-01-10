@@ -281,8 +281,56 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     case "$1" in
         # Comando para atualizar o Andistro
         -u)
-            if [ -z "$2" ]; then
-                echo -e "\n$label_wait"
+            update_dialog_view(){
+                show_progress_dialog steps-multi-label 46 \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 2' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 4' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 6' \
+                    "${label_find_update}" 'pkg update' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y' \
+                    "${label_upgrade}" 'pkg upgrade -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-exec -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends proot -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends x11-repo -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-x11-nightly -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends pulseaudio -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends wget -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends dialog -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends tar -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends curl -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends unzip -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends xz-utils -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends debootstrap -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends dbus -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends pv -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends git -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends inxi -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-api -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends android-tools -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends virglrenderer-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends angle-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends vulkan-loader-android -y' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
+                    "${label_install_script_download}" "git clone --depth 1 -b $branch_version https://github.com/andistro/app.git app-andistro_setup" \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/andistro_setup"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/README.md"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.editconfig"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitignore"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitattributes"' \
+                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"' \
+                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"' \
+                    "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
+                    "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
+                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
+                    "${label_install_script_download}" 'termux-setup-storage'
+            }
+            updatel_terminal_view(){
                 update_progress() {
                     current_step=$1
                     total_steps=$2
@@ -301,6 +349,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 total_steps=31  # Número total de etapas que você quer monitorar
                 current_step=0
 
+                echo -e "\n$label_wait"
+                echo -e "\n$label_andistro_update_version"
                 {
                     #1 Atualiza os repositórios
                     sleep 1
@@ -487,7 +537,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
                     #29 Todo o pacote de instalação
-                    git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
+                    git clone --depth 1 -b $branch_version https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
@@ -512,56 +562,34 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     echo
                 }
-            elif [ "$2" == "dialog" ]; then
-                show_progress_dialog steps-multi-label 43 \
-                    "${label_progress}" 'sleep 1' \
-                    "${label_find_update}" 'pkg update' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y' \
-                    "${label_upgrade}" 'pkg upgrade -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-exec -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends proot -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends x11-repo -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-x11-nightly -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends pulseaudio -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends wget -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends dialog -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends tar -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends curl -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends unzip -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends xz-utils -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends debootstrap -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends dbus -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends pv -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends git -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends inxi -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-api -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends android-tools -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends virglrenderer-android -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends angle-android -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends vulkan-loader-android -y' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
-                    "${label_install_script_download}" 'git clone --depth 1 -b alpha https://github.com/andistro/app.git app-andistro_setup' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/andistro_setup"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/README.md"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.editconfig"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitignore"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitattributes"' \
-                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"' \
-                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"' \
-                    "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
-                    "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
-                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
-                    "${label_install_script_download}" 'termux-setup-storage'
+            }
+
+            if [ -z "$2" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                updatel_terminal_view
+            elif [ "$2" == "main" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                updatel_terminal_view
+            elif [ "$2" == "main-dialog" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                update_dialog_view
+            elif [ "$2" == "alpha" ]; then
+                branch_version="alpha"
+                andistro_branch_version="$label_alpha"
+                updatel_terminal_view
+            elif [ "$2" == "alpha-dialog" ]; then
+                branch_version="alpha"
+                andistro_branch_version="$label_alpha"
+                update_dialog_view
             else
                 echo "$label_command_not_found: $2"
                 exit 1
             fi
-            
+
+            # Limpeza pós atualização
             rm -rf "$HOME/app-andistro_setup"
             rm -rf "$HOME/termos.sh"
             rm -rf andistro_setup.zip

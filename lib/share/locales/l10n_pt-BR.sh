@@ -136,6 +136,7 @@ label_uninstalling_system="Desinstalando o sistema %s"
 label_uninstall_cancelled="A desinstalação do sistema %s foi cancelada"
 label_install_success="Instalação concluida!"
 label_setup_apply="Configuração aplicada!"
+label_andistro_update_version="Atualizando o AnDistro para a versão $andistro_branch_version"
 
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
@@ -207,6 +208,9 @@ label_close="Fechar"
 label_open="Abrir"
 label_pairing="Pareamento"
 label_port="Porta"
+label_stable="Estável"
+label_alpha="Alpha"
+label_beta="Beta"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
