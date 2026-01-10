@@ -221,10 +221,13 @@ label_stable="Estável"
 label_alpha="Alpha"
 label_beta="Beta"
 label_install="Instalar"
-
+label_update="Atualizar"
+label_check="Verificar"
 # Informativos em colchetes
 label_detected="[Detectado]"
 label_numbers_only="[SOMENTE NÚMEROS]"
+label_optional="[opcional]"
+label_required="[obrigatório]"
 
 # Interface
 label_config_environment_gui="Configurando a interface..."

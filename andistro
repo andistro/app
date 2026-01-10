@@ -237,6 +237,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                 CHOICE=$(dialog --no-shadow --clear \
                                                 --title "$label_andistro_update" \
+                                                --ok-label "$label_update" \
                                                 --cancel-label "$label_back" \
                                                 --menu "$label_andistro_update_desc" \
                                                 20 $dialog_width $dialog_choice_height \
@@ -270,6 +271,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                 CHOICE=$(dialog --no-shadow --clear \
                                                 --title "$label_andistro_check_permissions" \
+                                                --ok-label "$label_check" \
                                                 --cancel-label "$label_back" \
                                                 --menu "$label_andistro_check_permissions_desc" \
                                                 20 $dialog_width $dialog_choice_height \
@@ -297,7 +299,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Instalar aplicativos adicionais
                         5)
                             while true; do
-                                OPTIONS=(1 "$label_andistro_install_avnc" # Verificar permissão de armazenamento
+                                OPTIONS=(1 "$label_andistro_install_avnc $label_optional" # Instalar o AVNC [opcional]
                                         )
 
                                 CHOICE=$(dialog --no-shadow --clear \
