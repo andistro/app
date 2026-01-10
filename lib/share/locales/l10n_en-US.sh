@@ -7,8 +7,8 @@
 
 # Global andistro
 distro_command_guide="AndDistro Commands Guide"
-distro_desc_line_0="Usage: andistro to perform the desired task."
-distro_desc_line_0_0="Usage: andistro to perform the desired task."
+distro_desc_line_0="Usage: andistro <command> to perform the desired task."
+distro_desc_line_0_0="Usage: andistro <command> <subcommand> to perform the desired task."
 
 ## Termux exclusive andistro
 distro_desc_line_t1="Example of a command that allows initialization:"
@@ -60,6 +60,16 @@ label_andistro_disable_ghost_process_monitor="Disable ghost process monitor"
 label_andistro_enable_dev_mode="Enable developer mode"
 label_andistro_start_command_info="Type 'andistro' to start AnDistro.\nPress ENTER (↲) to confirm."
 
+label_andistro_update="Update AnDistro"
+label_andistro_update_desc="Update AnDistro to the latest available version.\n\nChoose the desired version to start the update process.\n\n[stable] Recommended version for most users.\n[alpha] Test version with experimental features."
+label_andistro_update_main="Update AnDistro [stable]"
+label_andistro_update_alpha="Update AnDistro [alpha]"
+label_andistro_update_beta="Update AnDistro [beta]"
+label_andistro_check_permissions="Check permissions"
+label_andistro_check_permissions_desc="Use the options below to check and configure the permissions necessary for AnDistro to work correctly."
+label_andistro_install_apps="Install additional applications"
+label_andistro_install_apps_desc="Install additional applications so that AnDistro can work as expected.\n\nChoose the desired applications and proceed with the installation."
+
 ## AndDistro distros exclusive
 distro_desc_line_d1=" --boot command to start some configuration."
 distro_desc_line_d2="Subcommands of --boot"
@@ -91,6 +101,7 @@ label_distro_download="Downloading %s..."
 label_distro_download_finish="The latest version of %s was downloaded successfully."
 label_distro_download_start="Soon the latest version of %s will be downloaded to storage..."
 label_install_script_download="Downloading necessary files..."
+label_update_apply="The updates will be fully applied after restarting AnDistro or when returning to the main menu."
 label_skip_download="Skipping download"
 label_update_finish="Update completed!"
 label_wallpaper_download="Downloading wallpapers..."
@@ -134,6 +145,7 @@ label_uninstalling_system="Uninstalling system %s"
 label_uninstall_cancelled="The uninstallation of system %s was canceled"
 label_install_success="Installation completed!"
 label_setup_apply="Setting applied!"
+label_andistro_update_version="Updating AnDistro to version %s"
 
 # Passwords
 label_change_password="The password has been changed successfully. "
@@ -204,9 +216,20 @@ label_close="Close"
 label_open="Open"
 label_pairing="Pairing"
 
+label_stable="Stable"
+label_alpha="Alpha"
+label_beta="Beta"
+label_install="Install"
+label_update="Update"
+label_check="Check"
+label_finish="Finish"
+
 # Messages in brackets
 label_detected="[Detected]"
 label_numbers_only="[NUMBERS ONLY]"
+
+label_optional="[optional]"
+label_required="[required]"
 
 # Interface
 label_config_environment_gui="Configuring the interface..."
@@ -246,8 +269,8 @@ label_storage_permission="Storage permission"
 label_storage_permission_desc="Allow AnDistro to have access and be able to manage the phone storage.\n\nThis allows access to photos, videos, music, audios and other files on this device."
 label_storange_permission_help_desc="Click the \"Allow access\" button in settings to grant storage access.\n\nAfter allowing, return to Termux and press \"Already allowed\"."
 label_battery_optimization="Battery optimization"
-label_battery_optimization_desc="To prevent the system from terminating Termux/AnDistro in the background, it is recommended to remove battery optimization.\n\nOn the next screen, look for the Termux application, open it and choose the \"No restrictions\" or \"Unrestricted\" mode."
-label_battery_optimization_desc_info="This setting is essential to keep Termux performance. Have you already adjusted Termux battery optimization to \"No restrictions\" / \"Unrestricted\"?\n\nRegardless of the chosen option, this step will be completed now."
+label_battery_optimization_desc="Termux may be terminated in the background due to Android's battery optimizations. To prevent this, it is recommended to disable battery optimization for Termux.\n\nIn a few moments, a system message will appear about stopping battery usage optimization, click \"Allow\" to continue."
+label_battery_optimization_desc_info="If the message did not appear, it means it is already disabled. If you clicked deny, you can return here again through AnDistro settings.\n\nClick <Finish> to finalize this configuration."
 label_avnc_desc="Do you already have AVNC installed?\nIf not, click the button and after starting the installation, return here. If you already have it installed or do not want to install it on your phone, click \n\nThe application is not mandatory, but it is recommended.\nYou can use any other VNC viewing app."
 label_disable_ghost_process_monitor_desc="Do you want to disable the Phantom Process monitor?\n This is the cause of the error message '[Process completed (signal 9) - press Enter]'\n\nAnDistro brings this option that allows disabling the ghost process monitor, but it does not have the option to restore factory defaults. If you want to restore these options you will need to consult the ADB documentation or restore the phone"
 label_open_app_desc="Do you want to start %s?\nIf yes, press ENTER (↲).\nOtherwise, press ESC or CTRL+C to ignore."
@@ -256,6 +279,7 @@ label_autoboot_andistro_disable_desc="Do you want to DISABLE AnDistro's autoboot
 
 # Timer
 label_sleep_in_10s="This message will disappear in 10 seconds."
+label_sleep_in_20s="This message will disappear in 20 seconds."
 
 # System
 label_distro_boot="The %s system has been started"

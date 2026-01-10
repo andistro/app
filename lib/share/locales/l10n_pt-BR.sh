@@ -224,6 +224,8 @@ label_beta="Beta"
 label_install="Instalar"
 label_update="Atualizar"
 label_check="Verificar"
+label_finish="Finalizar"
+
 # Informativos em colchetes
 label_detected="[Detectado]"
 label_numbers_only="[SOMENTE NÚMEROS]"
@@ -268,8 +270,8 @@ label_storage_permission="Permissão de armazenamento"
 label_storage_permission_desc="Permitir que o AnDistro tenha acesso e possa gerenciar o armazenamento do celular.\n\nIsto permite que acesse fotos, vídeos, música, áudios e outros arquivos neste dispositivo."
 label_storange_permission_help_desc="Clique no botão \"Permitir acesso\" nas configurações para liberar o acesso ao armazenamento.\n\nDepois de permitir, volte ao Termux e pressione \"Já permiti\"."
 label_battery_optimization="Otimização de bateria"
-label_battery_optimization_desc="Para evitar que o sistema encerre o Termux/AnDistro em segundo plano, é recomendado retirar a otimização de bateria.\n\nNa próxima tela, procure pelo aplicativo Termux, abra-o e escolha o modo \"Sem restrições\" ou \"Não restrito\"."
-label_battery_optimization_desc_info="Esse ajuste é essencial para manter o desempenho do Termux. Se já ajustou a otimização de bateria do Termux para \"Sem restrições\" / \"Não restrito\"?\n\nTanto faz a opção escolhida, este passo será finalizado agora."
+label_battery_optimization_desc="O Termux pode ser finalizado em segundo plano devido às otimizações de bateria do Android. Para evitar isso, é recomendado desativar a otimização de bateria para o Termux.\n\nEm alguns instantes será aparecerá uma mensagem do sistema sobre parar a otimização do uso da bateria, clique em \"Permitir\" para continuar."
+label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
 label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
 label_disable_ghost_process_monitor_desc="Deseja desativar o monitor Phantom Process?\n Este é o causador da mensagem de erro '[Process completed (signal 9) - press Enter]'\n\nO AnDistro traz essa opção que permite desativar o monitor de processos fantasamas, mas não possue a opção para restaurar aos padrões de fabrica. Caso seja restaurar essas opções deverá consultar a documentação do ADB ou restaurar o celular"
 label_open_app_desc="Deseja iniar o %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
@@ -278,6 +280,7 @@ label_autoboot_andistro_disable_desc="Deseja DESATIVAR o autoboot do AnDistro?\n
 
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
+label_sleep_in_20s="Esta mensagem desaparecerá em 20 segundos."
 
 # Sistema
 label_distro_boot="O sistema %s foi iniciado"

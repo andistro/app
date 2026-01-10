@@ -1,6 +1,8 @@
 #!/bin/bash
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
+#andistro_version="main"
+andistro_version="alpha"
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
 if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
   cat << 'EOF' >> ~/.termux/termux.properties
@@ -231,9 +233,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Atualizar o AnDistro
                         3)
                             while true; do
-                                OPTIONS=(1 "$label_andistro_update_main" # Atualizar o AnDistro [estável]
-                                        2 "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
-                                        )
+
+                                if [ "$andistro_version" = "main" ]; then
+                                    OPTIONS=(m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                             a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                            )
+                                else
+                                    OPTIONS=(a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                             m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                            )
+                                fi
 
                                 CHOICE=$(dialog --no-shadow --clear \
                                                 --title "$label_andistro_update" \
@@ -254,10 +263,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             
                                 case $CHOICE in
                                     # Atualizar o AnDistro [estável]
-                                    1) andistro -u main-dialog ;;
+                                    m) andistro -u main-dialog ;;
 
                                     # Atualizar o AnDistro [alpha]
-                                    2) andistro -u alpha-dialog ;;
+                                    a) andistro -u alpha-dialog ;;
                                 esac
                             done
                         ;;
@@ -931,7 +940,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 echo $((i * 2))
                             done
                         } | dialog --no-shadow \
-                                   --gauge "$label_storage_permission_check" \
+                                   --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" \
                                    $dialog_height $dialog_width
                         clear
                         while true; do
@@ -982,17 +991,26 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     battery)
                         # Configurações de otimização de bateria
                         # 1) Explica o que fazer
-                        dialog --no-shadow --title "$label_battery_optimization" \
-                               --ok-label "$label_open_configs" \
-                               --msgbox "$label_battery_optimization_desc" $dialog_height $dialog_width
+                        # label_battery_optimization="Otimização de bateria"
+                        # label_battery_optimization_desc="O Termux pode ser finalizado em segundo plano devido às otimizações de bateria do Android. Para evitar isso, é recomendado desativar a otimização de bateria para o Termux.\n\nEm alguns instantes será aparecerá uma mensagem do sistema sobre parar a otimização do uso da bateria, clique em \"Permitir\" para continuar."
+                        # label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
+                        {
+                            for i in {1..100}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow \
+                                   --gauge "$label_battery_optimization_desc\n\n$label_sleep_in_20s" \
+                                   $dialog_height $dialog_width
+                        clear
 
                         # 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
-                        am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
+                        am start -a android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -d package:com.termux
 
                         # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
                         dialog --no-shadow --clear \
                                --title "$label_battery_optimization" \
-                               --ok-label "$label_next" \
+                               --ok-label "$label_finish" \
                                --msgbox "$label_battery_optimization_desc_info" $dialog_height $dialog_width
                     ;;
 
