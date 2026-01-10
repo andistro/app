@@ -229,13 +229,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                         esac
                                     done
                                 }
-                                dialog_config_adb_menu
+                                
                             else
                                 clear # ← Clear se cancelado
                                 break
                                 exit 0
                             fi
                             clear
+                            dialog_config_adb_menu
+                            break
                         ;;
 
                         # Verificar permissão de armazenamento
