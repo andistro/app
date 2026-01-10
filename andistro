@@ -57,12 +57,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
                      d "$label_andistro_uninstall_system" # Desinstalar o sistema
-                     u "$label_andistro_updater" # Atualizar o AnDistro
                      c "$label_settings_and_help" # Configurações e Ajuda
                     )
         else
             OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
-                     u "$label_andistro_updater" # Atualizar o AnDistro
                      c "$label_settings_and_help" # Configurações e Ajuda
                     )
         fi
@@ -105,12 +103,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             i)
                 andistro -i
             ;;
-
-            # Atualizar o AnDistro
-            u)
-                andistro -u alpha-dialog
-                andistro
-            ;;
         
             # Configurações e Ajuda
             c)
@@ -118,9 +110,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     # porque não tem o while true; do aqui?
                     OPTIONS=(1 "$label_autoboot_andistro" # Inicialização
                             2 "$label_andistro_adb_configs" # Configurações do ADB
-                            3 "$label_andistro_storage_permission_check" # Verificar permissão de armazenamento
-                            4 "$label_andistro_battery_optimization" #Retirar otimização da bateria
-                            5 "$label_andistro_install_avnc" # Instalar o AVNC
+                            3 "$label_andistro_update" # Atualizar o AnDistro
+                            4 "$label_andistro_check_permissions" # Verificar permissões
+                            5 "$label_andistro_install_apps" # Instalar aplicativos adicionais
                             6 "$label_andistro_uninstall" # Desinstalar o AnDistro
                             )
 
@@ -143,38 +135,35 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     case $CHOICE in
                         #Configurações de inicialização
                         1)
-                            dialog_config_boot_menu(){
-                                while true; do
-                                    OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
-                                            2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
-                                            )
+                            while true; do
+                                OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
+                                        2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
+                                        )
 
-                                    CHOICE=$(dialog --no-shadow --clear \
-                                                    --title "$label_autoboot_andistro" \
-                                                    --cancel-label "$label_back" \
-                                                    --menu "$label_autoboot_andistro_desc" \
-                                                    $dialog_height $dialog_width $dialog_choice_height \
-                                                    "${OPTIONS[@]}" \
-                                                    2>&1 >/dev/tty)
-                                    dialog_retorno=$?  # ← Captura código de retorno
-                                    
-                                    if [ $dialog_retorno -eq 1 ]; then
-                                        clear # ← Clear se cancelado
-                                        break
-                                        exit 0
-                                    fi
-                                    clear
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_autoboot_andistro" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_autoboot_andistro_desc" \
+                                                $dialog_height $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
                                 
-                                    case $CHOICE in
-                                        # Habilita a mensagem de inicialização do AnDistro
-                                        1) andistro --setup autoboot ;;
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Habilita a mensagem de inicialização do AnDistro
+                                    1) andistro --setup autoboot ;;
 
-                                        # Desativa a mensagem de inicialização do AnDistro
-                                        2) andistro --setup autoboot-disable ;;
-                                    esac
-                                done
-                            }
-                            dialog_config_boot_menu
+                                    # Desativa a mensagem de inicialização do AnDistro
+                                    2) andistro --setup autoboot-disable ;;
+                                esac
+                            done
                         ;;
 
                         # Configurações do ADB
@@ -239,24 +228,37 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             dialog_config_adb_menu
                         ;;
 
-                        # Verificar permissão de armazenamento
+                        # Atualizar o AnDistro
                         3)
-                            andistro --setup storage-permission
-                        ;;
+                            while true; do
+                                OPTIONS=(1 "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                        2 "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                        )
 
-                        # Retirar otimização da bateria
-                        4)
-                            andistro --setup battery
-                        ;;
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_update" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_update_desc" \
+                                                $dialog_height $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Habilita a mensagem de inicialização do AnDistro
+                                    1) andistro -u main-dialog ;;
 
-                        # Instalar o AVNC
-                        5)
-                            andistro --setup install-avnc
-                        ;;
-
-                        # Desinstalar o AnDistro
-                        6)
-                            andistro -d andistro
+                                    # Desativa a mensagem de inicialização do AnDistro
+                                    2) andistro -u alpha-dialog ;;
+                                esac
+                            done
                         ;;
                     esac
                 done

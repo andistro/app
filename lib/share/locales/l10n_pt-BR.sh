@@ -32,7 +32,7 @@ distro_desc_line_t14="    -i  instala o Debian."
 label_andistro_install_system="Instalar o sistema Debian" # Antes era "Instalar o sistema"
 label_andistro_start_system="Iniciar o sistema Debian" # Antes era "Iniciar o sistema"
 label_andistro_termianl_viewer="Ver como terminal"
-label_andistro_updater="Atualizar o AnDistro"
+
 label_andistro_uninstall_system="Desinstalar o sistema Debian" # Antes era "Desinstalar o sistema"
 label_andistro_uninstalling_complete="Desinstalação completa do AnDistro!"
 
@@ -62,6 +62,14 @@ label_andistro_adb_already_connected="O Termux já está conectado ao ADB."
 label_andistro_disable_ghost_process_monitor="Desativar o monitor de processos fantasmas"
 label_andistro_enable_dev_mode="Habilitar o modo desenvolvedor"
 label_andistro_start_command_info="Digite 'andistro' para iniciar o AnDistro.\nTecla ENTER (↲) para confirmar."
+label_andistro_update="Atualizar o AnDistro"
+label_andistro_update_desc="Atualize o AnDistro para a ultima versão disponível.\n\nEscolha a versão desejada para iniciar o processo de atualização.\n\n[estável] Versão recomendada para a maioria dos usuários.\n\n[alpha] Versão de testes com recursos experimentais."
+label_andistro_update_main="Atualizar o AnDistro [estável]"
+label_andistro_update_alpha="Atualizar o AnDistro [alpha]"
+label_andistro_update_beta="Atualizar o AnDistro [beta]"
+label_andistro_check_permissions="Verificar permissões"
+label_andistro_install_apps="Instalar aplicativos adicionais"
+
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
