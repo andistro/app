@@ -136,7 +136,7 @@ label_uninstalling_system="Desinstalando o sistema %s"
 label_uninstall_cancelled="A desinstalação do sistema %s foi cancelada"
 label_install_success="Instalação concluida!"
 label_setup_apply="Configuração aplicada!"
-label_andistro_update_version="Atualizando o AnDistro para a versão $andistro_branch_version"
+label_andistro_update_version="Atualizando o AnDistro para a versão %s"
 
 # Senhas
 label_change_password="A senha foi alterada com sucesso. "
