@@ -996,8 +996,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
                         {
                             for i in {1..100}; do
-                                sleep 0.1
-                                echo $((i * 2))
+                                sleep 0.2
+                                echo $i
                             done
                         } | dialog --no-shadow \
                                    --gauge "$label_battery_optimization_desc\n\n$label_sleep_in_20s" \
