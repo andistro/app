@@ -160,7 +160,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     
                                     if [ $dialog_retorno -eq 1 ]; then
                                         clear # ← Clear se cancelado
-                                        dialog_config_menu
+                                        break
                                         exit 0
                                     fi
                                     clear
@@ -208,7 +208,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                         if [ $dialog_retorno -eq 1 ]; then
                                             clear # ← Clear se cancelado
-                                            dialog_config_menu
+                                            break
                                         fi
 
                                         clear
@@ -232,7 +232,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 dialog_config_adb_menu
                             else
                                 clear # ← Clear se cancelado
-                                dialog_config_menu
+                                break
                                 exit 0
                             fi
                             clear
@@ -241,19 +241,19 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Verificar permissão de armazenamento
                         3)
                             andistro --setup storage-permission
-                            dialog_config_menu
+                            break
                         ;;
 
                         # Retirar otimização da bateria
                         4)
                             andistro --setup battery
-                            dialog_config_menu
+                            break
                         ;;
 
                         # Instalar o AVNC
                         5)
                             andistro --setup install-avnc
-                            dialog_config_menu
+                            break
                         ;;
 
                         # Desinstalar o AnDistro
