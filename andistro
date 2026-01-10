@@ -178,6 +178,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 esac
                             done
                         }
+                        dialog_config_boot_menu
                     ;;
 
                     # Configurações do ADB
@@ -193,46 +194,47 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         if [ $dialog_retorno -eq 0 ]; then
                             dialog_config_adb_menu(){
                                 while true; do
-                                OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
-                                        2 "$label_andistro_adb_pair" # Pareamento do ADB
-                                        3 "$label_andistro_adb_connect" # Conectar ao ADB
-                                        4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
-                                        )
+                                    OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
+                                            2 "$label_andistro_adb_pair" # Pareamento do ADB
+                                            3 "$label_andistro_adb_connect" # Conectar ao ADB
+                                            4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
+                                            )
 
-                                CHOICE=$(dialog --no-shadow --clear \
-                                            --title "$label_andistro_adb_configs" \
-                                            --cancel-label "$label_back" \
-                                            --menu "$label_choose_one_of_the_option:" \
-                                            $dialog_height $dialog_width $dialog_choice_height \
-                                            "${OPTIONS[@]}" \
-                                            2>&1 >/dev/tty)
+                                    CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_adb_configs" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_choose_one_of_the_option:" \
+                                                $dialog_height $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
 
-                                dialog_retorno=$?  # ← Captura código de retorno
+                                    dialog_retorno=$?  # ← Captura código de retorno
 
-                                if [ $dialog_retorno -eq 1 ]; then
-                                    clear # ← Clear se cancelado
-                                    dialog_config_menu
-                                    exit 0
-                                fi
+                                    if [ $dialog_retorno -eq 1 ]; then
+                                        clear # ← Clear se cancelado
+                                        dialog_config_menu
+                                        exit 0
+                                    fi
 
-                                clear
-                            
-                            
-                                case $CHOICE in
-                                    # Habilitar o modo desenvolvedor
-                                    1) andistro --setup enable-dev-mode ;;
+                                    clear
+                                
+                                
+                                    case $CHOICE in
+                                        # Habilitar o modo desenvolvedor
+                                        1) andistro --setup enable-dev-mode ;;
 
-                                    # Pareamento do ADB
-                                    2) andistro --setup adb-pair ;;
+                                        # Pareamento do ADB
+                                        2) andistro --setup adb-pair ;;
 
-                                    # Conectar ao ADB
-                                    3) andistro --setup adb-connect ;;
+                                        # Conectar ao ADB
+                                        3) andistro --setup adb-connect ;;
 
-                                    # Desativar o monitor de processos fantasmas
-                                    4) andistro --setup disable-ghost-process-monitor ;;
-                                esac
-                            done
+                                        # Desativar o monitor de processos fantasmas
+                                        4) andistro --setup disable-ghost-process-monitor ;;
+                                    esac
+                                done
                             }
+                        dialog_config_adb_menu
                         else
                             clear # ← Clear se cancelado
                             dialog_config_menu
