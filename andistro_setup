@@ -248,6 +248,13 @@ current_step=0
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
+    #32 Verifica se o jq está instalado
+    if ! dpkg -l | grep -qw jq; then
+        pkg install --no-install-recommends jq -y > /dev/null 2>&1
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
     echo
 }
 

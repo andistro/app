@@ -368,7 +368,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         # Comando para atualizar o Andistro
         -u)
             update_dialog_view(){
-                show_progress_dialog steps-multi-label 50 \
+                show_progress_dialog steps-multi-label 51 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 2' \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 4' \
@@ -400,6 +400,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'pkg install --no-install-recommends virglrenderer-android -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends angle-android -y' \
                     "${label_install_script_download}" 'pkg install --no-install-recommends vulkan-loader-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends jq -y' \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
                     "${label_install_script_download}" "git clone --depth 1 -b $branch_version https://github.com/andistro/app.git app-andistro_setup" \
                     "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
@@ -436,7 +437,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
                 }
 
-                total_steps=31  # Número total de etapas que você quer monitorar
+                total_steps=32  # Número total de etapas que você quer monitorar
                 current_step=0
 
                 echo -e "\n$label_wait"
@@ -647,6 +648,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     #31 Mover o Andistro
                     chmod +x "$PREFIX/bin/andistro"
                     chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #32 Verifica se o jq está instalado
+                    if ! dpkg -l | grep -qw jq; then
+                        pkg install --no-install-recommends jq -y > /dev/null 2>&1
+                    fi
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
