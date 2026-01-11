@@ -72,6 +72,7 @@ label_andistro_check_permissions="Verificar permissões"
 label_andistro_check_permissions_desc="Use as opções abaixo para verificar e configurar as permissões necessárias para o AnDistro funcionar corretamente."
 label_andistro_install_apps="Instalar aplicativos adicionais"
 label_andistro_install_apps_desc="Instale aplicativos adicionais para que o AnDistro possa funcionar da maneira esperada.\n\nEscolha os aplicativos desejados e prossiga com a instalação."
+label_andistro_help_desc="Caso clique em <Prosseguir>, será aberto a página de documentação do AnDistro, com instruções em texto de uso e resolução de problemas comuns relatados pela comunidade."
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."
@@ -274,7 +275,8 @@ label_storange_permission_help_desc="Caso já tenha autorizado, clique em < Já 
 label_battery_optimization="Otimização de bateria"
 label_battery_optimization_desc="O Termux pode ser finalizado em segundo plano devido às otimizações de bateria do Android. Para evitar isso, é recomendado desativar a otimização de bateria para o Termux.\n\nEm alguns instantes será aparecerá uma mensagem do sistema sobre parar a otimização do uso da bateria, clique em \"Permitir\" para continuar."
 label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
-label_avnc_desc="Já tem o AVNC instalado?\nCaso não tenha, clique no botão <Instalar> e após iniciar a instalação, retorne aqui. Caso já tenha instalado ou não queira instalar no seu celular, clique em <Ignorar> \n\nO aplicativo não é obrigatório, mas é o recomendado. \nVocê pode usar qualquer outro app de visualização VNC."
+label_avnc_desc="O AVNC não é obrigatório para o funcionamento do AnDistro, mas é o aplicativo sugerido para uso devido as suas funcionalidades. Caso não esteja instalado no seu celular, clique no botão <Instalar> para que o aplicativo seja baixado e logo após instale o aplicativo.\nCaso não queira instalar ou ja tenha instalado, clique em <Ignorar>, e a instalação do aplicativo será ignorada.\n\nVocê poderá baixar e instalar a qualquer momento pelas configurações do AnDistro."
+label_termux_api_desc="O Termux:API é essencial para o funcionamento do AnDistro e do Debian nessas configurações iniciais. Caso não esteja instalado no seu celular, clique no botão <Instalar> para que o aplicativo seja baixado e logo após instale o aplicativo.\nCaso não queira instalar ou ja tenha instalado, clique em <Ignorar>, e a instalação do aplicativo será ignorada.\n\nVocê poderá baixar e instalar a qualquer momento pelas configurações do AnDistro."
 label_disable_ghost_process_monitor_desc="Deseja desativar o monitor Phantom Process?\n Este é o causador da mensagem de erro '[Process completed (signal 9) - press Enter]'\n\nO AnDistro traz essa opção que permite desativar o monitor de processos fantasamas, mas não possue a opção para restaurar aos padrões de fabrica. Caso seja restaurar essas opções deverá consultar a documentação do ADB ou restaurar o celular"
 label_open_app_desc="Deseja iniar o %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_autoboot_andistro_desc="Deseja receber um aviso para iniciar o AnDistro toda vez que abrir o Termux?\n O AnDistro, não será iniciado automaticamente, será necessário confirmar com o enter (↲) após aparecer a mensagem."
@@ -282,6 +284,7 @@ label_autoboot_andistro_disable_desc="Deseja DESATIVAR o autoboot do AnDistro?\n
 label_install_apps_permission="Permitir que o Termux instale apps"
 label_install_apps_permission_desc="Na próxima tela, certifique-se de autorizar a permissão para instalar apps. Após permitir/habilitar, retorne ao Termux."
 label_install_apps_permission_desc_finish="Caso já tenha autorizado, clique em < Já permitir > e essa configuração será finalizada, caso contrário, clique em < Não consegui > para abrir a tela de permissão e você habilitar a opção para permitir que o Termux instale aplicativos."
+
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 label_sleep_in_20s="Esta mensagem desaparecerá em 20 segundos."

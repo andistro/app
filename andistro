@@ -18,6 +18,9 @@ fi
 
 sed -i '/allow-external-apps/s/^# *//' ~/.termux/termux.properties
 
+sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+
+
 termux-reload-settings
 
 fi
@@ -29,21 +32,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     # Limpa logs antigos automaticamente (silencioso)
     cleanup_old_logs
 
-    # Configurações do Termux
-    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-        # Descomenta a linha removendo o '#' no começo
-        sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-        termux-reload-settings
-    fi
-    # Adiciona a configuração de teclas extras se não estiver presente
-    # if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-    #     # Aplica os sed
-    #     sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-    #     sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
 
-    #     # Recarrega Termux settings
-    #     termux-reload-settings
-    # fi
     # Diretório do Andistro
     andistro_files="$PREFIX/var/lib/andistro"
 
@@ -65,11 +54,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
                      d "$label_andistro_uninstall_system" # Desinstalar o sistema
-                     c "$label_settings_and_help" # Configurações e Ajuda
+                     c "$label_settings" # Configurações
+                     h "$label_help" # Ajuda
                     )
         else
             OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
-                     c "$label_settings_and_help" # Configurações e Ajuda
+                     c "$label_settings" # Configurações
+                     h "$label_help" # Ajuda
                     )
         fi
 
@@ -118,7 +109,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 andistro -i
             ;;
         
-            # Configurações e Ajuda
+            # Configurações
             c)
                 while true; do
                     # porque não tem o while true; do aqui?
@@ -363,6 +354,27 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     esac
                 done
             ;;
+
+            h)
+
+                dialog --no-shadow --title "$label_help" \
+                       --backtitle "$label_help" \
+                       --yes-label "$label_proceed" \
+                       --no-label "$label_back" \
+                       --yesno "$label_andistro_help_desc" \
+                       $dialog_height $dialog_width
+
+                dialog_retorno=$?
+                clear
+                if [ $dialog_retorno -eq 0 ]; then
+                    am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"
+                else
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
+                fi
+            ;;
+
         esac
         exit 0
     fi

@@ -283,17 +283,60 @@ extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
 EOF
 fi
 
+sed -i '/allow-external-apps/s/^# *//' ~/.termux/termux.properties
+
+termux-reload-settings
 
 andistro --setup storage-permission
 
 andistro --setup battery
 
-#andistro --setup install-avnc
+andistro --setup install-apps
 
-#andistro --setup phantom-procs
+termux-toast "AnDistro: Check Termux:API..."
+status=$?
+if [ $status -eq 0 ]; then
+    # termux:API está instalado
+else
+    dialog --no-shadow --title "$label_install Termux:API" \
+        --backtitle "$label_warning" \
+        --yes-label "$label_install" \
+        --no-label "$label_ignore" \
+        --yesno "$label_termux_api_desc" \
+        $dialog_height $dialog_width
+
+    dialog_retorno=$?
+
+    clear
+
+    if [ $dialog_retorno -eq 0 ]; then
+        andistro --setup install-termux-api
+    else
+        continue
+    fi
+fi
+
+dialog --no-shadow --title "$label_install AVNC" \
+    --backtitle "$label_warning" \
+    --yes-label "$label_install" \
+    --no-label "$label_ignore" \
+    --yesno "$label_avnc_desc" \
+    $dialog_height $dialog_width
+
+dialog_retorno=$?
+
+clear
+
+if [ $dialog_retorno -eq 0 ]; then
+    andistro --setup install-avnc
+else
+    continue
+fi
+
+clear
 
 andistro --setup autoboot
 
-clear
+termux-reload-settings
 
 andistro 

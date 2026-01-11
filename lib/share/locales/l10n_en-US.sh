@@ -29,7 +29,6 @@ distro_desc_line_t14=" -i installs Debian."
 label_andistro_install_system="Install the Debian system"       # Instalar o sistema Debian
 label_andistro_start_system="Start the Debian system"            # Iniciar o sistema Debian
 label_andistro_termianl_viewer="View as terminal"
-label_andistro_updater="Update AnDistro"
 label_andistro_uninstall_system="Uninstall the Debian system"    # Desinstalar o sistema Debian
 label_andistro_uninstalling_complete="Complete uninstallation of AnDistro!"
 
@@ -69,6 +68,8 @@ label_andistro_check_permissions="Check permissions"
 label_andistro_check_permissions_desc="Use the options below to check and configure the permissions necessary for AnDistro to work correctly."
 label_andistro_install_apps="Install additional applications"
 label_andistro_install_apps_desc="Install additional applications so that AnDistro can work as expected.\n\nChoose the desired applications and proceed with the installation."
+label_andistro_install_termux_api="Install Termux:API"
+label_andistro_help_desc="If you click <Proceed>, the AnDistro documentation page will be opened, with text instructions for use and resolution of common problems reported by the community."
 
 ## AndDistro distros exclusive
 distro_desc_line_d1=" --boot command to start some configuration."
@@ -133,6 +134,7 @@ label_notify_adb_pair_code_desc="6-digit code in highlight, next to or below the
 label_notify_adb_pair_port_code_title="Enter the port code"
 label_notify_adb_pair_port_code_desc="The code that appears right after $wlan_ip_localhost:_____"
 label_termux_api_not_installed="Termux:API is not installed. Install it so that some configurations in AnDistro can be performed."
+label_termux_api_desc="Termux:API is essential for AnDistro and Debian to work in these initial configurations. If it is not installed on your phone, click the <Install> button to download the app and then install it.\nIf you do not want to install it or have already installed it, click <Ignore>, and the app installation will be ignored.\n\nYou can download and install it at any time through AnDistro settings."
 
 ## Timezone
 label_system_timezone="Timezone"
@@ -272,7 +274,7 @@ label_storange_permission_help_desc="If you have already authorized, click <Alre
 label_battery_optimization="Battery optimization"
 label_battery_optimization_desc="Termux may be terminated in the background due to Android's battery optimizations. To prevent this, it is recommended to disable battery optimization for Termux.\n\nIn a few moments, a system message will appear about stopping battery usage optimization, click \"Allow\" to continue."
 label_battery_optimization_desc_info="If the message did not appear, it means it is already disabled. If you clicked deny, you can return here again through AnDistro settings.\n\nClick <Finish> to finalize this configuration."
-label_avnc_desc="Do you already have AVNC installed?\nIf not, click the button and after starting the installation, return here. If you already have it installed or do not want to install it on your phone, click \n\nThe application is not mandatory, but it is recommended.\nYou can use any other VNC viewing app."
+label_avnc_desc="AVNC is not mandatory for AnDistro to work, but it is the suggested app for use due to its functionalities. If it is not installed on your phone, click the <Install> button to download the app and then install it.\nIf you do not want to install it or have already installed it, click <Ignore>, and the app installation will be ignored.\n\nYou can download and install it at any time through AnDistro settings."
 label_disable_ghost_process_monitor_desc="Do you want to disable the Phantom Process monitor?\n This is the cause of the error message '[Process completed (signal 9) - press Enter]'\n\nAnDistro brings this option that allows disabling the ghost process monitor, but it does not have the option to restore factory defaults. If you want to restore these options you will need to consult the ADB documentation or restore the phone"
 label_open_app_desc="Do you want to start %s?\nIf yes, press ENTER (↲).\nOtherwise, press ESC or CTRL+C to ignore."
 label_autoboot_andistro_desc="Do you want to receive a warning to start AnDistro every time you open Termux?\n AnDistro will not start automatically; you will need to confirm with Enter (↲) after the message appears."
@@ -307,7 +309,7 @@ label_resolution_remove_default="Do you want to remove the default resolution?"
 label_resolution_remove_default_desc="You are about to remove the saved default resolution.\n\nThis will cause the resolution selection menu to appear again the next time you start VNC.\n\nDo you want to continue?"
 label_resolution_remove_default_sucess="The resolution is no longer the default."
 label_resolution_option_default="Default resolution"
-label_resolution_option_default_desc="Confirm to start with the resolution set as default. \n\nPress '' to confirm or press Enter (↲). \nPress '' to choose another resolution."
+label_resolution_option_default_desc="Confirm to start with the resolution set as default. \n\nPress '<Yes>' to confirm or press Enter (↲). \nPress '<No>' to choose another resolution."
 label_resolution_choose_options="Choose some options"
 label_resolution_choose_default="You chose to use the default resolution"
 label_resolution_choose_custom="You chose to set the resolution manually"
