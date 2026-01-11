@@ -49,6 +49,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         mkdir -p "/sdcard/termux/andistro/manager"
         mkdir -p "/sdcard/termux/andistro/logs"
         mkdir -p "/sdcard/termux/andistro/backups"
+        mkdir -p "/sdcard/termux/andistro/apps"
         touch "/sdcard/termux/andistro/logs/.nomedia"
     fi
 
@@ -1090,7 +1091,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         app_packagename="com.termux.api"
                         app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
                         app_basename=$(basename $app_stable_link)
-                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        termux-open "/sdcard/termux/andistro/apps/$app_basename"
                     ;;
 
                     # Baixar o avnc pelo F-Droid
@@ -1099,7 +1101,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         app_packagename="com.gaurav.avnc"
                         app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
                         app_basename=$(basename $app_stable_link)
-                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        termux-open "/sdcard/termux/andistro/apps/$app_basename"
                     ;;
 
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema

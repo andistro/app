@@ -288,9 +288,9 @@ andistro --setup storage-permission
 
 andistro --setup battery
 
-andistro --setup install-avnc
+#andistro --setup install-avnc
 
-andistro --setup phantom-procs
+#andistro --setup phantom-procs
 
 andistro --setup autoboot
 
