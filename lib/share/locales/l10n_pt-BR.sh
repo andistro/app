@@ -227,6 +227,7 @@ label_install="Instalar"
 label_update="Atualizar"
 label_check="Verificar"
 label_finish="Finalizar"
+label_restart="Reiniciar"
 
 # Informativos em colchetes
 label_detected="[Detectado]"
