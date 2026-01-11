@@ -318,7 +318,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Instalar aplicativos adicionais
                         5)
                             while true; do
-                                OPTIONS=(1 "$label_andistro_install_avnc $label_optional" # Instalar o AVNC [opcional]
+                                OPTIONS=(1 "$label_andistro_install_termux_api $label_required" # Instalar o Termux:API [obrigatório]
+                                         2 "$label_andistro_install_avnc $label_optional" # Instalar o AVNC [opcional]
                                         )
 
                                 CHOICE=$(dialog --no-shadow --clear \
@@ -339,8 +340,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 clear
                             
                                 case $CHOICE in
+                                    # Instalar o Termux:API
+                                    1) andistro --setup install-termux-api ;;
+
                                     # Instalar o AVNC
-                                    1) andistro --setup install-avnc ;;
+                                    2) andistro --setup install-avnc ;;
 
                                 esac
                             done
@@ -1073,10 +1077,19 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     ;;
 
                     install-termux-api)
-                       app_stable_link=$(get_stable_f_droid_download_link "com.termux.api")
-                       app_name="Termux:API"
-                       
-                       show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        app_name="Termux:API"
+                        app_packagename="com.termux.api"
+                        app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
+                        app_basename=$(basename $app_stable_link)
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                    ;;
+
+                    install-avnc)
+                        app_name="AVNC"
+                        app_packagename="com.gaurav.avnc"
+                        app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
+                        app_basename=$(basename $app_stable_link)
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
                     ;;
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
@@ -1106,26 +1119,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     open-dev-mode)
                         am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
-                    ;;
-
-                    install-avnc)
-                        dialog --no-shadow --title "$label_install AVNC" \
-                              --backtitle "$label_warning" \
-                              --yes-label "$label_install" \
-                              --no-label "$label_ignore" \
-                              --yesno "$label_avnc_desc" $dialog_height $dialog_width
-                        
-                        dialog_retorno=$?
-
-                        if [ $dialog_retorno -eq 0 ]; then
-                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
-                        else
-                            clear # ← Clear se cancelado
-                            andistro
-                            exit 0
-                        fi
-
-                        exit 0
                     ;;
 
                     autoboot)
