@@ -29,6 +29,9 @@ distro_desc_line_t14=" -i installs Debian."
 label_andistro_install_system="Install the Debian system"       # Instalar o sistema Debian
 label_andistro_start_system="Start the Debian system"            # Iniciar o sistema Debian
 label_andistro_termianl_viewer="View as terminal"
+label_andistro_start_vnc="Start the VNC"
+label_andistro_finish_vnc="Finish the VNC"
+label_andistro_change_vnc_password="Change VNC Password"
 label_andistro_uninstall_system="Uninstall the Debian system"    # Desinstalar o sistema Debian
 label_andistro_uninstalling_complete="Complete uninstallation of AnDistro!"
 
@@ -77,15 +80,13 @@ distro_desc_line_d2="Subcommands of --boot"
 distro_desc_line_d3=" vnc to start the VNC server"
 distro_desc_line_d4="Subcommands of --boot vnc"
 distro_desc_line_d5=" --display defines the screen resolution to be displayed"
-distro_desc_line_d6=" --scale defines the screen scale (1 or 2)"
 distro_desc_line_d7=" --port defines the port used by the server."
-distro_desc_line_d8="The --scale command only works on xfce4, if you use it on lxde, the command will be ignored"
 distro_desc_line_d9="The --display and --port commands are not mandatory and if you do not use them the server will start at the default resolution and port."
 distro_desc_line_d10="Example of a command that allows starting the vnc server"
 distro_desc_line_d11="Simple mode"
 distro_desc_line_d12=" andistro --boot vnc"
 distro_desc_line_d13="Full mode"
-distro_desc_line_d14=" andistro --boot vnc --display 1920x1080 --port 1 --scale 1"
+distro_desc_line_d14=" andistro --boot vnc --display 1920x1080 --port 1"
 distro_desc_line_d15="Usage: andistro --termux-cmd \"TERMUX_COMMAND\""
 
 #//////////////////////////////////////////////////////////////////////////////////////////////////////
