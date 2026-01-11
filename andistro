@@ -281,7 +281,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         4)
                             while true; do
                                 OPTIONS=(1 "$label_andistro_storage_permission_check" # Verificar permissão de armazenamento
-                                        2 "$label_andistro_battery_optimization" # Remover otimização de bateria
+                                         2 "$label_andistro_battery_optimization" # Remover otimização de bateria
+                                         3 "$label_install_apps_permission" # Permitir que o Termux instale apps
                                         )
 
                                 CHOICE=$(dialog --no-shadow --clear \
@@ -307,6 +308,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                     # Remover otimização de bateria
                                     2) andistro --setup battery ;;
+
+                                    # Permitir que o Termux instale apps
+                                    3) andistro --setup install-apps;;
                                 esac
                             done
                         ;;
@@ -1050,7 +1054,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         dialog_retorno=$?
 
-                        if [ $dialog_retorno -eq 1 ]; then
+                        if [ $dialog_retorno -eq 0 ]; then
+                            continue
+                        else
                             am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
 
                             # Botão "Não consegui": ajuda + intents
