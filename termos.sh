@@ -51,18 +51,18 @@ if [ "$system_lang_code" = "en-US" ]; then
     label_accept="Accept"
     label_reject="Reject"
     label_u_accepted="User accepted the terms. Continuing..."
-    label_u_rejected="You have rejected the terms. The file will be deleted. To use again, download it again."
+    label_u_rejected="You have rejected the terms. The AnDistro will be deleted. To use again, download it again."
 elif [ "$system_lang_code" = "pt-BR" ]; then
     label_term="Termos de Uso"
     label_accept="Aceitar"
     label_reject="Negar"
     label_u_accepted="Usuário aceitou os termos. Continuando..."
-    label_u_rejected="Você recusou os termos. O arquivo será excluído. Caso queira utilizar novamente, será necessário baixá-lo outra vez."
+    label_u_rejected="Você recusou os termos. O AnDistro será excluído. Caso queira utilizar novamente, será necessário baixá-lo outra vez."
 fi
 
 
 dialog --no-shadow --title "$label_term" --yes-label "$label_accept" --no-label "$label_reject" \
-       --yesno "$(cat $TERMO)" 20 100
+       --yesno "$(cat $TERMO)" 40 100
 
 resposta=$?
 
@@ -74,8 +74,8 @@ if [ $resposta -eq 0 ]; then
     # aqui é onde você coloca o que já seria feito
 elif [ $resposta -eq 1 ]; then
     # Usuário recusou
-    dialog --no-shadow --msgbox "$label_u_rejected" 20 100
-    andistro -d total
+    dialog --no-shadow --msgbox "$label_u_rejected" 40 100
+    andistro -d andistro
 fi
 
 clear

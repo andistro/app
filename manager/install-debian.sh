@@ -32,14 +32,14 @@ if [ "$first" != 1 ];then
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --no-shadow --gauge "$label_distro_download_start" 10 60
-	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox 10 60
+	} | dialog --no-shadow --gauge "$label_distro_download_start" $dialog_height $dialog_width
+	debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/  2>&1 | dialog --no-shadow --title "${label_distro_download}" --progressbox $dialog_height $dialog_width
 	{
 		for i in {1..50}; do
 			sleep 0.1
 			echo $((i * 2))
 		done
-	} | dialog --no-shadow --gauge "$label_distro_download_finish" 10 60
+	} | dialog --no-shadow --gauge "$label_distro_download_finish" $dialog_height $dialog_width
 fi
 
 # Configurações pós-instalação

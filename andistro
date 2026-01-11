@@ -1,33 +1,37 @@
 #!/bin/bash
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
+#andistro_version="main"
+andistro_version="main"
+if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
+if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
+  cat << 'EOF' >> ~/.termux/termux.properties
 
-HEIGHT=0
-WIDTH=100
-CHOICE_HEIGHT=10
-export PORT=1
+#############################################################################
+# Andistro Extra keys
+#############################################################################
+extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
+              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN'], \
+              ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
+EOF
+fi
 
+sed -i '/allow-external-apps/s/^# *//' ~/.termux/termux.properties
+
+sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
+
+
+termux-reload-settings
+
+fi
 #================================================================================================
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
     # Carrega variáveis globais
     source "$PREFIX/var/lib/andistro/lib/share/global"
+    # Limpa logs antigos automaticamente (silencioso)
+    cleanup_old_logs
 
-    # Configurações do Termux
-    if grep -q "^# hide-soft-keyboard-on-startup = true"  ~/.termux/termux.properties; then
-        # Descomenta a linha removendo o '#' no começo
-        sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup = true/"  ~/.termux/termux.properties
-        termux-reload-settings
-    fi
-    # Adiciona a configuração de teclas extras se não estiver presente
-    if ! grep -Fq "extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]" ~/.termux/termux.properties; then
-        # Aplica os sed
-        sed -i "s|^# *extra-keys = \[\['ESC','/','-','HOME','UP','END','PGUP'\], \\\\|extra-keys = [['DRAWER','PASTE'],['ESC','/','-','HOME','UP','END','PGUP','KEYBOARD'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','ENTER']]|" ~/.termux/termux.properties
-        sed -i "s|^#[[:space:]]*\['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]||" ~/.termux/termux.properties
-
-        # Recarrega Termux settings
-        termux-reload-settings
-    fi
 
     # Diretório do Andistro
     andistro_files="$PREFIX/var/lib/andistro"
@@ -38,39 +42,60 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         mkdir -p "/sdcard/termux/andistro"
         mkdir -p "/sdcard/termux/andistro/manager"
         mkdir -p "/sdcard/termux/andistro/logs"
+        mkdir -p "/sdcard/termux/andistro/backups"
+        mkdir -p "/sdcard/termux/andistro/apps"
         touch "/sdcard/termux/andistro/logs/.nomedia"
     fi
 
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
+
         if ls "$PREFIX/var/lib/andistro/manager/start-"* 1>/dev/null 2>&1; then
             OPTIONS=(s "$label_andistro_start_system" # Iniciar o sistema
-                    d "$label_andistro_uninstall_system" # Desinstalar o sistema
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    c "$label_settings_and_help" # Configurações e Ajuda
+                     d "$label_andistro_uninstall_system" # Desinstalar o sistema
+                     c "$label_settings" # Configurações
+                     h "$label_help" # Ajuda
                     )
         else
             OPTIONS=(i "$label_andistro_install_system" # Instalar o sistema
-                    u "$label_andistro_updater" # Atualizar o AnDistro
-                    c "$label_settings_and_help" # Configurações e Ajuda
+                     c "$label_settings" # Configurações
+                     h "$label_help" # Ajuda
                     )
+        fi
+
+        if [ "$andistro_version" = "main" ]; then
+            an_title_version=""
+        elif [ "$andistro_version" = "alpha" ]; then
+            an_title_version=" [alpha]"
         fi
 
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
-                        --title "AnDistro" \
+                        --title "AnDistro$an_title_version" \
+                        --cancel-label "$label_close" \
                         --menu "$label_choose_one_of_the_option:" \
-                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                        $dialog_height $dialog_width $dialog_choice_height \
                         "${OPTIONS[@]}" \
                         2>&1 >/dev/tty)
+
+        dialog_retorno=$?  # ← Captura código de retorno
+
+        if [ $dialog_retorno -eq 1 ]; then # Se o usuário cancelar
+            clear  # ← Clear se cancelado
+            cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
+            echo -e "\n$label_andistro_start_command_info"
+            exit 0
+        fi
+
         clear
 
         # Opções do menu
         case $CHOICE in
             # Iniciar o sistema
-            s)
+            s) 
                andistro -s
+               andistro
             ;;
 
             # Desinstalar o sistema
@@ -83,58 +108,278 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             i)
                 andistro -i
             ;;
-
-            # Atualizar o AnDistro
-            u)
-                andistro -u dialog
-                andistro
-            ;;
         
-            # Configurações e Ajuda
+            # Configurações
             c)
+                while true; do
+                    # porque não tem o while true; do aqui?
+                    OPTIONS=(1 "$label_autoboot_andistro" # Inicialização / autoboot
+                            2 "$label_andistro_adb_configs" # Configurações do ADB
+                            3 "$label_andistro_update" # Atualizar o AnDistro
+                            4 "$label_andistro_check_permissions" # Verificar permissões
+                            5 "$label_andistro_install_apps" # Instalar aplicativos adicionais
+                            6 "$label_andistro_uninstall" # Desinstalar o AnDistro
+                            )
 
-                OPTIONS=(1 "$label_andistro_battery_optimization" 
-                    2 "$label_andistro_signal9_error" 
-                    3 "$label_andistro_install_avnc"
-                    4 "$label_andistro_storage_permission_check"
-                    5 "$label_back"
-                    )
+                    CHOICE=$(dialog --no-shadow --clear \
+                                    --title "AnDistro" \
+                                    --cancel-label "$label_back" \
+                                    --menu "$label_choose_one_of_the_option:" \
+                                    $dialog_height $dialog_width $dialog_choice_height \
+                                    "${OPTIONS[@]}" \
+                                    2>&1 >/dev/tty)
 
-                CHOICE=$(dialog --no-shadow --clear \
-                        --title "AnDistro" \
-                        --menu "$label_choose_one_of_the_option:" \
-                        $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                        "${OPTIONS[@]}" \
-                        2>&1 >/dev/tty)
-                clear
-                case $CHOICE in
+                    dialog_retorno=$?  # ← Captura código de retorno
+                    if [ $dialog_retorno -eq 1 ]; then
+                        clear # ← Clear se cancelado
+                        andistro
+                        exit 0
+                    fi
+                    clear
 
-                1)
-                    andistro --setup battery
-                    andistro
-                ;;
+                    case $CHOICE in
+                        #Configurações de inicialização
+                        1)
+                            while true; do
+                                OPTIONS=(1 "$label_enable_autoboot_andistro" # Habilitar a mensagem de inicialização do AnDistro
+                                        2 "$label_disable_autoboot_andistro" # Desativar a mensagem de inicialização do AnDistro
+                                        )
 
-                2)
-                    andistro --setup phantom-procs
-                    andistro
-                ;;
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_autoboot_andistro" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_autoboot_andistro_desc" \
+                                                $dialog_height $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Habilita a mensagem de inicialização do AnDistro
+                                    1) andistro --setup autoboot ;;
 
-                3)
-                    andistro --setup avnc
-                    andistro
-                ;;
+                                    # Desativa a mensagem de inicialização do AnDistro
+                                    2) andistro --setup autoboot-disable ;;
+                                esac
+                            done
+                        ;;
 
-                4)
-                    andistro --setup storage-permission
-                    andistro
-                ;;
-                5)
-                    andistro
-                ;;
-                esac
+                        # Configurações do ADB
+                        2)
+                            dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_confirm" \
+                                --no-label "$label_close" \
+                                --yesno "$label_andistro_adb_configs_desc" \
+                                25 $dialog_width
+                            dialog_retorno=$?
+
+                            if [ $dialog_retorno -eq 0 ]; then
+                                dialog_config_adb_menu(){
+                                    while true; do
+                                        OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
+                                                2 "$label_andistro_adb_pair" # Pareamento do ADB
+                                                3 "$label_andistro_adb_connect" # Conectar ao ADB
+                                                4 "$label_andistro_disable_ghost_process_monitor" # Desativar o monitor de processos fantasmas
+                                                )
+
+                                        CHOICE=$(dialog --no-shadow --clear \
+                                                    --title "$label_andistro_adb_configs" \
+                                                    --cancel-label "$label_back" \
+                                                    --menu "$label_choose_one_of_the_option:" \
+                                                    $dialog_height $dialog_width $dialog_choice_height \
+                                                    "${OPTIONS[@]}" \
+                                                    2>&1 >/dev/tty)
+
+                                        dialog_retorno=$?  # ← Captura código de retorno
+
+                                        if [ $dialog_retorno -eq 1 ]; then
+                                            clear # ← Clear se cancelado
+                                            break
+                                        fi
+
+                                        clear
+                                    
+                                    
+                                        case $CHOICE in
+                                            # Habilitar o modo desenvolvedor
+                                            1) andistro --setup enable-dev-mode ;;
+
+                                            # Pareamento do ADB
+                                            2) andistro --setup adb-pair ;;
+
+                                            # Conectar ao ADB
+                                            3) andistro --setup adb-connect ;;
+
+                                            # Desativar o monitor de processos fantasmas
+                                            4) andistro --setup disable-ghost-process-monitor ;;
+                                        esac
+                                    done
+                                }
+                                
+                            else
+                                clear # ← Clear se cancelado
+                                break
+                                exit 0
+                            fi
+                            clear
+                            dialog_config_adb_menu
+                        ;;
+
+                        # Atualizar o AnDistro
+                        3)
+                            while true; do
+
+                                if [ "$andistro_version" = "main" ]; then
+                                    OPTIONS=(m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                             a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                            )
+                                else
+                                    OPTIONS=(a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                             m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                            )
+                                fi
+
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_update" \
+                                                --ok-label "$label_update" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_update_desc" \
+                                                20 $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Atualizar o AnDistro [estável]
+                                    m) andistro -u main-dialog ;;
+
+                                    # Atualizar o AnDistro [alpha]
+                                    a) andistro -u alpha-dialog ;;
+                                esac
+                            done
+                        ;;
+
+                        # Verificar permissões
+                        4)
+                            while true; do
+                                OPTIONS=(1 "$label_andistro_storage_permission_check" # Verificar permissão de armazenamento
+                                         2 "$label_andistro_battery_optimization" # Remover otimização de bateria
+                                         3 "$label_install_apps_permission" # Permitir que o Termux instale apps
+                                        )
+
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_check_permissions" \
+                                                --ok-label "$label_check" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_check_permissions_desc" \
+                                                20 $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Verificar permissão de armazenamento
+                                    1) andistro --setup storage-permission ;;
+
+                                    # Remover otimização de bateria
+                                    2) andistro --setup battery ;;
+
+                                    # Permitir que o Termux instale apps
+                                    3) andistro --setup install-apps;;
+                                esac
+                            done
+                        ;;
+
+                        # Instalar aplicativos adicionais
+                        5)
+                            while true; do
+                                OPTIONS=(1 "$label_andistro_install_termux_api $label_required" # Instalar o Termux:API [obrigatório]
+                                         2 "$label_andistro_install_avnc $label_optional" # Instalar o AVNC [opcional]
+                                        )
+
+                                CHOICE=$(dialog --no-shadow --clear \
+                                                --title "$label_andistro_check_permissions" \
+                                                --ok-label "$label_install" \
+                                                --cancel-label "$label_back" \
+                                                --menu "$label_andistro_install_apps_desc" \
+                                                20 $dialog_width $dialog_choice_height \
+                                                "${OPTIONS[@]}" \
+                                                2>&1 >/dev/tty)
+                                dialog_retorno=$?  # ← Captura código de retorno
+                                
+                                if [ $dialog_retorno -eq 1 ]; then
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                                clear
+                            
+                                case $CHOICE in
+                                    # Instalar o Termux:API
+                                    1) andistro --setup install-termux-api ;;
+
+                                    # Instalar o AVNC
+                                    2) andistro --setup install-avnc ;;
+
+                                esac
+                            done
+                        ;;
+
+                        # Instalar aplicativos adicionais
+                        6)
+                            andistro -d andistro
+                        ;;
+                    esac
+                done
             ;;
+
+            h)
+
+                dialog --no-shadow --title "$label_help" \
+                       --backtitle "$label_help" \
+                       --yes-label "$label_proceed" \
+                       --no-label "$label_back" \
+                       --yesno "$label_andistro_help_desc" \
+                       $dialog_height $dialog_width
+
+                dialog_retorno=$?
+                clear
+                if [ $dialog_retorno -eq 0 ]; then
+                    am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
+                else
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
+                fi
+            ;;
+
         esac
-    exit 0
+        exit 0
     fi
 
 #>>>#=============================================================================================
@@ -143,8 +388,61 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     case "$1" in
         # Comando para atualizar o Andistro
         -u)
-            if [ -z "$2" ]; then
-                echo -e "\n$label_wait"
+            update_dialog_view(){
+                show_progress_dialog steps-multi-label 51 \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 2' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 4' \
+                    "${label_progress}\n${label_andistro_update_version}" 'sleep 6' \
+                    "${label_find_update}" 'pkg update' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y' \
+                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y' \
+                    "${label_upgrade}" 'pkg upgrade -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-exec -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends proot -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends x11-repo -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-x11-nightly -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends pulseaudio -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends wget -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends dialog -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends tar -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends curl -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends unzip -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends xz-utils -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends debootstrap -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends dbus -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends pv -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends git -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends inxi -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-api -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends android-tools -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends virglrenderer-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends angle-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends vulkan-loader-android -y' \
+                    "${label_install_script_download}" 'pkg install --no-install-recommends jq -y' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
+                    "${label_install_script_download}" "git clone --depth 1 -b $branch_version https://github.com/andistro/app.git app-andistro_setup" \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/andistro_setup"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/README.md"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.editconfig"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitignore"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitattributes"' \
+                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"' \
+                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"' \
+                    "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
+                    "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
+                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
+                    "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
+                    "${label_install_script_download}" 'termux-setup-storage' \
+                    "${label_update_apply}" 'sleep 1' \
+                    "${label_update_apply}" 'sleep 2' \
+                    "${label_update_apply}" 'sleep 4' \
+                    "${label_update_apply}" 'sleep 10'
+            }
+            updatel_terminal_view(){
                 update_progress() {
                     current_step=$1
                     total_steps=$2
@@ -160,9 +458,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent" > /dev/tty
                 }
 
-                total_steps=26  # Número total de etapas que você quer monitorar
+                total_steps=32  # Número total de etapas que você quer monitorar
                 current_step=0
 
+                echo -e "\n$label_wait"
+                echo -e "\n$label_andistro_update_version"
                 {
                     #1 Atualiza os repositórios
                     sleep 1
@@ -313,77 +613,106 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #24 Todo o pacote de instalação
-                    git clone --depth 1 https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
+                    #24 Verifica se o termux-api está instalado
+                    if ! dpkg -l | grep -qw termux-api; then
+                        pkg install --no-install-recommends termux-api -y > /dev/null 2>&1 # necessita do app Termux:API instalado no dispositivo
+                    fi
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #25 Extrai o pacote de instalação
+                    #25 Verifica se o android-tools está instalado
+                    if ! dpkg -l | grep -qw android-tools; then
+                        pkg install --no-install-recommends android-tools -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #26 Verifica se o virglrenderer-android está instalado
+                    if ! dpkg -l | grep -qw virglrenderer-android; then
+                        pkg install --no-install-recommends virglrenderer-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #27 Verifica se o angle-android está instalado
+                    if ! dpkg -l | grep -qw angle-android; then
+                        pkg install --no-install-recommends angle-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #28 Verifica se o vulkan-loader-android está instalado
+                    if ! dpkg -l | grep -qw vulkan-loader-android; then
+                        pkg install --no-install-recommends vulkan-loader-android -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #29 Todo o pacote de instalação
+                    git clone --depth 1 -b $branch_version https://github.com/andistro/app.git app-andistro_setup  > /dev/null 2>&1
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+                    #30 Extrai o pacote de instalação
                     rm -rf "$HOME/app-andistro_setup/.git"
                     rm -rf "$HOME/app-andistro_setup/andistro_setup"
                     rm -rf "$HOME/app-andistro_setup/README.md"
                     rm -rf "$HOME/app-andistro_setup/.editconfig"
                     rm -rf "$HOME/app-andistro_setup/.gitignore"
                     rm -rf "$HOME/app-andistro_setup/.gitattributes"
-                    rm -rf "$HOME/app-andistro_setup/termos.sh"
                     mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"
+                    mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"
                     rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-                    #26 Mover o Andistro
+                    #31 Mover o Andistro
                     chmod +x "$PREFIX/bin/andistro"
                     chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
+                    #32 Verifica se o jq está instalado
+                    if ! dpkg -l | grep -qw jq; then
+                        pkg install --no-install-recommends jq -y > /dev/null 2>&1
+                    fi
+                    ((current_step++))
+                    update_progress "$current_step" "$total_steps"; sleep 0.1
+
                     echo
                 }
-            elif [ "$2" == "dialog" ]; then
-                show_progress_dialog steps-multi-label 38 \
-                    "${label_progress}" 'sleep 1' \
-                    "${label_find_update}" 'pkg update' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" bash -y' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" openssl -y' \
-                    "${label_find_update}" 'pkg install --no-install-recommends --option=Dpkg::Options::="--force-confnew" apt -y' \
-                    "${label_upgrade}" 'pkg upgrade -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-exec -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends proot -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends x11-repo -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends termux-x11-nightly -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends pulseaudio -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends wget -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends dialog -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends tar -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends curl -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends unzip -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends xz-utils -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends debootstrap -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends dbus -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends pv -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends git -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends inxi -y' \
-                    "${label_install_script_download}" 'pkg install --no-install-recommends rsync -y' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup"' \
-                    "${label_install_script_download}" 'git clone --depth 1 https://github.com/andistro/app.git app-andistro_setup' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.git"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/andistro_setup"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/README.md"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.editconfig"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitignore"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/app-andistro_setup/.gitattributes"' \
-                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/andistro" "$PREFIX/bin/andistro"' \
-                    "${label_install_script_download}" 'mv -f "$HOME/app-andistro_setup/termos.sh" "$HOME/termos.sh"' \
-                    "${label_install_script_download}" 'rsync -a "$HOME/app-andistro_setup/" "$PREFIX/var/lib/andistro/"' \
-                    "${label_install_script_download}" 'chmod +x "$PREFIX/bin/andistro"' \
-                    "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
-                    "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
-                    "${label_install_script_download}" 'termux-setup-storage'
+            }
+
+            if [ -z "$2" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                updatel_terminal_view
+            elif [ "$2" == "main" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                updatel_terminal_view
+            elif [ "$2" == "main-dialog" ]; then
+                branch_version="main"
+                andistro_branch_version="$label_stable"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                update_dialog_view
+            elif [ "$2" == "alpha" ]; then
+                branch_version="alpha"
+                andistro_branch_version="$label_alpha"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                updatel_terminal_view
+            elif [ "$2" == "alpha-dialog" ]; then
+                branch_version="alpha"
+                andistro_branch_version="$label_alpha"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                update_dialog_view
             else
                 echo "$label_command_not_found: $2"
                 exit 1
             fi
-            
+
+            # Limpeza pós atualização
             rm -rf "$HOME/app-andistro_setup"
             rm -rf "$HOME/termos.sh"
             rm -rf andistro_setup.zip
@@ -392,6 +721,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             chmod +x "$PREFIX/var/lib/andistro/lib/share/global"
             source "$PREFIX/var/lib/andistro/lib/share/global"
             echo -e "$label_update_finish"
+            echo -e "\n$label_andistro_start_command_info"
         ;;
 
         # Comando para instalar uma distro
@@ -441,15 +771,23 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             # Menu de Ambiente Gráfico
             OPTIONS=(1 "${label_environments_select_default} (XFCE4)" # Interface padrão
-                    2 "${label_environments_select_light} (LXDE)" # Interface leve
-                    3 "${label_environments_select_null}")  # Nenhuma interface gráfica
+                     2 "${label_environments_select_light} (LXDE)" # Interface leve
+                    )
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
+                            --cancel-label "$label_back" \
                             --menu "$label_environments_select" \
-                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \
                             2>&1 >/dev/tty)
 
+            dialog_retorno=$?  # ← Captura código de retorno
+            if [ $dialog_retorno -eq 1 ]; then
+                clear # ← Clear se cancelado
+                andistro
+                exit 0
+            fi
+            clear
             case $CHOICE in
                 # Interface padrão - XFCE4
                 1)
@@ -468,10 +806,19 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
+                            --cancel-label "$label_back" \
                             --menu "$label_choose_theme" \
-                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                            $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \
                             2>&1 >/dev/tty)
+            
+            dialog_retorno=$?  # ← Captura código de retorno
+            if [ $dialog_retorno -eq 1 ]; then
+                clear # ← Clear se cancelado
+                andistro
+                exit 0
+            fi
+            clear
             case $CHOICE in
                 # Tema claro
                 1)	
@@ -497,13 +844,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 distro_name_upper="Debian"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow \
-                    --title "$label_dialog_uninstall_menu" \
-                    --yes-label "$label_yes" \
-                    --no-label "$label_no" \
-                    --yesno "$label_dialog_uninstall_menu_desc" 10 60
-                resposta=$?
+                       --title "$label_dialog_uninstall_menu" \
+                       --yes-label "$label_yes" \
+                       --no-label "$label_no" \
+                       --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
+                dialog_retorno=$?
                 
-                if [ $resposta -eq 0 ]; then
+                if [ $dialog_retorno -eq 0 ]; then
                     # Usuário escolheu "Sim"
                     echo "$label_wait"
                     distro_name="debian"
@@ -530,13 +877,14 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 distro_name_upper="AnDistro"
                 label_dialog_uninstall_menu_desc=$(printf "$label_dialog_uninstall_menu_desc" "$distro_name_upper")
                 dialog --no-shadow \
-                    --title "$label_dialog_uninstall_menu" \
-                    --yes-label "$label_yes" \
-                    --no-label "$label_no" \
-                    --yesno "$label_dialog_uninstall_menu_desc" 10 60
-                resposta=$?
+                       --title "$label_dialog_uninstall_menu" \
+                       --yes-label "$label_yes" \
+                       --no-label "$label_no" \
+                       --yesno "$label_dialog_uninstall_menu_desc" $dialog_height $dialog_width
 
-                if [ $resposta -eq 0 ]; then
+                dialog_retorno=$?
+
+                if [ $dialog_retorno -eq 0 ]; then
                     # Usuário escolheu "Sim"
                     echo "$label_wait"
                     label_uninstalling_system=$(printf "$label_uninstalling_system" "$distro_name_upper")
@@ -555,8 +903,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "rm -rf $PREFIX/bin/andistro"
 
                 andistro alerta uninstall-success
-
-                exit 0
+                clear
+                cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
             else
                     echo "$label_command_not_found: $2"
                     exit 1
@@ -577,7 +925,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             else
                 echo "$label_command_not_found: $2"
-                andistro terminal
                 exit 1
             fi
         ;;
@@ -635,7 +982,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_storage_permission_check" 10 60
+                        } | dialog --no-shadow \
+                                   --gauge "$label_storage_permission_check\n\n$label_sleep_in_10s" \
+                                   $dialog_height $dialog_width
                         clear
                         while true; do
                             if mkdir -p "/sdcard/termux" 2>/dev/null; then
@@ -646,36 +995,46 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                         sleep 0.1
                                         echo $((i * 2))
                                     done
-                                } | dialog --no-shadow --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" 10 60
+                                } | dialog --no-shadow \
+                                           --gauge "$label_storage_permission_granted\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                                 clear
                                 break   # segue o script normalmente
                             fi
 
                             # Falhou: provavelmente sem permissão de armazenamento
-                            rm -rf "$HOME/storage"
-                            termux-setup-storage &
+
+                            {
+                                for i in {1..50}; do
+                                    sleep 0.1
+                                    echo $((i * 2))
+                                done
+                            } | dialog --no-shadow \
+                                    --gauge "$label_storage_permission_not_granted\n\n$label_sleep_in_10s" \
+                                    $dialog_height $dialog_width
+                            clear
+                            am start -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION -d "package:com.termux" >/dev/null 2>&1
 
                             dialog --no-shadow --clear \
-                                --title "$label_storage_permission" \
-                                --yes-label "$label_permission_granted" \
-                                --no-label "$label_permission_not_granted" \
-                                --yesno "$label_storage_permission_desc" 10 60
+                                   --title "$label_storage_permission" \
+                                   --yes-label "$label_permission_granted" \
+                                   --no-label "$label_permission_not_granted" \
+                                   --yesno "$label_storange_permission_help_desc" $dialog_height $dialog_width
 
-                            resp=$?
+                            dialog_retorno=$?
 
-                            if [ $resp -eq 0 ]; then
+                            if [ $dialog_retorno -eq 0 ]; then
                                 # Botão "Já permiti": tenta de novo no próximo loop
+                                rm -rf "$HOME/storage"
+                                termux-setup-storage &
                                 continue
                             else
                                 # Botão "Não consegui": ajuda + intents
                                 dialog --no-shadow --title "$label_permission_help" \
-                                    --ok-label "$label_open_configs" \
-                                    --msgbox "$label_storange_permission_help_desc" 10 60
+                                       --ok-label "$label_open_configs" \
+                                       --msgbox "$label_storange_permission_help_desc" $dialog_height $dialog_width
 
                                 # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
-                                am start \
-                                    -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
-                                    -d "package:com.termux" >/dev/null 2>&1
+                                am start -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION -d "package:com.termux" >/dev/null 2>&1
                             fi
                         done
                     ;;
@@ -684,79 +1043,430 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     battery)
                         # Configurações de otimização de bateria
                         # 1) Explica o que fazer
-                        dialog --no-shadow --title "$label_battery_optimization" \
-                            --ok-label "$label_open_configs" \
-                            --msgbox "$label_battery_optimization_desc" 10 60
+                        # label_battery_optimization="Otimização de bateria"
+                        # label_battery_optimization_desc="O Termux pode ser finalizado em segundo plano devido às otimizações de bateria do Android. Para evitar isso, é recomendado desativar a otimização de bateria para o Termux.\n\nEm alguns instantes será aparecerá uma mensagem do sistema sobre parar a otimização do uso da bateria, clique em \"Permitir\" para continuar."
+                        # label_battery_optimization_desc_info="Se não apareceu a mensagem, siginifica que já está desativada. Se clicou em negar, poderá retornar aqui novamente pelas configurações do AnDistro.\n\nClique em <Finalizar> para finalizar esta configuração."
+                        {
+                            for i in {1..50}; do
+                                sleep 0.4 # 20s
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow \
+                                   --gauge "$label_battery_optimization_desc\n\n$label_sleep_in_20s" \
+                                   $dialog_height $dialog_width
+                        clear
 
                         # 2) Abre tela de detalhes do app (de lá o usuário acessa Bateria)
-                        am start -a android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS >/dev/null 2>&1
+                        am start -a android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -d package:com.termux
 
                         # 3) Após o usuário voltar ao Termux, apenas confirma (ambos saem)
                         dialog --no-shadow --clear \
-                        --title "$label_battery_optimization" \
-                        --ok-label "$label_next" \
-                        --msgbox "$label_battery_optimization_desc_info" 10 60
+                               --title "$label_battery_optimization" \
+                               --ok-label "$label_finish" \
+                               --msgbox "$label_battery_optimization_desc_info" $dialog_height $dialog_width
+                    ;;
+
+                    install-apps)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.4 # 20s
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow \
+                                   --gauge "$label_install_apps_permission_desc\n\n$label_sleep_in_20s" \
+                                   $dialog_height $dialog_width
+                        clear
+
+                        am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+
+                        dialog --no-shadow --clear \
+                               --title "$label_install_apps_permission" \
+                               --yes-label "$label_permission_granted" \
+                               --no-label "$label_permission_not_granted" \
+                               --yesno "$label_install_apps_permission_desc_finish" $dialog_height $dialog_width
+
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            continue
+                        else
+                            am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+
+                            # Botão "Não consegui": ajuda + intents
+                            dialog --no-shadow --clear \
+                               --title "$label_storage_permission" \
+                               --yes-label "$label_permission_granted" \
+                               --no-label "$label_permission_not_granted" \
+                               --yesno "$label_install_apps_permission_desc_finish" $dialog_height $dialog_width
+
+                            # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
+                            am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+                        fi
+
+                    ;;
+
+                    # Baixar o Termux:API pelo F-Droid
+                    install-termux-api)
+                        app_name="Termux:API"
+                        app_packagename="com.termux.api"
+                        app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
+                        app_basename=$(basename $app_stable_link)
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        termux-open "/sdcard/termux/andistro/apps/$app_basename"
+                    ;;
+
+                    # Baixar o avnc pelo F-Droid
+                    install-avnc)
+                        app_name="AVNC"
+                        app_packagename="com.gaurav.avnc"
+                        app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
+                        app_basename=$(basename $app_stable_link)
+                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                        termux-open "/sdcard/termux/andistro/apps/$app_basename"
                     ;;
 
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
                         dialog --no-shadow --title "$label_termux_settings" \
-                            --msgbox "$label_open_termux_settings" 10 60
+                            --msgbox "$label_open_termux_settings" $dialog_height $dialog_width
                         am start -a android.settings.APPLICATION_DETAILS_SETTINGS -d "package:com.termux"
                     ;;
 
-                    avnc)
-                        dialog --no-shadow --title "$label_install AVNC" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_install" \
-                            --no-label "$label_ignore" \
-                            --yesno "$label_avnc_desc" 20 60
+                    enable-dev-mode)
+                        dialog --no-shadow --title "$label_android_device_info" \
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_open" \
+                               --no-label "$label_close" \
+                               --yesno "$label_android_device_info_desc\n$label_android_device_info_desc_dev_mode" $dialog_height $dialog_width
                         
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
-                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"    
+                        if [ $dialog_retorno -eq 0 ]; then
+                            am start -a android.settings.DEVICE_INFO_SETTINGS
                         else
-                            echo " "
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
-
                         exit 0
                     ;;
 
-                    phantom-procs)
-                        dialog --no-shadow --title "$label_attention" \
-                            --backtitle "$label_warning" \
-                            --yes-label "$label_help" \
-                            --no-label "$label_skip" \
-                            --yesno "$label_phantom_procs_desc" 20 60
-
-                        resp=$?
-
-                        if [ $resp -eq 0 ]; then
-                            am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki/blob/main/pt-BR/resolucao-de-problemas.md#corrigindo-o-problema-da-parada-for%C3%A7ada-do-sistema-no-termux--process-completed-signal-9--press-enter---"
-                        else
-                            echo " "
-                        fi
-
-                        exit 0
+                    open-dev-mode)
+                        am start -a android.settings.APPLICATION_DEVELOPMENT_SETTINGS
                     ;;
 
                     autoboot)
                         dialog --no-shadow --title "$label_attention" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_yes" \
-                                --no-label "$label_no" \
-                                --yesno "$label_autoboot_andistro_desc" 20 60
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_yes" \
+                               --no-label "$label_no" \
+                               --yesno "$label_autoboot_andistro_desc" $dialog_height $dialog_width
 
-                        resp=$?
+                        dialog_retorno=$?
 
-                        if [ $resp -eq 0 ]; then
-                            cp "$andistro_files/manager/.config/autoboot" $HOME/.bash_profile
+                        if [ $dialog_retorno -eq 0 ]; then
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+                            SOURCE_AUTOBOOT="$PREFIX/var/lib/andistro/manager/.config/autoboot"
+                            #HOME_AUTOBOT="$HOME/.andistro_autoboot"
+
+                            # Remove linha antiga (se existir)
+                            sed -i '/^\[ -x "$HOME\/.andistro_autoboot" \] && /d' "$BASHRC_FILE"
+
+                            # Backup
+                            cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+
+                            # Copia autoboot para HOME
+                            #cp "$SOURCE_AUTOBOOT" "$HOME_AUTOBOT"
+                            chmod +x "$HOME_AUTOBOT"
+
+                            # INSERE SÓ 1 LINHA!
+                            echo '[[ -z "$ANDISTRO_ASKED" && -x "$HOME/.andistro_autoboot" ]] && export ANDISTRO_ASKED=1 && exec "$PREFIX/var/lib/andistro/manager/.config/autoboot"' >> "$BASHRC_FILE"
+
+                            chmod 644 "$BASHRC_FILE"
                             andistro alerta setup-apply
                         else
-                            echo " "
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0
                         fi
+                        exit 0
+                    ;;
 
+                    autoboot-disable)
+                        dialog --no-shadow --title "$label_attention" \
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_yes" \
+                               --no-label "$label_no" \
+                               --yesno "$label_autoboot_andistro_disable_desc" $dialog_height $dialog_width
+
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            BASHRC_FILE="$PREFIX/etc/bash.bashrc"
+                            HOME_AUTOBOT="$HOME/.andistro_autoboot"
+
+                            cp "$BASHRC_FILE" "$BASHRC_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+
+                            # Remove LINHA EXATA (com escaping)
+                            sed -i '/\[\[ *\$ANDISTRO_ASKED[^]]*\]\] *&& *export *ANDISTRO_ASKED=1 *&& *exec *"[^"]*\autoboot"/d' "$BASHRC_FILE"
+                            
+                            # OU mais simples: grep -v (remove linha exata)
+                            grep -v 'ANDISTRO_ASKED.*andistro_autoboot' "$BASHRC_FILE" > "$BASHRC_FILE.tmp" && mv "$BASHRC_FILE.tmp" "$BASHRC_FILE"
+
+                            #rm -f "$HOME/.andistro_autoboot"
+                            chmod 644 "$BASHRC_FILE"
+                            andistro alerta setup-apply
+                        
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0 
+                        fi
+                        exit 0
+                    ;;
+
+                    notify-adb-pair-code)
+                        termux-notification \
+                            --id "adb_pair_code" \
+                            --title "$label_notify_adb_pair_code_title" \
+                            --content "$label_notify_adb_pair_code_desc" \
+                            --button1 "$label_notify_adb_code_button" \
+                            --button1-action 'echo "adbPairCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh"'
+
+                    ;;
+
+                    notify-adb-port-code)
+                        termux-notification \
+                            --id "adb_port_code" \
+                            --title "$label_notify_adb_pair_port_code_title" \
+                            --content "$label_notify_adb_pair_port_code_desc" \
+                            --button1 "$label_notify_adb_code_button" \
+                            --button1-action 'echo "adbPortCode=\"$REPLY\"" >> "$HOME/.adb_setup.sh"'
+                    ;;
+
+                    adb-pair)
+                        termux-toast "AnDistro: Check Termux:API..."
+                        status=$?
+                        if [ $status -eq 0 ]; then
+                            # O Termux:API está instalado e respondendo
+                            dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                   --backtitle "$label_warning" \
+                                   --yes-label "$label_open" \
+                                   --no-label "$label_close" \
+                                   --yesno "$label_andistro_adb_pair_desc" \
+                                   25 $dialog_width
+                            dialog_retorno=$?
+
+                            if [ $dialog_retorno -eq 0 ]; then
+                                andistro --setup open-dev-mode
+                                sleep 10
+                        
+                                rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior se houver
+
+                                # Passo 1: Cria notificação pair se não existir
+                                if [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh"; then
+                                    andistro --setup notify-adb-pair-code
+                                    #echo "Notificação de pareamento enviada."
+                                fi
+
+                                # Loop: Aguarda pairCode ser salvo, então cria port
+                                while [ ! -f "$HOME/.adb_setup.sh" ] || ! grep -q '^adbPairCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                                    sleep 2
+                                done
+
+                                # Extrai pairCode (última linha para evitar duplicatas)
+                                adbPairCode=$(grep '^adbPairCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                                if [ -n "$adbPairCode" ]; then
+                                    #echo "PairCode detectado: $adbPairCode"
+
+                                    # Passo 2: Cria notificação port se não existir
+                                    if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
+                                        andistro --setup notify-adb-port-code
+                                        #echo "Notificação de porta enviada."
+                                    fi
+
+                                    # Loop: Aguarda portCode ser salvo
+                                    while ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                                        sleep 2
+                                    done
+
+                                    # Extrai portCode e usa valores
+                                    adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                                    #termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode"
+                                    termux-notification \
+                                        --id "adb_pair_finizsh" \
+                                        --content "$label_pairing: $adbPairCode | $label_port: $adbPortCode"
+
+                                    # Após extrair códigos, tenta parear e conectar com validação
+                                    pair_output=$(adb pair "localhost:$adbPortCode" "$adbPairCode" 2>&1)
+                                    if echo "$pair_output" | grep -q "Successfully paired"; then
+                                        connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
+                                        termux-notification \
+                                            --id "adb_success" \
+                                            --title "$label_andistro_notify_adb_pair_title_success" \
+                                            --content "$label_andistro_notify_adb_pair_success_desc" \
+                                            --button1 "$label_open_termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+                                        
+                                    else
+                                        termux-notification \
+                                            --id "adb_fail" \
+                                            --title "$label_andistro_notify_adb_pair_title_error" \
+                                            --content "$label_andistro_notify_adb_pair_error_desc" \
+                                            --button1 "$label_open_termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+                                    fi
+
+                                    #termux-toast "Pareamento: $adbPairCode | Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+
+                                    unset adbPairCode adbPortCode
+                                    rm -f "$HOME/.adb_setup.sh"
+                                fi
+                            fi
+                        else
+                            andistro alerta termux-api-not-installed
+                            clear  # ← Clear se cancelado
+                            andistro
+                            exit 0
+                        fi
+                    ;;
+
+                    adb-connect)
+                        termux-toast "AnDistro: Check Termux:API..."
+                        status=$?
+                        if [ $status -eq 0 ]; then
+                           # Flag para conexão
+                            connected=0
+
+                            # Gauge com verificação inline
+                            {
+                                for i in {1..50}; do
+                                    sleep 0.1
+                                    echo $((i * 2))
+                                    
+                                    # Verifica ADB durante gauge
+                                    if adb devices 2>/dev/null | grep -q 'device$' && [ $connected -eq 0 ]; then
+                                        connected=1
+                                        echo "Conectado detectado durante verificação!"
+                                        for j in {50..100}; do echo $j; sleep 0.05; done
+                                        break
+                                    fi
+                                done
+                            } | dialog --no-shadow --gauge "$label_andistro_adb_connect_verify\n\n$label_sleep_in_10s" \
+                                $dialog_height $dialog_width
+
+                            clear
+
+                            # Echo claro do status + verificação final
+                            if [ $connected -eq 1 ] || adb devices 2>/dev/null | grep -q 'device$' ; then
+                                #echo "✅ Termux JÁ ESTÁ CONECTADO ao ADB"
+                                {
+                                    for i in {1..50}; do
+                                        sleep 0.1
+                                        echo $((i * 2))
+                                    done
+                                } | dialog --no-shadow --gauge "$label_andistro_adb_already_connected\n\n$label_sleep_in_10s" \
+                                    $dialog_height $dialog_width
+                                clear
+                            else
+                                #echo "❌ Termux NÃO ESTÁ CONECTADO ao ADB - iniciando configuração..."
+                                dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                --backtitle "$label_warning" \
+                                --yes-label "$label_open" \
+                                --no-label "$label_close" \
+                                --yesno "$label_andistro_adb_pair_desc" \
+                                30 $dialog_width
+                                dialog_retorno=$?
+
+                                if [ $dialog_retorno -eq 0 ]; then
+                                    andistro --setup open-dev-mode
+                                    sleep 10
+                            
+                                    rm -f "$HOME/.adb_setup.sh"  # Limpa arquivo anterior
+                                    # Passo 1: Cria notificação port se não existir
+                                    if ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh"; then
+                                        andistro --setup notify-adb-port-code
+                                        #echo "Notificação de porta enviada."
+                                    fi
+
+                                    # Loop: Aguarda portCode ser salvo
+                                    while ! grep -q '^adbPortCode=' "$HOME/.adb_setup.sh" 2>/dev/null; do
+                                        sleep 2
+                                    done
+
+                                    # Extrai portCode e usa valores
+                                    adbPortCode=$(grep '^adbPortCode=' "$HOME/.adb_setup.sh" | tail -1 | cut -d= -f2- | sed 's/^"//;s/"$//')
+                                    termux-toast "Porta: $adbPortCode"
+                                    termux-notification \
+                                        --id "adb_port_finish" \
+                                        --content "$label_port: $adbPortCode"
+
+                                    # Após extrair códigos, tenta parear e conectar com validação
+                                    connect_output=$(adb connect "localhost:$adbPortCode" 2>&1)
+                                    if echo "$connect_output" | grep -q "connected"; then
+                                        termux-notification \
+                                            --id "adb_connect_success" \
+                                            --title "$label_andistro_adb_connect_title_success" \
+                                            --content "$label_andistro_notify_adb_pair_success_desc" \
+                                            --button1 "$label_open_termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+
+                                    else
+                                        termux-notification \
+                                            --id "adb_fail" \
+                                            --title "$label_andistro_adb_connect_title_error" \
+                                            --content "$label_andistro_notify_adb_pair_error_desc" \
+                                            --button1 "$label_open_termux" \
+                                            --button1-action 'am start -n com.termux/.app.TermuxActivity'
+
+                                    fi
+
+                                    #termux-toast "Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"
+
+                                    unset adbPortCode
+                                    rm -f "$HOME/.adb_setup.sh"
+                                fi
+                            fi
+                        else
+                            andistro alerta termux-api-not-installed
+                            clear  # ← Clear se cancelado
+                            andistro
+                            exit 0
+
+                        fi
+                    ;;
+
+                    disable-ghost-process-monitor)
+                        dialog --no-shadow --title "$label_attention" \
+                               --backtitle "$label_warning" \
+                               --yes-label "$label_help" \
+                               --no-label "$label_skip" \
+                               --yesno "$label_disable_ghost_process_monitor_desc" \
+                               $dialog_height $dialog_width
+
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            andistro --setup adb-connect
+                            sleep 2
+
+                            show_progress_dialog steps-multi-label 9 \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' \
+                                '→ adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' \
+                                '→ adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"' 'sleep 5' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'adb shell settings put global settings_enable_monitor_phantom_procs false' \
+                                '→ adb shell settings put global settings_enable_monitor_phantom_procs false' 'sleep 5'
+
+                            andistro alerta setup-apply
+                        else
+                            clear # ← Clear se cancelado
+                            andistro
+                            exit 0 
+                        fi
                         exit 0
                     ;;
 
@@ -807,7 +1517,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     install-success)
@@ -816,7 +1526,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     uninstall-success)
@@ -825,16 +1535,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
-                    uninstall-canelled)
+                    uninstall-cancelled)
                         {
                             for i in {1..50}; do
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_uninstall_cancelled} \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_uninstall_cancelled} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     dialog-display)
@@ -843,7 +1553,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_start_dialog_display \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "$label_start_dialog_display \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     setup-apply)
@@ -852,7 +1562,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" $dialog_height $dialog_width
+                        clear
+                        ;;
+                    termux-api-not-installed)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.1
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow --gauge "$label_termux_api_not_installed\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     *)
@@ -917,7 +1636,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_distro_alert_timezone_desc} \n$label_distro_alert_timezone_detected $system_timezone\n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     install-success)
@@ -926,7 +1645,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_install_success} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     uninstall-success)
@@ -935,7 +1654,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "${label_uninstall_success} \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     dialog-display)
@@ -944,7 +1663,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_start_dialog_display \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "$label_start_dialog_display \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     setup-apply)
@@ -953,7 +1672,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 sleep 0.1
                                 echo $((i * 2))
                             done
-                        } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" 10 60
+                        } | dialog --no-shadow --gauge "$label_setup_apply \n\n$label_sleep_in_10s" $dialog_height $dialog_width
                         clear
                         ;;
                     *)
@@ -991,7 +1710,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 exit 1
             }
 
-            # espera o Termux responder com o status (timeout ~10s)
+            # espera o Termux dialog_retornoonder com o status (timeout ~10s)
             for i in {1..20}; do
                 if [ -f "$status_file" ]; then
                     status=$(cat "$status_file")
@@ -1070,11 +1789,11 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                             ;;
                         --passwd)
                             while true; do # Loop até obter uma senha válida ou o usuário cancelar
-                                PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" 10 50 3>&1 1>&2 2>&3)
+                                PASSWORD=$(dialog --no-shadow --insecure --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest" $dialog_height $dialog_width 3>&1 1>&2 2>&3)
                                 if [ $? -eq 0 ]; then
                                     # Valida senha não vazia
                                     if [ -z "$PASSWORD" ]; then
-                                        dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" 10 50
+                                        dialog --no-shadow --title "$label_error" --msgbox "$label_password_input_alert_important" $dialog_height $dialog_width
                                         continue
                                     fi
                                     break
@@ -1087,7 +1806,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                             #Salvar a senha no arquivo apropriado
                             if ! /usr/bin/vncpasswd -f <<<"$PASSWORD"$'\n'"$PASSWORD" > "$HOME/.vnc/passwd"; then
-                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" 10 50
+                                dialog --no-shadow --title "$label_error" --msgbox "$label_password_save_failed" $dialog_height $dialog_width
                                 exit 1
                             fi
 
@@ -1100,12 +1819,13 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                     sleep 0.08
                                     echo $i
                                 done
-                            } | dialog --no-shadow --gauge "${label_change_password}" 10 50
+                            } | dialog --no-shadow --gauge "${label_change_password}" $dialog_height $dialog_width
                             shift
                             exit 1
                             ;;
                         --dialog-display)
                             timestamp=$(date +'%d%m%Y-%H%M%S')
+                            andistro --boot vnc --kill >/dev/null 2>&1 # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
                             andistro --boot vnc --kill >/dev/null 2>&1 # Para garantir que nenhum servidor VNC esteja rodando antes de iniciar um novo
                             #=====================================================================================
                             #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1157,7 +1877,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                                 dialog --no-shadow --backtitle "$label_server_setup" \
                                     --title "$label_resolution_frequent" \
-                                    --yesno "$label_resolution_frequent_desc" 10 60
+                                    --yesno "$label_resolution_frequent_desc" $dialog_height $dialog_width
                                 return $?
                             }
 
@@ -1196,7 +1916,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                             --backtitle "$BACKTITLE" \
                                             --title "$TITLE" \
                                             --menu "$MENU" \
-                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                            $dialog_height $dialog_width $dialog_choice_height \
                                             "${OPTIONS[@]}" \
                                             2>&1 >/dev/tty)
                             clear
@@ -1206,7 +1926,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 1) 
                                     # Resolução manual
                                     while true; do
-                                        RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" 10 60 3>&1 1>&2 2>&3 3>&-)
+                                        RESOLUTION=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom \n $label_resolution_choose_custom_desc" $dialog_height $dialog_width 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
                                             andistro --boot vnc --dialog-display
                                             exit 0
@@ -1214,12 +1934,12 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                         if [ -n "$RESOLUTION" ]; then
                                             break
                                         else
-                                            dialog --msgbox "$label_resolution_choose_custom_desc_alert" 10 60
+                                            dialog --msgbox "$label_resolution_choose_custom_desc_alert" $dialog_height $dialog_width
                                         fi
                                     done
 
                                     while true; do
-                                        PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" 10 60 1 3>&1 1>&2 2>&3 3>&-)
+                                        PORT=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_port" $dialog_height $dialog_width 1 3>&1 1>&2 2>&3 3>&-)
                                         if [ $? -ne 0 ]; then
                                             andistro --boot vnc --dialog-display
                                             exit 0
@@ -1236,7 +1956,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
                                     if pgrep -x "xfce4-session" > /dev/null; then
                                         while true; do
-                                            SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" 10 60 1 3>&1 1>&2 2>&3 3>&-)
+                                            SCALE=$(dialog --no-shadow --inputbox "$label_resolution_choose_custom_desc_scale" $dialog_height $dialog_width 1 3>&1 1>&2 2>&3 3>&-)
                                             if [ $? -ne 0 ]; then
                                                 andistro --boot vnc --dialog-display
                                                 exit 0
@@ -1252,7 +1972,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                     if check_repeated_resolution "$current_resolution"; then
                                         if ask_set_default "$current_resolution"; then
                                             save_default_resolution "$current_resolution" "$PORT" "$SCALE"
-                                            echo "$label_resolution_option_custom ($current_resolution)" 10 50
+                                            echo "$label_resolution_option_custom ($current_resolution)" $dialog_height $dialog_width
                                         fi
                                     fi
 
@@ -1274,7 +1994,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                             --backtitle "$BACKTITLE" \
                                             --title "$TITLE" \
                                             --menu "$MENU" \
-                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                            $dialog_height $dialog_width $dialog_choice_height \
                                             "${OPTIONS[@]}" \
                                             2>&1 >/dev/tty)
                                     clear
@@ -1291,7 +2011,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                             --backtitle "$BACKTITLE" \
                                                             --title "$TITLE" \
                                                             --menu "$MENU" \
-                                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                                            $dialog_height $dialog_width $dialog_choice_height \
                                                             "${OPTIONS[@]}" \
                                                             2>&1 >/dev/tty)
                                             clear
@@ -1305,7 +2025,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_uwhd ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_uwhd ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1318,7 +2038,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_qdhd ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_qdhd ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1331,7 +2051,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_fhd ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_fhd ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1344,7 +2064,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1357,7 +2077,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_hd ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_hd ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1374,7 +2094,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                             --backtitle "$BACKTITLE" \
                                                             --title "$TITLE" \
                                                             --menu "$MENU" \
-                                                            $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                                                            $dialog_height $dialog_width $dialog_choice_height \
                                                             "${OPTIONS[@]}" \
                                                             2>&1 >/dev/tty)
                                             clear
@@ -1388,7 +2108,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_qdhd_wide ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_qdhd_wide ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1401,7 +2121,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_fhd ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_fhd ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1414,7 +2134,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                     if check_repeated_resolution "$current_resolution"; then
                                                         if ask_set_default "$current_resolution"; then
                                                             save_default_resolution "$current_resolution" "1" "1"
-                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" 10 50
+                                                            echo "$label_resolution_option_fhd_wide ($current_resolution)" $dialog_height $dialog_width
                                                         fi
                                                     fi
                                                     andistro --boot vnc --display "$current_resolution" --port 1 --scale 1
@@ -1459,7 +2179,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     if pgrep -x "xfce4-session" > /dev/null && [ -n "$SCALE_VALUE" ]; then
                         xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s "$SCALE_VALUE"
                     fi
-
+                    clear
                     echo -e "\n${label_server_start_desc}"
                     echo
                     echo -e "\033[1;96m${label_user}:\033[0m $USER\n"
