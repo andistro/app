@@ -967,17 +967,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             # Falhou: provavelmente sem permissão de armazenamento
 
                             {
-                            for i in {1..50}; do
-                                sleep 0.1
-                                echo $((i * 2))
-                            done
-                        } | dialog --no-shadow \
-                                   --gauge "$label_storage_permission_not_granted\n\n$label_sleep_in_10s" \
-                                   $dialog_height $dialog_width
-                        clear
-                            am start \
-                                    -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
-                                    -d "package:com.termux" >/dev/null 2>&1
+                                for i in {1..50}; do
+                                    sleep 0.1
+                                    echo $((i * 2))
+                                done
+                            } | dialog --no-shadow \
+                                    --gauge "$label_storage_permission_not_granted\n\n$label_sleep_in_10s" \
+                                    $dialog_height $dialog_width
+                            clear
+                            am start -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION -d "package:com.termux" >/dev/null 2>&1
 
                             dialog --no-shadow --clear \
                                    --title "$label_storage_permission" \
@@ -999,9 +997,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                        --msgbox "$label_storange_permission_help_desc" $dialog_height $dialog_width
 
                                 # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
-                                am start \
-                                    -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION \
-                                    -d "package:com.termux" >/dev/null 2>&1
+                                am start -a android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION -d "package:com.termux" >/dev/null 2>&1
                             fi
                         done
                     ;;
@@ -1033,6 +1029,54 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                --msgbox "$label_battery_optimization_desc_info" $dialog_height $dialog_width
                     ;;
 
+                    install-apps)
+                        {
+                            for i in {1..50}; do
+                                sleep 0.4 # 20s
+                                echo $((i * 2))
+                            done
+                        } | dialog --no-shadow \
+                                   --gauge "$label_install_apps_permission_desc\n\n$label_sleep_in_20s" \
+                                   $dialog_height $dialog_width
+                        clear
+
+                        am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+
+                        dialog --no-shadow --clear \
+                               --title "$label_install_apps_permission" \
+                               --yes-label "$label_permission_granted" \
+                               --no-label "$label_permission_not_granted" \
+                               --yesno "$label_install_apps_permission_desc_finish" $dialog_height $dialog_width
+
+                        dialog_retorno=$?
+
+                        if [ $dialog_retorno -eq 0 ]; then
+                            # Botão "Já permiti": tenta de novo no próximo loop
+                            
+                        else
+                            am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+
+                            # Botão "Não consegui": ajuda + intents
+                            dialog --no-shadow --clear \
+                               --title "$label_storage_permission" \
+                               --yes-label "$label_permission_granted" \
+                               --no-label "$label_permission_not_granted" \
+                               --yesno "$label_install_apps_permission_desc_finish" $dialog_height $dialog_width
+
+                            # 1) Tela de gerenciamento de TODOS os arquivos para o Termux (Android 11+)
+                            am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
+                        fi
+
+                    ;;
+
+                    install-termux-api)
+                       local app_stable_link=$(get_stable_f_droid_download_link "com.termux.api")
+
+                        show_progress_dialog steps-multi-label-alt 3 \
+                            "${label_progress}" 'sleep 1' \
+                            "${label_progress}" 'sleep 2' \
+                            "${label_install_script_download}\n\n → Termux:API" "wget $app_stable_link"
+                    ;;
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
                         dialog --no-shadow --title "$label_termux_settings" \

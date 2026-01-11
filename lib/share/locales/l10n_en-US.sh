@@ -277,6 +277,9 @@ label_disable_ghost_process_monitor_desc="Do you want to disable the Phantom Pro
 label_open_app_desc="Do you want to start %s?\nIf yes, press ENTER (↲).\nOtherwise, press ESC or CTRL+C to ignore."
 label_autoboot_andistro_desc="Do you want to receive a warning to start AnDistro every time you open Termux?\n AnDistro will not start automatically; you will need to confirm with Enter (↲) after the message appears."
 label_autoboot_andistro_disable_desc="Do you want to DISABLE AnDistro's autoboot?\n\nThis will remove the warning message that appears every time Termux starts."
+label_install_apps_permission="Allow Termux to install apps"
+label_install_apps_permission_desc="On the next screen, make sure to authorize the permission to install apps. After allowing/enabling, return to Termux."
+label_install_apps_permission_desc_finish="If you have already authorized, click <Already allowed> and this configuration will be finalized, otherwise, click <I couldn't> to open the permission screen and enable the option to allow Termux to install applications."
 
 # Timer
 label_sleep_in_10s="This message will disappear in 10 seconds."

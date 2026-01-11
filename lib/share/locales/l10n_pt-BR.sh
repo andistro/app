@@ -278,7 +278,9 @@ label_disable_ghost_process_monitor_desc="Deseja desativar o monitor Phantom Pro
 label_open_app_desc="Deseja iniar o %s?\nCaso sim, tecle ENTER (↲).\nCaso contrário, tecle ESC ou CTRL+C para ignorar."
 label_autoboot_andistro_desc="Deseja receber um aviso para iniciar o AnDistro toda vez que abrir o Termux?\n O AnDistro, não será iniciado automaticamente, será necessário confirmar com o enter (↲) após aparecer a mensagem."
 label_autoboot_andistro_disable_desc="Deseja DESATIVAR o autoboot do AnDistro?\n\nIsso removerá a mensagem de aviso que aparece toda vez que o Termux é iniciado."
-
+label_install_apps_permission="Permitir que o Termux instale apps"
+label_install_apps_permission_desc="Na próxima tela, certifique-se de autorizar a permissão para instalar apps. Após permitir/habilitar, retorne ao Termux."
+label_install_apps_permission_desc_finish="Caso já tenha autorizado, clique em < Já permitir > e essa configuração será finalizada, caso contrário, clique em < Não consegui > para abrir a tela de permissão e você habilitar a opção para permitir que o Termux instale aplicativos."
 # Temporizador
 label_sleep_in_10s="Esta mensagem desaparecerá em 10 segundos."
 label_sleep_in_20s="Esta mensagem desaparecerá em 20 segundos."

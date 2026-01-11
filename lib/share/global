@@ -521,3 +521,24 @@ cleanup_old_logs() {
     local deleted_count=$(find "$log_dir" -name "*.txt" -type f -mtime +"$days" -print0 2>/dev/null | wc -l 2>/dev/null)
     [ "$deleted_count" -gt 0 ] && echo "$(date +'%Y-%m-%d %H:%M:%S') - Limpou ${deleted_count} logs antigos" >> "$log_dir/cleanup.log" 2>/dev/null
 }
+
+get_stable_f_droid_download_link() {
+    local package="$1"
+    local api_url="https://f-droid.org/api/v1/packages/$package"
+    local json=$(curl -s "$api_url")
+    
+    if [ -z "$json" ] || [ "$json" = "null" ]; then
+        echo "Erro: Não foi possível obter dados da API para $package" >&2
+        return 1
+    fi
+    
+    local suggested_code=$(echo "$json" | grep -o '"suggestedVersionCode":[0-9]*' | grep -o '[0-9]*$')
+    
+    if [ -z "$suggested_code" ]; then
+        echo "Erro: suggestedVersionCode não encontrado para $package" >&2
+        return 1
+    fi
+    
+    local download_url="https://f-droid.org/repo/${package}_${suggested_code}.apk"
+    echo "$download_url"
+}
