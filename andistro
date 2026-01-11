@@ -1593,30 +1593,65 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
-        echo "$distro_command_guide" # Guia de comandos do AnDistro
-        echo " "
-        echo "$distro_desc_line_0_0" # Use: andistro <comando> <subcomando> para seja feito a tarefa desejada.
-        echo " "
-        echo "$commands_available_to_you" # Comandos disponíveis:
-        echo "$distro_desc_line_d1" #     --boot  comando para iniciar alguma configuração.
-        echo " "
-        echo "$distro_desc_line_d2" # Subcomandos do --boot
-        echo "$distro_desc_line_d3" #     vnc  para iniciar o servidor VNC
-        echo " "
-        echo "$distro_desc_line_d4" # Subcomandos do --boot vnc
-        echo "$distro_desc_line_d5" #     --display  define a resolução da tela que será exibida
-        echo "$distro_desc_line_d6" #     --scale    define a escala da tela (1 ou 2)
-        echo "$distro_desc_line_d7" #     --port     define a porta usada pelo servidor.
-        echo "$distro_desc_line_d8" # O comando --scale só funciona no xfce4, caso use no lxde, o comando será ignorado
-        echo "$distro_desc_line_d9" # O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão.
-        echo " "
-        echo "$distro_desc_line_d10" # Exemplo de comando que permite a inicialização do servior vnc
-        echo "$distro_desc_line_d11" # Modo simples
-        echo "$distro_desc_line_d12" #   andistro --boot vnc
-        echo "$distro_desc_line_d13" # Modo completo
-        echo "$distro_desc_line_d14" #   andistro --boot vnc --display 1920x1080 --port 1 --scale 1
-        echo " "
-        exit 0
+        OPTIONS=(1 "$label_andistro_start_vnc" # Iniciar o VNC 
+                 2 "$label_andistro_finish_vnc" #Finalizar o VNC 
+                 3 "$label_andistro_change_vnc_password" # Trocar a senha do VNC
+                 4 "$label_help" # Ajuda
+                )
+        # Mostrar menu
+        CHOICE=$(dialog --no-shadow --clear \
+                        --title "AnDistro$an_title_version" \
+                        --cancel-label "$label_close" \
+                        --menu "$label_choose_one_of_the_option:" \
+                        $dialog_height $dialog_width $dialog_choice_height \
+                        "${OPTIONS[@]}" \
+                        2>&1 >/dev/tty)
+
+        dialog_retorno=$?  # ← Captura código de retorno
+
+        clear
+
+        if [ $dialog_retorno -eq 1 ]; then # Se o usuário cancelar
+            clear  # ← Clear se cancelado
+            andistro terminal
+            echo -e "\n$label_andistro_start_command_info"
+            exit 0
+        fi
+
+        # Opções do menu
+        case $CHOICE in
+            # Iniciar o VNC 
+            1) andistro --boot vnc --dialog-display ;;
+
+            # Finalizar o VNC 
+            2) andistro --boot vnc --kill ;;
+
+            # Trocar a senha do VNC
+            3) andistro --boot vnc --passwd ;;
+
+            # Ajuda
+            4)
+                dialog --no-shadow --title "$label_help" \
+                       --backtitle "$label_help" \
+                       --yes-label "$label_proceed" \
+                       --no-label "$label_back" \
+                       --yesno "$label_andistro_help_desc" \
+                       $dialog_height $dialog_width
+
+                dialog_retorno=$?
+                clear
+                if [ $dialog_retorno -eq 0 ]; then
+                    andistro --termux-cmd 'am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"' >/dev/null 2>&1
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
+                else
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
+                fi
+            ;;
+        esac
     fi
 
 #>>>#=============================================================================================
@@ -1734,6 +1769,31 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 
             echo "$label_error_bridge_timeout"
             exit 1
+        ;;
+
+        terminal)
+            echo "$distro_command_guide" # Guia de comandos do AnDistro
+            echo " "
+            echo "$distro_desc_line_0_0" # Use: andistro <comando> <subcomando> para seja feito a tarefa desejada.
+            echo " "
+            echo "$commands_available_to_you" # Comandos disponíveis:
+            echo "$distro_desc_line_d1" #     --boot  comando para iniciar alguma configuração.
+            echo " "
+            echo "$distro_desc_line_d2" # Subcomandos do --boot
+            echo "$distro_desc_line_d3" #     vnc  para iniciar o servidor VNC
+            echo " "
+            echo "$distro_desc_line_d4" # Subcomandos do --boot vnc
+            echo "$distro_desc_line_d5" #     --display  define a resolução da tela que será exibida
+            echo "$distro_desc_line_d7" #     --port     define a porta usada pelo servidor.
+            echo "$distro_desc_line_d9" # O comando --display e --port não são obrigatórios e caso não use o servidor será iniciado na resolução e porta padrão.
+            echo " "
+            echo "$distro_desc_line_d10" # Exemplo de comando que permite a inicialização do servior vnc
+            echo "$distro_desc_line_d11" # Modo simples
+            echo "$distro_desc_line_d12" #   andistro --boot vnc
+            echo "$distro_desc_line_d13" # Modo completo
+            echo "$distro_desc_line_d14" #   andistro --boot vnc --display 1920x1080 --port 1
+            echo " "
+            exit 0
         ;;
 
         # Comando para iniciar alguma configuração
