@@ -368,6 +368,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 clear
                 if [ $dialog_retorno -eq 0 ]; then
                     am start -a android.intent.action.VIEW -d "https://github.com/andistro/wiki"
+                    clear  # ← Clear se cancelado
+                    andistro
+                    exit 0
                 else
                     clear  # ← Clear se cancelado
                     andistro
