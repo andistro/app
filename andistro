@@ -775,7 +775,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     )
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
-                            --cancel-label "$label_back" \
+                            --cancel-label "$label_restart" \
                             --menu "$label_environments_select" \
                             $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \
@@ -806,7 +806,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
             CHOICE=$(dialog --no-shadow --clear \
                             --title "$TITLE" \
-                            --cancel-label "$label_back" \
+                            --cancel-label "$label_restart" \
                             --menu "$label_choose_theme" \
                             $dialog_height $dialog_width $dialog_choice_height \
                             "${OPTIONS[@]}" \

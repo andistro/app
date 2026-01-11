@@ -225,6 +225,7 @@ label_install="Install"
 label_update="Update"
 label_check="Check"
 label_finish="Finish"
+label_restart="Restart"
 
 # Messages in brackets
 label_detected="[Detected]"
