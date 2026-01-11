@@ -15,6 +15,11 @@ extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'], \
               ['DRAWER','DEL','BKSP','PASTE','','KEYBOARD','ENTER']]
 EOF
 fi
+
+sed -i '/allow-external-apps/s/^# *//' ~/.termux/termux.properties
+
+termux-reload-settings
+
 fi
 #================================================================================================
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
