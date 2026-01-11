@@ -1076,6 +1076,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     ;;
 
+                    # Baixar o Termux:API pelo F-Droid
                     install-termux-api)
                         app_name="Termux:API"
                         app_packagename="com.termux.api"
@@ -1084,6 +1085,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
                     ;;
 
+                    # Baixar o avnc pelo F-Droid
                     install-avnc)
                         app_name="AVNC"
                         app_packagename="com.gaurav.avnc"
@@ -1091,6 +1093,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         app_basename=$(basename $app_stable_link)
                         show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && mkdir -p /sdcard/termux/andistro/apps && sleep 5 && sleep 6 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
                     ;;
+
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
                         dialog --no-shadow --title "$label_termux_settings" \
