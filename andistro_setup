@@ -32,7 +32,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
 
-total_steps=31  # Número total de etapas que você quer monitorar
+total_steps=32  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
