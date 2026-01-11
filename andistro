@@ -1075,7 +1075,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     install-termux-api)
                        local app_stable_link=$(get_stable_f_droid_download_link "com.termux.api")
 
-                        show_progress_dialog steps-multi-label-alt 3 \
+                        show_progress_dialog steps-multi-label-alt 4 \
                             "${label_progress}" 'sleep 1' \
                             "${label_progress}" 'sleep 2' \
                             "${label_progress}" 'mkdir -p /sdcard/termux/andistro/apps' \
