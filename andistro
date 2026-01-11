@@ -1050,10 +1050,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         dialog_retorno=$?
 
-                        if [ $dialog_retorno -eq 0 ]; then
-                            # Botão "Já permiti": tenta de novo no próximo loop
-                            
-                        else
+                        if [ $dialog_retorno -eq 1 ]; then
                             am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
 
                             # Botão "Não consegui": ajuda + intents
