@@ -1078,7 +1078,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         show_progress_dialog steps-multi-label-alt 3 \
                             "${label_progress}" 'sleep 1' \
                             "${label_progress}" 'sleep 2' \
-                            "${label_install_script_download}\n\n → Termux:API" "wget $app_stable_link"
+                            "${label_progress}" 'mkdir -p /sdcard/termux/andistro/apps' \
+                            "${label_install_script_download}\n\n → Termux:API" "wget -O \"/sdcard/termux/andistro/apps/com.termux.api.apk\" \"$app_stable_link\""
+
                     ;;
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
