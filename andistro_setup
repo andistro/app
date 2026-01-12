@@ -293,6 +293,8 @@ andistro --setup battery
 
 andistro --setup install-apps
 
+clear
+
 termux-toast "AnDistro: Check Termux:API..."
 status=$?
 if [ $status -eq 0 ]; then
