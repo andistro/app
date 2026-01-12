@@ -395,6 +395,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
                     sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
                     bash $PREFIX/var/lib/andistro/manager/start-debian apt update
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sudo apt full-upgrade -y
                 fi
             }
             update_dialog_view(){
@@ -1611,11 +1612,19 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
 #>>>#=============================================================================================
 #>>># Menu principal do Andistro
     if [ -z "$1" ]; then
-        OPTIONS=(1 "$label_andistro_start_vnc" # Iniciar o VNC 
-                 2 "$label_andistro_finish_vnc" #Finalizar o VNC 
-                 3 "$label_andistro_change_vnc_password" # Trocar a senha do VNC
-                 4 "$label_help" # Ajuda
-                )
+        # Verifica se o vncserver está rodando
+        if pgrep -x "Xtigervnc" > /dev/null; then
+            OPTIONS=(s "$label_andistro_start_vnc" # Iniciar o VNC 
+                     k "$label_andistro_finish_vnc" #Finalizar o VNC 
+                     p "$label_andistro_change_vnc_password" # Trocar a senha do VNC
+                     h "$label_help" # Ajuda
+                    )
+        else
+            OPTIONS=(s "$label_andistro_start_vnc" # Iniciar o VNC 
+                     p "$label_andistro_change_vnc_password" # Trocar a senha do VNC
+                     h "$label_help" # Ajuda
+                    )
+        fi
         # Mostrar menu
         CHOICE=$(dialog --no-shadow --clear \
                         --title "AnDistro$an_title_version" \
@@ -1639,16 +1648,16 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         # Opções do menu
         case $CHOICE in
             # Iniciar o VNC 
-            1) andistro --boot vnc --dialog-display ;;
+            s) andistro --boot vnc --dialog-display ;;
 
             # Finalizar o VNC 
-            2) andistro --boot vnc --kill ;;
+            k) andistro --boot vnc --kill ;;
 
             # Trocar a senha do VNC
-            3) andistro --boot vnc --passwd ;;
+            p) andistro --boot vnc --passwd ;;
 
             # Ajuda
-            4)
+            h)
                 dialog --no-shadow --title "$label_help" \
                        --backtitle "$label_help" \
                        --yes-label "$label_proceed" \
