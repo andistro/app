@@ -1088,7 +1088,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         dialog_retorno=$?
 
                         if [ $dialog_retorno -eq 0 ]; then
-                            continue
+                            echo ""
                         else
                             am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d package:com.termux
 
