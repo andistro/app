@@ -388,13 +388,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     case "$1" in
         # Comando para atualizar o Andistro
         -u)
-            if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
-                tem_debian="sim"
-                rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
-                cp "/data/data/com.termux/files/usr/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
-            else
-                tem_debian="não"
-            fi
             update_dialog_view(){
                 show_progress_dialog steps-multi-label 52 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
