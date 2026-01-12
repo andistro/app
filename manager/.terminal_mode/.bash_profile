@@ -4,7 +4,7 @@ distro_name="$1"
 distro_theme="$2"
 system_lang_code="$3"
 system_lang_code_env="${system_lang_code//-/_}"
-export LANG=$system_lang_code_env.UTF-8
+export LANG=$system_icu_lang_code_env.UTF-8
 system_lang_code_env_lower=$(echo "$LANG" | sed 's/\..*//' | sed 's/_/-/' | tr '[:upper:]' '[:lower:]')
 # Fonte modular configuração global
 source "/usr/local/lib/andistro/global"
@@ -15,17 +15,17 @@ echo -e "\n${distro_wait}\n"
 #======================================================================================================
 # global == update_progress() {}
 
-sed -i "s/^# *\($system_lang_code_env.UTF-8\)/\1/" /etc/locale.gen
+sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" /etc/locale.gen
 
-sudo locale-gen $system_lang_code_env.UTF-8
+sudo locale-gen $system_icu_lang_code_env.UTF-8
 
-echo -e "LANG=$system_lang_code_env.UTF-8" > /etc/locale.conf
+echo -e "LANG=$system_icu_lang_code_env.UTF-8" > /etc/locale.conf
 
-echo "export LANG=$system_lang_code_env.UTF-8" >> $HOME/.bashrc 
+echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc 
 
-echo "export LANGUAGE=$system_lang_code_env.UTF-8" >> $HOME/.bashrc
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc
 
-echo "export LANGUAGE=$system_lang_code_env.UTF-8" >> $HOME/.bashrc
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc
 
 apt update
 

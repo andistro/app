@@ -393,7 +393,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
                     rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
                     cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
-                    sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
+                    sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
                 fi
             }
             update_dialog_view(){
