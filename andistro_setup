@@ -293,27 +293,21 @@ andistro --setup battery
 
 andistro --setup install-apps
 
-termux-toast "AnDistro: Check Termux:API..."
-status=$?
-if [ $status -eq 0 ]; then
-    # termux:API está instalado
+dialog --no-shadow --title "$label_install Termux:API" \
+    --backtitle "$label_warning" \
+    --yes-label "$label_install" \
+    --no-label "$label_ignore" \
+    --yesno "$label_termux_api_desc" \
+    $dialog_height $dialog_width
+
+dialog_retorno=$?
+
+clear
+
+if [ $dialog_retorno -eq 0 ]; then
+    andistro --setup install-termux-api
 else
-    dialog --no-shadow --title "$label_install Termux:API" \
-        --backtitle "$label_warning" \
-        --yes-label "$label_install" \
-        --no-label "$label_ignore" \
-        --yesno "$label_termux_api_desc" \
-        $dialog_height $dialog_width
-
-    dialog_retorno=$?
-
-    clear
-
-    if [ $dialog_retorno -eq 0 ]; then
-        andistro --setup install-termux-api
-    else
-        continue
-    fi
+    continue
 fi
 
 dialog --no-shadow --title "$label_install AVNC" \
