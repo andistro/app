@@ -296,11 +296,11 @@ andistro --setup install-apps
 clear
 
 dialog --no-shadow --title "$label_install Termux:API" \
-    --backtitle "$label_warning" \
-    --yes-label "$label_install" \
-    --no-label "$label_ignore" \
-    --yesno "$label_termux_api_desc" \
-    $dialog_height $dialog_width
+       --backtitle "$label_warning" \
+       --yes-label "$label_install" \
+       --no-label "$label_ignore" \
+       --yesno "$label_termux_api_desc" \
+       20 $dialog_width
 
 dialog_retorno=$?
 
@@ -313,11 +313,11 @@ else
 fi
 
 dialog --no-shadow --title "$label_install AVNC" \
-    --backtitle "$label_warning" \
-    --yes-label "$label_install" \
-    --no-label "$label_ignore" \
-    --yesno "$label_avnc_desc" \
-    $dialog_height $dialog_width
+       --backtitle "$label_warning" \
+       --yes-label "$label_install" \
+       --no-label "$label_ignore" \
+       --yesno "$label_avnc_desc" \
+       20 $dialog_width
 
 dialog_retorno=$?
 
