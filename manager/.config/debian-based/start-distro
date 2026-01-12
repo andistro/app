@@ -1,4 +1,5 @@
 #!/bin/bash
+#teste
 if [ ! -d "$HOME/storage" ];then
     termux-setup-storage
 fi
