@@ -122,7 +122,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             )
 
                     CHOICE=$(dialog --no-shadow --clear \
-                                    --title "AnDistro" \
+                                    --title "$label_settings" \
                                     --cancel-label "$label_back" \
                                     --menu "$label_choose_one_of_the_option:" \
                                     $dialog_height $dialog_width $dialog_choice_height \
