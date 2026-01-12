@@ -1,8 +1,8 @@
 #!/bin/bash
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
-andistro_version="main"
-#andistro_version="alpha"
+#andistro_version="main"
+andistro_version="alpha"
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
 if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
   cat << 'EOF' >> ~/.termux/termux.properties
