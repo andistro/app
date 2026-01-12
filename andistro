@@ -388,6 +388,14 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
     case "$1" in
         # Comando para atualizar o Andistro
         -u)
+
+            check_debian_installed(){
+                if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
+                    rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
+                    cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
+                    sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
+                fi
+            }
             update_dialog_view(){
                 show_progress_dialog steps-multi-label 52 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
@@ -437,7 +445,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     "${label_install_script_download}" 'chmod +x "$PREFIX/var/lib/andistro/lib/share/global"' \
                     "${label_install_script_download}" 'rm -rf "$HOME/storage"' \
                     "${label_install_script_download}" 'termux-setup-storage' \
-                    "${label_update_apply}" 'if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then rm -rf "$PREFIX/var/lib/andistro/manager/start-debian" && cp "$PREFIX/var/lib/andistro/manager/.config/debian-based/start-distro" "$PREFIX/var/lib/andistro/manager/start-debian" && sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian; fi' \
+                    "${label_update_apply}" 'check_debian_installed' \
                     "${label_update_apply}" 'sleep 1' \
                     "${label_update_apply}" 'sleep 2' \
                     "${label_update_apply}" 'sleep 4' \
@@ -681,12 +689,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
                     #33 atualiza o start-debian
-                    if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
-                        tem_debian="sim"
-                        rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
-                        cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
-                        sed -i "s|command+=\" LANG=\$system_lang_code_env.UTF-8\"|command+=\" LANG=$system_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
-                    fi
+                    check_debian_installed
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
