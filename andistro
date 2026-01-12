@@ -1618,11 +1618,13 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                      k "$label_andistro_finish_vnc" #Finalizar o VNC 
                      p "$label_andistro_change_vnc_password" # Trocar a senha do VNC
                      h "$label_help" # Ajuda
+                     e "$label_andistro_debian_exit" #Encerrar o Debian"
                     )
         else
             OPTIONS=(s "$label_andistro_start_vnc" # Iniciar o VNC 
                      p "$label_andistro_change_vnc_password" # Trocar a senha do VNC
                      h "$label_help" # Ajuda
+                     e "$label_andistro_debian_exit" #Encerrar o Debian"
                     )
         fi
         # Mostrar menu
@@ -1678,6 +1680,9 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                     exit 0
                 fi
             ;;
+
+            # Finaliza o Debian e retorna ao Termux
+            e) exit;;
         esac
     fi
 

@@ -75,6 +75,7 @@ label_andistro_check_permissions_desc="Use as opções abaixo para verificar e c
 label_andistro_install_apps="Instalar aplicativos adicionais"
 label_andistro_install_apps_desc="Instale aplicativos adicionais para que o AnDistro possa funcionar da maneira esperada.\n\nEscolha os aplicativos desejados e prossiga com a instalação."
 label_andistro_help_desc="Caso clique em <Prosseguir>, será aberto a página de documentação do AnDistro, com instruções em texto de uso e resolução de problemas comuns relatados pela comunidade."
+label_andistro_debian_exit="Encerrar o Debian"
 
 ## Exclusivo andistro distros
 distro_desc_line_d1="    --boot  comando para iniciar alguma configuração."

@@ -73,6 +73,7 @@ label_andistro_install_apps="Install additional applications"
 label_andistro_install_apps_desc="Install additional applications so that AnDistro can work as expected.\n\nChoose the desired applications and proceed with the installation."
 label_andistro_install_termux_api="Install Termux:API"
 label_andistro_help_desc="If you click <Proceed>, the AnDistro documentation page will be opened, with text instructions for use and resolution of common problems reported by the community."
+label_andistro_debian_exit="Exit Debian"
 
 ## AndDistro distros exclusive
 distro_desc_line_d1=" --boot command to start some configuration."
