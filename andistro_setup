@@ -309,7 +309,7 @@ clear
 if [ $dialog_retorno -eq 0 ]; then
     andistro --setup install-termux-api
 else
-    continue
+    clear
 fi
 
 dialog --no-shadow --title "$label_install AVNC" \
@@ -326,7 +326,7 @@ clear
 if [ $dialog_retorno -eq 0 ]; then
     andistro --setup install-avnc
 else
-    continue
+    clear
 fi
 
 clear
