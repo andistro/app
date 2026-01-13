@@ -22,6 +22,7 @@ sed -i "s/^# hide-soft-keyboard-on-startup = true/hide-soft-keyboard-on-startup 
 
 
 termux-reload-settings
+termux-reload-settings </dev/tty 
 
 fi
 #================================================================================================
