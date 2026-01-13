@@ -1683,7 +1683,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
             ;;
 
             # Finaliza o Debian e retorna ao Termux
-            e) exit;;
+            e) exit && exit;;
         esac
     fi
 
