@@ -1989,7 +1989,8 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                 source $HOME/.sever_resolution_default
 
                                 if [[ "$RESOLUTION" =~ ^([0-9]+)x([0-9]+)$ ]]; then
-                                    andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1} --scale ${SCALE:-1}
+                                    #andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1} --scale ${SCALE:-1}
+                                    andistro --boot vnc --display "$RESOLUTION" --port ${PORT:-1}
                                     exit 0
                                 fi
                             fi
