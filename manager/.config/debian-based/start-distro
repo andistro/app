@@ -13,11 +13,23 @@ cleanup() {
     rm -rf andistro-bridge
     rm -rf andistro-output
     rm -f "$HOME/andistro-bridge"
-    pkill -f "pulseaudio" 2>/dev/null
+    
+    # Encerra a ponte de comandos do termux no debian
     [ -n "$LISTENER_PID" ] && kill "$LISTENER_PID" 2>/dev/null
-    [ -n "$PA_PID" ] && kill "$PA_PID" 2>/dev/null
+
+    # Encerra a conexão com a GPU
     [ -n "$VIRGL_PID" ] && kill "$VIRGL_PID" 2>/dev/null
+
+    # Encerra o Pulseaudio
+    pulseaudio --kill 2>/dev/null
+    pkill -f "pulseaudio" 2>/dev/null
+    [ -n "$PA_PID" ] && kill "$PA_PID" 2>/dev/null
+    sleep 0.5
+    pkill -9 -f "pulseaudio" 2>/dev/null
+    [ -n "$PA_PID" ] && kill -9 "$PA_PID" 2>/dev/null
+    rm -f $PREFIX/var/run/pulse/native $TMPDIR/pulse/native ~/.config/pulse/*
     clear
+    # Exibe uma mensagem quando o Debian é encerrado
     cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
     source "$PREFIX/var/lib/andistro/lib/share/global"
     echo -e "\n$label_andistro_start_command_info"
