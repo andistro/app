@@ -1873,12 +1873,10 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                             # Parar o servidor VNC
                             vncserver -kill :$PORTA
                             # Remover arquivos temporários
-                            rm -rf /tmp/.X$PORTA-lock
                             rm -rf /tmp/.X*-lock
-                            rm -rf /tmp/.X1-lock
-                            rm -rf /tmp/.X11-unix/X$PORTA
+                            sleep2
                             rm -rf /tmp/.X11-unix/X*
-                            rm -rf /tmp/.X11-unix/X1
+                            sleep 2
                             shift
                             exit 1
                             ;;
