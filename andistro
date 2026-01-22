@@ -1874,7 +1874,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                             vncserver -kill :$PORTA
                             # Remover arquivos temporários
                             rm -rf /tmp/.X*-lock
-                            sleep2
+                            sleep 2
                             rm -rf /tmp/.X11-unix/X*
                             sleep 2
                             shift
