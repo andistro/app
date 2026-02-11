@@ -1177,7 +1177,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             CHOICE=$(dialog --no-shadow --clear \
                                             --title "$label_andistro_install_apps" \
                                             --ok-label "$label_confirm" \
-                                            --cancel-label "$label_close" \
+                                            --cancel-label "$current_label_close" \
                                             --menu "Antes de prosseguir, escolha como instalar os aplicativos necessários:" \
                                             20 $dialog_width $dialog_choice_height \
                                             "${OPTIONS[@]}" \
