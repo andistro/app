@@ -343,7 +343,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                     1) andistro --setup install-termux-api ;;
 
                                     # Instalar o AVNC
-                                    2) andistro --setup install-avnc ;;
+                                    2) 
+                                    andistro --setup install-vnc --interno
+                                    ;;
 
                                 esac
                             done
@@ -1148,10 +1150,29 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                     # Baixar um dos aplicativos VNC pelo F-Droid
                     install-vnc)
+                        local is_interno=false
+                        # Verifica se foi passado --interno
+                        while [ $# -gt 0 ]; do
+                            case "$1" in
+                                --interno)
+                                    is_interno=true
+                                    shift
+                                    ;;
+                                *)
+                                    shift
+                                    ;;
+                            esac
+                        done
                         while true; do
                             OPTIONS=(1 "Pela Play Store" # 
                                      2 "Por aqui mesmo" # 
                                     )
+
+                            # Define label_close baseado no contexto
+                            local current_label_close="$label_close"
+                            if [ "$is_interno" = true ]; then
+                                current_label_close="$label_back"
+                            fi
 
                             CHOICE=$(dialog --no-shadow --clear \
                                             --title "$label_andistro_install_apps" \
