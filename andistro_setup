@@ -33,7 +33,7 @@ update_progress() {
     printf "\r[%s%s] %3d%%" "$filled_bar" "$empty_bar" "$percent"
 }
 
-total_steps=43  # Número total de etapas que você quer monitorar
+total_steps=44  # Número total de etapas que você quer monitorar
 current_step=0
 
 {
@@ -333,35 +333,37 @@ fi
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    # 42 Questiona o atalho de inicialização rápida do Andistro
+    # 42 Dar as opções de aplicativos VNC para o usuário escolher qual instalar (necessário para o funcionamento do Andistro)
+    dialog --no-shadow --title "$label_install VNC" \
+           --backtitle "$label_warning" \
+           --yes-label "$label_install" \
+           --no-label "$label_ignore" \
+           --yesno "$label_avnc_desc" \
+           20 $dialog_width
+
+    dialog_retorno=$?
+    clear
+
+    if [ $dialog_retorno -eq 0 ]; then
+        andistro --setup install-vnc
+    else
+        clear
+    fi
+    ((current_step++))
+    update_progress "$current_step" "$total_steps"; sleep 0.1
+
+    # 43 Questiona o atalho de inicialização rápida do Andistro
     andistro --setup autoboot
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
-    # 43 especifica a versão do Andistro instalada
+    # 44 especifica a versão do Andistro instalada
     echo '1.1-32 alpha' | tee "$PREFIX/var/lib/andistro/VERSION"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     echo
 }
-
-dialog --no-shadow --title "$label_install AVNC" \
-       --backtitle "$label_warning" \
-       --yes-label "$label_install" \
-       --no-label "$label_ignore" \
-       --yesno "$label_avnc_desc" \
-       20 $dialog_width
-
-dialog_retorno=$?
-
-clear
-
-if [ $dialog_retorno -eq 0 ]; then
-    andistro --setup install-avnc
-else
-    clear
-fi
 
 clear
 
