@@ -339,7 +339,7 @@ fi
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
     # 43 especifica a versão do Andistro instalada
-    echo '1.1-32 alpha' | sudo tee "$PREFIX/var/lib/andistro/VERSION"
+    echo '1.1-32 alpha' | tee "$PREFIX/var/lib/andistro/VERSION"
     ((current_step++))
     update_progress "$current_step" "$total_steps"; sleep 0.1
 
