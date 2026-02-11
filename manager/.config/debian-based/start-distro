@@ -75,7 +75,7 @@ command+=" -b /dev/urandom:/dev/random"
 command+=" -b /proc/self/fd:/dev/fd"
 command+=" -b $PREFIX/var/lib/andistro/manager/.config/debian-based/proc/fakethings/stat:/proc/stat"
 command+=" -b $PREFIX/var/lib/andistro/manager/.config/debian-based/proc/fakethings/vmstat:/proc/vmstat"
-command+=" -b $config_file/proc/fakethings/version:/proc/version"
+#command+=" -b $config_file/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
 command+=" -b $HOME:/termux/home"
 command+=" -b $PREFIX/var/lib/andistro/lib/share:/usr/local/lib/andistro"

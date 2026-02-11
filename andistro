@@ -2,7 +2,7 @@
 # GITHUB Version
 #inxi_out=$(inxi -F 2>/dev/null)
 #andistro_version="main"
-andistro_version="alpha"
+#andistro_version="alpha"
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then
 if ! grep -q "^# Andistro Extra keys$" ~/.termux/termux.properties 2>/dev/null; then
   cat << 'EOF' >> ~/.termux/termux.properties
@@ -27,7 +27,8 @@ termux-reload-settings </dev/tty
 fi
 #================================================================================================
 if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
-
+    # Versão do AnDistro
+    andistro_version=$(cat "$PREFIX/var/lib/andistro/VERSION" 2>/dev/null || echo "")
     # Carrega variáveis globais
     source "$PREFIX/var/lib/andistro/lib/share/global"
     # Limpa logs antigos automaticamente (silencioso)
@@ -65,10 +66,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     )
         fi
 
-        if [ "$andistro_version" = "main" ]; then
-            an_title_version=""
-        elif [ "$andistro_version" = "alpha" ]; then
+        if [[ "$andistro_version" == *"alpha"* ]]; then
             an_title_version=" [alpha]"
+        else
+            an_title_version=""
         fi
 
         # Mostrar menu
@@ -348,7 +349,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             done
                         ;;
 
-                        # Instalar aplicativos adicionais
+                        # Desisntalar o AnDistro
                         6)
                             andistro -d andistro
                         ;;
@@ -1145,6 +1146,137 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         termux-open "/sdcard/termux/andistro/apps/$app_basename"
                     ;;
 
+                    # Baixar um dos aplicativos VNC pelo F-Droid
+                    install-vnc)
+                        while true; do
+                            OPTIONS=(1 "Pela Play Store" # 
+                                     2 "Por aqui mesmo" # 
+                                    )
+
+                            CHOICE=$(dialog --no-shadow --clear \
+                                            --title "$label_andistro_install_apps" \
+                                            --ok-label "$label_confirm" \
+                                            --cancel-label "$label_close" \
+                                            --menu "Antes de prosseguir, escolha como instalar os aplicativos necessários:" \
+                                            20 $dialog_width $dialog_choice_height \
+                                            "${OPTIONS[@]}" \
+                                            2>&1 >/dev/tty)
+                            dialog_retorno=$?  # ← Captura código de retorno
+
+                            if [ $dialog_retorno -eq 1 ]; then
+                                clear # ← Clear se cancelado
+                                cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
+                                echo -e "\n$label_andistro_start_command_info"
+                                break
+                                exit 0
+                            fi
+
+                            case $CHOICE in
+                                # Play Store
+                                1)
+                                    while true; do
+                                        OPTIONS=(1 "AVNC $label_recommended" # 
+                                                 2 "RealVNC Viewer" # 
+                                                 3 "bVNC free" #
+                                                 4 "bVNC Pro" #
+                                                 5 "MultiVNC" #
+                                                )
+
+                                        CHOICE=$(dialog --no-shadow --clear \
+                                                        --title "$label_andistro_install_apps" \
+                                                        --ok-label "$label_install" \
+                                                        --cancel-label "$label_back" \
+                                                        --menu "Escolha um dos aplicativos, clique em instalar. Depois retorne ao Termux" \
+                                                        20 $dialog_width $dialog_choice_height \
+                                                        "${OPTIONS[@]}" \
+                                                        2>&1 >/dev/tty)
+                                        dialog_retorno=$?  # ← Captura código de retorno
+                                        
+                                        if [ $dialog_retorno -eq 1 ]; then
+                                            clear # ← Clear se cancelado
+                                            break
+                                            exit 0
+                                        fi
+                                        clear
+                                    
+                                        case $CHOICE in
+                                            # AVNC
+                                            1)
+                                                termux-open "https://play.google.com/store/apps/details?id=com.gaurav.avnc"
+                                            ;;
+
+                                            # RealVNC Viewer
+                                            2)
+                                                termux-open "https://play.google.com/store/apps/details?id=com.realvnc.viewer.android"
+                                            ;;
+
+                                            # bVNC free
+                                            3)
+                                                termux-open "https://play.google.com/store/apps/details?id=com.iiordanov.freebVNC"
+                                            ;;
+
+                                            # bVNC Pro
+                                            4)
+                                                termux-open "https://play.google.com/store/apps/details?id=com.iiordanov.bVNC"
+                                            ;;
+
+                                            # MultiVNC
+                                            5) 
+                                                termux-open "https://play.google.com/store/apps/details?id=com.coboltforge.dontmind.multivnc" 
+                                            ;;
+                                        esac
+                                    done
+                                ;;
+
+                                # Por aqui mesmo
+                                2)
+                                    while true; do
+                                        OPTIONS=(1 "AVNC $label_recommended" # 
+                                                 2 "MultiVNC" #
+                                                )
+
+                                        CHOICE=$(dialog --no-shadow --clear \
+                                                        --title "$label_andistro_install_apps" \
+                                                        --ok-label "$label_install" \
+                                                        --cancel-label "$label_back" \
+                                                        --menu "Escolha um dos aplicativos, clique em instalar. Depois retorne ao Termux" \
+                                                        20 $dialog_width $dialog_choice_height \
+                                                        "${OPTIONS[@]}" \
+                                                        2>&1 >/dev/tty)
+                                        dialog_retorno=$?  # ← Captura código de retorno
+                                        
+                                        if [ $dialog_retorno -eq 1 ]; then
+                                            clear # ← Clear se cancelado
+                                            break
+                                            exit 0
+                                        fi
+                                        clear
+                                    
+                                        case $CHOICE in
+                                            # AVNC
+                                            1)
+                                                app_name="AVNC"
+                                                app_packagename="com.gaurav.avnc"
+                                            ;;
+
+                                            # MultiVNC
+                                            2)
+                                                app_name="MultiVNC"
+                                                app_packagename="com.coboltforge.dontmind.multivnc"
+                                            ;;
+                                        esac
+
+                                        app_stable_link=$(get_stable_f_droid_download_link "$app_packagename")
+                                        app_basename=$(basename $app_stable_link)
+                                        show_progress_dialog steps-multi-label-alt 1 "${label_install_script_download}\n\n → ${app_name}" 'sleep 2 && wget -P "/sdcard/termux/andistro/apps" "$app_stable_link"'
+                                        termux-open "/sdcard/termux/andistro/apps/$app_basename"
+
+                                    done
+                                ;;
+                            esac
+                        done
+                    ;;
+
                     # Comando andistro --setup termux-details-settings para abrir as informações do Termux no sistema
                     termux-details-settings)
                         dialog --no-shadow --title "$label_termux_settings" \
@@ -1438,7 +1570,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                             --content "$label_andistro_notify_adb_pair_error_desc" \
                                             --button1 "$label_open_termux" \
                                             --button1-action 'am start -n com.termux/.app.TermuxActivity'
-
                                     fi
 
                                     #termux-toast "Porta: $adbPortCode | Status: $( [ $? -eq 0 ] && echo "Sucesso" || echo "Falha" )"

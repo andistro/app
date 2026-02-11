@@ -235,6 +235,7 @@ label_detected="[Detectado]"
 label_numbers_only="[SOMENTE NÚMEROS]"
 label_optional="[opcional]"
 label_required="[obrigatório]"
+label_recommended="[recomendado]"
 
 # Interface
 label_config_environment_gui="Configurando a interface..."
