@@ -2043,7 +2043,7 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                                                   --no-cancel \
                                                   --ok-label "$label_confirm" \
                                                   --passwordbox "$label_password_input\n\n$label_keyboard_active_sugest"
-                                                  $dialog_height $dialog_width
+                                                  $dialog_height $dialog_width \
                                                   3>&1 1>&2 2>&3
                                             )
                                 if [ $? -eq 0 ]; then
