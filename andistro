@@ -1172,6 +1172,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             local current_label_close="$label_close"
                             if [ "$is_interno" = true ]; then
                                 current_label_close="$label_back"
+                            else
+                                current_label_close="$label_close"
                             fi
 
                             CHOICE=$(dialog --no-shadow --clear \
