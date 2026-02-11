@@ -1186,8 +1186,10 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                             if [ $dialog_retorno -eq 1 ]; then
                                 clear # ← Clear se cancelado
-                                cat /data/data/com.termux/files/usr/etc/motd # exibe a mensagem padrão do Termux
-                                echo -e "\n$label_andistro_start_command_info"
+                                if [ "$is_interno" = false ]; then
+                                    cat /data/data/com.termux/files/usr/etc/motd
+                                    echo -e "\n$label_andistro_start_command_info"
+                                fi
                                 break
                                 exit 0
                             fi
