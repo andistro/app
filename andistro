@@ -397,7 +397,15 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
                     rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
                     cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
-                    sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" /etc/locale.gen
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sudo locale-gen $system_icu_lang_code_env.UTF-8
+                    bash $PREFIX/var/lib/andistro/manager/start-debian echo -e "LANG=$system_icu_lang_code_env.UTF-8" > /etc/locale.conf
+                    bash $PREFIX/var/lib/andistro/manager/start-debian echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc 
+                    bash $PREFIX/var/lib/andistro/manager/start-debian echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc
+                    bash $PREFIX/var/lib/andistro/manager/start-debian echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sudo apt install language-pack-gnome-$default_locale_lang_global -y
+                    bash $PREFIX/var/lib/andistro/manager/start-debian sudo apt install language-pack-$default_locale_lang_global -y
                     bash $PREFIX/var/lib/andistro/manager/start-debian apt update
                     bash $PREFIX/var/lib/andistro/manager/start-debian sudo apt full-upgrade -y
                 fi
