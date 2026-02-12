@@ -695,7 +695,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
                     #33 atualiza o start-debian
-                    check_debian_installed
+                    check_debian_installed > /dev/null 2>&1
                     ((current_step++))
                     update_progress "$current_step" "$total_steps"; sleep 0.1
 
