@@ -31,6 +31,10 @@ sudo apt install language-pack-gnome-$default_locale_lang_global -y
 
 sudo apt install language-pack-$default_locale_lang_global -y
 
+sudo mv /var/lib/dpkg/info /var/lib/dpkg/info_old
+
+sudo mkdir /var/lib/dpkg/info
+
 apt update
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/mozilla.sources
@@ -90,6 +94,18 @@ apt update
 #======================================================================================================
 sudo dpkg --configure -a 
 sudo apt --fix-broken install -y 
+
+sudo mv /var/lib/dpkg/info/* /var/lib/dpkg/info_old/
+
+sudo rm -rf /var/lib/dpkg/info
+
+sudo mv /var/lib/dpkg/info_old /var/lib/dpkg/info
+
+sudo apt update
+
+sudo apt clean
+
+sudo apt autoclean
 
 etc_timezone=$(cat /etc/timezone)
 
@@ -218,4 +234,9 @@ rm -rf $HOME/start-environment.sh
 rm -rf $HOME/wallpapers.sh
 rm -rf $HOME/.bash_profile
 rm -rf $HOME/.dialogrc
+
+sudo apt clean > /dev/null 2>&1
+
+sudo apt autoclean > /dev/null 2>&1
+
 exit
