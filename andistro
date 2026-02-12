@@ -1907,58 +1907,69 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         ;;
         # Bridge direto Debian → Termux
         --termux-cmd)
-            shift
-            cmd="$*"
+        shift
+        cmd="$*"
 
-            if [ -z "$cmd" ]; then
-                echo "$label_no_command_informed"
-                exit 1
-            fi
-
-            file="/termux/home/andistro-bridge"
-            status_file="/termux/home/andistro-status"
-            output_file="/termux/home/andistro-output"
-            error_file="/termux/home/andistro-error"
-
-            if [ ! -d "/termux/home" ]; then
-                echo "$label_error_dir_termux_home_not_accessible"
-                exit 1
-            fi
-
-            # limpa status/erro anteriores
-            rm -f "$status_file" "$error_file" "$output_file"
-
-            # envia comando para o Termux
-            printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
-                echo "$label_error_bridge_unavailable"
-                exit 1
-            }
-
-            # espera o Termux dialog_retornoonder com o status (timeout ~10s)
-            for i in {1..20}; do
-                if [ -f "$status_file" ]; then
-                    status=$(cat "$status_file")
-                    rm -f "$status_file"
-
-                    # Mostra saída completa do Termux
-                    if [ -f "$output_file" ] && [ -s "$output_file" ]; then
-                        cat "$output_file"
-                    fi
-                    
-                    # Error_file opcional para detalhes
-                    if [ -f "$error_file" ] && [ -s "$error_file" ]; then
-                        echo -e "\n\e[1;31mErro detalhado:\e[0m"
-                        cat "$error_file"
-                    fi
-
-                    exit "$status"
-                fi
-                sleep 0.5
-            done
-
-            echo "$label_error_bridge_timeout"
+        if [ -z "$cmd" ]; then
+            echo "$label_no_command_informed"
             exit 1
+        fi
+
+        file="/termux/home/andistro-bridge"
+        status_file="/termux/home/andistro-status"
+        output_file="/termux/home/andistro-output"
+        error_file="/termux/home/andistro-error"
+
+        if [ ! -d "/termux/home" ]; then
+            echo "$label_error_dir_termux_home_not_accessible"
+            exit 1
+        fi
+
+        # Limpa arquivos anteriores
+        rm -f "$status_file" "$error_file" "$output_file"
+
+        # Envia comando para o Termux
+        printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
+            echo "$label_error_bridge_unavailable"
+            exit 1
+        }
+
+        # Aguarda INDEFINIDAMENTE o status_file (sem timeout)
+        # Exibe output/error assim que aparecem, em loop
+        while true; do
+            if [ -f "$status_file" ]; then
+                status=$(cat "$status_file")
+                rm -f "$status_file"
+
+                # Mostra saída completa do Termux
+                if [ -f "$output_file" ] && [ -s "$output_file" ]; then
+                    cat "$output_file"
+                fi
+                
+                # Error_file opcional para detalhes
+                if [ -f "$error_file" ] && [ -s "$error_file" ]; then
+                    echo -e "\n\e[1;31mErro detalhado:\e[0m"
+                    cat "$error_file"
+                fi
+
+                exit "$status"
+            fi
+            
+            # Verifica output/error durante a espera (para comandos longos)
+            if [ -f "$output_file" ] && [ -s "$output_file" ]; then
+                cat "$output_file"
+                rm -f "$output_file"  # Limpa para próximas atualizações, se quiser streaming real
+            fi
+            if [ -f "$error_file" ] && [ -s "$error_file" ]; then
+                echo -e "\n\e[1;31mErro detalhado:\e[0m"
+                cat "$error_file"
+                rm -f "$error_file"
+            fi
+            
+            sleep 0.5
+        done
         ;;
+
 
         terminal)
             echo "$distro_command_guide" # Guia de comandos do AnDistro
