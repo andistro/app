@@ -1952,12 +1952,14 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
                 # Mostra saída completa do Termux
                 if [ -f "$output_file" ] && [ -s "$output_file" ]; then
                     cat "$output_file"
+                    echo  # ← quebra de linha garantida
                 fi
                 
                 # Error_file opcional para detalhes
                 if [ -f "$error_file" ] && [ -s "$error_file" ]; then
                     echo -e "\n\e[1;31mErro detalhado:\e[0m"
                     cat "$error_file"
+                    echo  # ← quebra de linha garantida
                 fi
 
                 exit "$status"
