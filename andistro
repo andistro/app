@@ -438,7 +438,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                         distro_name="debian"
                                                                         distro_version="stable"
                                                                         distro_based="debian"
-                                                                        distro_file="install-$distro_name.sh"
+                                                                        distro_file="import-$distro_name.sh"
                                                                         config_file="$andistro_files/manager/.config/$distro_based-based"
                                                                         bin="$andistro_files/manager/start-$distro_name"
                                                                         folder="$andistro_files/manager/$distro_name/$distro_version"
