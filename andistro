@@ -116,11 +116,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 while true; do
                     # porque não tem o while true; do aqui?
                     OPTIONS=(1 "$label_autoboot_andistro" # Inicialização / autoboot
-                            2 "$label_andistro_adb_configs" # Configurações do ADB
-                            3 "$label_andistro_update" # Atualizar o AnDistro
-                            4 "$label_andistro_check_permissions" # Verificar permissões
-                            5 "$label_andistro_install_apps" # Instalar aplicativos adicionais
-                            6 "$label_andistro_uninstall" # Desinstalar o AnDistro
+                             2 "$label_andistro_adb_configs" # Configurações do ADB
+                             3 "$label_andistro_update" # Atualizar o AnDistro
+                             4 "$label_andistro_check_permissions" # Verificar permissões
+                             5 "$label_andistro_install_apps" # Instalar aplicativos adicionais
+                             6 "Backups e importação" # Backups e importação
+                             7 "$label_andistro_uninstall" # Desinstalar o AnDistro
                             )
 
                     CHOICE=$(dialog --no-shadow --clear \
@@ -175,16 +176,17 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                         # Configurações do ADB
                         2)
-                            dialog --no-shadow --title "$label_andistro_adb_pair_title" \
-                                --backtitle "$label_warning" \
-                                --yes-label "$label_confirm" \
-                                --no-label "$label_close" \
-                                --yesno "$label_andistro_adb_configs_desc" \
-                                25 $dialog_width
-                            dialog_retorno=$?
+                            while true; do
+                                dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                       --backtitle "$label_warning" \
+                                       --yes-label "$label_confirm" \
+                                       --no-label "$label_close" \
+                                       --yesno "$label_andistro_adb_configs_desc" \
+                                       25 $dialog_width
+                                
+                                dialog_retorno=$?
 
-                            if [ $dialog_retorno -eq 0 ]; then
-                                dialog_config_adb_menu(){
+                                if [ $dialog_retorno -eq 0 ]; then
                                     while true; do
                                         OPTIONS=(1 "$label_andistro_enable_dev_mode" # Habilitar o modo desenvolvedor
                                                 2 "$label_andistro_adb_pair" # Pareamento do ADB
@@ -224,15 +226,12 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                             4) andistro --setup disable-ghost-process-monitor ;;
                                         esac
                                     done
-                                }
-                                
-                            else
-                                clear # ← Clear se cancelado
-                                break
-                                exit 0
-                            fi
-                            clear
-                            dialog_config_adb_menu
+                                else
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                            done
                         ;;
 
                         # Atualizar o AnDistro
@@ -351,8 +350,171 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                             done
                         ;;
 
-                        # Desisntalar o AnDistro
+                        # Backups e importação
                         6)
+                            while true; do
+                                dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                       --backtitle "$label_warning" \
+                                       --yes-label "$label_confirm" \
+                                       --no-label "$label_close" \
+                                       --yesno "Esta é uma ferramenta que permite fazer backup do Debian instalado pelo AnDistro e restaurar-lo ou importar o debian que foi instalado por fora do AnDistro. \nO processo de importação pode haver falhas devido a falta de clareza de como foi feito a instalação e configuração usando métodos externos." \
+                                       25 $dialog_width
+                                
+                                dialog_retorno=$?
+                                
+                                if [ $dialog_retorno -eq 0 ]; then
+                                    while true; do
+                                        while true; do
+                                            OPTIONS=(1 "Fazer backup do sistema" # 
+                                                    2 "Importar ou restaurar" # 
+                                                    )
+                                            
+                                            CHOICE=$(dialog --no-shadow --clear \
+                                                            --title "Backups e importação" \
+                                                            --cancel-label "$label_back" \
+                                                            --menu "$label_choose_one_of_the_option:" \
+                                                            $dialog_height $dialog_width $dialog_choice_height \
+                                                            "${OPTIONS[@]}" \
+                                                            2>&1 >/dev/tty)
+                                            
+                                            dialog_retorno=$?  # ← Captura código de retorno
+                                            if [ $dialog_retorno -eq 1 ]; then
+                                                clear # ← Clear se cancelado
+                                                break
+                                                exit 0
+                                            fi
+                                            clear
+                                            case $CHOICE in
+                                                # Fazer backup do sistema
+                                                1)
+                                                ;;
+
+                                                # Importar
+                                                2)
+                                                    while true; do
+                                                        OPTIONS=(1 "Restaurar backup do sistema" # 
+                                                                2 "Importar do proot-distro" #
+                                                                3 "Importar compactado" 
+                                                                )
+                                                        
+                                                        CHOICE=$(dialog --no-shadow --clear \
+                                                                        --title "Backups e importação" \
+                                                                        --cancel-label "$label_back" \
+                                                                        --menu "$label_choose_one_of_the_option:" \
+                                                                        $dialog_height $dialog_width $dialog_choice_height \
+                                                                        "${OPTIONS[@]}" \
+                                                                        2>&1 >/dev/tty)
+                                                        
+                                                        dialog_retorno=$?  # ← Captura código de retorno
+                                                        if [ $dialog_retorno -eq 1 ]; then
+                                                            clear # ← Clear se cancelado
+                                                            break
+                                                            exit 0
+                                                        fi
+                                                        clear
+                                                        case $CHOICE in
+                                                            # Restaurar backup do sistema
+                                                            1)
+                                                            ;;
+
+                                                            # Importar do proot-distro
+                                                            2)
+                                                                while true; do
+                                                                    dialog --no-shadow --title "Backups e importação" \
+                                                                        --backtitle "$label_warning" \
+                                                                        --ok-label "$label_confirm" \
+                                                                        --msgbox "A importação irá configurar para que o Debian se adapte as configurações do AnDistro e isso fará com que: \n-Seja adicionado novos repositórios; \nSeja feita instalações de pacotes que podem não estar instaladas na sua versão do Debian. \n-Será feito uma atualização completa de todo o sistema. \n- A importação não irá apagar o Debian que você instalou. Por medida de segurança, o importador faz uma cópia do sistema." \
+                                                                        25 $dialog_width
+                                                                
+                                                                    # Caminho usado para instalar o debian no proot-distro
+                                                                    # /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian
+                                                                    # Caminho onde o AnDistro instala o Debian
+                                                                    # /data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable
+                                                                    # O Proot-distro não cria uma pasta para a versão, então a pasta debian do proot-distro é o equivalente ao stable do andistro.
+                                                                    if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
+                                                                        # Se existir o arquivo start-debian e a pasta debian/stable, significa que já existe um sistema Debian instalado no AnDistro.
+                                                                        echo "Já existe um sistema Debian instalado. Não é possível importar outro sistema igual."
+                                                                    else
+                                                                        distro_name="debian"
+                                                                        distro_version="stable"
+                                                                        distro_based="debian"
+                                                                        distro_file="install-$distro_name.sh"
+                                                                        config_file="$andistro_files/manager/.config/$distro_based-based"
+                                                                        bin="$andistro_files/manager/start-$distro_name"
+                                                                        folder="$andistro_files/manager/$distro_name/$distro_version"
+                                                                        mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
+
+                                                                        # Cria diretórios necessários no armazenamento
+                                                                        if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
+                                                                            mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
+                                                                        fi
+
+                                                                        # Menu de Ambiente Gráfico
+                                                                        OPTIONS=(1 "Já tenho uma interface definida"
+                                                                                2 "${label_environments_select_default} (XFCE4)" # Interface padrão
+                                                                                3 "${label_environments_select_light} (LXDE)" # Interface leve
+                                                                                )
+
+                                                                        CHOICE=$(dialog --no-shadow --clear \
+                                                                                        --title "$TITLE" \
+                                                                                        --cancel-label "$label_restart" \
+                                                                                        --menu "$label_environments_select" \
+                                                                                        $dialog_height $dialog_width $dialog_choice_height \
+                                                                                        "${OPTIONS[@]}" \
+                                                                                        2>&1 >/dev/tty)
+
+                                                                        dialog_retorno=$?  # ← Captura código de retorno
+                                                                        if [ $dialog_retorno -eq 1 ]; then
+                                                                            clear # ← Clear se cancelado
+                                                                            andistro
+                                                                            exit 0
+                                                                        fi
+                                                                        clear
+                                                                        case $CHOICE in
+                                                                            # Interface padrão - Nenhuma
+                                                                            1)
+                                                                                config_environment="null"
+                                                                            ;;
+                                                                            # Interface padrão - XFCE4
+                                                                            2)
+                                                                                config_environment="xfce4"
+                                                                            ;;
+
+                                                                            # Interface leve - LXDE
+                                                                            3)	
+                                                                                config_environment="lxde"
+                                                                            ;;
+                                                                        esac
+
+                                                                        bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
+                                                                        clear
+
+                                                                    fi
+                                                                done
+                                                            ;;
+
+                                                            # Importar compactado
+                                                            3)
+                                                                # um arquivo tar.xz com o sistema debian será usado para configurar o sistema
+                                                            ;;
+                                                        esac
+                                                        
+                                                            
+                                                    done
+                                                ;;
+                                            esac
+                                    done
+                                else
+                                    clear # ← Clear se cancelado
+                                    break
+                                    exit 0
+                                fi
+                            done
+
+                        ;;
+
+                        # Desisntalar o AnDistro
+                        7)
                             andistro -d andistro
                         ;;
                     esac
@@ -1915,69 +2077,69 @@ elif [ -r /etc/os-release ] && grep -Eq '^ID=(debian|ubuntu)' /etc/os-release; t
         ;;
         # Bridge direto Debian → Termux
         --termux-cmd)
-        shift
-        cmd="$*"
+            shift
+            cmd="$*"
 
-        if [ -z "$cmd" ]; then
-            echo "$label_no_command_informed"
-            exit 1
-        fi
+            if [ -z "$cmd" ]; then
+                echo "$label_no_command_informed"
+                exit 1
+            fi
 
-        file="/termux/home/andistro-bridge"
-        status_file="/termux/home/andistro-status"
-        output_file="/termux/home/andistro-output"
-        error_file="/termux/home/andistro-error"
+            file="/termux/home/andistro-bridge"
+            status_file="/termux/home/andistro-status"
+            output_file="/termux/home/andistro-output"
+            error_file="/termux/home/andistro-error"
 
-        if [ ! -d "/termux/home" ]; then
-            echo "$label_error_dir_termux_home_not_accessible"
-            exit 1
-        fi
+            if [ ! -d "/termux/home" ]; then
+                echo "$label_error_dir_termux_home_not_accessible"
+                exit 1
+            fi
 
-        # Limpa arquivos anteriores
-        rm -f "$status_file" "$error_file" "$output_file"
+            # Limpa arquivos anteriores
+            rm -f "$status_file" "$error_file" "$output_file"
 
-        # Envia comando para o Termux
-        printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
-            echo "$label_error_bridge_unavailable"
-            exit 1
-        }
+            # Envia comando para o Termux
+            printf "%s\n" "$cmd" > "$file" 2>/dev/null || {
+                echo "$label_error_bridge_unavailable"
+                exit 1
+            }
 
-        # Aguarda INDEFINIDAMENTE o status_file (sem timeout)
-        # Exibe output/error assim que aparecem, em loop
-        while true; do
-            if [ -f "$status_file" ]; then
-                status=$(cat "$status_file")
-                rm -f "$status_file"
+            # Aguarda INDEFINIDAMENTE o status_file (sem timeout)
+            # Exibe output/error assim que aparecem, em loop
+            while true; do
+                if [ -f "$status_file" ]; then
+                    status=$(cat "$status_file")
+                    rm -f "$status_file"
 
-                # Mostra saída completa do Termux
-                if [ -f "$output_file" ] && [ -s "$output_file" ]; then
-                    cat "$output_file"
-                    echo  # ← quebra de linha garantida
+                    # Mostra saída completa do Termux
+                    if [ -f "$output_file" ] && [ -s "$output_file" ]; then
+                        cat "$output_file"
+                        echo  # ← quebra de linha garantida
+                    fi
+                    
+                    # Error_file opcional para detalhes
+                    if [ -f "$error_file" ] && [ -s "$error_file" ]; then
+                        echo -e "\n\e[1;31mErro detalhado:\e[0m"
+                        cat "$error_file"
+                        echo  # ← quebra de linha garantida
+                    fi
+
+                    exit "$status"
                 fi
                 
-                # Error_file opcional para detalhes
+                # Verifica output/error durante a espera (para comandos longos)
+                if [ -f "$output_file" ] && [ -s "$output_file" ]; then
+                    cat "$output_file"
+                    rm -f "$output_file"  # Limpa para próximas atualizações, se quiser streaming real
+                fi
                 if [ -f "$error_file" ] && [ -s "$error_file" ]; then
                     echo -e "\n\e[1;31mErro detalhado:\e[0m"
                     cat "$error_file"
-                    echo  # ← quebra de linha garantida
+                    rm -f "$error_file"
                 fi
-
-                exit "$status"
-            fi
-            
-            # Verifica output/error durante a espera (para comandos longos)
-            if [ -f "$output_file" ] && [ -s "$output_file" ]; then
-                cat "$output_file"
-                rm -f "$output_file"  # Limpa para próximas atualizações, se quiser streaming real
-            fi
-            if [ -f "$error_file" ] && [ -s "$error_file" ]; then
-                echo -e "\n\e[1;31mErro detalhado:\e[0m"
-                cat "$error_file"
-                rm -f "$error_file"
-            fi
-            
-            sleep 0.5
-        done
+                
+                sleep 0.5
+            done
         ;;
 
 
