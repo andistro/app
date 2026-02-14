@@ -442,11 +442,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                     bin="$andistro_files/manager/start-$distro_name"
                                                                     folder="$andistro_files/manager/$distro_name/$distro_version"
                                                                     mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
-
-                                                                    # Cria diretórios necessários no armazenamento
-                                                                    if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
-                                                                        mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
-                                                                    fi
+                                                                    mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name/$distro_version"
+                                                                    mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
 
                                                                     # Menu de Ambiente Gráfico
                                                                     OPTIONS=(1 "Já tenho uma interface definida"
@@ -485,7 +482,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                         ;;
                                                                     esac
 
-                                                                    bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$binds" "$archurl" "$config_environment" "$distro_theme" "$distro_version"
+                                                                    bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$config_environment" "$distro_version"
                                                                     clear
 
                                                                 fi
