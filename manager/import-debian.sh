@@ -25,12 +25,14 @@ label_distro_download_finish=$(printf "$label_distro_download_finish" "Debian")
 
 if [ "$first" != 1 ];then
 
-show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 20 \
+show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 7 \
     'sleep 1' \
     'sleep 1' \
     'sleep 1' \
     'cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian"/* "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable/"' \
     'sleep 5' \
+    'bash $bin apt update' \
+    'bash $bin apt install dialog sudo wget nano locales gpg curl ca-certificates -y' \
     'cp "$config_file/start-distro" $bin' \
     'sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin' \
     'chmod +x $bin' \
@@ -43,9 +45,7 @@ show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixan
     'echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf' \
     'echo "$system_timezone" | tee $folder/etc/timezone' \
     'echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries' \
-    'touch $folder/root/.hushlogin' \
-    'bash $bin apt update' \
-    'bash $bin apt install dialog sudo wget nano locales gpg curl ca-certificates -y'
+    'touch $folder/root/.hushlogin'
 fi
 
 
@@ -59,6 +59,7 @@ elif [ "$config_environment" = "lxde" ]; then
     # Coloque aqui o comando que você quer executar quando for LXDE
 	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 fi
+
 
 # Inicia o sistema
 bash $bin
