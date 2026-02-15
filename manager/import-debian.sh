@@ -25,7 +25,7 @@ label_distro_download_finish=$(printf "$label_distro_download_finish" "Debian")
 
 if [ "$first" != 1 ];then
 
-show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 7 \
+show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 20 \
     'sleep 1' \
     'sleep 1' \
     'sleep 1' \
