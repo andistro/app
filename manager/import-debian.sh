@@ -28,7 +28,7 @@ if [ "$first" != 1 ];then
 show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 20 \
     'sleep 1' \
     'sleep 1' \
-    'sleep 1' \
+    'mkdir -p "$folder"' \
     'cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian"/* "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable/"' \
     'sleep 5' \
     'bash $bin apt update' \

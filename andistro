@@ -442,7 +442,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                     bin="$andistro_files/manager/start-$distro_name"
                                                                     folder="$andistro_files/manager/$distro_name/$distro_version"
                                                                     mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
-                                                                    mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name/$distro_version"
                                                                     mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
 
                                                                     # Menu de Ambiente Gráfico
