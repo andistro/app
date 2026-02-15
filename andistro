@@ -446,8 +446,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                                                     # Menu de Ambiente Gráfico
                                                                     OPTIONS=(1 "Já tenho uma interface definida"
-                                                                            2 "${label_environments_select_default} (XFCE4)" # Interface padrão
-                                                                            3 "${label_environments_select_light} (LXDE)" # Interface leve
+                                                                             2 "${label_environments_select_default} (XFCE4)" # Interface padrão
+                                                                             3 "${label_environments_select_light} (LXDE)" # Interface leve
                                                                             )
 
                                                                     CHOICE=$(dialog --no-shadow --clear \

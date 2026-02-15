@@ -33,11 +33,11 @@ show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixan
     'sleep 1' \
     'cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian"/* "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable/"' \
     'sleep 5' \
+    'cp "$config_file/start-distro" $bin' \
+    'chmod +x $bin' \
     'bash $bin apt update' \
     'bash $bin apt install dialog sudo wget nano locales gpg curl ca-certificates -y' \
-    'cp "$config_file/start-distro" $bin' \
     'sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin' \
-    'chmod +x $bin' \
     'rm -rf $folder/root/.bash_profile' \
     'cp "$config_file/.bash_profile" $folder/root/.bash_profile' \
     'sed -i "s|distro_name=\"\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile' \
