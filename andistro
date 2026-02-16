@@ -498,7 +498,8 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                                                     bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$config_environment" "$distro_version"
                                                                     clear
-                                                                    break
+                                                                    andistro
+                                                                    exit 0
                                                             done
                                                         ;;
 
