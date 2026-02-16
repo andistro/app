@@ -398,17 +398,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                 while true; do
                                                     if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
                                                         # ✅ AnDistro existe → só backup/restaurar
-                                                        OPTIONS=(1 "Fazer backup do sistema" #
-                                                                 2 "Restaurar backup do Debian do AnDistro" # 
+                                                        OPTIONS=(1 "Restaurar backup do Debian do AnDistro" # 
                                                                 )
                                                     elif ! [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && ! [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ] && [ -d "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian" ]; then
                                                         # ✅ AnDistro NÃO existe, mas proot existe → import proot + compactado
-                                                        OPTIONS=(3 "Importar do proot-distro" #
-                                                                 4 "Importar compactado" #
+                                                        OPTIONS=(2 "Importar do proot-distro" #
+                                                                 3 "Importar compactado" #
                                                                 )
                                                     else
                                                         # ✅ AnDistro NÃO existe, proot NÃO existe → só compactado
-                                                        OPTIONS=(4 "Importar compactado" #
+                                                        OPTIONS=(3 "Importar compactado" #
                                                                 )
                                                     fi
                                                     
@@ -428,16 +427,13 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                     fi
                                                     clear
                                                     case $CHOICE in
-                                                        # Fazer backup do sistema
+
+                                                        # Restaurar backup do Debian do AnDistro
                                                         1)
                                                         ;;
 
-                                                        # Restaurar backup do Debian do AnDistro
-                                                        2)
-                                                        ;;
-
                                                         # Importar do proot-distro
-                                                        3)
+                                                        2)
                                                             while true; do
                                                                 # Caminho usado para instalar o debian no proot-distro
                                                                 # /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian
@@ -507,7 +503,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                         ;;
 
                                                         # Importar compactado
-                                                        4)
+                                                        3)
                                                             # um arquivo tar.xz com o sistema debian será usado para configurar o sistema
                                                         ;;
                                                     esac      
