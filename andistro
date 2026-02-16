@@ -353,7 +353,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Backups e importação
                         6)
                             while true; do
-                                dialog --no-shadow --title "$label_andistro_adb_pair_title" \
+                                dialog --no-shadow --title "Backups e importação" \
                                        --backtitle "$label_warning" \
                                        --yes-label "$label_confirm" \
                                        --no-label "$label_close" \
@@ -391,10 +391,17 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                             # Importar
                                             2)
                                                 while true; do
-                                                    OPTIONS=(1 "Restaurar backup do sistema" # 
-                                                            2 "Importar do proot-distro" #
-                                                            3 "Importar compactado" 
-                                                            )
+                                                    if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
+                                                        OPTIONS=(1 "Fazer backup do sistema" #
+                                                                 2 "Restaurar backup do Debian do AnDistro" # 
+                                                                )
+                                                    else
+                                                        OPTIONS=(1 "Fazer backup do sistema" #
+                                                                 2 "Restaurar backup do Debian do AnDistro" # 
+                                                                 3 "Importar do proot-distro" #
+                                                                 4 "Importar compactado" #
+                                                                )
+                                                    fi
                                                     
                                                     CHOICE=$(dialog --no-shadow --clear \
                                                                     --title "Backups e importação" \
@@ -412,54 +419,56 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                     fi
                                                     clear
                                                     case $CHOICE in
-                                                        # Restaurar backup do sistema
+                                                        # Fazer backup do sistema
                                                         1)
                                                         ;;
 
-                                                        # Importar do proot-distro
+                                                        # Restaurar backup do Debian do AnDistro
                                                         2)
+                                                        ;;
+
+                                                        # Importar do proot-distro
+                                                        3)
                                                             while true; do
                                                                 # Caminho usado para instalar o debian no proot-distro
                                                                 # /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian
                                                                 # Caminho onde o AnDistro instala o Debian
                                                                 # /data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable
                                                                 # O Proot-distro não cria uma pasta para a versão, então a pasta debian do proot-distro é o equivalente ao stable do andistro.
-                                                                if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
-                                                                    # Se existir o arquivo start-debian e a pasta debian/stable, significa que já existe um sistema Debian instalado no AnDistro.
-                                                                    echo "Já existe um sistema Debian instalado. Não é possível importar outro sistema igual."
-                                                                else
-                                                                    dialog --no-shadow --title "Backups e importação" \
-                                                                           --backtitle "$label_warning" \
-                                                                           --ok-label "$label_confirm" \
-                                                                           --msgbox "A importação irá configurar para que o Debian se adapte as configurações do AnDistro e isso fará com que: \n-Seja adicionado novos repositórios; \nSeja feita instalações de pacotes que podem não estar instaladas na sua versão do Debian. \n-Será feito uma atualização completa de todo o sistema. \n- A importação não irá apagar o Debian que você instalou. Por medida de segurança, o importador faz uma cópia do sistema." \
-                                                                           25 $dialog_width
-                                                                    clear
+                                                                
+                                                                dialog --no-shadow --title "Backups e importação" \
+                                                                       --backtitle "$label_warning" \
+                                                                       --ok-label "$label_confirm" \
+                                                                       --msgbox "A importação irá configurar para que o Debian se adapte as configurações do AnDistro e isso fará com que: \n-Seja adicionado novos repositórios; \nSeja feita instalações de pacotes que podem não estar instaladas na sua versão do Debian. \n-Será feito uma atualização completa de todo o sistema. \n- A importação não irá apagar o Debian que você instalou. Por medida de segurança, o importador faz uma cópia do sistema." \
+                                                                       25 $dialog_width
+                                                                clear
 
-                                                                    distro_name="debian"
-                                                                    distro_version="stable"
-                                                                    distro_based="debian"
-                                                                    distro_file="import-$distro_name.sh"
-                                                                    config_file="$andistro_files/manager/.config/$distro_based-based"
-                                                                    bin="$andistro_files/manager/start-$distro_name"
-                                                                    folder="$andistro_files/manager/$distro_name/$distro_version"
-                                                                    mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
-                                                                    mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
+                                                                distro_name="debian"
+                                                                distro_version="stable"
+                                                                distro_based="debian"
+                                                                distro_file="import-$distro_name.sh"
+                                                                config_file="$andistro_files/manager/.config/$distro_based-based"
+                                                                bin="$andistro_files/manager/start-$distro_name"
+                                                                folder="$andistro_files/manager/$distro_name/$distro_version"
+                                                                mkdir -p "$PREFIX/var/lib/andistro/manager/$distro_name"
+                                                                mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
 
-                                                                    # Menu de Ambiente Gráfico
-                                                                    OPTIONS=(1 "Já tenho uma interface definida"
-                                                                             2 "${label_environments_select_default} (XFCE4)" # Interface padrão
-                                                                             3 "${label_environments_select_light} (LXDE)" # Interface leve
-                                                                            )
+                                                                # Menu de Ambiente Gráfico
+                                                                OPTIONS=(1 "Já tenho uma interface definida"
+                                                                         2 "${label_environments_select_default} (XFCE4)" # Interface padrão
+                                                                         3 "${label_environments_select_light} (LXDE)" # Interface leve
+                                                                        )
 
-                                                                    CHOICE=$(dialog --no-shadow --clear \
-                                                                                    --title "$TITLE" \
-                                                                                    --cancel-label "$label_back" \
-                                                                                    --menu "$label_environments_select" \
-                                                                                    $dialog_height $dialog_width $dialog_choice_height \
-                                                                                    "${OPTIONS[@]}" \
-                                                                                    2>&1 >/dev/tty)
+                                                                CHOICE=$(dialog --no-shadow --clear \
+                                                                                --title "$TITLE" \
+                                                                                --cancel-label "$label_back" \
+                                                                                --menu "$label_environments_select" \
+                                                                                $dialog_height $dialog_width $dialog_choice_height \
+                                                                                "${OPTIONS[@]}" \
+                                                                                2>&1 >/dev/tty)
 
                                                                     dialog_retorno=$?  # ← Captura código de retorno
+                
                                                                     if [ $dialog_retorno -eq 1 ]; then
                                                                         clear # ← Clear se cancelado
                                                                         break
@@ -484,19 +493,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                                                     bash $PREFIX/var/lib/andistro/manager/$distro_file "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$config_environment" "$distro_version"
                                                                     clear
-
+                                                                    break
                                                                 fi
-                                                                break
                                                             done
                                                         ;;
 
                                                         # Importar compactado
-                                                        3)
+                                                        4)
                                                             # um arquivo tar.xz com o sistema debian será usado para configurar o sistema
                                                         ;;
-                                                    esac
-                                                    
-                                                        
+                                                    esac      
                                                 done
                                             ;;
                                         esac
