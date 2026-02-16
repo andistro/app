@@ -62,4 +62,3 @@ fi
 
 # Inicia o sistema
 bash $bin
-
