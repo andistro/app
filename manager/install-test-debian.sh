@@ -1,4 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
+# chmod +x "$PREFIX/var/lib/andistro/manager/install-test-debian.sh" | bash
+# bash $PREFIX/var/lib/andistro/manager/install-test-debian.sh
 #>>>#=============================================================================================
 #>>>#PARA TESTES
 source "$PREFIX/var/lib/andistro/lib/share/global"
