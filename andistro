@@ -496,7 +496,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                         ;;
                                                                     esac
 
-                                                                    bash $PREFIX/var/lib/andistro/manager/import-$distro_name.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$config_environment" "$distro_version"
+                                                                    bash $PREFIX/var/lib/andistro/manager/import-$distro_name-proot-distro.sh "$config_file" "$andistro_files" "$distro_name" "$bin" "$folder" "$config_environment" "$distro_version"
                                                                     clear
                                                                     andistro
                                                                     exit 0
@@ -580,7 +580,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                     bash $PREFIX/var/lib/andistro/manager/start-debian 'sudo apt full-upgrade -y'
                 fi
             }
-            
+
             update_dialog_view(){
                 show_progress_dialog steps-multi-label 52 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
