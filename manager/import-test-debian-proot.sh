@@ -30,8 +30,8 @@ cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/deb
 rm -rf $folder/etc/apt/sources.list
 
 echo "deb http://deb.debian.org/debian $distro_version main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security $distro_version-security main contrib non-free
-deb http://deb.debian.org/debian $distro_version-updates main contrib non-free" >> $folder/etc/apt/sources.list
+deb http://deb.debian.org/debian $distro_version-updates main contrib non-free
+deb http://security.debian.org/debian-security $distro_version-security main contrib non-free" >> $folder/etc/apt/sources.list
 
 chmod 644 $folder/etc/apt/sources.list
 chown root:root $folder/etc/apt/sources.list
@@ -113,3 +113,54 @@ echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Set
 touch $folder/root/.hushlogin
 
 bash $bin
+
+# Proot-distro
+# ~ $ cat /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian/etc/environment
+# ANDROID_ART_ROOT=/apex/com.android.art
+# ANDROID_DATA=/data
+# ANDROID_I18N_ROOT=/apex/com.android.i18n
+# ANDROID_ROOT=/system
+# ANDROID_TZDATA_ROOT=/apex/com.android.tzdata
+# BOOTCLASSPATH=/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/framework-location.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/knoxsdk.jar:/system/framework/com.samsung.android.uwb_extras.jar:/system/framework/framework-platformcrashrecovery.jar:/system/framework/framework-ondeviceintelligence-platform.jar:/system/framework/framework-nfc.jar:/system/framework/tcmiface.jar:/system/framework/telephony-ext.jar:/system/framework/QPerformance.jar:/system/framework/UxPerformance.jar:/system/framework/esecomm.jar:/apex/com.android.i18n/javalib/core-icu4j.jar:/apex/com.android.adservices/javalib/framework-adservices.jar:/apex/com.android.adservices/javalib/framework-sdksandbox.jar:/apex/com.android.appsearch/javalib/framework-appsearch.jar:/apex/com.android.bt/javalib/framework-bluetooth.jar:/apex/com.android.configinfrastructure/javalib/framework-configinfrastructure.jar:/apex/com.android.conscrypt/javalib/conscrypt.jar:/apex/com.android.devicelock/javalib/framework-devicelock.jar:/apex/com.android.healthfitness/javalib/framework-healthfitness.jar:/apex/com.android.ipsec/javalib/android.net.ipsec.ike.jar:/apex/com.android.media/javalib/updatable-media.jar:/apex/com.android.mediaprovider/javalib/framework-mediaprovider.jar:/apex/com.android.mediaprovider/javalib/framework-pdf.jar:/apex/com.android.mediaprovider/javalib/framework-pdf-v.jar:/apex/com.android.mediaprovider/javalib/framework-photopicker.jar:/apex/com.android.ondevicepersonalization/javalib/framework-ondevicepersonalization.jar:/apex/com.android.os.statsd/javalib/framework-statsd.jar:/apex/com.android.permission/javalib/framework-permission.jar:/apex/com.android.permission/javalib/framework-permission-s.jar:/apex/com.android.profiling/javalib/framework-profiling.jar:/apex/com.android.scheduling/javalib/framework-scheduling.jar:/apex/com.android.sdkext/javalib/framework-sdkextensions.jar:/apex/com.android.tethering/javalib/framework-connectivity.jar:/apex/com.android.tethering/javalib/framework-connectivity-b.jar:/apex/com.android.tethering/javalib/framework-connectivity-t.jar:/apex/com.android.tethering/javalib/framework-tethering.jar:/apex/com.android.uwb/javalib/framework-ranging.jar:/apex/com.android.uwb/javalib/framework-uwb.jar:/apex/com.android.virt/javalib/framework-virtualization.jar:/apex/com.android.wifi/javalib/framework-wifi.jar:/apex/com.samsung.android.lifeguard/javalib/framework-lifeguard.jar:/apex/com.samsung.android.shell/javalib/framework-samsung-shell.jar
+# COLORTERM=truecolor
+# DEX2OATBOOTCLASSPATH=/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/framework-location.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/knoxsdk.jar:/system/framework/com.samsung.android.uwb_extras.jar:/system/framework/framework-platformcrashrecovery.jar:/system/framework/framework-ondeviceintelligence-platform.jar:/system/framework/framework-nfc.jar:/system/framework/tcmiface.jar:/system/framework/telephony-ext.jar:/system/framework/QPerformance.jar:/system/framework/UxPerformance.jar:/system/framework/esecomm.jar:/apex/com.android.i18n/javalib/core-icu4j.jar
+# EXTERNAL_STORAGE=/sdcard
+# LANG=en_US.UTF-8
+# MOZ_FAKE_NO_SANDBOX=1
+# PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin
+# PULSE_SERVER=127.0.0.1
+# TERM=xterm-256color
+# TMPDIR=/tmp
+
+# ~ $ cat /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian/etc/profile
+# # /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# # and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+# if [ "$(id -u)" -eq 0 ]; then
+# 	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin"
+# else
+# 	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin"
+# fi
+# export PATH
+# if [ "${PS1-}" ]; then
+# if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then
+# 	# The file bash.bashrc already sets the default PS1.
+# 	# PS1='\h:\w\$ '
+# 	if [ -f /etc/bash.bashrc ]; then
+# 		. /etc/bash.bashrc
+# 	fi
+# else
+# 	if [ "$(id -u)" -eq 0 ]; then
+# 		PS1='# '
+# 	else
+# 		PS1='$ '
+#     fi
+#   fi
+# fi
+# if [ -d /etc/profile.d ]; then
+# 	for i in $(run-parts --list --regex '^[a-zA-Z0-9_][a-zA-Z0-9._-]*\.sh$' /etc/profile.d); do
+#     if [ -r $i ]; then
+#       . $i
+#     fi
+#   done
+#   unset i
+# fi
