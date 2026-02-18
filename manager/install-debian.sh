@@ -70,15 +70,12 @@ cp $config_file/system-config.sh $folder/root/system-config.sh
 if [ "$config_environment" = "null" ]; then
 	echo " "
 elif [ "$config_environment" = "xfce4" ]; then
-    # Coloque aqui o comando que você quer executar quando for XFCE4
 	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 	cp "$config_file/environment/$config_environment/xfce4-panel.tar.bz2" "$folder/root/xfce4-panel.tar.bz2"
 else
 	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 fi
 
-
-# Adicionar entradas em hosts, resolv.conf e timezone
 cat << 'EOF' >> $folder/etc/hosts
 # IPv4.
 127.0.0.1   localhost.localdomain localhost
@@ -91,10 +88,15 @@ ff02::2     ip6-allrouters
 ff02::3     ip6-allhosts
 EOF
 
-echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
-echo "nameserver 8.8.4.4" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "nameserver 8.8.8.8
+nameserver 8.8.4.4" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
-echo "LANG=$system_icu_lang_code_env.UTF-8" | tee -a $folder/etc/environment > /dev/null 2>&1 
+
+if grep -q "^LANG=" $folder/etc/environment 2>/dev/null; then
+    sed -i "s/^LANG=.*$/LANG=$system_icu_lang_code_env.UTF-8/" $folder/etc/environment
+else
+    echo "LANG=$system_icu_lang_code_env.UTF-8" | tee -a $folder/etc/environment > /dev/null 2>&1
+fi
 
 # KERNEL_VERSON=$(uname -r)
 
