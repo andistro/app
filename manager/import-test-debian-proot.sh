@@ -26,6 +26,16 @@ echo "Copiando o Debian do Proot-Distro"
 sleep 2
 cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian"/* "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable/"
 
+
+rm -rf $folder/etc/apt/sources.list
+
+echo "deb http://deb.debian.org/debian $distro_version main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security $distro_version-security main contrib non-free
+deb http://deb.debian.org/debian $distro_version-updates main contrib non-free" >> $folder/etc/apt/sources.list
+
+chmod 644 $folder/etc/apt/sources.list
+chown root:root $folder/etc/apt/sources.list
+
 cp "$config_file/start-distro" $bin
 
 sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin
@@ -52,9 +62,9 @@ echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
 
 echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
 
-echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
+#bash $bin "apt install language-pack-$default_locale_lang_global -y"
 
-bash $bin "apt install language-pack-$default_locale_lang_global -y"
+sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" $folder/etc/locale.gen
 
 bash $bin "locale-gen $system_icu_lang_code_env.UTF-8"
 
