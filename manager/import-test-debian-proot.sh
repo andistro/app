@@ -46,6 +46,19 @@ else
     echo "LANG=$system_icu_lang_code_env.UTF-8" | tee -a $folder/etc/environment > /dev/null 2>&1 
 fi
 
+echo -e "LANG=$system_icu_lang_code_env.UTF-8" > $folder/etc/locale.conf
+
+echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc 
+
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
+
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
+
+bash $bin "apt install language-pack-$default_locale_lang_global -y"
+
+bash $bin "locale-gen $system_icu_lang_code_env.UTF-8"
+
+
 echo "Alterando o profile do Debian"
 
 rm -rf $folder/etc/profile
