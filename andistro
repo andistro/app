@@ -567,19 +567,20 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                 if ls "$PREFIX/var/lib/andistro/manager/start-debian" 1>/dev/null 2>&1; then
                     rm -rf /data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian
                     cp "/data/data/com.termux/files/usr/var/lib/andistro/manager/.config/debian-based/start-distro" "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian"
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $PREFIX/var/lib/andistro/manager/start-debian'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" /etc/locale.gen'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'sudo locale-gen $system_icu_lang_code_env.UTF-8'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'echo -e "LANG=$system_icu_lang_code_env.UTF-8" > /etc/locale.conf'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $HOME/.bashrc'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'sudo apt install language-pack-gnome-$default_locale_lang_global -y'
-                    bash $PREFIX/var/lib/andistro/manager/start-debian 'sudo apt install language-pack-$default_locale_lang_global -y'
+                    sed -i "s|command+=\" LANG=.*\$\"|command+=\" LANG=${system_icu_lang_code_env}.UTF-8\"|g" "$PREFIX/var/lib/andistro/manager/start-debian" # Troca o LANG para o idioma atual do Android no comando de inicialização do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" 'sed -i "s/^LANG=.*/LANG='"${system_icu_lang_code_env}"'.UTF-8/" /etc/environment' # Troca o LANG para o idioma atual do Android no environment do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" 'sed -i "s/^# *('"${system_icu_lang_code_env}"'.UTF-8)/\1/" /etc/locale.gen' # Descomenta o idioma atual do Android no locale.gen do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" "sudo locale-gen ${system_icu_lang_code_env}.UTF-8" # Gera o locale do idioma atual do Android no Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" 'sed -i "s/^LANG=.*/LANG='"${system_icu_lang_code_env}"'.UTF-8/" /etc/locale.conf' # Troca o LANG para o idioma atual do Android no locale.conf do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" 'sed -i "s|^export LANG=.*\$|export LANG='"${system_icu_lang_code_env}"'.UTF-8|g" \$HOME/.bashrc' # Troca o LANG para o idioma atual do Android no .bashrc do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" 'sed -i "s|^export LANGUAGE=.*\$|export LANGUAGE='"${system_icu_lang_code_env}"'.UTF-8|g" \$HOME/.bashrc' # Troca o LANGUAGE para o idioma atual do Android no .bashrc do Debian
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" "sudo apt install language-pack-gnome-${default_locale_lang_global} -y"
+                    bash "$PREFIX/var/lib/andistro/manager/start-debian" "sudo apt install language-pack-${default_locale_lang_global} -y"
                     bash $PREFIX/var/lib/andistro/manager/start-debian 'apt update'
                     bash $PREFIX/var/lib/andistro/manager/start-debian 'sudo apt full-upgrade -y'
                 fi
             }
+            
             update_dialog_view(){
                 show_progress_dialog steps-multi-label 52 \
                     "${label_progress}\n${label_andistro_update_version}" 'sleep 1' \
