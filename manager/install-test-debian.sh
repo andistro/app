@@ -21,7 +21,7 @@ if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
 	mkdir -p "/sdcard/termux/andistro/manager/$distro_name/$distro_version"
 fi
 archurl="arm64"
-debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates,language-pack-$default_locale_lang_global $distro_version $folder http://deb.${distro_name}.org/${distro_name}/
+debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/
 cp "$config_file/start-distro" $bin
 
 sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin
