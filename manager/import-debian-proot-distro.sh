@@ -25,7 +25,7 @@ label_distro_download_finish=$(printf "$label_distro_download_finish" "Debian")
 
 if [ "$first" != 1 ];then
 
-show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 20 \
+show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixando pacotes necessários para o Andistro" 15 \
     'sleep 1' \
     'sleep 1' \
     "mkdir -p \"$folder\"" \
@@ -40,13 +40,33 @@ show_progress_dialog steps-one-label "Copiando o Debian do Proot-Distro e baixan
     "cp \"$config_file/.bash_profile\" $folder/root/.bash_profile" \
     "sed -i \"s|distro_name=\"\"|distro_name=\"$distro_name\"|g\" $folder/root/.bash_profile" \
     "sed -i \"s|LANG=\"\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g\" $folder/root/.bash_profile" \
-    "cp $config_file/system-config.sh $folder/root/system-config.sh" \
-    "echo \"127.0.0.1 localhost localhost\" | tee $folder/etc/hosts" \
-    "echo \"nameserver 8.8.8.8\" | tee $folder/etc/resolv.conf" \
-    "echo \"$system_timezone\" | tee $folder/etc/timezone" \
-    "echo \"APT::Acquire::Retries \"3\";\" > $folder/etc/apt/apt.conf.d/80-retries" \
-    "touch $folder/root/.hushlogin"
+    "bash $bin \"locale-gen $system_icu_lang_code_env.UTF-8\""
 fi
+
+rm -rf $folder/etc/apt/sources.list
+
+echo "deb http://deb.debian.org/debian $distro_version main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian $distro_version-updates main contrib non-free
+deb http://security.debian.org/debian-security $distro_version-security main contrib non-free" >> $folder/etc/apt/sources.list
+
+chmod 644 $folder/etc/apt/sources.list
+chown root:root $folder/etc/apt/sources.list
+
+echo "nameserver 8.8.8.8
+nameserver 8.8.4.4" | tee $folder/etc/resolv.conf > /dev/null 2>&1
+echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
+
+cat << 'EOF' >> $folder/etc/hosts
+# IPv4.
+127.0.0.1   localhost.localdomain localhost
+# IPv6.
+::1         localhost.localdomain localhost ip6-localhost ip6-loopback
+fe00::0     ip6-localnet
+ff00::0     ip6-mcastprefix
+ff02::1     ip6-allnodes
+ff02::2     ip6-allrouters
+ff02::3     ip6-allhosts
+EOF
 
 # Verifica se existe LANG em /etc/environment e substitui por pt_BR.UTF-8
 if grep -q "^LANG=" $folder/etc/environment 2>/dev/null; then
@@ -94,7 +114,6 @@ if [ -d /etc/profile.d ]; then
 fi
 EOF
 
-
 if [ "$config_environment" = "null" ]; then
 	echo " "
 elif [ "$config_environment" = "xfce4" ]; then
@@ -106,6 +125,9 @@ elif [ "$config_environment" = "lxde" ]; then
 	cp "$config_file/environment/$config_environment/config-environment.sh" "$folder/root/config-environment.sh"
 fi
 
+echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
+
+touch $folder/root/.hushlogin
 
 # Inicia o sistema
 bash $bin
