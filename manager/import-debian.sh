@@ -107,10 +107,5 @@ elif [ "$config_environment" = "lxde" ]; then
 fi
 
 
-
-
-
-
-
 # Inicia o sistema
 bash $bin
