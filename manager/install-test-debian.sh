@@ -22,6 +22,16 @@ if [ ! -d "/sdcard/termux/andistro/manager/$distro_name/$distro_version" ];then
 fi
 archurl="arm64"
 debootstrap --arch=$archurl --variant=minbase --include=dialog,sudo,wget,nano,locales,gpg,curl,ca-certificates $distro_version $folder http://deb.${distro_name}.org/${distro_name}/
+
+rm -rf $folder/etc/apt/sources.list
+
+echo "deb http://deb.debian.org/debian $distro_version main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian $distro_version-updates main contrib non-free
+deb http://security.debian.org/debian-security $distro_version-security main contrib non-free" >> $folder/etc/apt/sources.list
+
+chmod 644 $folder/etc/apt/sources.list
+chown root:root $folder/etc/apt/sources.list
+
 cp "$config_file/start-distro" $bin
 
 sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin
