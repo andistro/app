@@ -43,10 +43,8 @@ echo "127.0.0.1 localhost localhost" | tee $folder/etc/hosts > /dev/null 2>&1
 echo "nameserver 8.8.8.8" | tee $folder/etc/resolv.conf > /dev/null 2>&1
 echo "$system_timezone" | tee $folder/etc/timezone > /dev/null 2>&1
 
-echo '
-VARIANT="AnDistro"
-VARIANT_ID="andistro"
-' >> $folder/etc/os-release
+echo 'VARIANT="AnDistro"
+VARIANT_ID="andistro"' >> $folder/etc/os-release
 
 
 sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" $folder/etc/locale.gen

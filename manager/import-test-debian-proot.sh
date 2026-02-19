@@ -25,7 +25,8 @@ mkdir -p "$folder"
 echo "Copiando o Debian do Proot-Distro"
 sleep 2
 cp -a "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian"/* "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable/"
-
+echo 'VARIANT="Termux Proot-Distro"
+VARIANT_ID="termux-proot-distro"' >> $folder/etc/os-release
 
 rm -rf $folder/etc/apt/sources.list
 
