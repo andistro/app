@@ -9,34 +9,14 @@ etc_timezone=$(cat /etc/timezone)
 source "/usr/local/lib/andistro/global"
 
 # Mensagem de inicialização
-system_icu_locale_code="${LANG//_/-}"
-
 echo -e "\n ${distro_wait}\n"
 
-cat << 'EOF' >> ~/.bashrc
-
-# Andistro Bridge - Integração Debian ↔ Termux/Android
-termux-cmd() {
-    local file="/termux/home/andistro-bridge"
-    printf "%s\n" "$1" > "$file" 2>/dev/null || {
-        echo "Erro: bridge indisponível"
-        return 1
-    }
-    echo "'$1' → Termux"
-}
-
-# Comandos rápidos
-android-open() { termux-cmd "termux-open '$1'"; }
-android-app()  { termux-cmd "am start -n '$1'"; }
-termux-echo()  { termux-cmd "echo '$1'"; }
-EOF
-
-show_progress_dialog steps-one-label "${label_progress}" 36 \
-    "sed -i \"s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/\" /etc/locale.gen" \
-    "sudo locale-gen $system_icu_lang_code_env.UTF-8" \
-    "echo \"LANG=$system_icu_lang_code_env.UTF-8\" > /etc/locale.conf" \
-    "echo \"export LANG=$system_icu_lang_code_env.UTF-8\" >> $HOME/.bashrc" \
-    "echo \"export LANGUAGE=$system_icu_lang_code_env.UTF-8\" >> $HOME/.bashrc" \
+show_progress_dialog steps-one-label "${label_progress}" 34 \
+    "sed -i \"s/^# *\(${system_icu_lang_code_env}.UTF-8\)/\1/\" /etc/locale.gen" \
+    "sudo locale-gen ${system_icu_lang_code_env}.UTF-8" \
+    "echo \"LANG=${system_icu_lang_code_env}.UTF-8\" > /etc/locale.conf" \
+    "echo \"export LANG=${system_icu_lang_code_env}.UTF-8\" >> $HOME/.bashrc" \
+    "echo \"export LANGUAGE=${system_icu_lang_code_env}.UTF-8\" >> $HOME/.bashrc" \
     "sudo mv /var/lib/dpkg/info /var/lib/dpkg/info_old" \
     "sudo mkdir /var/lib/dpkg/info" \
     "apt update" \
@@ -87,20 +67,18 @@ Signed-By: /usr/share/keyrings/vivaldi-archive-keyring.gpg
 EOF
 fi" \
     "apt update" \
-    "sudo apt install language-pack-gnome-$default_locale_lang_global -y" \
-    "sudo apt install language-pack-$default_locale_lang_global -y" \
     "sudo dpkg --configure -a" \
     "sudo apt --fix-broken install -y" \
     "sudo mv /var/lib/dpkg/info/* /var/lib/dpkg/info_old/." \
     "sudo rm -rf /var/lib/dpkg/info" \
     "sudo mv /var/lib/dpkg/info_old /var/lib/dpkg/info" \
     "sudo apt update" \
-    "sudo ln -sf \"/usr/share/zoneinfo/$etc_timezone\" /etc/localtime" \
+    "sudo ln -sf \"/usr/share/zoneinfo/${etc_timezone}\" /etc/localtime" \
     "dialog --create-rc $HOME/.dialogrc" \
     "sed -i \"s|use_shadow = ON|use_shadow = OFF|g\" $HOME/.dialogrc"
 
 # Executa as configurações base do sistema
-bash $HOME/system-config.sh "$distro_theme" "$distro_name"
+bash $HOME/system-config.sh "${distro_theme}" "${distro_name}"
 
 
 show_progress_dialog steps-multi-label 4 \
@@ -112,13 +90,13 @@ show_progress_dialog steps-multi-label 4 \
 
 # Configurações da inteface escolhida
 if [ -f "$HOME/config-environment.sh" ]; then
-    bash "$HOME/config-environment.sh" "$distro_theme"
+    bash "$HOME/config-environment.sh" "${distro_theme}"
 fi
 
 distro_name="$(tr '[:lower:]' '[:upper:]' <<< "${distro_name:0:1}")${distro_name:1}"
 label_distro_boot=$(printf "$label_distro_boot" "$distro_name")
 
-echo "echo -e \"\033[1;96m$label_distro_boot\033[0m\"" >> $HOME/.bashrc
+echo "echo -e \"\033[1;96m${label_distro_boot}\033[0m\"" >> $HOME/.bashrc
 
 rm -rf $HOME/.hushlogin
 rm -rf $HOME/system-config.sh
