@@ -34,6 +34,8 @@ chown root:root $folder/etc/apt/sources.list
 
 cp "$config_file/start-distro" $bin
 
+sed -i "s|auto_cmd="andistro"|auto_cmd=""|g" $bin
+
 sed -i "s|command+=\" LANG=\$system_icu_lang_code_env.UTF-8\"|command+=\" LANG=$system_icu_lang_code_env.UTF-8\"|g" $bin
 
 chmod +x $bin
