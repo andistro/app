@@ -378,8 +378,7 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                 if [ $dialog_retorno -eq 0 ]; then
                                     while true; do
                                         if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
-                                            OPTIONS=(1 "Fazer backup do sistema" # 
-                                                     2 "Importar ou restaurar" # 
+                                            OPTIONS=(2 "Importar ou restaurar" # 
                                                     )
                                         else
                                             OPTIONS=(2 "Importar ou restaurar" # 
@@ -403,25 +402,21 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                         fi
                                         clear
                                         case $CHOICE in
-                                            # Fazer backup do sistema
-                                            1)
-                                            ;;
 
                                             # Importar
                                             2)
                                                 while true; do
                                                     if [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ]; then
                                                         # ✅ AnDistro existe → só backup/restaurar
-                                                        OPTIONS=(1 "Restaurar backup do Debian do AnDistro" # 
+                                                        OPTIONS=(1 "Indisponível" # 
                                                                 )
                                                     elif ! [ -f "/data/data/com.termux/files/usr/var/lib/andistro/manager/start-debian" ] && ! [ -d "/data/data/com.termux/files/usr/var/lib/andistro/manager/debian/stable" ] && [ -d "/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/debian" ]; then
                                                         # ✅ AnDistro NÃO existe, mas proot existe → import proot + compactado
                                                         OPTIONS=(2 "Importar do proot-distro" #
-                                                                 3 "Importar compactado" #
                                                                 )
                                                     else
                                                         # ✅ AnDistro NÃO existe, proot NÃO existe → só compactado
-                                                        OPTIONS=(3 "Importar compactado" #
+                                                        OPTIONS=(3 "indisponivel" #
                                                                 )
                                                     fi
                                                     
@@ -441,10 +436,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                     fi
                                                     clear
                                                     case $CHOICE in
-
-                                                        # Restaurar backup do Debian do AnDistro
-                                                        1)
-                                                        ;;
 
                                                         # Importar do proot-distro
                                                         2)
@@ -514,11 +505,6 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                                                                     andistro
                                                                     exit 0
                                                             done
-                                                        ;;
-
-                                                        # Importar compactado
-                                                        3)
-                                                            # um arquivo tar.xz com o sistema debian será usado para configurar o sistema
                                                         ;;
                                                     esac      
                                                 done
