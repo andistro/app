@@ -67,7 +67,11 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
         fi
 
         if [[ "$andistro_version" == *"alpha"* ]]; then
-            an_title_version=" [alpha]"
+            an_title_version=" [$label_alpha]"
+        elif [[ "$andistro_version" == *"beta"* ]]; then
+            an_title_version=" [$label_beta]"
+        elif [[ "$andistro_version" == *"main"* ]]; then
+            an_title_version=" [$label_stable]"
         else
             an_title_version=""
         fi
@@ -237,14 +241,20 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
                         # Atualizar o AnDistro
                         3)
                             while true; do
-
-                                if [ "$andistro_version" = "main" ]; then
-                                    OPTIONS=(m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
-                                             a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                if [ "$andistro_version" = "alpha" ]; then
+                                    OPTIONS=(a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                             b "$label_andistro_update_beta" # Atualizar o AnDistro [beta]
+                                             m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                            )
+                                elif [ "$andistro_version" = "beta" ]; then
+                                    OPTIONS=(b "$label_andistro_update_beta" # Atualizar o AnDistro [beta]
+                                                m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                                a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
                                             )
                                 else
-                                    OPTIONS=(a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
-                                             m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                    OPTIONS=(m "$label_andistro_update_main" # Atualizar o AnDistro [estável]
+                                             a "$label_andistro_update_alpha" # Atualizar o AnDistro [alpha]
+                                             b "$label_andistro_update_beta" # Atualizar o AnDistro [beta]    
                                             )
                                 fi
 
@@ -271,6 +281,9 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
 
                                     # Atualizar o AnDistro [alpha]
                                     a) andistro -u alpha-dialog ;;
+
+                                    # Atualizar o AnDistro [beta]
+                                    b) andistro -u beta-dialog ;;
                                 esac
                             done
                         ;;
@@ -904,6 +917,16 @@ if [ -n "$TERMUX_VERSION" ] || [ -n "$ANDROID_ROOT" ]; then  # Android
             elif [ "$2" == "alpha-dialog" ]; then
                 branch_version="alpha"
                 andistro_branch_version="$label_alpha"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                update_dialog_view
+            elif [ "$2" == "beta" ]; then
+                branch_version="beta"
+                andistro_branch_version="$label_beta"
+                label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
+                updatel_terminal_view
+            elif [ "$2" == "beta-dialog" ]; then
+                branch_version="beta"
+                andistro_branch_version="$label_beta"
                 label_andistro_update_version=$(printf "$label_andistro_update_version" "$andistro_branch_version")
                 update_dialog_view
             else
