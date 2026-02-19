@@ -61,9 +61,9 @@ chmod +x $bin
 rm -rf $folder/root/.bash_profile
 cp "$config_file/.bash_profile" $folder/root/.bash_profile
 
-sed -i "s|distro_name=\"\$1\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
-sed -i "s|distro_theme=\"\$2\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
-sed -i "s|LANG=\"\$3\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g" $folder/root/.bash_profile
+sed -i "s|distro_name=\"\"|distro_name=\"$distro_name\"|g" $folder/root/.bash_profile
+sed -i "s|distro_theme=\"\"|distro_theme=\"$distro_theme\"|g" $folder/root/.bash_profile
+sed -i "s|LANG=\"\"|LANG=\"$system_icu_lang_code_env.UTF-8\"|g" $folder/root/.bash_profile
 	
 cp $config_file/system-config.sh $folder/root/system-config.sh
 
@@ -112,4 +112,18 @@ touch $folder/root/.hushlogin
 # Cria o arquivo bash_profile para as configurações serem iniciadas junto com o sistema
 
 # Inicia o sistema
+
+sed -i "s/^# *\($system_icu_lang_code_env.UTF-8\)/\1/" $folder/etc/locale.gen
+
+echo -e "LANG=$system_icu_lang_code_env.UTF-8" > $folder/etc/locale.conf
+
+echo "export LANG=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc 
+
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
+
+echo "export LANGUAGE=$system_icu_lang_code_env.UTF-8" >> $folder/root/.bashrc
+
+bash $bin "locale-gen $system_icu_lang_code_env.UTF-8"
+
+
 bash $bin
