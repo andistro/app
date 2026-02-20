@@ -52,7 +52,7 @@ VIRGL_PID=$!
 
 
 if grep -q 'VARIANT="AnDistro"' $PREFIX/var/lib/andistro/manager/debian/stable/etc/os-release 2>/dev/null; then
-    auto_cmd="andistro"
+    auto_cmd="andistro; exec bash --login"
 else
     auto_cmd=""
 fi
@@ -102,7 +102,7 @@ command+=" LANG=$system_icu_lang_code_env.UTF-8"
 command+=" /bin/bash"
 com="$@"
 if [ -z "$1" ];then
-    $command -lc "$auto_cmd; exec bash --login"
+    $command -lc "$auto_cmd"
 else
     $command -lc "$com"
 fi
