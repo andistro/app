@@ -54,7 +54,7 @@ VIRGL_PID=$!
 if grep -q 'VARIANT="AnDistro"' $PREFIX/var/lib/andistro/manager/debian/stable/etc/os-release 2>/dev/null; then
     auto_cmd="andistro; exec bash --login"
 else
-    auto_cmd=""
+    auto_cmd="exec bash --login"
 fi
 
 ## unset LD_PRELOAD in case termux-exec is installed
